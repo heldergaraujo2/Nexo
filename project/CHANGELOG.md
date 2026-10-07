@@ -47,5 +47,19 @@
 ## 0.6.0 — FASE 3 em execução
 - Início da implementação da camada de confiança e reputação.
 
-## 0.6.x — Fase 3
-- Correções finais de tipagem, concorrência, limpeza de fixtures, máquina de estados de moderação e formatação aplicadas; aguardando gate final do CI.
+## 0.7.0 — FASE 3 concluída
+### Added
+- Avaliações e comentários bilaterais vinculados a serviços concluídos.
+- Proteção de unicidade por autor/serviço e teste concorrente de aceite.
+- Reputação pública com média e total de avaliações publicadas.
+- Favoritos, bloqueios e denúncias com autorização.
+- Indicadores públicos de identidade/veículo sem exposição de documentos.
+- Moderação de avaliações com máquina de estados validada.
+- Auditoria de ações críticas de confiança/reputação.
+- Testes de integração, concorrência, typecheck, build, lint e formatação.
+
+### Gate
+**APROVADO.** CI final: backend e mobile verdes; APK debug construído com sucesso.
+
+### Next
+**FASE 4 — MARKETPLACE CORE**, incluindo solicitações, matching, ofertas/aceite e vínculo solicitação → serviço.
