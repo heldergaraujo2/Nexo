@@ -21,8 +21,11 @@ const TARIFF_CENTS_PER_KM = { car: 200, motorcycle: 150 } as const;
 export class RideService {
   constructor(
     @Inject(Pool) private readonly db: Pool,
-    private readonly distanceAdapter: HaversineDistanceAdapter,
-  ) {}
+  ) {
+    this.distanceAdapter = new HaversineDistanceAdapter();
+  }
+
+  private readonly distanceAdapter: HaversineDistanceAdapter;
 
   async createRequest(user: AuthPrincipal, dto: CreatePassengerRideDto, key: string) {
     if (user.role !== 'customer') throw new ForbiddenException('Customer role required');
