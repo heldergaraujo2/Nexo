@@ -7,6 +7,7 @@ import {
   Req,
   UseGuards,
   Get,
+  Inject,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { ChangeRideRouteDto, CreatePassengerRideDto } from './dto';
@@ -15,7 +16,7 @@ import { RideService } from './ride.service';
 @UseGuards(AuthGuard)
 @Controller('rides')
 export class RideController {
-  constructor(private readonly rides: RideService) {}
+  constructor(@Inject(RideService) private readonly rides: RideService) {}
 
   @Post('requests')
   createRequest(
