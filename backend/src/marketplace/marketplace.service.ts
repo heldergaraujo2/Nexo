@@ -470,7 +470,8 @@ export class MarketplaceService {
           complete: ['in_progress'],
           cancel: ['accepted', 'in_progress'],
         };
-        if (!transitions[action].includes(row.status)) {
+        const allowedStates = transitions[action];
+        if (!allowedStates || !allowedStates.includes(row.status)) {
           throw new ConflictException('Invalid service state transition');
         }
         if (action === 'start' && row.provider_id !== user.accountId) {
