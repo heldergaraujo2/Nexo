@@ -30,7 +30,7 @@ export class RideService {
       key,
       dto,
       async (client) => {
-        const distanceMeters = this.distanceMeters(origin, destination);
+        const distanceMeters = this.distanceAdapter.distanceMeters(origin, destination);
         const tariff = TARIFF_CENTS_PER_KM[dto.vehicleType];
         const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
         const request = await client.query(
@@ -67,7 +67,7 @@ export class RideService {
   async createRideForService(client: PoolClient, serviceId: string, vehicleType: 'car' | 'motorcycle', origin: unknown, destination: unknown) {
     const o = this.normalizeCoordinate(origin);
     const d = this.normalizeCoordinate(destination);
-    const distanceMeters = this.distanceMeters(o, d);
+    const distanceMeters = this.distanceAdapter.distanceMeters(o, d);
     const tariff = TARIFF_CENTS_PER_KM[vehicleType];
     const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
     const result = await client.query(
@@ -202,7 +202,7 @@ export class RideService {
     }
   }
 
-  private normalizeCoordinate(value: unknown) {
+  private normalizeCoordinate(value: unknown): Coordinate {
     if (!value || typeof value !== 'object') throw new ConflictException('Invalid coordinates');
     const row = value as Record<string, unknown>;
     const latitude = Number(row.latitude);
@@ -213,15 +213,6 @@ export class RideService {
     return { latitude, longitude };
   }
 
-  private distanceMeters(a: { latitude:number;longitude:number }, b:{latitude:number;longitude:number}) {
-    const R = 6371000;
-    const p1 = a.latitude * Math.PI / 180;
-    const p2 = b.latitude * Math.PI / 180;
-    const dp = (b.latitude-a.latitude) * Math.PI / 180;
-    const dl = (b.longitude-a.longitude) * Math.PI / 180;
-    const h = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
-    return Math.round(2 * R * Math.asin(Math.sqrt(h)));
-  }
 
   private publicRide(row: Record<string, unknown>) {
     const value = (key: string) => row[key];
