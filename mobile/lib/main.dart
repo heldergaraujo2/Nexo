@@ -91,3 +91,36 @@ class _PaymentRecordPageState extends State<PaymentRecordPage> {
     ),
   );
 }
+
+
+class DeliveryRequestPage extends StatefulWidget {
+  const DeliveryRequestPage({super.key});
+  @override State<DeliveryRequestPage> createState() => _DeliveryRequestPageState();
+}
+
+class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
+  final _item = TextEditingController();
+  final _notes = TextEditingController();
+  final _origin = TextEditingController();
+  final _destination = TextEditingController();
+  bool _hasPhoto = false;
+  @override void dispose() { _item.dispose(); _notes.dispose(); _origin.dispose(); _destination.dispose(); super.dispose(); }
+  @override Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('Nova entrega')),
+    body: ListView(padding: const EdgeInsets.all(20), children: [
+      Text('Dados da entrega', style: Theme.of(context).textTheme.headlineSmall),
+      const SizedBox(height: 16),
+      TextField(controller: _origin, decoration: const InputDecoration(labelText: 'Origem')),
+      const SizedBox(height: 12),
+      TextField(controller: _destination, decoration: const InputDecoration(labelText: 'Destino')),
+      const SizedBox(height: 12),
+      TextField(controller: _item, maxLines: 3, decoration: const InputDecoration(labelText: 'Descrição do item')),
+      const SizedBox(height: 12),
+      TextField(controller: _notes, maxLines: 2, decoration: const InputDecoration(labelText: 'Observações (opcional)')),
+      const SizedBox(height: 12),
+      SwitchListTile(title: const Text('Tenho foto do item'), value: _hasPhoto, onChanged: (v) => setState(() => _hasPhoto = v)),
+      const SizedBox(height: 20),
+      FilledButton(onPressed: _item.text.trim().isEmpty ? null : () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Entrega preparada para envio'))), child: const Text('Continuar')),
+    ]),
+  );
+}
