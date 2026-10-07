@@ -56,6 +56,8 @@ jobs:
       - name: Generate native Flutter hosts
         working-directory: mobile
         run: flutter create --platforms=android,ios --org com.pixelumgames .
+      - name: Restore repository test files
+        run: git checkout -- mobile/test
       - run: flutter pub get
         working-directory: mobile
       - run: flutter analyze
