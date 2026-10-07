@@ -56,9 +56,11 @@ describe('passenger transport integration', () => {
 
     expect(rideRequest.status).toBe(201);
     expect(rideRequest.body.category).toBe('passenger_car');
-    expect(rideRequest.body.distanceMeters).toBeGreaterThan(0);
+    const distanceMeters = Number(rideRequest.body.distanceMeters);
+    const fareCents = Number(rideRequest.body.fareCents);
+    expect(distanceMeters).toBeGreaterThan(0);
     expect(rideRequest.body.tariffCentsPerKm).toBe(200);
-    expect(rideRequest.body.fareCents).toBe(Math.floor((rideRequest.body.distanceMeters * 200 + 50) / 100));
+    expect(fareCents).toBe(Math.floor((distanceMeters * 200 + 50) / 100));
 
     const accepted = await request(
       app,
