@@ -26,7 +26,7 @@
 - Backend e mobile validados pelo pipeline.
 - Gate da Fase 1 aprovado.
 
-## 0.5.0 — FASE 2 em execução
+## 0.5.0 — FASE 2 concluída
 ### Added
 - Cadastro/login de customer e provider.
 - Hash de senha PBKDF2 com salt e custo configurável no formato persistido.
@@ -38,6 +38,11 @@
 - Persistência de mídia de foto/vídeo com legenda, visibilidade e estado de moderação.
 - Migrações de identidade/perfil/mídia.
 - Testes de segurança das primitivas e integração HTTP contra PostgreSQL.
+- Correções de injeção de dependências, SQL de atualização parcial e isolamento do helper de integração.
+- Validação final de backend e mobile no CI.
 
 ### Gate
-Implementação da Fase 2 concluída; aprovação formal depende do CI final da revisão corrente.
+**APROVADO.** Backend: typecheck, testes, build, lint, formatação e migrations. Mobile: analyze, testes e APK debug.
+
+## 0.6.0 — FASE 3 em execução
+- Início da implementação da camada de confiança e reputação.
