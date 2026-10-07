@@ -14,7 +14,7 @@ process.env.AUTH_TOKEN_SECRET='01234567890123456789012345678901';
 process.env.DATABASE_URL ??='postgresql://nexo:nexo@localhost:5432/nexo';
 
 describe('delivery integration',()=>{
- let db:Pool; let customerToken:string; let providerToken:string; beforeAll(async()=>{
+ let db:Pool; beforeAll(async()=>{
   const ref=await Test.createTestingModule({imports:[AppModule]}).compile();
   app=ref.createNestApplication(); app.setGlobalPrefix('v1'); await app.init(); await app.listen(0,'127.0.0.1'); db=ref.get(Pool);
  });
