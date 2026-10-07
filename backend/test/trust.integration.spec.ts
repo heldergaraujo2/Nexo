@@ -167,15 +167,17 @@ describe('trust and reputation API integration', () => {
   });
 
   it('rejects concurrent duplicate ratings through the database uniqueness constraint', async () => {
+    const concurrentService = await db.query<{ id: string }>(
+      'INSERT INTO services (customer_id,provider_id,category,status,completed_at) VALUES ($1,$2,$3,\'completed\',NOW()) RETURNING id',
+      [customerId, providerId, 'passenger_transport'],
+    );
+    const concurrentRow = concurrentService.rows[0];
+    if (!concurrentRow) throw new Error('Concurrent service fixture was not created');
     const responses = await Promise.all([
-      request(app, '/v1/ratings', 'POST', {
-        serviceId, subjectId: providerId, score: 5,
-      }, customerToken),
-      request(app, '/v1/ratings', 'POST', {
-        serviceId, subjectId: providerId, score: 5,
-      }, customerToken),
+      request(app, '/v1/ratings', 'POST', { serviceId: concurrentRow.id, subjectId: providerId, score: 5 }, customerToken),
+      request(app, '/v1/ratings', 'POST', { serviceId: concurrentRow.id, subjectId: providerId, score: 5 }, customerToken),
     ]);
-    expect(responses.map((response) => response.status).sort()).toEqual([409, 409]);
+    expect(responses.map((response) => response.status).sort()).toEqual([201, 409]);
   });
 
   it('protects moderation and exposes only verified public indicators', async () => {
