@@ -65,14 +65,14 @@ Uma fase só pode avançar quando:
 **Entregas**
 - [x] cadastro/login
 - [x] recuperação de acesso
-- [ ] cliente
-- [ ] profissional/prestador
-- [ ] perfil público
-- [ ] foto
-- [ ] biografia/informações profissionais
-- [ ] fotos e vídeos com legendas
-- [ ] privacidade
-- [ ] autorização por papel
+- [x] cliente
+- [x] profissional/prestador
+- [x] perfil público
+- [x] foto
+- [x] biografia/informações profissionais
+- [x] fotos e vídeos com legendas
+- [x] privacidade
+- [x] autorização por papel
 
 **Gate:** APROVADO — usuário consegue criar conta, autenticar, acessar o próprio perfil e respeitar as fronteiras de privacidade/autorização. CI backend/mobile aprovado.
 
