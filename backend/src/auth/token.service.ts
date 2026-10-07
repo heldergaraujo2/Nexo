@@ -31,11 +31,21 @@ export class TokenService {
       throw new UnauthorizedException('Invalid access token');
     }
     const body = `${parts[0]}.${parts[1]}`;
-    if (this.signature(body) !== parts[2]) throw new UnauthorizedException('Invalid access token');
-    const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')) as {
-      sub?: string; role?: UserRole; exp?: number;
+    if (this.signature(body) !== parts[2])
+      throw new UnauthorizedException('Invalid access token');
+    const payload = JSON.parse(
+      Buffer.from(parts[1], 'base64url').toString('utf8'),
+    ) as {
+      sub?: string;
+      role?: UserRole;
+      exp?: number;
     };
-    if (!payload.sub || !payload.role || !payload.exp || payload.exp <= Math.floor(Date.now() / 1000)) {
+    if (
+      !payload.sub ||
+      !payload.role ||
+      !payload.exp ||
+      payload.exp <= Math.floor(Date.now() / 1000)
+    ) {
       throw new UnauthorizedException('Invalid access token');
     }
     return { accountId: payload.sub, role: payload.role };
