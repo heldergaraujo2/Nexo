@@ -45,7 +45,9 @@ describe('delivery integration',()=>{
   await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
   const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pequeno pacote'},customer.token,randomUUID());
   expect(created.status).toBe(201);
-  const accepted=await call('/v1/requests/'+created.body.id+'/accept','POST',undefined,provider.token,randomUUID());
+  const offer=await call('/v1/requests/'+created.body.id+'/offers','POST',{offerType:'priced_offer',amountCents:2500},provider.token,randomUUID());
+  expect(offer.status).toBe(201);
+  const accepted=await call('/v1/offers/'+offer.body.id+'/accept','POST',undefined,customer.token,randomUUID());
   expect(accepted.status).toBe(201);
   const delivery=await db.query('SELECT id FROM deliveries WHERE service_id=$1',[accepted.body.id]);
   expect(delivery.rowCount).toBe(1);
@@ -63,7 +65,8 @@ describe('delivery integration',()=>{
   const customer=await register('customer'); const provider=await register('provider'); const outsider=await register('customer');
   await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
   const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pacote'},customer.token,randomUUID());
-  const accepted=await call('/v1/requests/'+created.body.id+'/accept','POST',undefined,provider.token,randomUUID());
+  const offer=await call('/v1/requests/'+created.body.id+'/offers','POST',{offerType:'priced_offer',amountCents:2500},provider.token,randomUUID());
+  const accepted=await call('/v1/offers/'+offer.body.id+'/accept','POST',undefined,customer.token,randomUUID());
   const delivery=(await db.query('SELECT id FROM deliveries WHERE service_id=$1',[accepted.body.id])).rows[0].id as string;
   const forbidden=await call('/v1/deliveries/'+delivery,'GET',undefined,outsider.token);
   expect(forbidden.status).toBe(403);
