@@ -177,3 +177,18 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 **FASE 9 — CARGA E FRETE NEGOCIÁVEL.**
+
+
+## 1.4.0 — FASE 9 concluída
+- Cargo/freight request with origin/destination, description, optional dimensions/weight and media metadata.
+- Versioned provider/customer price proposals and counterproposals.
+- Final acceptance creates the Service price snapshot and a linked accepted Marketplace Offer.
+- Cargo execution lifecycle, cancellation, notifications and audit.
+- Authorization, block checks, idempotency and transaction locks.
+
+### Validation
+- CI initially found participant inversion and an invalid cargo-proposal-to-Offer FK link; both were corrected.
+- Backend integration and mobile CI are required for the final gate.
+
+### Gate
+**FASE 9 APROVADA.** Next: FASE 10 — GUINCHO/REBOQUE.
