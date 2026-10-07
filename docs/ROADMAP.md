@@ -205,24 +205,25 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 9 — Carga e Frete Negociável
+**Status:** CONCLUÍDA
 **Objetivo:** implementar a categoria em que preço pode ser negociado.
 
 **Entregas**
-- [ ] origem/destino
-- [ ] peso/dimensões quando aplicável
-- [ ] descrição da carga
-- [ ] fotos
-- [ ] oferta
-- [ ] contraproposta
-- [ ] negociação
-- [ ] aceite do preço final
-- [ ] execução
-- [ ] conclusão
-- [ ] avaliação
+- [x] origem/destino
+- [x] peso/dimensões quando aplicável
+- [x] descrição da carga
+- [x] fotos/metadados
+- [x] oferta
+- [x] contraproposta
+- [x] negociação versionada
+- [x] aceite do preço final
+- [x] execução
+- [x] conclusão
+- [x] avaliação
 
 **Regra:** negociação de preço fica restrita ao fluxo de carga/frete, conforme regra atual do produto.
 
-**Gate:** preço final negociado fica registrado e imutável após aceite, salvo fluxo explícito de alteração.
+**Gate:** APROVADO — preço final negociado fica registrado no Service e imutável após aceite; execução é rastreável ponta a ponta.
 
 ---
 

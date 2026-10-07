@@ -71,14 +71,25 @@ export class CargoService {
       if(row.recipient_id!==user.accountId) throw new ForbiddenException('Only the proposal recipient can accept');
       const req=await client.query("SELECT * FROM service_requests WHERE id=$1 FOR UPDATE",[row.request_id]);
       if(!req.rowCount || req.rows[0].category!=='cargo' || !['open','matched'].includes(req.rows[0].status)) throw new ConflictException('Cargo request is not available');
-      const service=await client.query("INSERT INTO services (request_id,accepted_offer_id,customer_id,provider_id,category,status,price_cents,currency) VALUES ($1,$2,$3,$4,'cargo','accepted',$5,$6) RETURNING id,request_id AS \"requestId\",customer_id AS \"customerId\",provider_id AS \"providerId\",category,status,price_cents AS \"priceCents\",currency,created_at AS \"createdAt\"",[row.request_id,row.id,row.customer_id,row.proposer_id,row.amount_cents,row.currency]);
+      const participants = await client.query("SELECT id, role FROM accounts WHERE id = ANY($1::uuid[])", [[row.proposer_id, row.recipient_id]]);
+      const roles = new Map(participants.rows.map((participant) => [participant.id, participant.role]));
+      const proposerRole = roles.get(row.proposer_id);
+      const recipientRole = roles.get(row.recipient_id);
+      if (!((proposerRole === 'provider' && recipientRole === 'customer') || (proposerRole === 'customer' && recipientRole === 'provider'))) {
+        throw new ConflictException('Cargo proposal must have exactly one customer and one provider');
+      }
+      const providerId = proposerRole === 'provider' ? row.proposer_id : row.recipient_id;
+      const customerId = proposerRole === 'customer' ? row.proposer_id : row.recipient_id;
+      if (customerId !== row.customer_id) throw new ConflictException('Cargo proposal customer does not match request');
+      const offer = await client.query("INSERT INTO offers (request_id,provider_id,offer_type,amount_cents,currency,message,status) VALUES ($1,$2,'priced_offer',$3,$4,$5,'accepted') RETURNING id", [row.request_id, providerId, row.amount_cents, row.currency, row.message ?? null]);
+      const service=await client.query("INSERT INTO services (request_id,accepted_offer_id,customer_id,provider_id,category,status,price_cents,currency) VALUES ($1,$2,$3,$4,'cargo','accepted',$5,$6) RETURNING id,request_id AS \"requestId\",customer_id AS \"customerId\",provider_id AS \"providerId\",category,status,price_cents AS \"priceCents\",currency,created_at AS \"createdAt\"",[row.request_id,offer.rows[0].id,customerId,providerId,row.amount_cents,row.currency]);
       const requirements=req.rows[0].requirements as Record<string,unknown>;
       const cargo=await client.query("INSERT INTO cargo_jobs (service_id,origin,destination,cargo_description,weight_grams,length_mm,width_mm,height_mm,media) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id",[service.rows[0].id,req.rows[0].origin,req.rows[0].destination,String(requirements.cargoDescription),requirements.weightGrams??null,requirements.lengthMm??null,requirements.widthMm??null,requirements.heightMm??null,requirements.media??[]]);
       await client.query("UPDATE cargo_proposals SET status='accepted' WHERE id=$1",[proposalId]);
       await client.query("UPDATE cargo_proposals SET status='rejected' WHERE request_id=$1 AND id<>$2 AND status IN ('offered','countered')",[row.request_id,proposalId]);
-      await client.query("UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW() WHERE id=$3",[row.proposer_id,proposalId,row.request_id]);
+      await client.query("UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW() WHERE id=$3",[providerId,offer.rows[0].id,row.request_id]);
       await this.audit(client,user.accountId,'cargo.price_accepted','cargo_job',cargo.rows[0].id);
-      await this.notify(client,row.proposer_id,'cargo.proposal_accepted',{requestId:row.request_id,proposalId,serviceId:service.rows[0].id});
+      await this.notify(client,providerId,'cargo.proposal_accepted',{requestId:row.request_id,proposalId,serviceId:service.rows[0].id});
       return {status:201,body:{...service.rows[0],priceCents:Number(service.rows[0].priceCents),cargoId:cargo.rows[0].id}};
     });
   }

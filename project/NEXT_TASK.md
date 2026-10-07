@@ -1,31 +1,22 @@
 # Nexo — Next Task
 
 ## Current objective
-Executar a **FASE 9 — CARGA E FRETE NEGOCIÁVEL**.
+Executar a **FASE 10 — GUINCHO/REBOQUE**.
 
 ## Entregas
-- [ ] origem/destino
-- [ ] peso/dimensões quando aplicável
-- [ ] descrição da carga
+- [ ] localização
+- [ ] destino quando necessário
+- [ ] descrição do problema
 - [ ] fotos
-- [ ] oferta
-- [ ] contraproposta
-- [ ] negociação
-- [ ] aceite do preço final
+- [ ] ofertas
+- [ ] negociação quando aplicável
+- [ ] aceite
 - [ ] execução
 - [ ] conclusão
 - [ ] avaliação
 
-## Restrições
-- Negociação de preço permanece restrita a carga/frete.
-- Passageiro não adquire negociação livre.
-- O preço final aceito deve ser snapshot imutável após aceite, salvo fluxo explícito autorizado.
-- Pagamentos continuam pelos métodos da Fase 6.
-- Segurança operacional da Fase 7 e marketplace core devem permanecer aplicados.
-- Nexo Live e Hands-free continuam fora do escopo.
-
 ## Gate
-Preço final negociado fica registrado e imutável após aceite, salvo fluxo explícito de alteração; execução é rastreável ponta a ponta.
+Solicitação de guincho pode ser concluída com histórico completo, autorização, segurança e preço rastreável.
 
 ## Próxima fase
-FASE 10 — GUINCHO/REBOQUE.
+FASE 11 — ASSINATURA DOS PROFISSIONAIS.

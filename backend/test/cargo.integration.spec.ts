@@ -46,7 +46,7 @@ describe('cargo negotiation integration',()=>{
   const first=await call('/v1/cargo/requests/'+req.body.id+'/proposals','POST',{amountCents:1000},provider.token,randomUUID());
   const wrongCounter=await call('/v1/cargo/proposals/'+first.body.id+'/counter','POST',{amountCents:900},outsider.token,randomUUID()); expect(wrongCounter.status).toBe(403);
   const accepted=await call('/v1/cargo/proposals/'+first.body.id+'/accept','POST',undefined,customer.token,randomUUID()); expect(accepted.status).toBe(201);
-  await expect(db.query('UPDATE services SET price_cents=1 WHERE id=$1',[accepted.body.id])).rejects.toThrow('Completed service price is immutable');
+  await expect(db.query('UPDATE services SET price_cents=1 WHERE id=$1',[accepted.body.id])).rejects.toThrow('Accepted cargo price is immutable');
  });
 });
 

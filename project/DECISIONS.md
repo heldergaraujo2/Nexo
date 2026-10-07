@@ -117,3 +117,8 @@ Delivery execution is owned by the Delivery state machine. Generic Service start
 ## DEC-028 — Delivery media boundary
 **Status:** ACCEPTED FOR PHASE 8
 Delivery requests store validated media metadata only until the object-storage adapter is available. MIME, size, SHA-256 format, count and object-key safety are validated; public bucket exposure is prohibited.
+
+
+## DEC-029 — Cargo negotiation as versioned proposals
+**Status:** ACCEPTED FOR PHASE 9
+Cargo/freight uses a dedicated versioned proposal chain. Each response creates the next version; only the current offered proposal can be accepted. The accepted amount becomes the Service price snapshot. A real Marketplace Offer is created as the service acceptance link so existing Service invariants remain intact.
