@@ -65,4 +65,4 @@
 **FASE 4 — MARKETPLACE CORE**, incluindo solicitações, matching, ofertas/aceite e vínculo solicitação → serviço.
 
 ## 0.8.0 — FASE 4 em execução
-- Marketplace Core implementado em branch de validação; primeiro CI encontrou apenas falhas de typecheck, corrigidas antes do próximo gate.
+- Marketplace Core implementado em branch de validação; primeiro CI encontrou falhas de typecheck e fixture/DI, corrigidas antes do próximo gate.
