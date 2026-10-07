@@ -3,6 +3,7 @@
 ## Current objective
 
 CI gate validation branch for final Fase 3 verification.
+Formatting corrections applied after backend CI.
 Concluir a **FASE 3 — CONFIANÇA E REPUTAÇÃO** com avaliações, favoritos, denúncias, bloqueios, indicadores de verificação, regras antiabuso e moderação inicial.
 
 ## FASE 3 — entregas
