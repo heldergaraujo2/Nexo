@@ -11,8 +11,6 @@ import { AuthPrincipal } from '../auth/auth.types';
 import { ConfirmPaymentDto, CreatePaymentRecordDto, DisputePaymentDto } from './dto';
 
 type JsonObject = Record<string, unknown>;
-type PaymentMethod = 'cash' | 'pix' | 'provider_card_machine';
-
 @Injectable()
 export class PaymentService {
   constructor(@Inject(Pool) private readonly db: Pool) {}
