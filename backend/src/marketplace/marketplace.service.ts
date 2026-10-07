@@ -174,6 +174,9 @@ export class MarketplaceService {
           );
         }
 
+        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+          if (dto.offerType !== 'direct_accept') throw new ConflictException('Passenger transport does not allow price negotiation');
+        }
         if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
         }
@@ -286,13 +289,14 @@ export class MarketplaceService {
           [requestId, offerId, row.customer_id, user.accountId, row.category],
         );
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          await this.rides.createRideForService(
+          const ride = await this.rides.createRideForService(
             client,
             service.rows[0].id,
             row.category === 'passenger_car' ? 'car' : 'motorcycle',
             row.origin,
             row.destination,
           );
+          await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
         }
         await client.query(
           `UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW()
@@ -343,7 +347,7 @@ export class MarketplaceService {
       async (client) => {
         const offerResult = await client.query(
           `SELECT o.id,o.request_id,o.provider_id,o.offer_type,o.amount_cents,o.currency,o.status,
-                r.customer_id,r.category,r.status AS request_status
+                r.customer_id,r.category,r.status AS request_status,r.origin,r.destination
          FROM offers o JOIN service_requests r ON r.id=o.request_id
          WHERE o.id=$1 FOR UPDATE OF o`,
           [offerId],
@@ -353,7 +357,7 @@ export class MarketplaceService {
         if (row.customer_id !== user.accountId)
           throw new ForbiddenException('Offer access denied');
         const lockedRequest = await client.query(
-          'SELECT id,customer_id,category,status FROM service_requests WHERE id=$1 FOR UPDATE',
+          'SELECT id,customer_id,category,status,origin,destination FROM service_requests WHERE id=$1 FOR UPDATE',
           [row.request_id],
         );
         const requestRow = lockedRequest.rows[0];
@@ -391,13 +395,9 @@ export class MarketplaceService {
           ],
         );
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          await this.rides.createRideForService(
-            client,
-            service.rows[0].id,
-            row.category === 'passenger_car' ? 'car' : 'motorcycle',
-            requestRow.origin,
-            requestRow.destination,
-          );
+          if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+            throw new ConflictException('Passenger transport does not allow negotiated offers');
+          }
         }
         await client.query(
           `UPDATE offers SET status='accepted',updated_at=NOW() WHERE id=$1`,
