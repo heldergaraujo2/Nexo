@@ -36,3 +36,16 @@ void main() {
     expect(enabled.onPressed, isNotNull);
   });
 }
+
+
+testWidgets('subscription flow exposes commercial terms and controls', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: SubscriptionPage()));
+    expect(find.text('Plano Profissional'), findsOneWidget);
+    expect(find.text(r'R$ 99,90 por mês'), findsOneWidget);
+    expect(find.text('0% de comissão. Você mantém 100% do valor dos serviços.'), findsOneWidget);
+    expect(find.text('Ativar assinatura'), findsOneWidget);
+    expect(find.text('Cancelar assinatura'), findsOneWidget);
+    await tester.tap(find.text('Ativar assinatura'));
+    await tester.pump();
+    expect(find.text('Status: Ativa'), findsOneWidget);
+  });
