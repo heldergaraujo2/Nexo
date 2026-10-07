@@ -105,17 +105,14 @@ async function request(
   if (!address || typeof address === 'string')
     throw new Error('Test server address unavailable');
   const port = (address as AddressInfo).port;
-  const response = await fetch(
-    `http://127.0.0.1:${port}${path}`,
-    {
-      method,
-      headers: {
-        'content-type': 'application/json',
-        ...(token ? { authorization: `Bearer ${token}` } : {}),
-      },
-      body: body === undefined ? undefined : JSON.stringify(body),
+  const response = await fetch(`http://127.0.0.1:${port}${path}`, {
+    method,
+    headers: {
+      'content-type': 'application/json',
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
     },
-  );
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
   return {
     status: response.status,
     body: (await response.json()) as Record<string, unknown>,
