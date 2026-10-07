@@ -1,0 +1,67 @@
+name: Nexo CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: nexo
+          POSTGRES_PASSWORD: nexo
+          POSTGRES_DB: nexo
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nexo -d nexo"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run format:check
+      - name: Validate database migration
+        working-directory: .
+        env:
+          DATABASE_URL: postgresql://nexo:nexo@localhost:5432/nexo
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/001_initial.sql
+
+  mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Generate native Flutter hosts
+        working-directory: mobile
+        run: flutter create --platforms=android,ios --org com.pixelumgames .
+      - run: flutter pub get
+        working-directory: mobile
+      - run: flutter analyze
+        working-directory: mobile
+      - run: flutter test
+        working-directory: mobile
+      - run: flutter build apk --debug
+        working-directory: mobile
