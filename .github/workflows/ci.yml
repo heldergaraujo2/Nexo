@@ -44,6 +44,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://nexo:nexo@localhost:5432/nexo
         run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/001_initial.sql
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/002_identity_profiles.sql
 
   mobile:
     runs-on: ubuntu-latest
