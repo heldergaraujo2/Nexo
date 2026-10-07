@@ -120,5 +120,12 @@
 
 ### Validation
 - Migrations 001–007 executadas em CI.
-- Falhas encontradas no primeiro gate corrigidas: quoting PostgreSQL, autorização/tipagem TypeScript e teste Flutter de moeda.
-- Gate final ainda depende de execução CI verde da revisão mais recente.
+- Backend e mobile validados no CI final; APK debug construído.
+- Trigger de imutabilidade e sincronização do preço de rota cobertos por integração.
+- Run 255 da `main` aprovado.
+
+### Gate
+**APROVADO. FASE 6 concluída.**
+
+### Next
+**FASE 7 — SEGURANÇA OPERACIONAL.**
