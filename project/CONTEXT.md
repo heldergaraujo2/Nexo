@@ -6,7 +6,9 @@
 Nexo é um marketplace multi-serviço mobile-first que conecta clientes a profissionais independentes.
 
 ## Estado atual
-FASE 3 — CONFIANÇA E REPUTAÇÃO **EM EXECUÇÃO**.
+FASE 4 — MARKETPLACE CORE **EM EXECUÇÃO**.
+
+As Fases 0, 1, 2 e 3 estão concluídas. A Fase 3 adicionou avaliações bilaterais, reputação, favoritos, denúncias, bloqueios, indicadores públicos de verificação, moderação e auditoria, com gate de CI aprovado.
 
 As Fases 0, 1 e 2 estão concluídas. A identidade, autenticação, autorização, perfis e mídia de perfil já possuem implementação, migrations, testes e gate de CI aprovado.
 
@@ -37,4 +39,4 @@ Perfis, reputação bilateral, verificação de identidade/veículo, denúncias,
 Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speech para condução.
 
 ## Próxima fase
-FASE 3 — CONFIANÇA E REPUTAÇÃO.
+FASE 5 — PASSENGER TRANSPORT, após a conclusão da FASE 4.
