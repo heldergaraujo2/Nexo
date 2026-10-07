@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 3 CONCLUÍDA — FASE 4 EM EXECUÇÃO  
+**Status:** FASE 4 CONCLUÍDA — FASE 5 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -99,25 +99,25 @@ Uma fase só pode avançar quando:
 ---
 
 ## FASE 4 — Marketplace Core
-**Status:** EM EXECUÇÃO
+**Status:** CONCLUÍDA
 **Objetivo:** fazer o ciclo principal do Nexo funcionar sem depender de uma categoria específica.
 
 **Fluxo principal**
 Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → Execução → Conclusão → Avaliação.
 
 **Entregas**
-- [ ] criação de solicitações
-- [ ] descoberta/matching
-- [ ] ofertas
-- [ ] comunicação necessária ao serviço
-- [ ] aceite/recusa
-- [ ] estados do serviço
-- [ ] cancelamento
-- [ ] conclusão
-- [ ] histórico
-- [ ] notificações essenciais
+- [x] criação de solicitações
+- [x] descoberta/matching
+- [x] ofertas
+- [x] comunicação necessária ao serviço
+- [x] aceite/recusa
+- [x] estados do serviço
+- [x] cancelamento
+- [x] conclusão
+- [x] histórico
+- [x] notificações essenciais
 
-**Gate:** um serviço genérico consegue percorrer o ciclo completo de ponta a ponta.
+**Gate:** APROVADO — um serviço genérico percorre o ciclo de ponta a ponta com integridade, autorização, idempotência, auditoria e proteção contra dupla aceitação.
 
 ---
 
