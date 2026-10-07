@@ -9,7 +9,7 @@
     "test": "vitest run",
     "lint": "eslint src test --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "format:check": "prettier --write \"src/marketplace/*.ts\" \"test/marketplace.integration.spec.ts\" && cat src/marketplace/dto.ts && cat src/marketplace/marketplace.controller.ts && cat src/marketplace/marketplace.service.ts && cat test/marketplace.integration.spec.ts"
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\""
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
