@@ -29,7 +29,7 @@ describe('identity API integration', () => {
   });
 
   it('registers, authenticates, protects private profile, and exposes only public fields', async () => {
-    const register = await request('/v1/auth/register', 'POST', {
+    const register = await request(app, '/v1/auth/register', 'POST', {
       email,
       password: 'Strong-password-123',
       displayName: 'Phase Two',
@@ -39,28 +39,28 @@ describe('identity API integration', () => {
     expect(register.body.accessToken).toEqual(expect.any(String));
 
     const token = register.body.accessToken as string;
-    const me = await request('/v1/me', 'GET', undefined, token);
+    const me = await request(app, '/v1/me', 'GET', undefined, token);
     expect(me.status).toBe(200);
     expect(me.body.email).toBe(email);
     expect(me.body.displayName).toBe('Phase Two');
     expect(me.body.role).toBeUndefined();
 
-    const publicProfile = await request(`/v1/profiles/${register.body.accountId}`, 'GET');
+    const publicProfile = await request(app, `/v1/profiles/${register.body.accountId}`, 'GET');
     expect(publicProfile.status).toBe(200);
     expect(publicProfile.body.displayName).toBe('Phase Two');
     expect(publicProfile.body.email).toBeUndefined();
     expect(publicProfile.body.password_hash).toBeUndefined();
 
-    const photoUpdate = await request('/v1/me/profile', 'PUT', { photoUrl: 'https://cdn.example.test/avatar.jpg' }, token);
+    const photoUpdate = await request(app, '/v1/me/profile', 'PUT', { photoUrl: 'https://cdn.example.test/avatar.jpg' }, token);
     expect(photoUpdate.status).toBe(200);
     expect(photoUpdate.body.photoUrl).toBe('https://cdn.example.test/avatar.jpg');
 
-    const update = await request('/v1/me/profile', 'PUT', { bio: 'Provider bio' }, token);
+    const update = await request(app, '/v1/me/profile', 'PUT', { bio: 'Provider bio' }, token);
     expect(update.status).toBe(200);
     expect(update.body.bio).toBe('Provider bio');
     expect(update.body.photoUrl).toBe('https://cdn.example.test/avatar.jpg');
 
-    const login = await request('/v1/auth/login', 'POST', {
+    const login = await request(app, '/v1/auth/login', 'POST', {
       email,
       password: 'Strong-password-123',
     });
@@ -68,12 +68,12 @@ describe('identity API integration', () => {
   });
 
   it('rejects access to private account data without authentication', async () => {
-    const response = await request('/v1/me', 'GET');
+    const response = await request(app, '/v1/me', 'GET');
     expect(response.status).toBe(401);
   });
 });
 
-async function request(path: string, method: string, body?: unknown, token?: string) {
+async function request(app: INestApplication, path: string, method: string, body?: unknown, token?: string) {
   const response = await fetch(`http://127.0.0.1:${(app as any).getHttpServer().address().port}${path}`, {
     method,
     headers: {
