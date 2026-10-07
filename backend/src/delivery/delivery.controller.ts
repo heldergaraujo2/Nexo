@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Inject, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { CreateDeliveryRequestDto, DeliveryTransitionDto } from './dto';
 import { DeliveryService } from './delivery.service';
@@ -6,7 +6,7 @@ import { DeliveryService } from './delivery.service';
 @UseGuards(AuthGuard)
 @Controller('deliveries')
 export class DeliveryController {
-  constructor(private readonly deliveries: DeliveryService) {}
+  constructor(@Inject(DeliveryService) private readonly deliveries: DeliveryService) {}
   @Post('requests')
   createRequest(@Req() r: AuthenticatedRequest, @Headers('idempotency-key') key: string, @Body() d: CreateDeliveryRequestDto) { return this.deliveries.createRequest(r.user,d,key).then(x=>x.body); }
   @Get(':deliveryId')
