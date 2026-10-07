@@ -38,7 +38,30 @@ export class ProfileService {
     const updates: string[] = [];
     const add = (column: string, value: unknown) => {
       values.push(value);
-      updates.push(`${column}=${values.length}`);
+      updates.push(column + '=
+    };
+
+    if (dto.displayName !== undefined) add('display_name', dto.displayName.trim());
+    if (dto.bio !== undefined) add('bio', dto.bio);
+    if (dto.professionalInfo !== undefined) add('professional_info', dto.professionalInfo);
+    if (dto.photoUrl !== undefined) add('photo_url', dto.photoUrl);
+
+    const result = await this.db.query<PublicProfile>(
+      `UPDATE profiles SET ${updates.join(',')},updated_at=NOW()
+       WHERE account_id=$1
+       RETURNING id,account_id AS "accountId",display_name AS "displayName",photo_url AS "photoUrl",
+       bio,professional_info AS "professionalInfo",created_at AS "createdAt"`,
+      values,
+    );
+    if (!result.rowCount) throw new NotFoundException('Profile not found');
+    return result.rows[0];
+  }
+
+  assertProvider(user: AuthPrincipal) {
+    if (user.role !== 'provider') throw new ForbiddenException('Provider role required');
+  }
+}
+ + values.length);
     };
 
     if (dto.displayName !== undefined) add('display_name', dto.displayName.trim());
