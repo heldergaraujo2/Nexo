@@ -121,6 +121,8 @@ describe('trust and reputation API integration', () => {
        VALUES ($1,$2,$3,'completed',NOW()) RETURNING id`,
       [customerId, providerId, 'delivery'],
     );
+    const otherRow = other.rows[0];
+    if (!otherRow) throw new Error('Secondary service fixture was not created');
     const response = await request(app, '/v1/ratings', 'POST', {
       serviceId: other.rows[0]?.id ?? '',
       subjectId: customerId,
