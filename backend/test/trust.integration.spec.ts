@@ -180,6 +180,30 @@ describe('trust and reputation API integration', () => {
     expect(responses.map((response) => response.status).sort()).toEqual([201, 409]);
   });
 
+  it('enforces the rating moderation state machine', async () => {
+    const rating = await db.query<{ id: string }>(
+      'SELECT id FROM ratings WHERE service_id=$1 AND author_id=$2',
+      [serviceId, customerId],
+    );
+    const ratingRow = rating.rows[0];
+    if (!ratingRow) throw new Error('Rating fixture was not found');
+
+    const flagged = await request(app, '/v1/admin/ratings/' + ratingRow.id + '/moderation', 'PUT', {
+      moderationState: 'flagged',
+    }, adminToken);
+    expect(flagged.status).toBe(200);
+
+    const hidden = await request(app, '/v1/admin/ratings/' + ratingRow.id + '/moderation', 'PUT', {
+      moderationState: 'hidden',
+    }, adminToken);
+    expect(hidden.status).toBe(200);
+
+    const invalid = await request(app, '/v1/admin/ratings/' + ratingRow.id + '/moderation', 'PUT', {
+      moderationState: 'published',
+    }, adminToken);
+    expect(invalid.status).toBe(409);
+  });
+
   it('protects moderation and exposes only verified public indicators', async () => {
     const forbidden = await request(app, '/v1/admin/verifications', 'POST', {
       accountId: providerId,
