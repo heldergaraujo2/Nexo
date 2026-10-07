@@ -146,27 +146,29 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 6 — Pagamentos e Registro Financeiro
-**Status:** EM EXECUÇÃO
+**Status:** CONCLUÍDA
 **Objetivo:** registrar como o serviço foi pago sem transformar o Nexo inicialmente em processador de pagamentos.
 
-**Entregas**
-- [ ] dinheiro físico
-- [ ] Pix
-- [ ] cartão na máquina do próprio profissional
-- [ ] registro do método
-- [ ] confirmação de pagamento
+**Entregas — CONCLUÍDAS**
+- [x] dinheiro físico
+- [x] Pix
+- [x] cartão na máquina do próprio profissional
+- [x] registro do método
+- [x] confirmação de pagamento
 - [x] histórico financeiro da operação
-- [ ] regras de divergência
-- [ ] recibos/comprovantes quando aplicável
+- [x] regras de divergência
+- [x] proteção contra alteração retroativa do preço
+- [x] recibo/estado financeiro operacional
 
 **Regra:** o Nexo não cobra comissão sobre o serviço.
 
-**Gate:** serviço concluído possui estado financeiro consistente e auditável.
+**Gate:** **APROVADO** — serviço concluído possui estado financeiro consistente e auditável, com confirmação pelo provider vinculado e sem processamento de cartão pelo Nexo.
 
 ---
 
 ## FASE 7 — Segurança Operacional
 **Status:** EM EXECUÇÃO
+**Objetivo:** aumentar a segurança antes de ampliar categorias e escala.
 **Objetivo:** aumentar a segurança antes de ampliar categorias e escala.
 
 **Entregas**
