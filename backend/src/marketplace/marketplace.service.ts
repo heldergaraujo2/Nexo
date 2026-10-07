@@ -104,7 +104,7 @@ export class MarketplaceService {
            WHERE (b.blocker_id=$2 AND b.blocked_id=p.account_id)
               OR (b.blocker_id=p.account_id AND b.blocked_id=$2)
          )
-       ORDER BY ratingAverage DESC, p.updated_at DESC
+       ORDER BY "ratingAverage" DESC, p.updated_at DESC
        LIMIT 50`,
       [request.category, user.accountId],
     );
@@ -176,7 +176,7 @@ export class MarketplaceService {
         offerId: offer.id,
       });
       await this.audit(client, user.accountId, 'offer.created', 'offer', offer.id);
-      return { status: 201, body: offer };
+      return { status: 201, body: { ...offer, amountCents: offer.amountCents === null ? null : Number(offer.amountCents) } };
     });
   }
 
@@ -236,7 +236,7 @@ export class MarketplaceService {
         serviceId: service.rows[0].id,
       });
       await this.audit(client, user.accountId, 'request.accepted', 'service_request', requestId);
-      return { status: 201, body: service.rows[0] };
+      return { status: 201, body: { ...service.rows[0], priceCents: service.rows[0].priceCents === null ? null : Number(service.rows[0].priceCents) } };
     });
   }
 
@@ -306,7 +306,7 @@ export class MarketplaceService {
         serviceId: service.rows[0].id,
       });
       await this.audit(client, user.accountId, 'offer.accepted', 'offer', offerId);
-      return { status: 201, body: service.rows[0] };
+      return { status: 201, body: { ...service.rows[0], priceCents: service.rows[0].priceCents === null ? null : Number(service.rows[0].priceCents) } };
     });
   }
 
@@ -349,7 +349,7 @@ export class MarketplaceService {
           });
         }
         await this.audit(client, user.accountId, 'request.cancelled', 'service_request', requestId);
-        return { status: 200, body: updated.rows[0] };
+        return { status: 200, body: { ...updated.rows[0], priceCents: updated.rows[0].priceCents === null ? null : Number(updated.rows[0].priceCents) } };
       },
     );
   }
