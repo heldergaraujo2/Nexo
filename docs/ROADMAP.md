@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** Planejamento estruturado  
+**Status:** Planejamento estruturado — FASE 0 CONCLUÍDA  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -23,20 +23,20 @@ Uma fase só pode avançar quando:
 ## FASE 0 — Governança e Especificação
 **Objetivo:** transformar a visão do Nexo em especificação técnica executável.
 
-**Entregas**
-- [ ] Master Technical Specification
-- [ ] requisitos funcionais e não funcionais
-- [ ] modelo de domínio
-- [ ] modelo inicial de banco
-- [ ] arquitetura
-- [ ] contratos de API
-- [ ] autenticação/autorização
-- [ ] máquinas de estado
-- [ ] estratégia de testes
-- [ ] segurança e LGPD
-- [ ] critérios de aceite
+**Entregas — CONCLUÍDAS**
+- [x] Master Technical Specification
+- [x] requisitos funcionais e não funcionais
+- [x] modelo de domínio
+- [x] modelo inicial de banco
+- [x] arquitetura
+- [x] contratos de API
+- [x] autenticação/autorização
+- [x] máquinas de estado
+- [x] estratégia de testes
+- [x] segurança e LGPD
+- [x] critérios de aceite
 
-**Gate:** arquitetura e especificação internamente consistentes e prontas para implementação.
+**Gate:** APROVADO — arquitetura e especificação internamente consistentes e prontas para implementação.
 
 ---
 
