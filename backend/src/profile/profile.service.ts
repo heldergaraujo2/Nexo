@@ -34,13 +34,24 @@ export class ProfileService {
     if (dto.displayName === undefined && dto.bio === undefined && dto.professionalInfo === undefined && dto.photoUrl === undefined) {
       return this.me(user);
     }
+    const values: unknown[] = [user.accountId];
+    const updates: string[] = [];
+    const add = (column: string, value: unknown) => {
+      values.push(value);
+      updates.push(`${column}=${values.length}`);
+    };
+
+    if (dto.displayName !== undefined) add('display_name', dto.displayName.trim());
+    if (dto.bio !== undefined) add('bio', dto.bio);
+    if (dto.professionalInfo !== undefined) add('professional_info', dto.professionalInfo);
+    if (dto.photoUrl !== undefined) add('photo_url', dto.photoUrl);
+
     const result = await this.db.query<PublicProfile>(
-      `UPDATE profiles SET display_name=COALESCE($2,display_name),bio=COALESCE($3,bio),
-       professional_info=COALESCE($4,professional_info),photo_url=$5,updated_at=NOW()
+      `UPDATE profiles SET ${updates.join(',')},updated_at=NOW()
        WHERE account_id=$1
        RETURNING id,account_id AS "accountId",display_name AS "displayName",photo_url AS "photoUrl",
        bio,professional_info AS "professionalInfo",created_at AS "createdAt"`,
-      [user.accountId,dto.displayName?.trim(),dto.bio,dto.professionalInfo,dto.photoUrl],
+      values,
     );
     if (!result.rowCount) throw new NotFoundException('Profile not found');
     return result.rows[0];
