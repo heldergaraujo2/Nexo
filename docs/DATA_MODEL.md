@@ -33,7 +33,13 @@ request/service_id, participantes, versão da negociação e status. Cada propos
 request_id, provider_id, customer_id, categoria, estado, preço acordado/calculado, moeda, snapshots operacionais e timestamps.
 
 ### Ride
-service_id, vehicle_id, modalidade, origem/destino, distância usada no cálculo, tarifa por km, valor calculado, estados de execução.
+service_id, vehicle_id, modalidade, origem/destino, distância usada no cálculo, tarifa por km, valor calculado, moeda, versão da rota e estados de execução.
+
+### RideRouteSnapshot
+ride_id, versão, origem/destino, distância em metros, tarifa por km, valor em centavos, moeda, motivo e timestamp. Cada versão é única por Ride.
+
+### RideEvent
+ride_id, actor_id, estado anterior, estado seguinte, motivo e timestamp; registra transições e alterações operacionais da viagem.
 
 ### Delivery
 service_id, origem/destino, descrição, mídia e instruções.

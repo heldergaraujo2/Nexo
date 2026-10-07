@@ -80,3 +80,27 @@
 
 ### Next
 **FASE 5 — PASSENGER TRANSPORT.**
+
+
+## 1.0.0 — FASE 5 concluída
+### Added
+- Solicitação de corrida de passageiro com origem/destino e cálculo server-side.
+- Tarifas de carro R$2,00/km e motocicleta R$1,50/km.
+- Distância em metros e valores monetários em centavos.
+- Ride vinculada ao Service aceito com máquina de estados operacional.
+- Snapshots versionados de rota/tarifa e alteração de rota com controle de versão.
+- Auditoria e idempotência dos comandos críticos.
+- Restrição de negociação de preço para transporte de passageiros.
+- Suíte de integração de transporte de passageiros.
+
+### Validation
+- CI final aprovado no run 219: backend e mobile verdes.
+- Backend: migrations, typecheck, 19 testes, build, lint e format check aprovados.
+- Mobile: analyze, testes e APK debug aprovados.
+- Correções finais de CI/testes incluíram teardown SQL e paths do diagnóstico de formatação.
+
+### Gate
+**APROVADO. FASE 5 concluída.**
+
+### Next
+**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.**

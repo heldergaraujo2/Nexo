@@ -26,6 +26,10 @@ Cada proposta possui número de versão e timestamp. O preço final aceito é sn
 ## Ride
 ACCEPTED → DRIVER_EN_ROUTE → ARRIVED → STARTED → COMPLETED
 
+Saída alternativa: ACCEPTED/DRIVER_EN_ROUTE/ARRIVED → CANCELLED. Uma viagem STARTED não pode ser cancelada pelo fluxo inicial.
+
+Alteração de rota exige expectedRouteVersion compatível e cria novo snapshot/evento. O preço permanece server-authoritative.
+
 Cancelamento permitido somente nos estados definidos pelo produto, com ator e motivo registrados.
 
 ## Payment

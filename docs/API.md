@@ -25,6 +25,26 @@
 /v1/offers — ofertas.
 /v1/services — serviço, estado e histórico.
 /v1/rides — viagem.
+
+### Passenger transport
+- POST /v1/rides/requests — cria solicitação de passageiro e calcula distância/tarifa server-side.
+- GET /v1/rides/:rideId — consulta uma viagem do próprio customer/provider.
+- POST /v1/rides/:rideId/driver-en-route — inicia deslocamento do profissional.
+- POST /v1/rides/:rideId/arrived — registra chegada.
+- POST /v1/rides/:rideId/start — inicia a viagem.
+- POST /v1/rides/:rideId/complete — conclui a viagem.
+- POST /v1/rides/:rideId/cancel — cancela quando permitido.
+- POST /v1/rides/:rideId/route — altera rota com versão esperada e novo snapshot.
+
+### Passenger transport
+- POST /v1/rides/requests — cria solicitação de passageiro e calcula distância/tarifa server-side.
+- GET /v1/rides/:rideId — consulta uma viagem do próprio customer/provider.
+- POST /v1/rides/:rideId/driver-en-route — inicia deslocamento do profissional.
+- POST /v1/rides/:rideId/arrived — registra chegada.
+- POST /v1/rides/:rideId/start — inicia a viagem.
+- POST /v1/rides/:rideId/complete — conclui a viagem.
+- POST /v1/rides/:rideId/cancel — cancela quando permitido.
+- POST /v1/rides/:rideId/route — altera rota com versão esperada e novo snapshot.
 /v1/deliveries — entrega.
 /v1/cargo — carga e negociação.
 /v1/towing — guincho.

@@ -80,3 +80,8 @@ Profile media metadata is persisted with owner, type, object reference, checksum
 ## DEC-020 — Marketplace core as category-agnostic service lifecycle
 **Status:** ACCEPTED
 The generic marketplace owns request, matching, offer/acceptance, service lifecycle, cancellation, history, notifications and audit/idempotency primitives. Passenger-specific pricing and route rules remain in Phase 5 and must not be embedded into the generic marketplace.
+
+
+## DEC-021 — Passenger ride pricing and route snapshots
+**Status:** ACCEPTED
+Passenger rides use server-authoritative distance in meters and integer-cent pricing. Car is R$2.00/km and motorcycle is R$1.50/km. Route changes require an expected route version, a new server-side calculation and a new immutable route snapshot/event. Free price negotiation remains prohibited for passenger transport.

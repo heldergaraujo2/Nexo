@@ -6,6 +6,7 @@ import { ProfileModule } from './profile/profile.module';
 import { MediaModule } from './media/media.module';
 import { TrustModule } from './trust/trust.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
+import { RideModule } from './ride/ride.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
     MediaModule,
     TrustModule,
     MarketplaceModule,
+    RideModule,
   ],
 })
 export class AppModule {}

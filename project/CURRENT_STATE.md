@@ -1,46 +1,42 @@
 # Nexo — Current State
 
-**Version:** 0.9 — FASE 4 concluída / FASE 5 iniciada
+**Version:** 1.0 — FASE 5 concluída / FASE 6 iniciada
 **Last updated:** 2026-10-07
 
 ## Phase
-**FASE 5 — PASSENGER TRANSPORT — EM EXECUÇÃO**
+**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO — PRÓXIMA**
 
-## Fase 4 — conclusão
-- [x] ServiceRequest e criação de solicitações
-- [x] categorias, requisitos e disponibilidade profissional
-- [x] descoberta/matching respeitando categoria, disponibilidade e bloqueios
-- [x] ofertas e aceite direto
-- [x] aceite de ofertas com preço
-- [x] serialização contra dupla aceitação
-- [x] criação 1:1 de Service após aceite
-- [x] máquina de estados server-side
-- [x] cancelamento de solicitação/serviço
-- [x] conclusão e histórico operacional
-- [x] notificações essenciais
+## Fases concluídas
+- [x] FASE 0 — Governança e Especificação
+- [x] FASE 1 — Fundação Técnica
+- [x] FASE 2 — Identidade, Acesso e Perfis
+- [x] FASE 3 — Confiança e Reputação
+- [x] FASE 4 — Marketplace Core
+- [x] FASE 5 — Transporte de Passageiros
+
+## Fase 5 — entrega
+- [x] solicitação de corrida com origem/destino
+- [x] distância server-side em metros
+- [x] tarifa carro R$2,00/km
+- [x] tarifa motocicleta R$1,50/km
+- [x] cálculo monetário em centavos com arredondamento half-up
+- [x] criação de Ride vinculada 1:1 ao Service aceito
+- [x] estados accepted → driver_en_route → arrived → started → completed
+- [x] cancelamento antes do início
+- [x] snapshots de rota e tarifa por versão
+- [x] alteração de rota com expectedRouteVersion e novo snapshot
+- [x] auditoria de eventos de viagem
 - [x] idempotência dos comandos críticos
-- [x] auditoria de criação, matching, aceite e cancelamento
-- [x] testes de API, integração, concorrência, autorização e integridade
+- [x] bloqueio de negociação livre para passageiros
+- [x] testes de integração cobrindo tarifa, ciclo da viagem, rota e negociação
 - [x] CI backend e mobile aprovado; APK debug construído
 
-## Fase 4 — gate
-**APROVADO.** O ciclo genérico do marketplace pode criar uma solicitação, encontrar profissionais elegíveis, aceitar uma oportunidade, criar um único serviço vinculado, executar estados válidos e concluir/cancelar com auditoria e idempotência.
+## Fase 5 — gate
+**APROVADO.** A viagem de passageiro pode ser solicitada, aceita, executada, concluída ou cancelada conforme estado permitido, com distância e preço calculados pelo servidor, snapshots de rota e proteção contra alteração indevida.
 
-## Fase 5 — objetivo
-Implementar transporte de passageiros sobre o núcleo do marketplace:
-- origem/destino;
-- distância em metros;
-- tarifa determinística por categoria;
-- carro R$2,00/km;
-- motocicleta R$1,50/km;
-- arredondamento half-up;
-- início/conclusão da viagem;
-- alterações de rota;
-- cancelamento conforme regras documentadas;
-- histórico da viagem.
-
-## Próximo gate
-Uma viagem de passageiro pode ser solicitada, aceita, iniciada, concluída e registrada com distância/preço calculados pelo servidor de forma determinística.
+## Próxima fase
+**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO**
+Registrar dinheiro, Pix e cartão na máquina do próprio profissional, mantendo o Nexo fora do processamento inicial de cartões e preservando valores em centavos.
 
 ## Blockers
 Nenhum bloqueador conhecido.
@@ -48,3 +44,4 @@ Nenhum bloqueador conhecido.
 ## Known limitations
 - Object storage binário ainda depende de adapter futuro.
 - Verificação de identidade/veículo operacional pertence à Fase 7.
+- Fluxo mobile visual completo de passageiro ainda será aprofundado nas fases de UX/integração, sem alterar as regras server-side já implementadas.
