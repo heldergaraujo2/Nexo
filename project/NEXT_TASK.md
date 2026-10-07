@@ -1,29 +1,31 @@
 # Nexo — Next Task
 
 ## Current objective
-Executar a **FASE 8 — ENTREGAS**.
+Executar a **FASE 9 — CARGA E FRETE NEGOCIÁVEL**.
 
 ## Entregas
 - [ ] origem/destino
-- [ ] descrição do item
-- [ ] fotos/mídia
-- [ ] observações
-- [ ] solicitação
-- [ ] ofertas
-- [ ] aceite
+- [ ] peso/dimensões quando aplicável
+- [ ] descrição da carga
+- [ ] fotos
+- [ ] oferta
+- [ ] contraproposta
+- [ ] negociação
+- [ ] aceite do preço final
 - [ ] execução
 - [ ] conclusão
 - [ ] avaliação
 
 ## Restrições
-- Preservar o marketplace core existente.
-- Não aplicar tarifa fixa de passageiros à entrega.
-- Métodos de pagamento continuam os da Fase 6.
-- Segurança operacional da Fase 7 deve permanecer aplicada.
+- Negociação de preço permanece restrita a carga/frete.
+- Passageiro não adquire negociação livre.
+- O preço final aceito deve ser snapshot imutável após aceite, salvo fluxo explícito autorizado.
+- Pagamentos continuam pelos métodos da Fase 6.
+- Segurança operacional da Fase 7 e marketplace core devem permanecer aplicados.
 - Nexo Live e Hands-free continuam fora do escopo.
 
 ## Gate
-Entrega completa de ponta a ponta com rastreabilidade operacional.
+Preço final negociado fica registrado e imutável após aceite, salvo fluxo explícito de alteração; execução é rastreável ponta a ponta.
 
 ## Próxima fase
-FASE 9 — CARGA E FRETE NEGOCIÁVEL.
+FASE 10 — GUINCHO/REBOQUE.
