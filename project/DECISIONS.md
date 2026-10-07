@@ -90,3 +90,8 @@ Passenger rides use server-authoritative distance in meters and integer-cent pri
 ## DEC-022 — Initial payment recording boundary
 **Status:** ACCEPTED FOR PHASE 6
 Nexo records cash, Pix and card-machine confirmation without processing cards or storing card credentials. Payment confirmation must equal the immutable service price snapshot; mismatches are rejected and may be disputed before confirmation. Payment records are linked to the service and protected by ownership, idempotency and transactional locking.
+
+
+## DEC-023 — Payment confirmation is operational recording
+**Status:** ACCEPTED FOR PHASE 6
+Nexo does not process cards in the initial payment model. Cash, Pix and provider-owned card-machine payments are recorded operationally. Confirmation must equal the immutable completed-service price snapshot. No card number, CVV or equivalent credential is persisted.
