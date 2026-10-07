@@ -10,7 +10,6 @@ FASE 4 — MARKETPLACE CORE **EM EXECUÇÃO**.
 
 As Fases 0, 1, 2 e 3 estão concluídas. A Fase 3 adicionou avaliações bilaterais, reputação, favoritos, denúncias, bloqueios, indicadores públicos de verificação, moderação e auditoria, com gate de CI aprovado.
 
-As Fases 0, 1 e 2 estão concluídas. A identidade, autenticação, autorização, perfis e mídia de perfil já possuem implementação, migrations, testes e gate de CI aprovado.
 
 ## Stack registrada
 - Flutter/Dart para mobile Android/iOS
