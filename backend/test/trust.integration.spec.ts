@@ -149,7 +149,7 @@ describe('trust and reputation API integration', () => {
 
     const favorites = await request(app, '/v1/me/favorites', 'GET', undefined, customerToken);
     expect(favorites.status).toBe(200);
-    const favoriteRows = favorites.body as Array<{ accountId: string }>;
+    const favoriteRows = favorites.body as unknown as Array<{ accountId: string }>;
     expect(favoriteRows[0]?.accountId).toBe(providerId);
 
     const block = await request(app, `/v1/safety/blocks/${providerId}`, 'POST', undefined, customerToken);
