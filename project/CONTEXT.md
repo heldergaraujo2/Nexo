@@ -6,9 +6,9 @@
 Nexo é um marketplace multi-serviço mobile-first que conecta clientes a profissionais independentes.
 
 ## Estado atual
-FASE 0 — GOVERNANÇA E ESPECIFICAÇÃO **CONCLUÍDA**.
+FASE 3 — CONFIANÇA E REPUTAÇÃO **EM EXECUÇÃO**.
 
-A especificação técnica, arquitetura, modelo de dados, máquinas de estado, API, segurança, LGPD baseline, infraestrutura, testes e critérios de aceitação foram consolidados.
+As Fases 0, 1 e 2 estão concluídas. A identidade, autenticação, autorização, perfis e mídia de perfil já possuem implementação, migrations, testes e gate de CI aprovado.
 
 ## Stack registrada
 - Flutter/Dart para mobile Android/iOS
@@ -19,7 +19,7 @@ A especificação técnica, arquitetura, modelo de dados, máquinas de estado, A
 - Monólito modular inicialmente
 
 ## Modelo comercial
-R$99,90/mês por provider; 0% de comissão; provider mantém 100% do valor do serviço.
+R$99,90/mês por provider; 0% comissão; provider mantém 100% do valor do serviço.
 
 ## Tarifas iniciais
 Carro R$2,00/km; moto R$1,50/km.
@@ -28,7 +28,7 @@ Carro R$2,00/km; moto R$1,50/km.
 Passageiros usam tarifa definida; carga/frete permite negociação.
 
 ## Pagamentos
-Dinheiro, Pix e máquina própria do provider.
+Dinheiro, Pix, máquina própria do provider.
 
 ## Confiança
 Perfis, reputação bilateral, verificação de identidade/veículo, denúncias, bloqueios e auditoria.
@@ -37,4 +37,4 @@ Perfis, reputação bilateral, verificação de identidade/veículo, denúncias,
 Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speech para condução.
 
 ## Próxima fase
-FASE 1 — FUNDAÇÃO TÉCNICA.
+FASE 3 — CONFIANÇA E REPUTAÇÃO.
