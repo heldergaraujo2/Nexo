@@ -321,7 +321,7 @@ async function request(
     method,
     headers: {
       'content-type': 'application/json',
-      ...(token ? { authorization: `*** } : {}),
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
       ...(idempotencyKey ? { 'idempotency-key': idempotencyKey } : {}),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
