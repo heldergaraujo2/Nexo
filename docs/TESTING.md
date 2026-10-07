@@ -39,6 +39,15 @@ Toda mudança em regra de negócio deve executar a suíte correspondente e teste
 - Preço de serviço concluído não pode ser alterado no banco.
 - Disputa não permite confirmação de valor divergente.
 
+### Fase 6 — pagamentos e registro financeiro
+- Migrations 001–007 são aplicadas em ambiente limpo.
+- Serviço concluído usa o preço persistido como expectedAmountCents.
+- Alteração direta de preço/moeda após conclusão é rejeitada pelo banco.
+- Mudança de rota antes da conclusão atualiza o preço do Service.
+- Métodos permitidos permanecem cash, Pix e provider_card_machine.
+- Nenhum campo de cartão é persistido.
+- Repetições idempotentes não duplicam pagamentos.
+
 ### Fase 5 — transporte de passageiros
 - Solicitação de carro calcula tarifa a R$2,00/km.
 - Solicitação de motocicleta calcula tarifa a R$1,50/km.
