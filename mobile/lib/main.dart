@@ -19,12 +19,11 @@ class NexoHomePage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Nexo')),
     body: Center(
-      child: FilledButton(
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
-          builder: (_) => const PaymentRecordPage(expectedAmountCents: 1234),
-        )),
-        child: const Text('Registrar pagamento'),
-      ),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        FilledButton(onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DeliveryRequestPage())), child: const Text('Solicitar entrega')),
+        const SizedBox(height: 12),
+        FilledButton(onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const PaymentRecordPage(expectedAmountCents: 1234))), child: const Text('Registrar pagamento')),
+      ],
     ),
   );
 }
