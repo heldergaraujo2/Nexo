@@ -32,7 +32,7 @@ export class PaymentService {
       }
       const existing = await client.query(
         `SELECT id,status FROM payment_records
-         WHERE service_id=$1 AND status IN ('pending','confirmed') FOR UPDATE`,
+         WHERE service_id=$1 FOR UPDATE`,
         [serviceId],
       );
       if (existing.rowCount) throw new ConflictException('An active payment record already exists for this service');
@@ -43,7 +43,7 @@ export class PaymentService {
          VALUES ($1,$2,$3,$4,$5)
          RETURNING id,service_id AS "serviceId",method,expected_amount_cents AS "expectedAmountCents",
                    confirmed_amount_cents AS "confirmedAmountCents",currency,status,
-                   external_reference AS "externalReference",created_at AS "createdAt"`,
+                   external_reference AS "externalReference",dispute_reason AS "disputeReason",created_at AS "createdAt"`,
         [serviceId, dto.method, Number(row.price_cents), row.currency, dto.externalReference ?? null],
       );
       const payment = this.publicPayment(inserted.rows[0]);
@@ -112,8 +112,8 @@ export class PaymentService {
       if (row.status === 'confirmed') throw new ConflictException('Confirmed payments require a formal dispute flow');
       if (row.status === 'failed') throw new ConflictException('Failed payments cannot be disputed');
       const updated = await client.query(
-        `UPDATE payment_records SET status='disputed',updated_at=NOW() WHERE id=$1 RETURNING *`,
-        [paymentId],
+        `UPDATE payment_records SET status='disputed',dispute_reason=$1,updated_at=NOW() WHERE id=$2 RETURNING *`,
+        [dto.reason, paymentId],
       );
       await this.audit(client, user.accountId, 'payment.disputed', paymentId, { reason: dto.reason });
       return { status: 200, body: this.publicPayment(updated.rows[0]) };
@@ -163,6 +163,7 @@ export class PaymentService {
       currency: row.currency,
       status: row.status,
       externalReference: row.externalReference ?? row.external_reference ?? null,
+      disputeReason: row.disputeReason ?? row.dispute_reason ?? null,
       confirmedBy: row.confirmedBy ?? row.confirmed_by ?? null,
       confirmedAt: row.confirmedAt ?? row.confirmed_at ?? null,
       createdAt: row.createdAt ?? row.created_at,
