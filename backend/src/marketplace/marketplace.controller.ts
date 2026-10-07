@@ -75,12 +75,40 @@ export class MarketplaceController {
     return this.marketplace.acceptRequest(req.user, requestId, key);
   }
 
+  @Post('requests/:requestId/cancel')
+  cancelRequest(
+    @Req() req: AuthenticatedRequest,
+    @Param('requestId') requestId: string,
+    @Headers('idempotency-key') key: string,
+    @Body() dto: CancelDto,
+  ) {
+    return this.marketplace.cancelRequest(req.user, requestId, key, dto);
+  }
+
   @Get('requests/:requestId/offers')
   listOffers(
     @Req() req: AuthenticatedRequest,
     @Param('requestId') requestId: string,
   ) {
     return this.marketplace.listOffers(req.user, requestId);
+  }
+
+  @Post('offers/:offerId/reject')
+  rejectOffer(
+    @Req() req: AuthenticatedRequest,
+    @Param('offerId') offerId: string,
+    @Headers('idempotency-key') key: string,
+  ) {
+    return this.marketplace.rejectOffer(req.user, offerId, key);
+  }
+
+  @Post('offers/:offerId/withdraw')
+  withdrawOffer(
+    @Req() req: AuthenticatedRequest,
+    @Param('offerId') offerId: string,
+    @Headers('idempotency-key') key: string,
+  ) {
+    return this.marketplace.withdrawOffer(req.user, offerId, key);
   }
 
   @Post('offers/:offerId/accept')
