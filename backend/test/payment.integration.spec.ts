@@ -39,6 +39,9 @@ describe('payments integration', () => {
 
   it('records and confirms cash using the immutable completed-service price', async () => {
     const { customer, provider, serviceId } = await createCompletedService('passenger_car');
+    const immutable = await db.query('SELECT price_cents FROM services WHERE id=$1', [serviceId]);
+    expect(Number(immutable.rows[0].price_cents)).toBe(1234);
+    await expect(db.query("UPDATE services SET price_cents=9999 WHERE id=$1", [serviceId])).rejects.toThrow('Completed service price is immutable');
     const payment = await request(app, `/v1/payment-records/services/${serviceId}`, 'POST', { method: 'cash' }, customer.token, randomUUID());
     expect(payment.status, JSON.stringify(payment.body)).toBe(201);
     expect(payment.body.method).toBe('cash');
@@ -117,5 +120,5 @@ async function request(app: INestApplication, path: string, method: string, body
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  return { status: response.status, body: (await response.json()) as Record<string, any> };
+  return { status: response.status, body: (await response.json()) as Record<string, unknown> };
 }
