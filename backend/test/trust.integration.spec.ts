@@ -70,7 +70,9 @@ describe('trust and reputation API integration', () => {
        VALUES ($1,$2,$3,'completed',NOW()) RETURNING id`,
       [customerId, providerId, 'passenger_transport'],
     );
-    serviceId = service.rows[0].id;
+    const serviceRow = service.rows[0];
+    if (!serviceRow) throw new Error('Service seed failed');
+    serviceId = serviceRow.id;
   });
 
   afterAll(async () => {
@@ -120,7 +122,7 @@ describe('trust and reputation API integration', () => {
       [customerId, providerId, 'delivery'],
     );
     const response = await request(app, '/v1/ratings', 'POST', {
-      serviceId: other.rows[0].id,
+      serviceId: other.rows[0]?.id ?? '',
       subjectId: customerId,
       score: 5,
     }, customerToken);
@@ -135,7 +137,8 @@ describe('trust and reputation API integration', () => {
 
     const favorites = await request(app, '/v1/me/favorites', 'GET', undefined, customerToken);
     expect(favorites.status).toBe(200);
-    expect(favorites.body[0].accountId).toBe(providerId);
+    const favoriteRows = favorites.body as Array<{ accountId: string }>;
+    expect(favoriteRows[0]?.accountId).toBe(providerId);
 
     const block = await request(app, `/v1/safety/blocks/${providerId}`, 'POST', undefined, customerToken);
     expect(block.status).toBe(201);
