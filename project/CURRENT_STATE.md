@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 1.1 — FASE 6 em execução
+**Version:** 1.2 — FASE 6 concluída / FASE 7 iniciada
 **Last updated:** 2026-10-07
 
 ## Phase
-**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO — EM EXECUÇÃO**
+**FASE 7 — SEGURANÇA OPERACIONAL — PRÓXIMA**
 
 ## Fases concluídas
 - [x] FASE 0 — Governança e Especificação
@@ -34,14 +34,29 @@
 ## Fase 5 — gate
 **APROVADO.** A viagem de passageiro pode ser solicitada, aceita, executada, concluída ou cancelada conforme estado permitido, com distância e preço calculados pelo servidor, snapshots de rota e proteção contra alteração indevida.
 
-## Fase atual
-**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO**
+## Fase 6 — entrega
+- [x] PaymentRecord para dinheiro, Pix e máquina própria do provider
+- [x] preço esperado derivado do snapshot imutável do Service
+- [x] confirmação exclusiva do provider vinculado
+- [x] divergência de valor rejeitada
+- [x] disputa pré-confirmação
+- [x] ownership e autorização
+- [x] idempotência e locks transacionais
+- [x] auditoria de criação, confirmação e disputa
+- [x] nenhum dado de cartão armazenado/processado pelo Nexo
+- [x] trigger PostgreSQL impede alteração de preço/moeda após conclusão
+- [x] mudança de rota sincroniza o preço do Service antes da conclusão
+- [x] tela mobile inicial de registro/confirmação
+- [x] CI backend/mobile verde; APK debug construído
 
-Implementação em validação final no CI.
-Registrar dinheiro, Pix e cartão na máquina do próprio profissional, mantendo o Nexo fora do processamento inicial de cartões e preservando valores em centavos.
+## Fase 6 — gate
+**APROVADO.** Serviços concluídos podem registrar e confirmar dinheiro, Pix ou cartão na máquina própria do provider sem processamento de cartão pelo Nexo e sem alteração retroativa do preço.
+
+## Fase atual
+**FASE 7 — SEGURANÇA OPERACIONAL**
 
 ## Blockers
-Nenhum bloqueador de produto conhecido; aguardando validação final do pipeline CI da branch da fase.
+Nenhum bloqueador conhecido.
 
 ## Known limitations
 - Object storage binário ainda depende de adapter futuro.
