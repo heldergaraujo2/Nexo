@@ -192,3 +192,17 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Gate
 **FASE 9 APROVADA.** Next: FASE 10 — GUINCHO/REBOQUE.
+
+
+## 1.5.0 — FASE 10 em execução
+### Added
+- Solicitação e execução de guincho/reboque.
+- Localização, destino opcional, descrição do problema e metadados de mídia.
+- Oferta com preço integrada ao Service.
+- Máquina de estados dedicada.
+- Pré-condição de veículo verificado e bloqueio entre participantes.
+- Auditoria, notificações e idempotência.
+- Testes de integração de segurança, autorização e ciclo operacional.
+
+### Next
+**Gate FASE 10 — CI backend/mobile e auditoria final.**
