@@ -4,6 +4,7 @@ import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { MediaModule } from './media/media.module';
+import { TrustModule } from './trust/trust.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MediaModule } from './media/media.module';
     AuthModule,
     ProfileModule,
     MediaModule,
+    TrustModule,
   ],
 })
 export class AppModule {}
