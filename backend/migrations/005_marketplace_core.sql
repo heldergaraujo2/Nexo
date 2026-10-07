@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS provider_marketplace (
   availability TEXT NOT NULL DEFAULT 'offline'
     CHECK (availability IN ('offline','available','busy')),
   accepting_requests BOOLEAN NOT NULL DEFAULT FALSE,
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CHECK (NOT accepting_requests OR cardinality(categories) > 0)
 );
 
 CREATE INDEX IF NOT EXISTS idx_provider_marketplace_available
