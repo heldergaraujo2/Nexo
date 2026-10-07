@@ -62,10 +62,6 @@ CREATE INDEX IF NOT EXISTS idx_offers_request_status
 CREATE INDEX IF NOT EXISTS idx_offers_provider_status
   ON offers(provider_id, status, created_at DESC);
 
-ALTER TABLE service_requests
-  ADD CONSTRAINT fk_service_requests_provider
-  FOREIGN KEY (matched_provider_id) REFERENCES accounts(id);
-
 ALTER TABLE services
   ADD COLUMN IF NOT EXISTS request_id UUID REFERENCES service_requests(id),
   ADD COLUMN IF NOT EXISTS accepted_offer_id UUID REFERENCES offers(id),
