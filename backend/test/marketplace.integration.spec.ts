@@ -36,6 +36,10 @@ describe('marketplace API integration', () => {
         users,
       );
       await db.query(
+        \`DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders}))\`,
+        [...users, ...users],
+      );
+      await db.query(
         \`DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders}))\`,
         users,
       );
