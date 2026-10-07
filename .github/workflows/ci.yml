@@ -40,6 +40,10 @@ jobs:
         with:
           node-version: 22
       - run: npm install
+      - name: Temporary Prettier formatting check
+        run: |
+          npx prettier --write "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json"
+          git diff -- backend/src/ride/distance.adapter.ts backend/src/ride/ride.controller.ts backend/src/ride/ride.service.ts backend/src/marketplace/marketplace.service.ts backend/test/ride.integration.spec.ts
       - name: Apply database migrations
         working-directory: .
         env:
