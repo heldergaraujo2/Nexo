@@ -49,6 +49,16 @@ A nomenclatura final deve ser adaptada ao billing provider, preservando o domín
 ## Verification
 NOT_STARTED → PENDING → VERIFIED | REJECTED | EXPIRED | MANUAL_REVIEW
 
+Casos de verificação são privados e somente moderator/admin podem criar/revisar. Indicador público só aparece como verificado quando o caso está VERIFIED.
+
+## Fraud flag
+OPEN → REVIEWING → RESOLVED | DISMISSED
+
+## Incident
+OPEN → INVESTIGATING → CONTAINED → RESOLVED → CLOSED
+
+Transições de incidente são server-side e restritas a moderator/admin após a abertura por participante autorizado.
+
 ## Media moderation
 UPLOADED → PROCESSING → APPROVED | REJECTED | QUARANTINED
 

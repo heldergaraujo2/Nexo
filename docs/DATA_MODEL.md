@@ -14,6 +14,21 @@ Dados públicos: account_id, nome de exibição, foto, biografia, informações 
 ### Verification
 Dados restritos de identidade/veículo, tipo, estado, provedor de verificação, referências externas, timestamps e resultado. Documentos brutos nunca fazem parte do perfil público.
 
+### Vehicle
+provider_id, tipo, marca/modelo, ano, sufixo mínimo de placa quando necessário, estado operacional e timestamps.
+
+### VerificationCase
+account_id, vehicle_id opcional, tipo, estado, provedor, referência externa não sensível, resumo do resultado e revisor. Recurso privado.
+
+### SecurityEvent
+ator, tipo, severidade, recurso, resultado, metadata mínima e timestamp.
+
+### FraudFlag
+conta/serviço opcional, tipo, severidade, estado, motivo, criador e resolução.
+
+### IncidentCase
+reporter, serviço/denúncia relacionados, categoria, severidade, estado, responsável, resumo e resolução.
+
 ### Provider
 Extensão profissional da conta, categorias, disponibilidade e estado operacional.
 

@@ -167,20 +167,20 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 7 — Segurança Operacional
-**Status:** EM EXECUÇÃO
+**Status:** CONCLUÍDA
 **Objetivo:** aumentar a segurança antes de ampliar categorias e escala.
 
 **Entregas**
-- [ ] verificação de identidade
-- [ ] verificação de veículo
-- [ ] controles de acesso a dados privados
-- [ ] antifraude inicial
-- [ ] denúncias e bloqueios operacionais
-- [ ] eventos de segurança
-- [ ] ferramentas de suporte
-- [ ] fluxos de incidente/emergência definidos conforme requisitos legais e operacionais
+- [x] verificação de identidade
+- [x] verificação de veículo
+- [x] controles de acesso a dados privados
+- [x] antifraude inicial
+- [x] denúncias e bloqueios operacionais
+- [x] eventos de segurança
+- [x] ferramentas de suporte
+- [x] fluxos de incidente/emergência definidos conforme requisitos legais e operacionais
 
-**Gate:** dados sensíveis estão isolados e os principais cenários de abuso possuem tratamento definido.
+**Gate:** APROVADO — dados sensíveis estão isolados e os principais cenários de abuso possuem tratamento definido.
 
 ---
 

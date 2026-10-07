@@ -75,6 +75,17 @@ Toda mudança em regra de negócio deve executar a suíte correspondente e teste
 - Uma única assinatura ativa por provider.
 - Falha de billing não deve alterar retroativamente o valor de serviços concluídos.
 
+### Fase 7 — segurança operacional
+- Provider só acessa seus próprios veículos.
+- Customer não cria/revisa verificação ou flag antifraude.
+- VerificationCase de veículo exige veículo pertencente ao account verificado.
+- Somente verificação confirmada produz indicador público.
+- Incidente ligado a serviço só pode ser criado por participante ou moderator/admin.
+- Transições inválidas de incidentes são rejeitadas.
+- Fraud flags e security events são restritos a moderator/admin.
+- Dados de verificação privada não aparecem no endpoint público.
+- Nenhum dado de cartão/documento bruto é persistido pelas novas tabelas.
+
 ## Qualidade de entrega
 
 Toda fase deve produzir:

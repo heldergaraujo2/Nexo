@@ -95,3 +95,12 @@ Nexo records cash, Pix and card-machine confirmation without processing cards or
 ## DEC-023 — Payment confirmation is operational recording
 **Status:** ACCEPTED FOR PHASE 6
 Nexo does not process cards in the initial payment model. Cash, Pix and provider-owned card-machine payments are recorded operationally. Confirmation must equal the immutable completed-service price snapshot. No card number, CVV or equivalent credential is persisted.
+
+
+## DEC-024 — Operational verification boundary
+**Status:** ACCEPTED FOR PHASE 7
+Identity and vehicle verification records are private operational resources. Public APIs expose only verified indicators and labels. Raw identity documents are not persisted by this phase; external/manual verification is represented by a verification case and optional non-sensitive provider reference.
+
+## DEC-025 — Initial fraud and incident model
+**Status:** ACCEPTED FOR PHASE 7
+Initial antifraud is a reviewable flagging system rather than automatic punitive blocking. Security incidents use an explicit state machine and role-restricted operations. This avoids inventing penalties while providing an auditable operational response path.

@@ -132,3 +132,26 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 **FASE 7 — SEGURANÇA OPERACIONAL.**
+
+
+## 1.2.0 — FASE 7 concluída
+### Added
+- Cadastro privado de veículos de providers com estado de verificação.
+- Casos privados de verificação de identidade e veículo.
+- Sincronização entre revisão de verificação, estado do veículo e indicador público.
+- Eventos de segurança com severidade e resultado.
+- Flags antifraude iniciais com revisão e encerramento.
+- Incidentes operacionais com atribuição e máquina de estados.
+- Controles de autorização e isolamento de dados sensíveis.
+
+### Validation
+- CI run 265: backend e mobile aprovados.
+- Backend: migrations 001–008, typecheck, 26 testes, build, lint e format check.
+- Mobile: analyze, testes e APK debug.
+- Correções de integração e severidade de eventos foram validadas antes do gate.
+
+### Gate
+**APROVADO. FASE 7 concluída.**
+
+### Next
+**FASE 8 — ENTREGAS.**

@@ -42,3 +42,13 @@ Dependências devem ser auditadas no CI. Segredos e arquivos de ambiente local d
 
 ## LGPD
 A implementação deve seguir LGPD.md e revisão jurídica antes do uso comercial de dados sensíveis/localização.
+
+
+## Segurança operacional — Fase 7
+- Casos de verificação são privados e não expõem documentos.
+- Veículos pertencem ao provider e seu estado de verificação é controlado server-side.
+- Indicadores públicos mostram somente labels de verificação confirmada.
+- Eventos de segurança possuem severidade, resultado e metadata mínima.
+- Flags antifraude iniciais são revisáveis e não impõem punição automática sem regra de produto.
+- Incidentes possuem estados explícitos e acesso operacional por papel.
+- Nenhuma nova tabela armazena número de cartão, CVV, documento bruto ou credencial.
