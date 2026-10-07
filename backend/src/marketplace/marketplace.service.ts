@@ -280,9 +280,6 @@ export class MarketplaceService {
         );
         const offerId = offer.rows[0].id;
 
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          throw new ConflictException('Passenger transport does not allow negotiated offers');
-        }
         const service = await client.query(
           `INSERT INTO services
          (request_id,accepted_offer_id,customer_id,provider_id,category,status)
@@ -381,6 +378,9 @@ export class MarketplaceService {
           row.category,
           row.customer_id,
         );
+        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+          throw new ConflictException('Passenger transport does not allow negotiated offers');
+        }
         const service = await client.query(
           `INSERT INTO services
          (request_id,accepted_offer_id,customer_id,provider_id,category,status,price_cents,currency)
@@ -398,11 +398,6 @@ export class MarketplaceService {
             row.currency,
           ],
         );
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-            throw new ConflictException('Passenger transport does not allow negotiated offers');
-          }
-        }
         await client.query(
           `UPDATE offers SET status='accepted',updated_at=NOW() WHERE id=$1`,
           [offerId],
