@@ -799,6 +799,16 @@ export class MarketplaceService {
     );
     if (blocked.rowCount)
       throw new ForbiddenException('Participants are blocked');
+
+    if (category === 'towing') {
+      const verifiedVehicle = await client.query(
+        "SELECT 1 FROM vehicles WHERE provider_id=$1 AND status='verified' LIMIT 1",
+        [providerId],
+      );
+      if (!verifiedVehicle.rowCount) {
+        throw new ForbiddenException('Towing provider requires a verified vehicle');
+      }
+    }
   }
 
   private assertCustomer(user: AuthPrincipal) {
