@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
 import { AuthPrincipal } from '../auth/auth.types';
 import { RegisterMediaDto } from './dto';
 
 @Injectable()
 export class MediaService {
-  constructor(private readonly db: Pool) {}
+  constructor(@Inject(Pool) private readonly db: Pool) {}
 
   async register(user: AuthPrincipal, dto: RegisterMediaDto) {
     const result = await this.db.query(
