@@ -1,11 +1,11 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Pool } from 'pg';
 import { AuthPrincipal, PublicProfile } from '../auth/auth.types';
 import { UpdateProfileDto } from '../auth/dto';
 
 @Injectable()
 export class ProfileService {
-  constructor(private readonly db: Pool) {}
+  constructor(@Inject(Pool) private readonly db: Pool) {}
 
   async me(user: AuthPrincipal) {
     const result = await this.db.query<PublicProfile & {email:string}>(
