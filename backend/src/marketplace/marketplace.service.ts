@@ -300,6 +300,7 @@ export class MarketplaceService {
             row.destination,
           );
           await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
+          service.rows[0].priceCents = Number(ride.fareCents);
         }
         await client.query(
           `UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW()
