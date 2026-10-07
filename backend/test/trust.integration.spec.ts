@@ -20,9 +20,9 @@ describe('trust and reputation API integration', () => {
   let providerToken: string;
   let adminToken: string;
   const suffix = randomUUID();
-  const customerEmail = \`trust-customer-\${suffix}@example.test\`;
-  const providerEmail = \`trust-provider-\${suffix}@example.test\`;
-  const adminEmail = \`trust-admin-\${suffix}@example.test\`;
+  const customerEmail = `trust-customer-${suffix}@example.test`;
+  const providerEmail = `trust-provider-${suffix}@example.test`;
+  const adminEmail = `trust-admin-${suffix}@example.test`;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -66,8 +66,8 @@ describe('trust and reputation API integration', () => {
     adminToken = adminLogin.body.accessToken as string;
 
     const service = await db.query<{ id: string }>(
-      \`INSERT INTO services (customer_id,provider_id,category,status,completed_at)
-       VALUES ($1,$2,$3,'completed',NOW()) RETURNING id\`,
+      `INSERT INTO services (customer_id,provider_id,category,status,completed_at)
+       VALUES ($1,$2,$3,'completed',NOW()) RETURNING id`,
       [customerId, providerId, 'passenger_transport'],
     );
     serviceId = service.rows[0].id;
@@ -107,7 +107,7 @@ describe('trust and reputation API integration', () => {
     }, providerToken);
     expect(reverse.status).toBe(201);
 
-    const reputation = await request(app, \`/v1/profiles/\${providerId}/ratings\`, 'GET');
+    const reputation = await request(app, `/v1/profiles/${providerId}/ratings`, 'GET');
     expect(reputation.status).toBe(200);
     expect(reputation.body.total).toBe(1);
     expect(reputation.body.average).toBe('5.00');
@@ -115,8 +115,8 @@ describe('trust and reputation API integration', () => {
 
   it('rejects ratings without a valid service relationship', async () => {
     const other = await db.query<{ id: string }>(
-      \`INSERT INTO services (customer_id,provider_id,category,status,completed_at)
-       VALUES ($1,$2,$3,'completed',NOW()) RETURNING id\`,
+      `INSERT INTO services (customer_id,provider_id,category,status,completed_at)
+       VALUES ($1,$2,$3,'completed',NOW()) RETURNING id`,
       [customerId, providerId, 'delivery'],
     );
     const response = await request(app, '/v1/ratings', 'POST', {
@@ -137,10 +137,10 @@ describe('trust and reputation API integration', () => {
     expect(favorites.status).toBe(200);
     expect(favorites.body[0].accountId).toBe(providerId);
 
-    const block = await request(app, \`/v1/safety/blocks/\${providerId}\`, 'POST', undefined, customerToken);
+    const block = await request(app, `/v1/safety/blocks/${providerId}`, 'POST', undefined, customerToken);
     expect(block.status).toBe(201);
 
-    const selfBlock = await request(app, \`/v1/safety/blocks/\${customerId}\`, 'POST', undefined, customerToken);
+    const selfBlock = await request(app, `/v1/safety/blocks/${customerId}`, 'POST', undefined, customerToken);
     expect(selfBlock.status).toBe(409);
 
     const report = await request(app, '/v1/safety/reports', 'POST', {
@@ -168,7 +168,7 @@ describe('trust and reputation API integration', () => {
     }, adminToken);
     expect(verification.status).toBe(201);
 
-    const publicIndicators = await request(app, \`/v1/profiles/\${providerId}/verification\`, 'GET');
+    const publicIndicators = await request(app, `/v1/profiles/${providerId}/verification`, 'GET');
     expect(publicIndicators.status).toBe(200);
     expect(publicIndicators.body[0]).toEqual({
       verificationType: 'identity',
@@ -188,11 +188,11 @@ async function request(
   if (!address || typeof address === 'string')
     throw new Error('Test server address unavailable');
   const port = (address as AddressInfo).port;
-  const response = await fetch(\`http://127.0.0.1:\${port}\${path}\`, {
+  const response = await fetch(`http://127.0.0.1:${port}${path}`, {
     method,
     headers: {
       'content-type': 'application/json',
-      ...(token ? { authorization: \`Bearer \${token}\` } : {}),
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
