@@ -9,10 +9,10 @@ export class ProfileService {
 
   async me(user: AuthPrincipal) {
     const result = await this.db.query<PublicProfile & {email:string}>(
-      \`SELECT p.id,p.account_id AS "accountId",p.display_name AS "displayName",p.photo_url AS "photoUrl",
+      `SELECT p.id,p.account_id AS "accountId",p.display_name AS "displayName",p.photo_url AS "photoUrl",
        p.bio,p.professional_info AS "professionalInfo",(a.role='provider') AS "isProvider",
        p.created_at AS "createdAt",a.email
-       FROM profiles p JOIN accounts a ON a.id=p.account_id WHERE p.account_id=$1\`, [user.accountId],
+       FROM profiles p JOIN accounts a ON a.id=p.account_id WHERE p.account_id=$1`, [user.accountId],
     );
     if (!result.rowCount) throw new NotFoundException('Profile not found');
     return { ...result.rows[0] };
@@ -20,11 +20,11 @@ export class ProfileService {
 
   async public(accountId: string) {
     const result = await this.db.query<PublicProfile>(
-      \`SELECT p.id,p.account_id AS "accountId",p.display_name AS "displayName",p.photo_url AS "photoUrl",
+      `SELECT p.id,p.account_id AS "accountId",p.display_name AS "displayName",p.photo_url AS "photoUrl",
        p.bio,p.professional_info AS "professionalInfo",(a.role='provider') AS "isProvider",
        p.created_at AS "createdAt"
        FROM profiles p JOIN accounts a ON a.id=p.account_id
-       WHERE p.account_id=$1 AND a.status='active'\`, [accountId],
+       WHERE p.account_id=$1 AND a.status='active'`, [accountId],
     );
     if (!result.rowCount) throw new NotFoundException('Profile not found');
     return result.rows[0];
@@ -48,10 +48,10 @@ export class ProfileService {
     if (dto.photoUrl !== undefined) add('photo_url', dto.photoUrl);
 
     const result = await this.db.query<PublicProfile>(
-      \`UPDATE profiles SET \${updates.join(',')},updated_at=NOW()
+      `UPDATE profiles SET ${updates.join(',')},updated_at=NOW()
        WHERE account_id=$1
        RETURNING id,account_id AS "accountId",display_name AS "displayName",photo_url AS "photoUrl",
-       bio,professional_info AS "professionalInfo",created_at AS "createdAt"\`,
+       bio,professional_info AS "professionalInfo",created_at AS "createdAt"`,
       values,
     );
     if (!result.rowCount) throw new NotFoundException('Profile not found');
