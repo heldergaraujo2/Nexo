@@ -1,26 +1,44 @@
 # Nexo — Security Baseline
 
-## Principles
-- Least privilege
-- Private-by-default identity data
-- Strong authentication
-- Authorization at every protected resource
-- Secure secrets handling
-- Audit important security/business events
-- Rate limiting and abuse prevention
-- Secure media upload handling
-- Input validation
-- Encryption in transit and at rest where appropriate
-- Backups and recovery planning
+**Versão:** 1.0
 
-## Sensitive information
-CPF, identity documents, private contact information, verification artifacts and other sensitive/private data must never be exposed through public profile APIs.
+## Princípios
+- Least privilege.
+- Private-by-default para identidade e documentos.
+- Autenticação forte.
+- Autorização server-side em todo recurso protegido.
+- Secrets fora do repositório.
+- Auditoria de eventos críticos.
+- Rate limiting e prevenção de abuso.
+- Validação rigorosa de input.
+- Upload seguro.
+- TLS.
+- Criptografia em repouso quando apropriado.
+- Backups e recuperação testada.
 
-## Media
-User-uploaded photos/videos must be validated, stored securely, moderated as required and served through controlled access.
+## Autorização
+Cada request protegido verifica identidade, papel/capacidade, relação com recurso, estado e ação permitida. Não confiar em IDs ou papéis enviados pelo cliente.
 
-## Safety
-The product should support reporting, blocking, fraud controls and emergency-related workflows appropriate to the launch jurisdiction.
+## PII e verificação
+CPF, documentos, contatos privados, resultados e artefatos de verificação ficam em área restrita. Endpoints públicos retornam somente campos classificados como públicos.
 
-## Development
-Secrets must never be committed. Security-sensitive changes require tests and explicit documentation.
+## Mídia
+Validar MIME real, extensão, tamanho e checksum; bucket privado; URLs temporárias; moderação; impedir path traversal e conteúdo executável.
+
+## API
+Rate limits por identidade/IP conforme risco, proteção contra enumeração, payload limits, timeouts e idempotência para comandos críticos.
+
+## Concorrência
+Aceite, negociação, pagamento e assinatura usam transação, constraints ou versionamento otimista conforme o caso.
+
+## Auditoria
+Registrar ator, ação, recurso, resultado, correlation ID e metadata mínima. Nunca registrar senha, token, CVV ou dados sensíveis desnecessários.
+
+## Mobile
+Tokens não devem ser armazenados em armazenamento inseguro. Permissões de localização/câmera/notificação devem ser solicitadas somente quando necessárias.
+
+## Supply chain
+Dependências devem ser auditadas no CI. Segredos e arquivos de ambiente local devem estar no .gitignore.
+
+## LGPD
+A implementação deve seguir LGPD.md e revisão jurídica antes do uso comercial de dados sensíveis/localização.
