@@ -35,10 +35,8 @@ void main() {
     );
     expect(enabled.onPressed, isNotNull);
   });
-}
 
-
-testWidgets('subscription flow exposes commercial terms and controls', (tester) async {
+  testWidgets('subscription flow exposes commercial terms and controls', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: SubscriptionPage()));
     expect(find.text('Plano Profissional'), findsOneWidget);
     expect(find.text(r'R$ 99,90 por mês'), findsOneWidget);
@@ -49,3 +47,4 @@ testWidgets('subscription flow exposes commercial terms and controls', (tester) 
     await tester.pump();
     expect(find.text('Status: Ativa'), findsOneWidget);
   });
+}
