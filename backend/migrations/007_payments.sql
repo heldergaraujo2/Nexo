@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS payment_records (
   status TEXT NOT NULL DEFAULT 'pending'
     CHECK (status IN ('pending','confirmed','failed','disputed')),
   external_reference TEXT,
+  dispute_reason TEXT,
   confirmed_by UUID REFERENCES accounts(id),
   confirmed_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -27,9 +28,8 @@ CREATE TABLE IF NOT EXISTS payment_records (
   )
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS uq_payment_records_active_service
-  ON payment_records(service_id)
-  WHERE status IN ('pending','confirmed');
+CREATE UNIQUE INDEX IF NOT EXISTS uq_payment_records_service
+  ON payment_records(service_id);
 
 CREATE INDEX IF NOT EXISTS idx_payment_records_service
   ON payment_records(service_id, created_at DESC);
@@ -37,3 +37,18 @@ CREATE INDEX IF NOT EXISTS idx_payment_records_service
 CREATE INDEX IF NOT EXISTS idx_payment_records_provider_reference
   ON payment_records(external_reference)
   WHERE external_reference IS NOT NULL;
+
+CREATE OR REPLACE FUNCTION prevent_completed_service_price_change()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF OLD.status = 'completed' AND (NEW.price_cents IS DISTINCT FROM OLD.price_cents OR NEW.currency IS DISTINCT FROM OLD.currency) THEN
+    RAISE EXCEPTION 'Completed service price is immutable';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_completed_service_price_immutable ON services;
+CREATE TRIGGER trg_completed_service_price_immutable
+BEFORE UPDATE ON services
+FOR EACH ROW EXECUTE FUNCTION prevent_completed_service_price_change();
