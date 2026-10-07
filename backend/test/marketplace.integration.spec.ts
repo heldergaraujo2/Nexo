@@ -10,11 +10,11 @@ process.env.NODE_ENV = 'test';
 process.env.AUTH_TOKEN_SECRET = '01234567890123456789012345678901';
 process.env.DATABASE_URL ??= 'postgresql://nexo:nexo@localhost:5432/nexo';
 
-describe('marketplace API integration', () => {
-  let app: INestApplication;
-  let db: Pool;
-  const users: string[] = [];
+let app: INestApplication;
+let db: Pool;
+const users: string[] = [];
 
+describe('marketplace API integration', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = moduleRef.createNestApplication();
