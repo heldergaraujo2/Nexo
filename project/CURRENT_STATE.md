@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 0.1 foundation  
+**Version:** 0.2 roadmap por fases  
 **Last updated:** 2026-10-06
 
 ## Phase
-FASE 1 — FUNDAMENTAÇÃO / PLANEJAMENTO E ARQUITETURA
+FASE 0 — GOVERNANÇA E ESPECIFICAÇÃO
 
 ## Completed
 - [x] Repository initialized
@@ -15,12 +15,14 @@ FASE 1 — FUNDAMENTAÇÃO / PLANEJAMENTO E ARQUITETURA
 - [x] Payment methods documented
 - [x] Scope exclusions documented
 - [x] Agent instructions created
+- [x] Roadmap dividido em fases com critérios de saída
 
 ## In progress
 - Master technical specification
 - Architecture definition
 - Database model
 - API definition
+- Critérios de aceite e gates da FASE 0
 
 ## Not started
 - Application implementation
