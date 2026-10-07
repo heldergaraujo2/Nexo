@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 6 EM EXECUÇÃO  
+**Status:** FASE 6 CONCLUÍDA — FASE 7 PRÓXIMA  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -161,7 +161,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 
 **Regra:** o Nexo não cobra comissão sobre o serviço.
 
-**Gate:** serviço concluído possui estado financeiro consistente e auditável.
+**Gate:** APROVADO — serviço concluído possui estado financeiro consistente e auditável, sem processamento de cartão pelo Nexo e sem alteração retroativa do preço.
 
 ---
 
