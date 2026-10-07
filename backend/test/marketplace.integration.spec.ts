@@ -301,6 +301,6 @@ async function request(
   });
   return {
     status: response.status,
-    body: (await response.json()) as Record<string, any>,
+    body: (await response.json()) as Record<string, unknown>,
   };
 }
