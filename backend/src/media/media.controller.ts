@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { RegisterMediaDto } from './dto';
 import { MediaService } from './media.service';
@@ -7,7 +7,7 @@ import { MediaService } from './media.service';
 export class MediaController {
   private readonly media: MediaService;
 
-  constructor(media: MediaService) {
+  constructor(@Inject(MediaService) media: MediaService) {
     this.media = media;
   }
 
