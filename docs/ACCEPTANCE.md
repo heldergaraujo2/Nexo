@@ -68,7 +68,7 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 - [x] nenhum dado de cartão é armazenado;
 - [x] trigger impede alteração de preço após conclusão;
 - [x] fluxo mobile apresenta os métodos e bloqueia valor divergente;
-- [ ] CI final verde — aguardando execução final da branch.
+- [x] CI final verde — backend e mobile aprovados no run 256.
 
 ### Resultado
-**EM VALIDAÇÃO.** O gate somente será aprovado após CI final verde.
+**APROVADO. FASE 6 concluída.** Próximo gate: FASE 7 — Segurança Operacional.
