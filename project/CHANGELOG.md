@@ -21,22 +21,23 @@
 - Gate da Fase 0 aprovado.
 
 ## 0.4.0 — FASE 1 concluída
-### Added
-- Scaffold Flutter/Dart mobile com Material 3.
-- Scaffold NestJS/TypeScript com prefixo `/v1`.
-- Health check HTTP e teste unitário.
-- PostgreSQL 17 no CI e migration ledger `schema_migrations`.
-- Validação HTTP global com whitelist, rejeição de campos não permitidos e transformação.
-- Teste widget determinístico do app mobile.
-- CI GitHub Actions para backend e mobile.
-- Validações de typecheck, testes, build, lint, formatação, migration, análise Flutter e APK debug.
+- Scaffold Flutter/Dart mobile e NestJS/TypeScript backend.
+- PostgreSQL, migration ledger, health check, validação HTTP, testes e CI.
+- Backend e mobile validados pelo pipeline.
+- Gate da Fase 1 aprovado.
 
-### Corrected
-- CI passou a usar escopo explícito no Prettier.
-- CI mobile restaura os testes versionados após a geração dos hosts nativos pelo `flutter create`.
+## 0.5.0 — FASE 2 em execução
+### Added
+- Cadastro/login de customer e provider.
+- Hash de senha PBKDF2 com salt e custo configurável no formato persistido.
+- Access token assinado com expiração.
+- Recuperação de senha com token aleatório, hash em banco, expiração e uso único.
+- Autorização server-side e guard de papéis.
+- Perfil autenticado e perfil público sem exposição de email/credenciais.
+- Biografia, informações profissionais e foto de perfil.
+- Persistência de mídia de foto/vídeo com legenda, visibilidade e estado de moderação.
+- Migrações de identidade/perfil/mídia.
+- Testes de segurança das primitivas e integração HTTP contra PostgreSQL.
 
 ### Gate
-FASE 1 aprovada. Próxima fase: **FASE 2 — IDENTIDADE, ACESSO E PERFIS**.
-
-### Quality note
-O backend ainda usa `npm install` sem `package-lock.json` versionado. A melhoria fica registrada para reforço de reprodutibilidade antes de produção.
+Implementação da Fase 2 concluída; aprovação formal depende do CI final da revisão corrente.
