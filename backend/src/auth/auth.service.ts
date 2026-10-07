@@ -52,7 +52,7 @@ export class AuthService {
     const email = dto.email.trim().toLowerCase();
     const result = await this.db.query<{id:string}>('SELECT id FROM accounts WHERE email=$1 AND status=$2', [email,'active']);
     const response: {message:string; developmentToken?:string} = { message: 'If the account exists, recovery instructions will be sent.' };
-    if (!result.rowCount) return response;
+    if (!result.rowCount || !result.rows[0]) return response;
     const raw = randomBytes(32).toString('base64url');
     const hash = createHash('sha256').update(raw).digest('hex');
     await this.db.query(
