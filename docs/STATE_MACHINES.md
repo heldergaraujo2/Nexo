@@ -81,3 +81,11 @@ ACCEPTED → PROVIDER_EN_ROUTE → AT_PICKUP → PICKED_UP → IN_TRANSIT → DE
 Saída alternativa: ACCEPTED/PROVIDER_EN_ROUTE/AT_PICKUP → CANCELLED.
 
 Somente o provider vinculado avança estados operacionais; customer/provider relacionados podem cancelar quando permitido. A máquina Delivery é a autoridade para execução e impede bypass pelos endpoints genéricos de Service.
+
+
+## Towing
+ACCEPTED → PROVIDER_EN_ROUTE → ARRIVED → LOADING → IN_TOW → COMPLETED
+
+Saída alternativa: ACCEPTED/PROVIDER_EN_ROUTE/ARRIVED/LOADING → CANCELLED.
+
+Somente o provider vinculado avança estados operacionais. O fluxo exige provider elegível, veículo verificado e ausência de bloqueio entre participantes.
