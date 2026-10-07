@@ -16,7 +16,9 @@ describe('identity API integration', () => {
   const email = `phase2-${randomUUID()}@example.test`;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
     app = moduleRef.createNestApplication();
     app.setGlobalPrefix('v1');
     await app.init();
@@ -46,17 +48,35 @@ describe('identity API integration', () => {
     expect(me.body.displayName).toBe('Phase Two');
     expect(me.body.role).toBeUndefined();
 
-    const publicProfile = await request(app, `/v1/profiles/${register.body.accountId}`, 'GET');
+    const publicProfile = await request(
+      app,
+      `/v1/profiles/${register.body.accountId}`,
+      'GET',
+    );
     expect(publicProfile.status).toBe(200);
     expect(publicProfile.body.displayName).toBe('Phase Two');
     expect(publicProfile.body.email).toBeUndefined();
     expect(publicProfile.body.password_hash).toBeUndefined();
 
-    const photoUpdate = await request(app, '/v1/me/profile', 'PUT', { photoUrl: 'https://cdn.example.test/avatar.jpg' }, token);
+    const photoUpdate = await request(
+      app,
+      '/v1/me/profile',
+      'PUT',
+      { photoUrl: 'https://cdn.example.test/avatar.jpg' },
+      token,
+    );
     expect(photoUpdate.status).toBe(200);
-    expect(photoUpdate.body.photoUrl).toBe('https://cdn.example.test/avatar.jpg');
+    expect(photoUpdate.body.photoUrl).toBe(
+      'https://cdn.example.test/avatar.jpg',
+    );
 
-    const update = await request(app, '/v1/me/profile', 'PUT', { bio: 'Provider bio' }, token);
+    const update = await request(
+      app,
+      '/v1/me/profile',
+      'PUT',
+      { bio: 'Provider bio' },
+      token,
+    );
     expect(update.status).toBe(200);
     expect(update.body.bio).toBe('Provider bio');
     expect(update.body.photoUrl).toBe('https://cdn.example.test/avatar.jpg');
@@ -74,17 +94,30 @@ describe('identity API integration', () => {
   });
 });
 
-async function request(app: INestApplication, path: string, method: string, body?: unknown, token?: string) {
+async function request(
+  app: INestApplication,
+  path: string,
+  method: string,
+  body?: unknown,
+  token?: string,
+) {
   const address = app.getHttpServer().address();
-  if (!address || typeof address === 'string') throw new Error('Test server address unavailable');
+  if (!address || typeof address === 'string')
+    throw new Error('Test server address unavailable');
   const port = (address as AddressInfo).port;
-  const response = await fetch(`http://127.0.0.1:${port}${path}`, {
-    method,
-    headers: {
-      'content-type': 'application/json',
-      ...(token ? { authorization: `Bearer ${token}` } : {}),
+  const response = await fetch(
+    `http://127.0.0.1:${port}${path}`,
+    {
+      method,
+      headers: {
+        'content-type': 'application/json',
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
     },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  return { status: response.status, body: await response.json() as Record<string, unknown> };
+  );
+  return {
+    status: response.status,
+    body: (await response.json()) as Record<string, unknown>,
+  };
 }
