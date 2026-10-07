@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 2 CONCLUÍDA — FASE 3 EM EXECUÇÃO  
+**Status:** FASE 3 CONCLUÍDA — FASE 4 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -64,7 +64,7 @@ Uma fase só pode avançar quando:
 
 **Entregas**
 - [x] cadastro/login
-- [ ] recuperação de acesso
+- [x] recuperação de acesso
 - [ ] cliente
 - [ ] profissional/prestador
 - [ ] perfil público
@@ -81,22 +81,25 @@ Uma fase só pode avançar quando:
 ## FASE 3 — Confiança e Reputação
 **Objetivo:** criar a camada de confiança do marketplace.
 
-**Entregas**
-- [ ] avaliações
-- [ ] comentários
-- [ ] reputação bilateral
-- [ ] favoritos
-- [ ] denúncia
-- [ ] bloqueio
-- [ ] indicadores de verificação
-- [ ] regras contra abuso de avaliações
-- [ ] moderação inicial
+**Entregas — CONCLUÍDAS**
+- [x] avaliações
+- [x] comentários
+- [x] reputação bilateral
+- [x] favoritos
+- [x] denúncia
+- [x] bloqueio
+- [x] indicadores de verificação
+- [x] regras contra abuso de avaliações
+- [x] moderação inicial
+- [x] auditoria e proteção concorrente
+- [x] CI backend/mobile aprovado
 
-**Gate:** usuários conseguem avaliar e denunciar com regras de autorização, integridade e auditoria.
+**Gate:** APROVADO — avaliações, denúncias, bloqueios e indicadores respeitam autorização, integridade, privacidade, auditoria e máquina de estados de moderação.
 
 ---
 
 ## FASE 4 — Marketplace Core
+**Status:** EM EXECUÇÃO
 **Objetivo:** fazer o ciclo principal do Nexo funcionar sem depender de uma categoria específica.
 
 **Fluxo principal**
