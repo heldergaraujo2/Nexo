@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 1 CONCLUÍDA — FASE 2 INICIANDO  
+**Status:** FASE 2 CONCLUÍDA — FASE 3 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -63,7 +63,7 @@ Uma fase só pode avançar quando:
 **Objetivo:** permitir que clientes e profissionais tenham contas e identidade digital.
 
 **Entregas**
-- [ ] cadastro/login
+- [x] cadastro/login
 - [ ] recuperação de acesso
 - [ ] cliente
 - [ ] profissional/prestador
@@ -74,7 +74,7 @@ Uma fase só pode avançar quando:
 - [ ] privacidade
 - [ ] autorização por papel
 
-**Gate:** um usuário consegue criar conta, acessar seu perfil e visualizar apenas o que tem permissão para acessar.
+**Gate:** APROVADO — usuário consegue criar conta, autenticar, acessar o próprio perfil e respeitar as fronteiras de privacidade/autorização. CI backend/mobile aprovado.
 
 ---
 
