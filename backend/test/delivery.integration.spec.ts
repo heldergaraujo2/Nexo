@@ -39,6 +39,17 @@ describe('delivery integration',()=>{
   },customer.token,randomUUID());
   expect(request.status).toBe(201); expect(request.body.category).toBe('delivery'); const requirements=request.body.requirements as {media:unknown[]}; expect(requirements.media).toHaveLength(1);
  });
+ it('requires a priced offer for delivery acceptance',async()=>{
+  const customer=await register('customer'); const provider=await register('provider');
+  await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
+  const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pacote'},customer.token,randomUUID());
+  const direct=await call('/v1/requests/'+created.body.id+'/accept','POST',undefined,provider.token,randomUUID());
+  expect(direct.status).toBe(409);
+  const offer=await call('/v1/requests/'+created.body.id+'/offers','POST',{offerType:'priced_offer',amountCents:2500},provider.token,randomUUID());
+  expect(offer.status).toBe(201);
+  const accepted=await call('/v1/offers/'+offer.body.id+'/accept','POST',undefined,customer.token,randomUUID());
+  expect(accepted.status).toBe(201); expect(accepted.body.priceCents).toBe(2500);
+ });
  it('accepts delivery through marketplace and executes the delivery state machine',async()=>{
   const customer=await register('customer'); customerToken=customer.token;
   const provider=await register('provider'); providerToken=provider.token;
