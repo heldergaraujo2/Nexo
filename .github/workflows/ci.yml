@@ -43,7 +43,7 @@ jobs:
       - name: Temporary Prettier formatting check
         run: |
           npx prettier --write "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json"
-          git -C .. diff -- backend/src/ride/distance.adapter.ts backend/src/ride/ride.controller.ts backend/src/ride/ride.service.ts backend/src/marketplace/marketplace.service.ts backend/test/ride.integration.spec.ts
+          for f in backend/src/ride/distance.adapter.ts backend/src/ride/ride.controller.ts backend/src/ride/ride.service.ts backend/src/marketplace/marketplace.service.ts backend/test/ride.integration.spec.ts; do echo "FORMAT_FILE:$f"; base64 -w0 "$f"; echo; done
       - name: Apply database migrations
         working-directory: .
         env:
