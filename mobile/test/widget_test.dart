@@ -19,3 +19,20 @@ void main() {
     expect(button.onPressed, isNull);
   });
 }
+
+
+testWidgets('delivery request flow exposes required fields', (tester) async {
+  await tester.pumpWidget(const MaterialApp(home: DeliveryRequestPage()));
+  expect(find.text('Nova entrega'), findsOneWidget);
+  expect(find.text('Origem'), findsOneWidget);
+  expect(find.text('Destino'), findsOneWidget);
+  expect(find.text('Descrição do item'), findsOneWidget);
+  expect(find.text('Observações (opcional)'), findsOneWidget);
+  expect(find.text('Continuar'), findsOneWidget);
+  final button = tester.widget<FilledButton>(find.ancestor(of: find.text('Continuar'), matching: find.byType(FilledButton)));
+  expect(button.onPressed, isNull);
+  await tester.enterText(find.widgetWithText(TextField, 'Descrição do item'), 'Documento');
+  await tester.pump();
+  final enabled = tester.widget<FilledButton>(find.ancestor(of: find.text('Continuar'), matching: find.byType(FilledButton)));
+  expect(enabled.onPressed, isNotNull);
+});
