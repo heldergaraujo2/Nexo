@@ -22,7 +22,7 @@ type JsonObject = Record<string, unknown>;
 export class MarketplaceService {
   constructor(
     @Inject(Pool) private readonly db: Pool,
-    private readonly rides: RideService,
+    @Inject(RideService) private readonly rides: RideService,
   ) {}
 
   async setAvailability(user: AuthPrincipal, dto: MarketplaceAvailabilityDto) {
@@ -870,7 +870,6 @@ export class MarketplaceService {
       return result;
     } catch (error) {
       await client.query('ROLLBACK');
-      if (process.env.NODE_ENV === 'test') console.error('Marketplace transaction error', error);
       throw error;
     } finally {
       client.release();
