@@ -1,39 +1,49 @@
-# Nexo — LGPD and Privacy Baseline
+# Nexo — LGPD e Privacidade
 
-This document is an engineering baseline, not legal advice.
+**Versão:** 1.0  
+**Natureza:** baseline de engenharia; não substitui assessoria jurídica.
 
-## Principles
-- Purpose limitation
-- Necessity/minimization
-- Transparency
-- Security
-- Appropriate retention
-- User rights support
-- Access control
-- Data lifecycle management
-- Auditability
+## Princípios
+- finalidade;
+- necessidade e minimização;
+- transparência;
+- segurança;
+- retenção limitada;
+- direitos do titular;
+- controle de acesso;
+- ciclo de vida;
+- auditabilidade.
 
-## Data classes
-### Public profile
-Information intentionally shown to other users.
+## Classes
+**Público:** dados deliberadamente exibidos no perfil.
 
-### Private account
-Contact and account information required to operate the service.
+**Conta privada:** dados necessários para operação e contato.
 
-### Verification data
-Identity and vehicle documents used for trust/compliance. Highly restricted.
+**Verificação:** identidade, documentos e evidências de veículo; altamente restritos.
 
-### Operational data
-Requests, rides, offers, ratings, incidents and audit events.
+**Operacional:** solicitações, viagens, ofertas, avaliações, incidentes e auditoria.
 
-### Media
-Photos/videos/captions uploaded by users.
+**Mídia:** fotos, vídeos e legendas.
 
-## Requirements
-- Separate public profile data from verification data.
-- Define retention periods before production launch.
-- Provide appropriate user data-management workflows.
-- Document lawful basis and notices with legal counsel.
-- Conduct specific legal review before commercial use of sensitive data or location data.
+## Regras de engenharia
+- Separar armazenamento e APIs públicas de dados de verificação.
+- Aplicar menor privilégio por serviço e função.
+- Minimizar dados enviados a integrações externas.
+- Definir retenção por classe antes da produção.
+- Registrar acesso administrativo a dados sensíveis.
+- Permitir correção, acesso, exportação e exclusão quando juridicamente aplicável.
+- Preservar dados necessários a obrigações legais/auditoria quando houver base jurídica, com retenção documentada.
+- Localização deve ser coletada somente quando necessária ao fluxo e com transparência adequada.
+- Consentimento não deve ser usado automaticamente como base jurídica para tudo; a base aplicável precisa ser definida com jurídico.
 
-This document must be updated when legal guidance is obtained.
+## Localização
+Origem/destino e localização operacional são dados sensíveis do ponto de vista de privacidade e devem possuir acesso restrito, retenção e exposição mínima.
+
+## Verificação
+Documentos brutos não devem circular entre clientes/providers. O produto expõe somente indicadores de verificação necessários.
+
+## Incidentes
+Falhas de segurança devem gerar registro, contenção, análise de impacto e fluxo de resposta compatível com requisitos legais.
+
+## Antes do lançamento comercial
+Revisar bases legais, avisos de privacidade, retenção, DPIA quando aplicável, contratos com operadores e requisitos específicos de localização/identidade.
