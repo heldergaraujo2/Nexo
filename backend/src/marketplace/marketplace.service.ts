@@ -8,6 +8,7 @@ import {
 import { createHash } from 'node:crypto';
 import { Pool, PoolClient } from 'pg';
 import { AuthPrincipal } from '../auth/auth.types';
+import { RideService } from '../ride/ride.service';
 import {
   CancelDto,
   CreateOfferDto,
@@ -19,7 +20,10 @@ type JsonObject = Record<string, unknown>;
 
 @Injectable()
 export class MarketplaceService {
-  constructor(@Inject(Pool) private readonly db: Pool) {}
+  constructor(
+    @Inject(Pool) private readonly db: Pool,
+    private readonly rides: RideService,
+  ) {}
 
   async setAvailability(user: AuthPrincipal, dto: MarketplaceAvailabilityDto) {
     this.assertProvider(user);
@@ -141,7 +145,7 @@ export class MarketplaceService {
       dto,
       async (client) => {
         const request = await client.query(
-          `SELECT id,customer_id,category,status FROM service_requests WHERE id=$1 FOR UPDATE`,
+          `SELECT id,customer_id,category,status,origin,destination FROM service_requests WHERE id=$1 FOR UPDATE`,
           [requestId],
         );
         const row = request.rows[0];
@@ -240,7 +244,7 @@ export class MarketplaceService {
       {},
       async (client) => {
         const request = await client.query(
-          `SELECT id,customer_id,category,status,matched_provider_id
+          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination
          FROM service_requests WHERE id=$1 FOR UPDATE`,
           [requestId],
         );
@@ -281,6 +285,15 @@ export class MarketplaceService {
          provider_id AS "providerId",category,status,created_at AS "createdAt"`,
           [requestId, offerId, row.customer_id, user.accountId, row.category],
         );
+        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+          await this.rides.createRideForService(
+            client,
+            service.rows[0].id,
+            row.category === 'passenger_car' ? 'car' : 'motorcycle',
+            row.origin,
+            row.destination,
+          );
+        }
         await client.query(
           `UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW()
          WHERE id=$3`,
@@ -377,6 +390,15 @@ export class MarketplaceService {
             row.currency,
           ],
         );
+        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+          await this.rides.createRideForService(
+            client,
+            service.rows[0].id,
+            row.category === 'passenger_car' ? 'car' : 'motorcycle',
+            requestRow.origin,
+            requestRow.destination,
+          );
+        }
         await client.query(
           `UPDATE offers SET status='accepted',updated_at=NOW() WHERE id=$1`,
           [offerId],
