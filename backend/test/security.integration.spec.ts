@@ -41,11 +41,11 @@ describe('operational safety integration',()=>{
   const created=await request(app,'/v1/security/vehicles','POST',{vehicleType:'car',make:'Marca',model:'Modelo',modelYear:2024,plateLast4:'AB12'},providerToken);
   expect(created.status).toBe(201); expect(created.body.status).toBe('pending_verification');
   const mine=await request(app,'/v1/security/vehicles','GET',undefined,providerToken);
-  expect(mine.status).toBe(200); expect(mine.body[0].plateLast4).toBe('AB12');
+  expect(mine.status).toBe(200); const vehicleRows = mine.body as unknown as Array<{plateLast4:string}>; expect(vehicleRows[0]?.plateLast4).toBe('AB12');
  });
  it('creates private verification cases and only publishes verified indicators',async()=>{
   const vehicle=await request(app,'/v1/security/vehicles','POST',{vehicleType:'car',make:'Marca',model:'Modelo'},providerToken);
-  const created=await request(app,'/v1/security/verifications','POST',{accountId:providerId,vehicleId:vehicle.body.id,verificationType:'vehicle'},adminToken);
+  const created=await request(app,'/v1/security/verifications','POST',{accountId:providerId,vehicleId:(vehicle.body as {id:string}).id,verificationType:'vehicle'},adminToken);
   expect(created.status).toBe(201);
   const reviewed=await request(app,`/v1/security/verifications/${created.body.id}`,'PUT',{status:'verified',resultSummary:'Validado'},adminToken);
   expect(reviewed.status).toBe(200);
