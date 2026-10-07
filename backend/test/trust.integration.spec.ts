@@ -87,7 +87,7 @@ describe('trust and reputation API integration', () => {
         customerEmail, providerEmail, adminEmail,
       ]);
       await db.query('DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3)) OR provider_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
-        customerEmail, providerEmail, adminEmail, customerEmail, providerEmail, adminEmail,
+        customerEmail, providerEmail, adminEmail,
       ]);
       await db.query('DELETE FROM accounts WHERE email IN ($1,$2,$3)', [
         customerEmail, providerEmail, adminEmail,
