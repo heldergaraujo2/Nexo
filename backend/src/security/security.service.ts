@@ -105,7 +105,7 @@ export class SecurityService {
         [dto.status,resolved?user.accountId:null,resolved,id],
       );
       await client.query('COMMIT');
-      await this.event(user.accountId,'fraud.reviewed','fraud_flag',id,'success',dto.status,{});
+      await this.event(user.accountId,'fraud.reviewed','fraud_flag',id,'success','info',{});
       return result.rows[0];
     } catch(e) { await client.query('ROLLBACK'); throw e; } finally { client.release(); }
   }
@@ -126,7 +126,7 @@ export class SecurityService {
       'INSERT INTO incident_cases (reporter_id,service_id,safety_report_id,category,severity,summary) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id,service_id AS "serviceId",safety_report_id AS "safetyReportId",category,severity,status,summary,created_at AS "createdAt"',
       [user.accountId,dto.serviceId ?? null,dto.safetyReportId ?? null,dto.category,dto.severity,dto.summary],
     );
-    await this.event(user.accountId,'incident.created','incident_case',result.rows[0].id,'success',dto.severity,{});
+    await this.event(user.accountId,'incident.created','incident_case',result.rows[0].id,'success',this.eventSeverity(dto.severity),{});
     return result.rows[0];
   }
 
@@ -154,7 +154,7 @@ export class SecurityService {
         [dto.status,dto.assignedTo ?? null,dto.resolution ?? null,resolved,id],
       );
       await client.query('COMMIT');
-      await this.event(user.accountId,'incident.updated','incident_case',id,'success',dto.status,{});
+      await this.event(user.accountId,'incident.updated','incident_case',id,'success','info',{});
       return result.rows[0];
     } catch(e) { await client.query('ROLLBACK'); throw e; } finally { client.release(); }
   }
@@ -174,6 +174,7 @@ export class SecurityService {
   }
   private assertProvider(user:AuthPrincipal) { if(user.role!=='provider') throw new ForbiddenException('Provider role required'); }
   private assertModerator(role:UserRole) { if(role!=='admin' && role!=='moderator') throw new ForbiddenException('Moderator role required'); }
+  private eventSeverity(value:string): 'info'|'warning'|'high'|'critical' { if(value==='critical'||value==='high') return value; if(value==='medium') return 'warning'; return 'info'; }
   private async event(actorId:string,eventType:string,resourceType:string,resourceId:string,outcome:string,severity:string,metadata:Record<string,unknown>) {
     await this.db.query(
       'INSERT INTO security_events (actor_id,event_type,resource_type,resource_id,outcome,severity,metadata) VALUES ($1,$2,$3,$4,$5,$6,$7)',
