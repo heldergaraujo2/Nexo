@@ -117,3 +117,10 @@ actor_id quando aplicável, tipo, recurso, recurso_id, ação, resultado, metada
 - Restrições únicas e foreign keys devem proteger invariantes críticas.
 - Mudanças de estado devem ocorrer em transação quando houver efeitos dependentes.
 - Snapshots de preço/tarifa devem preservar a regra usada no momento do aceite.
+
+
+## Delivery
+- Delivery 1:1 Service.
+- Delivery contém origem/destino, descrição do item, observações, metadados de mídia e estado operacional.
+- DeliveryEvent registra transições, ator, motivo e timestamp.
+- Preço permanece no Service/Offer conforme regras financeiras existentes; não é criado tarifário fixo de passageiros para entregas.
