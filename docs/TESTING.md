@@ -37,6 +37,16 @@ Toda mudança em regra de negócio deve executar a suíte correspondente e teste
 - expectedRouteVersion obsoleto é rejeitado.
 - Oferta com negociação de preço em categoria de passageiro é rejeitada.
 
+### Fase 5 — transporte de passageiros
+- Solicitação de carro calcula tarifa a R$2,00/km.
+- Solicitação de motocicleta calcula tarifa a R$1,50/km.
+- Distância permanece em metros e dinheiro em centavos.
+- Fluxo accepted → driver_en_route → arrived → started → completed é validado.
+- Cancelamento em estado iniciado é rejeitado.
+- Alteração de rota cria nova versão/snapshot.
+- expectedRouteVersion obsoleto é rejeitado.
+- Oferta com negociação de preço em categoria de passageiro é rejeitada.
+
 - Carro: distância zero, valores inteiros, decimais, arredondamento e limites.
 - Moto: mesmos cenários.
 - Tentativa de negociar preço de passageiro deve ser rejeitada.
