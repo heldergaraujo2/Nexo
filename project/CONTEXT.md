@@ -6,7 +6,9 @@
 Nexo é um marketplace multi-serviço mobile-first que conecta clientes a profissionais independentes.
 
 ## Estado atual
-FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.
+FASE 7 — SEGURANÇA OPERACIONAL.
+
+As Fases 0–6 estão concluídas. A Fase 6 adicionou registro financeiro por serviço para dinheiro, Pix e máquina própria do provider, com confirmação, disputa, auditoria, idempotência e proteção de preço concluído.
 
 As Fases 0–5 estão concluídas. A Fase 5 adicionou o fluxo de transporte de passageiros com solicitação, cálculo server-side de distância/tarifa, Ride, máquina de estados, snapshots de rota, alteração versionada, auditoria, idempotência e bloqueio de negociação livre.
 
@@ -37,4 +39,4 @@ Perfis, reputação bilateral, verificação de identidade/veículo, denúncias,
 Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speech para condução.
 
 ## Próxima fase
-FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.
+FASE 7 — SEGURANÇA OPERACIONAL.
