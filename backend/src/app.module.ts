@@ -8,6 +8,7 @@ import { TrustModule } from './trust/trust.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { RideModule } from './ride/ride.module';
 import { PaymentModule } from './payment/payment.module';
+import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PaymentModule } from './payment/payment.module';
     MarketplaceModule,
     RideModule,
     PaymentModule,
+    SecurityModule,
   ],
 })
 export class AppModule {}
