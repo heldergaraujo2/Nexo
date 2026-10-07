@@ -37,4 +37,4 @@ Perfis, reputação bilateral, verificação de identidade/veículo, denúncias,
 Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speech para condução.
 
 ## Próxima fase
-FASE 5 — PASSENGER TRANSPORT, após a conclusão da FASE 5 — PASSENGER TRANSPORT.
+FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.
