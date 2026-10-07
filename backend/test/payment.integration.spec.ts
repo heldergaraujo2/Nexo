@@ -47,10 +47,11 @@ describe('payments integration', () => {
     expect(payment.body.method).toBe('cash');
     expect(payment.body.status).toBe('pending');
     expect(payment.body.confirmedAmountCents).toBeNull();
-    const confirm = await request(app, `/v1/payment-records/${payment.body.id}/confirm`, 'POST', { confirmedAmountCents: payment.body.expectedAmountCents }, provider.token, randomUUID());
+    const expectedAmountCents = Number(payment.body.expectedAmountCents);
+    const confirm = await request(app, `/v1/payment-records/${payment.body.id}/confirm`, 'POST', { confirmedAmountCents: expectedAmountCents }, provider.token, randomUUID());
     expect(confirm.status, JSON.stringify(confirm.body)).toBe(200);
     expect(confirm.body.status).toBe('confirmed');
-    expect(confirm.body.confirmedAmountCents).toBe(payment.body.expectedAmountCents);
+    expect(confirm.body.confirmedAmountCents).toBe(expectedAmountCents);
   });
 
   it('rejects amount mismatch and card details', async () => {
