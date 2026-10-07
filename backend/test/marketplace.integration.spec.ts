@@ -28,22 +28,22 @@ describe('marketplace API integration', () => {
     if (db && users.length) {
       const placeholders = users.map((_, i) => '$' + (i + 1)).join(',');
       await db.query(
-        \`DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders}))\`,
+        `DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
         users,
       );
       await db.query(
-        \`DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders}))\`,
+        `DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
         users,
       );
       await db.query(
-        \`DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders}))\`,
+        `DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
         [...users, ...users],
       );
       await db.query(
-        \`DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (\${placeholders}))\`,
+        `DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
         users,
       );
-      await db.query(\`DELETE FROM accounts WHERE email IN (\${placeholders})\`, users);
+      await db.query(`DELETE FROM accounts WHERE email IN (${placeholders})`, users);
     }
     await app?.close();
   });
@@ -83,7 +83,7 @@ describe('marketplace API integration', () => {
 
     const matches = await request(
       app,
-      \`/v1/requests/\${created.body.id}/matches\`,
+      `/v1/requests/${created.body.id}/matches`,
       'GET',
       undefined,
       customer.token,
@@ -94,7 +94,7 @@ describe('marketplace API integration', () => {
     const acceptKey = randomUUID();
     const accepted = await request(
       app,
-      \`/v1/requests/\${created.body.id}/accept\`,
+      `/v1/requests/${created.body.id}/accept`,
       'POST',
       undefined,
       provider.token,
@@ -105,7 +105,7 @@ describe('marketplace API integration', () => {
 
     const acceptReplay = await request(
       app,
-      \`/v1/requests/\${created.body.id}/accept\`,
+      `/v1/requests/${created.body.id}/accept`,
       'POST',
       undefined,
       provider.token,
@@ -116,7 +116,7 @@ describe('marketplace API integration', () => {
 
     const service = await request(
       app,
-      \`/v1/services/\${accepted.body.id}\`,
+      `/v1/services/${accepted.body.id}`,
       'GET',
       undefined,
       customer.token,
@@ -149,7 +149,7 @@ describe('marketplace API integration', () => {
     const [a, b] = await Promise.all([
       request(
         app,
-        \`/v1/requests/\${created.body.id}/accept\`,
+        `/v1/requests/${created.body.id}/accept`,
         'POST',
         undefined,
         providerA.token,
@@ -157,7 +157,7 @@ describe('marketplace API integration', () => {
       ),
       request(
         app,
-        \`/v1/requests/\${created.body.id}/accept\`,
+        `/v1/requests/${created.body.id}/accept`,
         'POST',
         undefined,
         providerB.token,
@@ -189,7 +189,7 @@ describe('marketplace API integration', () => {
     );
     const offer = await request(
       app,
-      \`/v1/requests/\${created.body.id}/offers\`,
+      `/v1/requests/${created.body.id}/offers`,
       'POST',
       { offerType: 'priced_offer', amountCents: 2500, message: 'Can do this service' },
       provider.token,
@@ -199,7 +199,7 @@ describe('marketplace API integration', () => {
 
     const accepted = await request(
       app,
-      \`/v1/offers/\${offer.body.id}/accept\`,
+      `/v1/offers/${offer.body.id}/accept`,
       'POST',
       undefined,
       customer.token,
@@ -210,7 +210,7 @@ describe('marketplace API integration', () => {
 
     const started = await request(
       app,
-      \`/v1/services/\${accepted.body.id}/start\`,
+      `/v1/services/${accepted.body.id}/start`,
       'POST',
       undefined,
       provider.token,
@@ -221,7 +221,7 @@ describe('marketplace API integration', () => {
 
     const completed = await request(
       app,
-      \`/v1/services/\${accepted.body.id}/complete\`,
+      `/v1/services/${accepted.body.id}/complete`,
       'POST',
       undefined,
       provider.token,
@@ -256,12 +256,12 @@ describe('marketplace API integration', () => {
 });
 
 async function register(role: 'customer' | 'provider') {
-  const email = \`phase4-\${role}-\${randomUUID()}@example.test\`;
+  const email = `phase4-${role}-${randomUUID()}@example.test`;
   users.push(email);
   const response = await request(app, '/v1/auth/register', 'POST', {
     email,
     password: 'Strong-password-123',
-    displayName: \`Phase 4 \${role}\`,
+    displayName: `Phase 4 ${role}`,
     role,
   });
   expect(response.status).toBe(201);
@@ -290,11 +290,11 @@ async function request(
     throw new Error('Test server address unavailable');
   }
   const port = (address as AddressInfo).port;
-  const response = await fetch(\`http://127.0.0.1:\${port}\${path}\`, {
+  const response = await fetch(`http://127.0.0.1:${port}${path}`, {
     method,
     headers: {
       'content-type': 'application/json',
-      ...(token ? { authorization: \`Bearer \${token}\` } : {}),
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
       ...(idempotencyKey ? { 'idempotency-key': idempotencyKey } : {}),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
