@@ -37,7 +37,7 @@ describe('delivery integration',()=>{
    itemDescription:'Documentos',notes:'Não dobrar',
    media:[{objectKey:'delivery/test.jpg',mimeType:'image/jpeg',byteSize:1200,checksumSha256:'a'.repeat(64),caption:'Pacote'}],
   },customer.token,randomUUID());
-  expect(request.status).toBe(201); expect(request.body.category).toBe('delivery'); expect(request.body.requirements.media).toHaveLength(1);
+  expect(request.status).toBe(201); expect(request.body.category).toBe('delivery'); const requirements=request.body.requirements as {media:unknown[]}; expect(requirements.media).toHaveLength(1);
  });
  it('accepts delivery through marketplace and executes the delivery state machine',async()=>{
   const customer=await register('customer'); customerToken=customer.token;
