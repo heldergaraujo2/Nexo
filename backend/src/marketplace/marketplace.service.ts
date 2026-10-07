@@ -310,6 +310,106 @@ export class MarketplaceService {
     });
   }
 
+  async cancelRequest(
+    user: AuthPrincipal,
+    requestId: string,
+    idempotencyKey: string,
+    dto: CancelDto = {},
+  ) {
+    return this.withIdempotency(
+      user,
+      `request.cancel:${requestId}`,
+      idempotencyKey,
+      dto,
+      async (client) => {
+        const result = await client.query(
+          `SELECT id,customer_id,matched_provider_id,status
+           FROM service_requests WHERE id=$1 FOR UPDATE`,
+          [requestId],
+        );
+        const row = result.rows[0];
+        if (!row) throw new NotFoundException('Service request not found');
+        if (row.customer_id !== user.accountId && row.matched_provider_id !== user.accountId) {
+          throw new ForbiddenException('Request access denied');
+        }
+        if (!['open', 'matched'].includes(row.status)) {
+          throw new ConflictException('Request cannot be cancelled in its current state');
+        }
+        const updated = await client.query(
+          `UPDATE service_requests SET status='cancelled',updated_at=NOW()
+           WHERE id=$1
+           RETURNING id,status,updated_at AS "updatedAt"`,
+          [requestId],
+        );
+        const recipient = row.customer_id === user.accountId ? row.matched_provider_id : row.customer_id;
+        if (recipient) {
+          await this.notify(client, recipient, 'service_request.cancelled', {
+            requestId,
+            reason: dto.reason ?? null,
+          });
+        }
+        await this.audit(client, user.accountId, 'request.cancelled', 'service_request', requestId);
+        return { status: 200, body: updated.rows[0] };
+      },
+    );
+  }
+
+  async rejectOffer(
+    user: AuthPrincipal,
+    offerId: string,
+    idempotencyKey: string,
+  ) {
+    this.assertCustomer(user);
+    return this.withIdempotency(user, `offer.reject:${offerId}`, idempotencyKey, {}, async (client) => {
+      const result = await client.query(
+        `SELECT o.id,o.provider_id,o.request_id,o.status,r.customer_id,r.status AS request_status
+         FROM offers o JOIN service_requests r ON r.id=o.request_id
+         WHERE o.id=$1 FOR UPDATE OF o`,
+        [offerId],
+      );
+      const row = result.rows[0];
+      if (!row) throw new NotFoundException('Offer not found');
+      if (row.customer_id !== user.accountId) throw new ForbiddenException('Offer access denied');
+      if (!['created', 'sent'].includes(row.status)) {
+        throw new ConflictException('Offer cannot be rejected');
+      }
+      await client.query(
+        `UPDATE offers SET status='rejected',updated_at=NOW() WHERE id=$1`,
+        [offerId],
+      );
+      await this.audit(client, user.accountId, 'offer.rejected', 'offer', offerId);
+      return { status: 200, body: { id: offerId, status: 'rejected' } };
+    });
+  }
+
+  async withdrawOffer(
+    user: AuthPrincipal,
+    offerId: string,
+    idempotencyKey: string,
+  ) {
+    this.assertProvider(user);
+    return this.withIdempotency(user, `offer.withdraw:${offerId}`, idempotencyKey, {}, async (client) => {
+      const result = await client.query(
+        `SELECT o.id,o.provider_id,o.status,r.customer_id
+         FROM offers o JOIN service_requests r ON r.id=o.request_id
+         WHERE o.id=$1 FOR UPDATE OF o`,
+        [offerId],
+      );
+      const row = result.rows[0];
+      if (!row) throw new NotFoundException('Offer not found');
+      if (row.provider_id !== user.accountId) throw new ForbiddenException('Offer access denied');
+      if (!['created', 'sent'].includes(row.status)) {
+        throw new ConflictException('Offer cannot be withdrawn');
+      }
+      await client.query(
+        `UPDATE offers SET status='withdrawn',updated_at=NOW() WHERE id=$1`,
+        [offerId],
+      );
+      await this.audit(client, user.accountId, 'offer.withdrawn', 'offer', offerId);
+      return { status: 200, body: { id: offerId, status: 'withdrawn' } };
+    });
+  }
+
   async listOffers(user: AuthPrincipal, requestId: string) {
     const request = await this.getOwnedRequest(user, requestId);
     const result = await this.db.query(
