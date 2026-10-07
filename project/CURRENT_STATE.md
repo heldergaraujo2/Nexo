@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 1.4 — FASE 8 concluída / FASE 9 iniciada
+**Version:** 1.5 — FASE 10 em execução
 **Last updated:** 2026-10-07
 
 ## Phase
-**FASE 10 — GUINCHO/REBOQUE — PRÓXIMA**
+**FASE 10 — GUINCHO/REBOQUE**
 
 ## Fases concluídas
 - [x] FASE 0 — Governança e Especificação
@@ -18,32 +18,27 @@
 - [x] FASE 8 — Entregas
 - [x] FASE 9 — Carga e Frete Negociável
 
-## Fase 8 — entrega
+## Fase 9 — gate
+**APROVADO.** Negociação versionada, preço final persistido no Service, Offer real vinculado ao aceite, execução rastreável e proteção de autorização/idempotência.
+
+## Fase 10 — implementação
+- [x] solicitação de towing
 - [x] origem/destino
-- [x] descrição do item
-- [x] observações
-- [x] metadados de fotos/mídia com validação de tamanho, MIME e checksum
-- [x] solicitação de entrega
-- [x] matching/eligibilidade do marketplace
-- [x] ofertas com preço
-- [x] aceite da oferta
-- [x] criação de Delivery vinculada ao Service
-- [x] máquina accepted → provider_en_route → at_pickup → picked_up → in_transit → delivered
-- [x] cancelamento antes da entrega
-- [x] eventos/auditoria/notificações
-- [x] idempotência e locks transacionais
-- [x] proteção contra contorno pelo lifecycle genérico
-- [x] fluxo mobile inicial da solicitação
-- [x] testes de autorização, estados, API, banco e regressão
-- [x] CI backend/mobile aprovado; APK debug construído
+- [x] descrição do problema
+- [x] metadados de mídia
+- [x] oferta com preço
+- [x] aceite vinculado ao Service
+- [x] máquina dedicada de execução
+- [x] veículo verificado como pré-condição
+- [x] bloqueio entre participantes aplicado
+- [x] auditoria/notificações/idempotência
+- [x] testes de integração criados
 
-## Fase 8 — gate
-**APROVADO.** Uma entrega pode ser solicitada, receber oferta com preço, ser aceita, executada, concluída/cancelada com rastreabilidade e proteção de autorização/idempotência.
-
-## Próxima fase
-**FASE 9 — CARGA E FRETE NEGOCIÁVEL**
+## Próximo passo do gate
+CI completo, correções de regressão e auditoria final.
 
 ## Blockers
+
 Nenhum bloqueador conhecido.
 
 ## Known limitations
