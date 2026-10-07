@@ -1,6 +1,8 @@
 name: Nexo CI
+# Phase gate validation
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
   pull_request:

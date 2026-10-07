@@ -46,3 +46,6 @@
 
 ## 0.6.0 — FASE 3 em execução
 - Início da implementação da camada de confiança e reputação.
+
+## 0.6.x — Fase 3
+- Correções finais de tipagem, concorrência, limpeza de fixtures, máquina de estados de moderação e formatação aplicadas; aguardando gate final do CI.
