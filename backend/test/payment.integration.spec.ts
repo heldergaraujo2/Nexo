@@ -58,7 +58,7 @@ describe('payments integration', () => {
     const { customer, provider, serviceId } = await createCompletedService('passenger_car');
     const payment = await request(app, `/v1/payment-records/services/${serviceId}`, 'POST', { method: 'provider_card_machine', externalReference: 'POS-123' }, customer.token, randomUUID());
     expect(payment.status, JSON.stringify(payment.body)).toBe(201);
-    const mismatch = await request(app, `/v1/payment-records/${payment.body.id}/confirm`, 'POST', { confirmedAmountCents: payment.body.expectedAmountCents + 1 }, provider.token, randomUUID());
+    const mismatch = await request(app, `/v1/payment-records/${payment.body.id}/confirm`, 'POST', { confirmedAmountCents: (payment.body.expectedAmountCents as number) + 1 }, provider.token, randomUUID());
     expect(mismatch.status, JSON.stringify(mismatch.body)).toBe(409);
     const raw = await db.query('SELECT * FROM payment_records WHERE id=$1', [payment.body.id]);
     expect(raw.rows[0].card_number).toBeUndefined();
