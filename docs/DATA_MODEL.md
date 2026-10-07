@@ -51,7 +51,7 @@ service_id, peso/dimensões quando aplicável, descrição, mídia, negociação
 service_id, localização, destino quando aplicável, problema, mídia e dados operacionais.
 
 ### PaymentRecord
-service_id, método, valor esperado, valor confirmado, estado, timestamps e referência externa quando existir. Não armazena dados de cartão.
+service_id, método (`cash`, `pix`, `provider_card_machine`), valor esperado em centavos, valor confirmado em centavos, moeda, estado, ator/data de confirmação e referência externa opcional. Não armazena dados de cartão. Registro ativo único por serviço.
 
 ### Subscription
 provider_id, plano, preço contratado, estado, período atual, datas de renovação/cancelamento e referência do billing provider.
