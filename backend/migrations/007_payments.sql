@@ -39,7 +39,7 @@ CREATE INDEX IF NOT EXISTS idx_payment_records_provider_reference
   WHERE external_reference IS NOT NULL;
 
 CREATE OR REPLACE FUNCTION prevent_completed_service_price_change()
-RETURNS TRIGGER AS $
+RETURNS TRIGGER AS $function$
 BEGIN
   IF OLD.status = 'completed' AND (
     NEW.price_cents IS DISTINCT FROM OLD.price_cents OR
@@ -49,7 +49,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$ LANGUAGE plpgsql;
+$function$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS trg_completed_service_price_immutable ON services;
 CREATE TRIGGER trg_completed_service_price_immutable
