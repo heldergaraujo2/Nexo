@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { ProfileService } from './profile.service';
 import { UpdateProfileDto } from '../auth/dto';
@@ -7,7 +7,7 @@ import { UpdateProfileDto } from '../auth/dto';
 export class ProfileController {
   private readonly profiles: ProfileService;
 
-  constructor(profiles: ProfileService) {
+  constructor(@Inject(ProfileService) profiles: ProfileService) {
     this.profiles = profiles;
   }
 
