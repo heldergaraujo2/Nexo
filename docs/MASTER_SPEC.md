@@ -1,94 +1,82 @@
 # Nexo — Master Technical Specification
 
-**Status:** Draft foundation  
-**Version:** 0.1
+**Versão:** 1.0
+**Status:** FASE 0 — CONSOLIDADA PARA IMPLEMENTAÇÃO
 
-## 1. Product objective
-Build a trustworthy multi-service marketplace connecting customers and independent providers.
+## 1. Objetivo
+Nexo é um marketplace mobile-first que conecta clientes a profissionais independentes para transporte de passageiros, entregas, carga, guincho e futuras categorias.
 
-## 2. Actors
-- Customer/passenger
-- Provider/driver
-- Administrator/moderator
+## 2. Atores
+Customer/passenger, Provider/driver e Admin/moderator. Uma conta pode possuir capacidades compatíveis com mais de um contexto. Provider pode possuir múltiplos veículos.
 
-A future provider may own multiple vehicles.
+## 3. Produto e UX
+Fluxo: Need → Match → Trust → Contract → Pay → Rate → Repeat.
+O produto final prioriza Android/iOS. PC é ambiente de desenvolvimento e suporte administrativo. UX deve privilegiar touch, acessibilidade, conectividade intermitente, segurança e estados claros.
 
-## 3. Core domains
-- Identity and accounts
-- Profiles
-- Provider vehicles
-- Service requests
-- Offers and negotiation
-- Passenger rides
-- Deliveries
-- Cargo
-- Towing
-- Reputation
-- Media
-- Safety and moderation
-- Provider subscriptions
-- Payment method records
-- Administration
+## 4. Regras comerciais
+- Provider: R$99,90/mês.
+- 0% de comissão.
+- Provider mantém 100% do valor do serviço.
+- Carro: R$2,00/km.
+- Moto: R$1,50/km.
+- Passageiro não negocia livremente.
+- Carga/frete pode negociar.
+- Pagamentos iniciais: dinheiro, Pix e máquina própria do provider.
 
-## 4. Passenger pricing
-Initial rules:
-- Car: R$2.00/km
-- Motorcycle: R$1.50/km
+Os valores de tarifa são regras iniciais e dependem de validação econômica/regulatória antes do lançamento comercial.
 
-The exact calculation contract must define distance source, rounding, minimum fare if any, cancellation, route changes and exceptional cases before implementation.
+## 5. Arquitetura
+Monólito modular em Flutter + NestJS/TypeScript + PostgreSQL, com object storage e adapters para serviços externos. Ver ARCHITECTURE.md.
 
-## 5. Cargo
-Cargo requests may be negotiated. The domain must support offers, counteroffers, acceptance, rejection and an auditable negotiation history.
+## 6. Requisitos
+Ver REQUIREMENTS.md.
 
-## 6. Payments
-Initial payment methods:
-- cash
-- Pix
-- credit/debit card using provider's own card machine
+## 7. Modelo de dados
+Ver DATA_MODEL.md.
 
-The first release may record payment method and completion status without becoming the card processor.
+## 8. Estados
+Ver STATE_MACHINES.md.
 
-## 7. Monetization
-Provider subscription: R$99.90/month. No percentage commission on completed services.
+## 9. Preço de passageiros
+O servidor determina distância e tarifa. O valor é armazenado em centavos como snapshot.
+Fórmula inicial: valor = distância em km × tarifa por km.
+Internamente, distância deve ser representada em metros e a política de arredondamento deve ser fechada na Fase 1 antes da implementação comercial.
 
-The subscription domain must support trial, activation, renewal, cancellation, failed payment and suspension rules when billing is implemented.
+## 10. Carga
+Oferta/contraproposta com versão, autor, valor, validade e estado. Aceite congela o preço e gera auditoria.
 
-## 8. Profiles and media
-Both customers and providers have profiles. Media may include photos/videos with captions. Public profile data must be separated from private identity/document data. Media must support moderation and reporting.
+## 11. Pagamentos
+Nexo registra método e confirmação operacional. Não armazena PAN/CVV nem processa diretamente cartões. Referências externas são armazenadas apenas quando necessárias.
 
-## 9. Reputation
-Bilateral ratings/comments after eligible completed services. Anti-abuse rules must address spam, retaliation, manipulation and fraudulent ratings.
+## 12. Assinatura
+Subscription é independente de Service. Suporta ativação, trial se aprovado, renovação, falha, inadimplência, suspensão e cancelamento.
 
-## 10. Trust and safety
-Identity and vehicle verification, reporting, blocking, emergency-related flows, location sharing where appropriate, fraud prevention and audit events are architectural concerns.
+## 13. Reputação
+Somente serviços elegíveis e concluídos. Uma avaliação por autor/contraparte/serviço. Moderação é auditável.
 
-## 11. Privacy
-Personal/document data must be access-controlled and minimized. LGPD requirements must be reflected in data lifecycle, consent/notice where applicable, retention and deletion workflows. Legal validation is required before commercial launch.
+## 14. Mídia
+Upload controlado, validação, object storage privado, URLs temporárias, moderação e denúncia.
 
-## 12. Administration
-Admin capabilities include users, providers, vehicles, verification, services, subscriptions, complaints, reports, ratings, moderation, disputes and metrics.
+## 15. Segurança e LGPD
+Menor privilégio, autorização por recurso, minimização, segregação de dados privados, criptografia apropriada, auditoria, retenção definida antes da produção e revisão jurídica.
 
-## 13. Non-functional requirements
-- Security by design
-- Auditability of important state changes
-- Testability of business rules
-- Observability
-- Availability appropriate to the launch stage
-- Data minimization
-- Clear authorization boundaries
-- Scalable service boundaries without premature complexity
+## 16. API
+API /v1 REST/JSON, contratos de erro, paginação, idempotência e autorização server-side. Ver API.md.
 
-## 14. Explicit exclusions
-Nexo Live, live streaming, hands-free driving interaction, live camera ingestion, speech-to-text/text-to-speech for driving, and Live-specific consent/moderation infrastructure are excluded from the current scope.
+## 17. Observabilidade
+Logs estruturados sem PII desnecessária, correlation/request IDs, métricas, health checks, alertas e rastreabilidade de operações críticas.
 
-## 15. Open questions before implementation
-- Technology stack
-- Distance calculation provider
-- Exact fare rounding/minimum/cancellation rules
-- Subscription billing provider
-- Identity verification provider
-- Vehicle verification process
-- Media storage and moderation provider
-- Emergency workflow
-- Initial launch geography
-- Regulatory requirements by municipality/state
+## 18. Testes
+Unit, integração, API, segurança, E2E, mobile, regressão, concorrência e idempotência. Ver TESTING.md.
+
+## 19. Infraestrutura
+Ver INFRASTRUCTURE.md.
+
+## 20. Administração
+Acesso mínimo para suporte, verificação, moderação, denúncias, bloqueios, disputas e métricas. Ações sensíveis auditadas.
+
+## 21. Fora do escopo
+Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speech para condução.
+
+## 22. Gate
+Ver ACCEPTANCE.md. A aprovação autoriza o início da Fase 1, mas não a inicia automaticamente.
