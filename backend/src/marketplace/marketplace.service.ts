@@ -248,16 +248,24 @@ export class MarketplaceService {
     this.assertCustomer(user);
     return this.withIdempotency(user, `offer.accept:${offerId}`, idempotencyKey, {}, async (client) => {
       const offerResult = await client.query(
-        `SELECT o.id,o.request_id,o.provider_id,o.offer_type,o.amount_cents,o.currency,
+        `SELECT o.id,o.request_id,o.provider_id,o.offer_type,o.amount_cents,o.currency,o.status,
                 r.customer_id,r.category,r.status AS request_status
          FROM offers o JOIN service_requests r ON r.id=o.request_id
-         WHERE o.id=$1 FOR UPDATE`,
+         WHERE o.id=$1 FOR UPDATE OF o`,
         [offerId],
       );
       const row = offerResult.rows[0];
       if (!row) throw new NotFoundException('Offer not found');
       if (row.customer_id !== user.accountId) throw new ForbiddenException('Offer access denied');
-      if (!['created', 'sent'].includes(row.status ?? 'sent') || !['open','matched'].includes(row.request_status)) {
+      const lockedRequest = await client.query(
+        'SELECT id,customer_id,category,status FROM service_requests WHERE id=$1 FOR UPDATE',
+        [row.request_id],
+      );
+      const requestRow = lockedRequest.rows[0];
+      if (!requestRow || requestRow.customer_id !== user.accountId) {
+        throw new ForbiddenException('Request access denied');
+      }
+      if (!['created', 'sent'].includes(row.status) || !['open', 'matched'].includes(requestRow.status)) {
         throw new ConflictException('Offer is not available for acceptance');
       }
 
@@ -499,6 +507,9 @@ export class MarketplaceService {
     const client = await this.db.connect();
     try {
       await client.query('BEGIN');
+      await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [
+        `${user.accountId}:${operation}:${key}`,
+      ]);
       const existing = await client.query(
         `SELECT request_hash AS "requestHash",response_status AS "responseStatus",response_body AS "responseBody"
          FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE`,
