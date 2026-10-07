@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Pool } from 'pg';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomUUID } from 'node:crypto';
 import { AddressInfo } from 'node:net';
 import { AppModule } from '../src/app.module';
@@ -77,18 +77,22 @@ describe('trust and reputation API integration', () => {
 
   afterAll(async () => {
     if (db) {
-      await db.query('DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
-        customerEmail, providerEmail, adminEmail,
-      ]);
-      await db.query('DELETE FROM safety_reports WHERE reporter_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
-        customerEmail, providerEmail, adminEmail,
-      ]);
-      await db.query('DELETE FROM ratings WHERE author_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
-        customerEmail, providerEmail, adminEmail,
-      ]);
-      await db.query('DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3)) OR provider_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
-        customerEmail, providerEmail, adminEmail,
-      ]);
+      await db.query(
+        'DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))',
+        [customerEmail, providerEmail, adminEmail],
+      );
+      await db.query(
+        'DELETE FROM safety_reports WHERE reporter_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))',
+        [customerEmail, providerEmail, adminEmail],
+      );
+      await db.query(
+        'DELETE FROM ratings WHERE author_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))',
+        [customerEmail, providerEmail, adminEmail],
+      );
+      await db.query(
+        'DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3)) OR provider_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))',
+        [customerEmail, providerEmail, adminEmail],
+      );
       await db.query('DELETE FROM accounts WHERE email IN ($1,$2,$3)', [
         customerEmail, providerEmail, adminEmail,
       ]);
@@ -133,11 +137,17 @@ describe('trust and reputation API integration', () => {
     );
     const otherRow = other.rows[0];
     if (!otherRow) throw new Error('Secondary service fixture was not created');
-    const response = await request(app, '/v1/ratings', 'POST', {
-      serviceId: otherRow.id,
-      subjectId: customerId,
-      score: 5,
-    }, customerToken);
+    const response = await request(
+      app,
+      '/v1/ratings',
+      'POST',
+      {
+        serviceId: otherRow.id,
+        subjectId: customerId,
+        score: 5,
+      },
+      customerToken,
+    );
     expect(response.status).toBe(403);
   });
 
@@ -149,7 +159,9 @@ describe('trust and reputation API integration', () => {
 
     const favorites = await request(app, '/v1/me/favorites', 'GET', undefined, customerToken);
     expect(favorites.status).toBe(200);
-    const favoriteRows = favorites.body as unknown as Array<{ accountId: string }>;
+    const favoriteRows = favorites.body as unknown as Array<{
+      accountId: string;
+    }>;
     expect(favoriteRows[0]?.accountId).toBe(providerId);
 
     const block = await request(app, `/v1/safety/blocks/${providerId}`, 'POST', undefined, customerToken);
@@ -168,14 +180,26 @@ describe('trust and reputation API integration', () => {
 
   it('rejects concurrent duplicate ratings through the database uniqueness constraint', async () => {
     const concurrentService = await db.query<{ id: string }>(
-      'INSERT INTO services (customer_id,provider_id,category,status,completed_at) VALUES ($1,$2,$3,\'completed\',NOW()) RETURNING id',
+      "INSERT INTO services (customer_id,provider_id,category,status,completed_at) VALUES ($1,$2,$3,'completed',NOW()) RETURNING id",
       [customerId, providerId, 'passenger_transport'],
     );
     const concurrentRow = concurrentService.rows[0];
     if (!concurrentRow) throw new Error('Concurrent service fixture was not created');
     const responses = await Promise.all([
-      request(app, '/v1/ratings', 'POST', { serviceId: concurrentRow.id, subjectId: providerId, score: 5 }, customerToken),
-      request(app, '/v1/ratings', 'POST', { serviceId: concurrentRow.id, subjectId: providerId, score: 5 }, customerToken),
+      request(
+        app,
+        '/v1/ratings',
+        'POST',
+        { serviceId: concurrentRow.id, subjectId: providerId, score: 5 },
+        customerToken,
+      ),
+      request(
+        app,
+        '/v1/ratings',
+        'POST',
+        { serviceId: concurrentRow.id, subjectId: providerId, score: 5 },
+        customerToken,
+      ),
     ]);
     expect(responses.map((response) => response.status).sort()).toEqual([201, 409]);
   });
