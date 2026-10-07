@@ -31,6 +31,13 @@ Rate limits por identidade/IP conforme risco, proteção contra enumeração, pa
 ## Concorrência
 Aceite, negociação, pagamento e assinatura usam transação, constraints ou versionamento otimista conforme o caso.
 
+## Pagamentos
+- Nexo não recebe nem armazena PAN, CVV ou credenciais de cartão.
+- O método de cartão é apenas `provider_card_machine`, representando uso da máquina própria do profissional.
+- Confirmação é autorizada somente ao provider vinculado ao serviço.
+- Valor confirmado deve ser exatamente igual ao preço server-side persistido.
+- Idempotency-Key protege criação, confirmação e disputa.
+
 ## Auditoria
 Registrar ator, ação, recurso, resultado, correlation ID e metadata mínima. Nunca registrar senha, token, CVV ou dados sensíveis desnecessários.
 
