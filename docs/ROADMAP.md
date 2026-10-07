@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 4 CONCLUÍDA — FASE 5 EM EXECUÇÃO  
+**Status:** FASE 5 CONCLUÍDA — FASE 6 PRÓXIMA  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -122,23 +122,26 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 5 — Transporte de Passageiros
+**Status:** CONCLUÍDA
 **Objetivo:** lançar o primeiro fluxo de mobilidade com regras de preço definidas.
 
-**Entregas**
-- [ ] origem/destino
-- [ ] cálculo de distância
-- [ ] categoria carro
-- [ ] categoria motocicleta
-- [ ] tarifa carro: R$2,00/km
-- [ ] tarifa motocicleta: R$1,50/km
-- [ ] regras de arredondamento
-- [ ] regras de cancelamento
-- [ ] alterações de rota
-- [ ] início da viagem
-- [ ] conclusão
-- [ ] histórico da viagem
+**Entregas — CONCLUÍDAS**
+- [x] origem/destino
+- [x] cálculo de distância server-side em metros
+- [x] categoria carro
+- [x] categoria motocicleta
+- [x] tarifa carro: R$2,00/km
+- [x] tarifa motocicleta: R$1,50/km
+- [x] arredondamento half-up em centavos
+- [x] regras de cancelamento e máquina de estados
+- [x] alterações de rota com snapshot/versionamento
+- [x] início da viagem
+- [x] conclusão
+- [x] histórico operacional e auditoria
+- [x] bloqueio de negociação livre para passageiro
+- [x] CI backend/mobile aprovado
 
-**Gate:** uma viagem pode ser solicitada, aceita, executada, concluída e registrada com preço calculado de forma determinística.
+**Gate:** APROVADO — viagem solicitada, aceita, executada e concluída com preço determinístico server-side, além de alterações de rota versionadas.
 
 ---
 
