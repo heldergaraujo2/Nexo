@@ -9,6 +9,7 @@ import { Pool, PoolClient } from 'pg';
 import { createHash } from 'node:crypto';
 import { AuthPrincipal } from '../auth/auth.types';
 import { CreatePassengerRideDto, ChangeRideRouteDto } from './dto';
+import { Coordinate, HaversineDistanceAdapter } from './distance.adapter';
 
 type JsonObject = Record<string, unknown>;
 
@@ -18,7 +19,10 @@ const TARIFF_CENTS_PER_KM = { car: 200, motorcycle: 150 } as const;
 
 @Injectable()
 export class RideService {
-  constructor(@Inject(Pool) private readonly db: Pool) {}
+  constructor(
+    @Inject(Pool) private readonly db: Pool,
+    private readonly distanceAdapter: HaversineDistanceAdapter,
+  ) {}
 
   async createRequest(user: AuthPrincipal, dto: CreatePassengerRideDto, key: string) {
     if (user.role !== 'customer') throw new ForbiddenException('Customer role required');
