@@ -66,7 +66,7 @@ describe('payments integration', () => {
   });
 
   it('enforces ownership and idempotency', async () => {
-    const { customer, provider, serviceId } = await createCompletedService('passenger_car');
+    const { customer, serviceId } = await createCompletedService('passenger_car');
     const key = randomUUID();
     const first = await request(app, `/v1/payment-records/services/${serviceId}`, 'POST', { method: 'pix' }, customer.token, key);
     expect(first.status).toBe(201);
