@@ -6,13 +6,15 @@ import { randomUUID } from 'node:crypto';
 import { AddressInfo } from 'node:net';
 import { AppModule } from '../src/app.module';
 
+let app: INestApplication;
+const emails: string[] = [];
+
 process.env.NODE_ENV='test';
 process.env.AUTH_TOKEN_SECRET='01234567890123456789012345678901';
 process.env.DATABASE_URL ??='postgresql://nexo:nexo@localhost:5432/nexo';
 
 describe('delivery integration',()=>{
- let app:INestApplication; let db:Pool; let customerToken:string; let providerToken:string; const emails:string[]=[];
- beforeAll(async()=>{
+ let db:Pool; let customerToken:string; let providerToken:string; beforeAll(async()=>{
   const ref=await Test.createTestingModule({imports:[AppModule]}).compile();
   app=ref.createNestApplication(); app.setGlobalPrefix('v1'); await app.init(); await app.listen(0,'127.0.0.1'); db=ref.get(Pool);
  });
@@ -79,5 +81,5 @@ async function register(role:'customer'|'provider'){
 async function call(path:string,method:string,body?:unknown,token?:string,key?:string){
  const address=app.getHttpServer().address(); if(!address||typeof address==='string')throw new Error('Test server address unavailable');
  const response=await fetch(`http://127.0.0.1:${(address as AddressInfo).port}${path}`,{method,headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}:{}),...(key?{'idempotency-key':key}:{})},body:body===undefined?undefined:JSON.stringify(body)});
- return {status:response.status,body:await response.json() as Record<string,any>};
+ return {status:response.status,body:await response.json() as Record<string,unknown>};
 }
