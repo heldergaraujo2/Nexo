@@ -43,6 +43,49 @@ class NexoHomePage extends StatelessWidget {
       );
 }
 
+class SubscriptionPage extends StatefulWidget {
+  const SubscriptionPage({super.key});
+  @override
+  State<SubscriptionPage> createState() => _SubscriptionPageState();
+}
+
+class _SubscriptionPageState extends State<SubscriptionPage> {
+  bool _cancelAtPeriodEnd = false;
+  String _status = 'active';
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Assinatura profissional')),
+        body: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            Text('Nexo Profissional', style: Theme.of(context).textTheme.headlineSmall),
+            const SizedBox(height: 8),
+            Text('R\$ 99,90 / mês', style: Theme.of(context).textTheme.headlineMedium),
+            const SizedBox(height: 8),
+            const Text('0% de comissão. Você mantém 100% do valor dos serviços.'),
+            const SizedBox(height: 24),
+            ListTile(title: const Text('Status'), trailing: Text(_status)),
+            SwitchListTile(
+              title: const Text('Cancelar ao fim do período'),
+              subtitle: const Text('O acesso permanece ativo até a data de renovação.'),
+              value: _cancelAtPeriodEnd,
+              onChanged: _status == 'active' ? (v) => setState(() => _cancelAtPeriodEnd = v) : null,
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: _status == 'active' ? () => setState(() => _cancelAtPeriodEnd = true) : null,
+              child: const Text('Salvar cancelamento'),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: _status == 'cancelled' ? () => setState(() { _status = 'active'; _cancelAtPeriodEnd = false; }) : null,
+              child: const Text('Renovar assinatura'),
+            ),
+          ],
+        ),
+      );
+}
+
 class PaymentRecordPage extends StatefulWidget {
   const PaymentRecordPage({super.key, required this.expectedAmountCents});
   final int expectedAmountCents;
