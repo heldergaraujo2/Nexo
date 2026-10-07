@@ -66,3 +66,17 @@
 
 ## 0.8.0 — FASE 4 em execução
 - Marketplace Core implementado em branch de validação; primeiro CI encontrou falhas de typecheck, fixture/DI, envelope HTTP e consulta de matching/dinheiro e lint, corrigidas antes do próximo gate. Canonical Prettier output applied; temporary formatter command restored and CI-redacted test fixtures repaired.
+
+## 0.9.0 — FASE 4 concluída / FASE 5 iniciada
+### FASE 4
+- ServiceRequest, matching, disponibilidade, ofertas e aceite implementados.
+- Vínculo ServiceRequest → Service protegido por unicidade 1:1.
+- Estados, cancelamento, conclusão, histórico, notificações e auditoria implementados.
+- Idempotência e concorrência validadas por testes de integração.
+- CI final aprovado: backend e mobile verdes; APK debug construído.
+
+### Gate
+**APROVADO.** FASE 4 concluída.
+
+### Next
+**FASE 5 — PASSENGER TRANSPORT.**
