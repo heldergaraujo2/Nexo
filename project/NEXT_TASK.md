@@ -1,6 +1,8 @@
 # Nexo — Next Task
 
 ## Current objective
+
+CI gate validation branch for final Fase 3 verification.
 Concluir a **FASE 3 — CONFIANÇA E REPUTAÇÃO** com avaliações, favoritos, denúncias, bloqueios, indicadores de verificação, regras antiabuso e moderação inicial.
 
 ## FASE 3 — entregas
