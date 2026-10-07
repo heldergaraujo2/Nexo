@@ -77,10 +77,20 @@ describe('trust and reputation API integration', () => {
 
   afterAll(async () => {
     if (db) {
+      await db.query('DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
+        customerEmail, providerEmail, adminEmail,
+      ]);
+      await db.query('DELETE FROM safety_reports WHERE reporter_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
+        customerEmail, providerEmail, adminEmail,
+      ]);
+      await db.query('DELETE FROM ratings WHERE author_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
+        customerEmail, providerEmail, adminEmail,
+      ]);
+      await db.query('DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3)) OR provider_id IN (SELECT id FROM accounts WHERE email IN ($1,$2,$3))', [
+        customerEmail, providerEmail, adminEmail, customerEmail, providerEmail, adminEmail,
+      ]);
       await db.query('DELETE FROM accounts WHERE email IN ($1,$2,$3)', [
-        customerEmail,
-        providerEmail,
-        adminEmail,
+        customerEmail, providerEmail, adminEmail,
       ]);
     }
     await app?.close();
@@ -124,7 +134,7 @@ describe('trust and reputation API integration', () => {
     const otherRow = other.rows[0];
     if (!otherRow) throw new Error('Secondary service fixture was not created');
     const response = await request(app, '/v1/ratings', 'POST', {
-      serviceId: other.rows[0]?.id ?? '',
+      serviceId: otherRow.id,
       subjectId: customerId,
       score: 5,
     }, customerToken);
@@ -154,6 +164,18 @@ describe('trust and reputation API integration', () => {
       description: 'Teste de denúncia',
     }, customerToken);
     expect(report.status).toBe(201);
+  });
+
+  it('rejects concurrent duplicate ratings through the database uniqueness constraint', async () => {
+    const responses = await Promise.all([
+      request(app, '/v1/ratings', 'POST', {
+        serviceId, subjectId: providerId, score: 5,
+      }, customerToken),
+      request(app, '/v1/ratings', 'POST', {
+        serviceId, subjectId: providerId, score: 5,
+      }, customerToken),
+    ]);
+    expect(responses.map((response) => response.status).sort()).toEqual([409, 409]);
   });
 
   it('protects moderation and exposes only verified public indicators', async () => {
