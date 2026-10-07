@@ -107,6 +107,37 @@ class _PaymentRecordPageState extends State<PaymentRecordPage> {
       );
 }
 
+class SubscriptionPage extends StatefulWidget {
+  const SubscriptionPage({super.key});
+  @override
+  State<SubscriptionPage> createState() => _SubscriptionPageState();
+}
+class _SubscriptionPageState extends State<SubscriptionPage> {
+  String _status = 'Pendente';
+  void _activate() => setState(() => _status = 'Ativa');
+  void _cancel() => setState(() => _status = 'Cancelada');
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('Assinatura profissional')),
+    body: ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        Text('Plano Profissional', style: Theme.of(context).textTheme.headlineSmall),
+        const SizedBox(height: 8),
+        const Text('R$ 99,90 por mês'),
+        const SizedBox(height: 8),
+        Text('Status: $_status'),
+        const SizedBox(height: 16),
+        const Text('0% de comissão. Você mantém 100% do valor dos serviços.'),
+        const SizedBox(height: 24),
+        FilledButton(onPressed: _status == 'Ativa' ? null : _activate, child: const Text('Ativar assinatura')),
+        const SizedBox(height: 12),
+        OutlinedButton(onPressed: _status == 'Cancelada' ? null : _cancel, child: const Text('Cancelar assinatura')),
+      ],
+    ),
+  );
+}
+
 class DeliveryRequestPage extends StatefulWidget {
   const DeliveryRequestPage({super.key});
   @override
