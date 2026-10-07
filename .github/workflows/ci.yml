@@ -55,6 +55,8 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/004_trust_reputation.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/005_marketplace_core.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/006_passenger_transport.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/007_payments.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/007_payments.sql
       - run: npm run typecheck
       - run: npm test
       - run: npm run build

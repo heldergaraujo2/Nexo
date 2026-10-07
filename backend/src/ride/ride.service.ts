@@ -191,6 +191,10 @@ export class RideService {
         [o,d,distanceMeters,fareCents,version,rideId],
       );
       await client.query(
+        `UPDATE services SET price_cents=$1,currency=$2,updated_at=NOW() WHERE id=$3`,
+        [fareCents, row.currency, row.service_id],
+      );
+      await client.query(
         `INSERT INTO ride_route_snapshots (ride_id,version,origin,destination,distance_meters,tariff_cents_per_km,fare_cents,currency,reason)
          VALUES ($1,$2,$3,$4,$5,$6,$7,'BRL','route_change')`,
         [rideId,version,o,d,distanceMeters,tariff,fareCents],

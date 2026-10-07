@@ -52,6 +52,15 @@
 /v1/media — upload/moderação.
 /v1/subscriptions — assinatura.
 /v1/payment-records — registro de pagamento.
+
+### Payment recording
+- POST /v1/payment-records/services/:serviceId — customer registra método de pagamento para serviço concluído.
+- GET /v1/payment-records/services/:serviceId — customer/provider consulta histórico financeiro do serviço.
+- GET /v1/payment-records/:paymentId — consulta um registro com ownership.
+- POST /v1/payment-records/:paymentId/confirm — provider confirma valor operacionalmente.
+- POST /v1/payment-records/:paymentId/dispute — customer/provider registra disputa antes da confirmação.
+
+Métodos iniciais: `cash`, `pix`, `provider_card_machine`. O Nexo não processa cartão nem armazena número, CVV ou dados equivalentes.
 /v1/safety — denúncias e bloqueios.
 /v1/admin — administração autorizada.
 

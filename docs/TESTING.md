@@ -27,6 +27,18 @@ Toda mudança em regra de negócio deve executar a suíte correspondente e teste
 
 ## Casos obrigatórios de domínio
 
+### Fase 6 — pagamentos e registro financeiro
+- Serviço incompleto não aceita registro de pagamento.
+- Métodos permitidos são dinheiro, Pix e máquina própria do provider.
+- Confirmar valor diferente do snapshot é rejeitado.
+- Somente provider vinculado confirma pagamento.
+- Customer/provider sem relação não acessa pagamento.
+- Repetição com mesma Idempotency-Key retorna o mesmo registro.
+- Mesma chave com payload diferente é rejeitada.
+- Nenhum campo de cartão é persistido.
+- Preço de serviço concluído não pode ser alterado no banco.
+- Disputa não permite confirmação de valor divergente.
+
 ### Fase 5 — transporte de passageiros
 - Solicitação de carro calcula tarifa a R$2,00/km.
 - Solicitação de motocicleta calcula tarifa a R$1,50/km.

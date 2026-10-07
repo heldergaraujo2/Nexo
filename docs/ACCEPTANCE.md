@@ -52,3 +52,23 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 
 ### Resultado
 **FASE 5 APROVADA.** Próximo gate: FASE 6 — Pagamentos e Registro Financeiro.
+
+
+## Critérios de Aceitação da FASE 6
+
+### Gate técnico
+- [x] métodos dinheiro, Pix e máquina própria do provider registrados;
+- [x] PaymentRecord vinculado ao Service;
+- [x] valor esperado deriva do snapshot de preço do serviço;
+- [x] valor confirmado divergente é rejeitado;
+- [x] confirmação pertence somente ao provider do serviço;
+- [x] customer/provider sem relação não acessa o registro;
+- [x] idempotência e concorrência são protegidas por transação/lock;
+- [x] auditoria registra criação, confirmação e disputa;
+- [x] nenhum dado de cartão é armazenado;
+- [x] trigger impede alteração de preço após conclusão;
+- [x] fluxo mobile apresenta os métodos e bloqueia valor divergente;
+- [ ] CI final verde — aguardando execução final da branch.
+
+### Resultado
+**EM VALIDAÇÃO.** O gate somente será aprovado após CI final verde.

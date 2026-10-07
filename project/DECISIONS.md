@@ -85,3 +85,8 @@ The generic marketplace owns request, matching, offer/acceptance, service lifecy
 ## DEC-021 — Passenger ride pricing and route snapshots
 **Status:** ACCEPTED
 Passenger rides use server-authoritative distance in meters and integer-cent pricing. Car is R$2.00/km and motorcycle is R$1.50/km. Route changes require an expected route version, a new server-side calculation and a new immutable route snapshot/event. Free price negotiation remains prohibited for passenger transport.
+
+
+## DEC-022 — Initial payment recording boundary
+**Status:** ACCEPTED FOR PHASE 6
+Nexo records cash, Pix and card-machine confirmation without processing cards or storing card credentials. Payment confirmation must equal the immutable service price snapshot; mismatches are rejected and may be disputed before confirmation. Payment records are linked to the service and protected by ownership, idempotency and transactional locking.

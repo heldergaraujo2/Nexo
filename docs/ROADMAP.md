@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 5 CONCLUÍDA — FASE 6 PRÓXIMA  
+**Status:** FASE 6 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -146,6 +146,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 6 — Pagamentos e Registro Financeiro
+**Status:** EM EXECUÇÃO
 **Objetivo:** registrar como o serviço foi pago sem transformar o Nexo inicialmente em processador de pagamentos.
 
 **Entregas**
@@ -154,7 +155,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [ ] cartão na máquina do próprio profissional
 - [ ] registro do método
 - [ ] confirmação de pagamento
-- [ ] histórico financeiro da operação
+- [x] histórico financeiro da operação
 - [ ] regras de divergência
 - [ ] recibos/comprovantes quando aplicável
 
