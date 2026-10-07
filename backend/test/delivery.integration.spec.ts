@@ -31,7 +31,7 @@ describe('delivery integration',()=>{
   await app?.close();
  });
  it('creates a delivery request with item, route, notes and media metadata',async()=>{
-  const customer=await register('customer'); customerToken=customer.token;
+  const customer=await register('customer');
   const request=await call('/v1/deliveries/requests','POST',{
    origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},
    itemDescription:'Documentos',notes:'Não dobrar',
@@ -51,8 +51,8 @@ describe('delivery integration',()=>{
   expect(accepted.status).toBe(201); expect(accepted.body.priceCents).toBe(2500);
  });
  it('accepts delivery through marketplace and executes the delivery state machine',async()=>{
-  const customer=await register('customer'); customerToken=customer.token;
-  const provider=await register('provider'); providerToken=provider.token;
+  const customer=await register('customer');
+  const provider=await register('provider');
   await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
   const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pequeno pacote'},customer.token,randomUUID());
   expect(created.status).toBe(201);
