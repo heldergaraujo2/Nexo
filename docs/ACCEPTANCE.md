@@ -68,7 +68,25 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 - [x] nenhum dado de cartão é armazenado;
 - [x] trigger impede alteração de preço após conclusão;
 - [x] fluxo mobile apresenta os métodos e bloqueia valor divergente;
-- [x] CI final verde — run 245: backend e mobile aprovados, incluindo APK debug.
+- [x] CI final verde — run 256: backend e mobile aprovados, incluindo APK debug.
 
 ### Resultado
 **APROVADO. FASE 6 concluída.** Próximo gate: FASE 7 — Segurança Operacional.
+
+
+## Critérios de Aceitação da FASE 7
+
+### Gate técnico
+- [x] veículo pode ser cadastrado pelo provider e permanece pendente até revisão;
+- [x] casos de identidade/veículo são privados;
+- [x] verificação de veículo valida ownership;
+- [x] somente verificação confirmada produz indicador público;
+- [x] eventos de segurança são auditáveis;
+- [x] flags antifraude possuem revisão/encerramento;
+- [x] incidentes possuem fluxo de estado validado;
+- [x] autorização horizontal/vertical foi testada;
+- [x] migrations 001–008 são aplicadas;
+- [x] CI run 265 passou backend e mobile, incluindo APK debug.
+
+### Resultado
+**APROVADO. FASE 7 concluída.** Próximo gate: FASE 8 — Entregas.
