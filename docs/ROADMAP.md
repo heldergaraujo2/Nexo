@@ -1,157 +1,333 @@
-# Nexo — Roadmap v0.5
+# Nexo — Roadmap de Desenvolvimento por Fases
 
-**Status:** Planning / Product Architecture
+**Versão:** 1.0  
+**Status:** Planejamento estruturado  
+**Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
-## Vision
-Nexo connects people who need a service with professionals capable of providing it.
+## Objetivo
 
-## Core model
-Request → Connection → Offer → Conversation → Acceptance → Execution → Completion → Rating.
+Desenvolver o Nexo de forma incremental e segura, reduzindo risco técnico e de negócio. Cada fase entrega uma parte funcional do produto e cria a base necessária para a seguinte.
 
-For cargo: Request → Offers → Negotiation → Counteroffer → Acceptance → Execution → Completion → Rating.
+## Regras de progressão
 
-## Business model
-- Provider subscription: **R$99.90/month**
-- **0% commission** on rides or completed services
-- Provider keeps **100%** of service value
-- Optional initial free trial (15 or 30 days) to be validated commercially
+Uma fase só pode avançar quando:
+1. seus requisitos estiverem implementados;
+2. os fluxos críticos estiverem testados;
+3. segurança e autorização tiverem sido verificadas;
+4. documentação e estado do projeto estiverem atualizados;
+5. não houver bloqueador crítico aberto;
+6. o critério de aceite da fase estiver aprovado.
 
-## Passenger transport
-- Car: **R$2.00/km**
-- Motorcycle: **R$1.50/km**
-- Passenger transport uses the defined tariff model rather than free price negotiation.
-- Tariffs must be economically and legally validated before commercial launch.
+---
 
-## Cargo
-- Customer provides origin, destination, cargo details, dimensions/weight when relevant, media and observations.
-- Providers can offer, counteroffer, negotiate and accept.
-- Final cargo price may be negotiated.
+## FASE 0 — Governança e Especificação
+**Objetivo:** transformar a visão do Nexo em especificação técnica executável.
 
-## Payments
-Initial methods:
-- physical cash
-- Pix
-- credit/debit card through the provider's own card machine
+**Entregas**
+- [ ] Master Technical Specification
+- [ ] requisitos funcionais e não funcionais
+- [ ] modelo de domínio
+- [ ] modelo inicial de banco
+- [ ] arquitetura
+- [ ] contratos de API
+- [ ] autenticação/autorização
+- [ ] máquinas de estado
+- [ ] estratégia de testes
+- [ ] segurança e LGPD
+- [ ] critérios de aceite
 
-## Profiles
-Customer and provider profiles may contain:
-- name
-- photo
-- ratings
-- comments
-- history
-- verification indicators
-- vehicle information where relevant
-- photos
-- videos
-- captions
+**Gate:** arquitetura e especificação internamente consistentes e prontas para implementação.
 
-## Trust
-- Identity verification
-- Vehicle verification
-- Bilateral reputation
-- Reporting
-- Blocking
-- Fraud prevention
-- Safety tooling
-- Audit trail
+---
 
-## Services
-1. Foundation
-2. Profiles and reputation
-3. Marketplace
-4. Passenger transport
-5. Payments
-6. Safety
-7. Deliveries
-8. Cargo
-9. Towing
-10. Provider subscriptions
-11. Growth and retention
-12. Scale
+## FASE 1 — Fundação Técnica
+**Objetivo:** criar uma aplicação executável, segura e observável.
 
-## Growth strategy
-The product should not position itself merely as another ride-hailing app. The strategic position is a digital work platform for independent professionals:
-- predictable platform cost
-- no commission
-- professional profile
-- reputation
-- repeat customers
-- favorites
-- multiple service categories
+**Entregas**
+- [ ] estrutura do projeto
+- [ ] ambientes de desenvolvimento/teste/produção
+- [ ] banco de dados e migrations
+- [ ] configuração de secrets
+- [ ] logging
+- [ ] tratamento de erros
+- [ ] testes automatizados
+- [ ] CI/CD
+- [ ] health checks
+- [ ] base de monitoramento
 
-## Marketplace launch
-Start geographically concentrated rather than attempting immediate national coverage. Build local supply and demand density first.
+**Gate:** aplicação sobe de forma reproduzível e os testes básicos passam.
 
-## Provider acquisition
-Potential levers:
-- free trial
-- founder program
-- referral program
-- clear 0% commission message
-- professional profile
-- recurring customer relationships
+---
 
-## Customer acquisition
-Potential levers:
-- transparent pricing
-- verified provider identity/vehicle
-- ratings
-- provider choice where available
-- favorites
-- recurring provider relationships
-- referrals
+## FASE 2 — Identidade, Acesso e Perfis
+**Objetivo:** permitir que clientes e profissionais tenham contas e identidade digital.
 
-## Product principles
-- Do not simply copy incumbent ride-hailing apps.
-- Build trust into profiles and reputation.
-- Keep pricing and platform fees transparent.
-- Treat the provider as an independent professional, not merely a supply unit.
-- Expand the same marketplace model into delivery, cargo, towing and future categories.
+**Entregas**
+- [ ] cadastro/login
+- [ ] recuperação de acesso
+- [ ] cliente
+- [ ] profissional/prestador
+- [ ] perfil público
+- [ ] foto
+- [ ] biografia/informações profissionais
+- [ ] fotos e vídeos com legendas
+- [ ] privacidade
+- [ ] autorização por papel
 
-## Development phases
+**Gate:** um usuário consegue criar conta, acessar seu perfil e visualizar apenas o que tem permissão para acessar.
 
-### Phase 1 — Foundation
-Identity, architecture, database, authentication, users, providers, customers, profiles, security and documentation.
+---
 
-### Phase 2 — Profiles and reputation
-Profiles, photos, videos, captions, ratings, comments, favorites and verification.
+## FASE 3 — Confiança e Reputação
+**Objetivo:** criar a camada de confiança do marketplace.
 
-### Phase 3 — Marketplace
-Requests, offers, communication, acceptance, status and completion.
+**Entregas**
+- [ ] avaliações
+- [ ] comentários
+- [ ] reputação bilateral
+- [ ] favoritos
+- [ ] denúncia
+- [ ] bloqueio
+- [ ] indicadores de verificação
+- [ ] regras contra abuso de avaliações
+- [ ] moderação inicial
 
-### Phase 4 — Transportation
-Map, origin, destination, distance pricing, car, motorcycle, tracking and completion.
+**Gate:** usuários conseguem avaliar e denunciar com regras de autorização, integridade e auditoria.
 
-### Phase 5 — Payments
-Cash, Pix, card, payment-method recording and completion confirmation.
+---
 
-### Phase 6 — Safety
-Identity, vehicle, emergency tooling, reports, blocks and antifraud.
+## FASE 4 — Marketplace Core
+**Objetivo:** fazer o ciclo principal do Nexo funcionar sem depender de uma categoria específica.
 
-### Phase 7 — Deliveries
-Requests, media, offers, execution and rating.
+**Fluxo principal**
+Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → Execução → Conclusão → Avaliação.
 
-### Phase 8 — Cargo
-Requests, proposals, negotiation, counteroffers, acceptance and execution.
+**Entregas**
+- [ ] criação de solicitações
+- [ ] descoberta/matching
+- [ ] ofertas
+- [ ] comunicação necessária ao serviço
+- [ ] aceite/recusa
+- [ ] estados do serviço
+- [ ] cancelamento
+- [ ] conclusão
+- [ ] histórico
+- [ ] notificações essenciais
 
-### Phase 9 — Towing
-Requests, location, media, descriptions, offers, negotiation and execution.
+**Gate:** um serviço genérico consegue percorrer o ciclo completo de ponta a ponta.
 
-### Phase 10 — Subscriptions
-R$99.90/month, trial, billing, renewal, cancellation and delinquency.
+---
 
-### Phase 11 — Growth
-Referrals, favorites, recurring customers, founder programs, campaigns and metrics.
+## FASE 5 — Transporte de Passageiros
+**Objetivo:** lançar o primeiro fluxo de mobilidade com regras de preço definidas.
 
-### Phase 12 — Scale
-Optimization, availability, observability, advanced security, geographic expansion and new categories.
+**Entregas**
+- [ ] origem/destino
+- [ ] cálculo de distância
+- [ ] categoria carro
+- [ ] categoria motocicleta
+- [ ] tarifa carro: R$2,00/km
+- [ ] tarifa motocicleta: R$1,50/km
+- [ ] regras de arredondamento
+- [ ] regras de cancelamento
+- [ ] alterações de rota
+- [ ] início da viagem
+- [ ] conclusão
+- [ ] histórico da viagem
 
-## Explicitly removed from current scope
+**Gate:** uma viagem pode ser solicitada, aceita, executada, concluída e registrada com preço calculado de forma determinística.
+
+---
+
+## FASE 6 — Pagamentos e Registro Financeiro
+**Objetivo:** registrar como o serviço foi pago sem transformar o Nexo inicialmente em processador de pagamentos.
+
+**Entregas**
+- [ ] dinheiro físico
+- [ ] Pix
+- [ ] cartão na máquina do próprio profissional
+- [ ] registro do método
+- [ ] confirmação de pagamento
+- [ ] histórico financeiro da operação
+- [ ] regras de divergência
+- [ ] recibos/comprovantes quando aplicável
+
+**Regra:** o Nexo não cobra comissão sobre o serviço.
+
+**Gate:** serviço concluído possui estado financeiro consistente e auditável.
+
+---
+
+## FASE 7 — Segurança Operacional
+**Objetivo:** aumentar a segurança antes de ampliar categorias e escala.
+
+**Entregas**
+- [ ] verificação de identidade
+- [ ] verificação de veículo
+- [ ] controles de acesso a dados privados
+- [ ] antifraude inicial
+- [ ] denúncias e bloqueios operacionais
+- [ ] eventos de segurança
+- [ ] ferramentas de suporte
+- [ ] fluxos de incidente/emergência definidos conforme requisitos legais e operacionais
+
+**Gate:** dados sensíveis estão isolados e os principais cenários de abuso possuem tratamento definido.
+
+---
+
+## FASE 8 — Entregas
+**Objetivo:** expandir o marketplace para entrega de objetos/produtos.
+
+**Entregas**
+- [ ] origem/destino
+- [ ] descrição do item
+- [ ] fotos/mídia
+- [ ] observações
+- [ ] solicitação
+- [ ] ofertas
+- [ ] aceite
+- [ ] execução
+- [ ] conclusão
+- [ ] avaliação
+
+**Gate:** entrega completa de ponta a ponta com rastreabilidade operacional.
+
+---
+
+## FASE 9 — Carga e Frete Negociável
+**Objetivo:** implementar a categoria em que preço pode ser negociado.
+
+**Entregas**
+- [ ] origem/destino
+- [ ] peso/dimensões quando aplicável
+- [ ] descrição da carga
+- [ ] fotos
+- [ ] oferta
+- [ ] contraproposta
+- [ ] negociação
+- [ ] aceite do preço final
+- [ ] execução
+- [ ] conclusão
+- [ ] avaliação
+
+**Regra:** negociação de preço fica restrita ao fluxo de carga/frete, conforme regra atual do produto.
+
+**Gate:** preço final negociado fica registrado e imutável após aceite, salvo fluxo explícito de alteração.
+
+---
+
+## FASE 10 — Guincho/Reboque
+**Objetivo:** adicionar atendimento de emergência/assistência veicular como categoria do marketplace.
+
+**Entregas**
+- [ ] localização
+- [ ] destino quando necessário
+- [ ] descrição do problema
+- [ ] fotos
+- [ ] ofertas
+- [ ] negociação quando aplicável
+- [ ] aceite
+- [ ] execução
+- [ ] conclusão
+- [ ] avaliação
+
+**Gate:** solicitação de guincho pode ser concluída com histórico completo e regras de segurança aplicadas.
+
+---
+
+## FASE 11 — Assinatura dos Profissionais
+**Objetivo:** ativar o modelo comercial do Nexo.
+
+**Regras**
+- **R$99,90/mês**
+- **0% de comissão**
+- profissional mantém **100% do valor do serviço**
+
+**Entregas**
+- [ ] assinatura
+- [ ] período de teste, se aprovado
+- [ ] cobrança
+- [ ] renovação
+- [ ] cancelamento
+- [ ] inadimplência
+- [ ] status da assinatura
+- [ ] restrições de acesso quando aplicável
+- [ ] histórico de cobrança
+
+**Gate:** ciclo de assinatura é consistente e não altera o valor devido ao profissional por serviços realizados.
+
+---
+
+## FASE 12 — Crescimento e Retenção
+**Objetivo:** melhorar liquidez do marketplace e retenção.
+
+**Entregas**
+- [ ] indicação
+- [ ] campanhas
+- [ ] programa inicial/fundadores
+- [ ] favoritos
+- [ ] clientes recorrentes
+- [ ] métricas de aquisição
+- [ ] métricas de oferta e demanda
+- [ ] métricas de conversão
+- [ ] métricas de retenção
+- [ ] ferramentas administrativas
+
+**Gate:** métricas principais estão disponíveis para tomada de decisão.
+
+---
+
+## FASE 13 — Escala e Expansão
+**Objetivo:** preparar o Nexo para crescimento geográfico e técnico.
+
+**Entregas**
+- [ ] otimização de performance
+- [ ] observabilidade avançada
+- [ ] alta disponibilidade conforme necessidade
+- [ ] recuperação de desastres
+- [ ] hardening de segurança
+- [ ] otimização de custos
+- [ ] expansão geográfica
+- [ ] novas categorias
+- [ ] mecanismos avançados de matching
+
+**Gate:** capacidade técnica e operacional compatível com a próxima escala do negócio.
+
+---
+
+# Ordem recomendada de construção
+
+**0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12 → 13**
+
+A primeira versão comercial não precisa esperar todas as fases. O primeiro marco de produto deve ser:
+
+**FASES 0–7 = MVP seguro de marketplace + transporte**
+
+Depois:
+
+**FASES 8–11 = expansão de categorias + monetização**
+
+E então:
+
+**FASES 12–13 = crescimento + escala**
+
+# Fora do escopo atual
+
 - Nexo Live
 - live streaming
 - hands-free
-- live camera integration
-- speech-to-text/text-to-speech for driving
-- Live privacy modes and consent workflows
-- Live moderation infrastructure
+- integração de câmera ao vivo
+- speech-to-text/text-to-speech para condução
+- infraestrutura específica de Live
+- workflows de privacidade/consentimento do Live
+- moderação específica de Live
+
+# Regra de continuidade
+
+Ao terminar cada fase, atualizar obrigatoriamente:
+- `project/CURRENT_STATE.md`
+- `project/NEXT_TASK.md`
+- `project/CHANGELOG.md`
+- `project/DECISIONS.md`, quando houver nova decisão
+
+O repositório continua sendo a fonte de verdade para qualquer novo agente ou nova conversa.
