@@ -17,11 +17,11 @@ describe('towing integration',()=>{
  afterAll(async()=>{
   await db.query('DELETE FROM towing_events WHERE towing_job_id IN (SELECT t.id FROM towing_jobs t JOIN services s ON s.id=t.service_id WHERE s.customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])))',[emails]);
   await db.query('DELETE FROM towing_jobs WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])))',[emails]);
-  await db.query('DELETE FROM offers WHERE request_id IN (SELECT id FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])))',[emails]);
   await db.query('DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM notifications WHERE recipient_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])) OR provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
+  await db.query('DELETE FROM offers WHERE request_id IN (SELECT id FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])))',[emails]);
   await db.query('DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM vehicles WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM accounts WHERE email=ANY($1::text[])',[emails]); await app?.close();
