@@ -89,7 +89,8 @@ describe('marketplace API integration', () => {
       customer.token,
     );
     expect(matches.status).toBe(200);
-    expect(matches.body[0].accountId).toBe(provider.accountId);
+    const matchRows = matches.body as unknown as Array<Record<string, unknown>>;
+    expect(matchRows[0]?.accountId).toBe(provider.accountId);
 
     const acceptKey = randomUUID();
     const accepted = await request(
