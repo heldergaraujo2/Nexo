@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 6 EM EXECUÇÃO  
+**Status:** FASE 7 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -166,6 +166,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 7 — Segurança Operacional
+**Status:** EM EXECUÇÃO
 **Objetivo:** aumentar a segurança antes de ampliar categorias e escala.
 
 **Entregas**
