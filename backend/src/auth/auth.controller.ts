@@ -4,7 +4,12 @@ import { LoginDto, RecoveryRequestDto, RegisterDto, ResetPasswordDto } from './d
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  private readonly auth: AuthService;
+
+  constructor(auth: AuthService) {
+    this.auth = auth;
+  }
+
   @Post('register') register(@Body() dto: RegisterDto) { return this.auth.register(dto); }
   @Post('login') login(@Body() dto: LoginDto) { return this.auth.login(dto); }
   @Post('password-recovery') recover(@Body() dto: RecoveryRequestDto) { return this.auth.requestRecovery(dto); }
