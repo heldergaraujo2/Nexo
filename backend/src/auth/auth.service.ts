@@ -25,7 +25,9 @@ export class AuthService {
         'INSERT INTO accounts (email, password_hash, role) VALUES ($1,$2,$3) RETURNING id, role',
         [email, await this.passwords.hash(dto.password), role],
       );
-      const id = account.rows[0].id;
+      const created = account.rows[0];
+      if (!created) throw new ConflictException('Account creation failed');
+      const id = created.id;
       await client.query('INSERT INTO profiles (account_id, display_name) VALUES ($1,$2)', [id, dto.displayName.trim()]);
       await client.query('COMMIT');
       return { accessToken: this.tokens.sign({ accountId: id, role: role as never }), accountId: id, role };
