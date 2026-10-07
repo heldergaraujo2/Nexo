@@ -8,7 +8,7 @@ void main() {
       home: PaymentRecordPage(expectedAmountCents: 1234),
     ));
 
-    expect(find.text('R$ 12.34'), findsOneWidget);
+    expect(find.text('R\\$ 12.34'), findsOneWidget);
     expect(find.text('Dinheiro'), findsOneWidget);
     expect(find.text('Confirmar pagamento'), findsOneWidget);
 
