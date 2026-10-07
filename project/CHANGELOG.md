@@ -106,7 +106,7 @@
 **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.**
 
 
-## 1.1.0 — FASE 6 em execução
+## 1.1.0 — FASE 6 concluída
 
 > CI validation rerun requested after migration wiring.
 ### Added
@@ -120,5 +120,12 @@
 
 ### Validation
 - Migrations 001–007 executadas em CI.
-- Falhas encontradas no primeiro gate corrigidas: quoting PostgreSQL, autorização/tipagem TypeScript e teste Flutter de moeda.
-- Gate final ainda depende de execução CI verde da revisão mais recente.
+- Backend: typecheck, testes, build, lint e format check aprovados.
+- Mobile: analyze, testes e APK debug aprovados.
+- Trigger de imutabilidade e sincronização de preço de rota validados por integração.
+
+### Gate
+**APROVADO. FASE 6 concluída.**
+
+### Next
+**FASE 7 — SEGURANÇA OPERACIONAL.**
