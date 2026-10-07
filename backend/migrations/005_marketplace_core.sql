@@ -77,6 +77,18 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_services_offer
   ON services(accepted_offer_id)
   WHERE accepted_offer_id IS NOT NULL;
 
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  recipient_id UUID NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  type TEXT NOT NULL,
+  payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+  read_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_notifications_recipient
+  ON notifications(recipient_id, created_at DESC);
+
 CREATE TABLE IF NOT EXISTS idempotency_keys (
   account_id UUID NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
   idempotency_key TEXT NOT NULL,
