@@ -127,5 +127,8 @@
 ### Gate
 **APROVADO. FASE 6 concluída.**
 
+### Validation note
+Run 258: backend verde; Android APK falhou por erro transitório do runner ao baixar/descompactar Android NDK 28.2 (`unknown archive`). O código mobile já havia passado o mesmo build no run 256.
+
 ### Next
 **FASE 7 — SEGURANÇA OPERACIONAL.**
