@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 1.5 — FASE 10 em execução
+**Version:** 1.6 — FASE 11 iniciada
 **Last updated:** 2026-10-07
 
 ## Phase
-**FASE 10 — GUINCHO/REBOQUE**
+**FASE 11 — ASSINATURA DOS PROFISSIONAIS**
 
 ## Fases concluídas
 - [x] FASE 0 — Governança e Especificação
@@ -17,37 +17,29 @@
 - [x] FASE 7 — Segurança Operacional
 - [x] FASE 8 — Entregas
 - [x] FASE 9 — Carga e Frete Negociável
+- [x] FASE 10 — Guincho/Reboque
 
-## Fase 9 — gate
-**APROVADO.** Negociação versionada, preço final persistido no Service, Offer real vinculado ao aceite, execução rastreável e proteção de autorização/idempotência.
+## Fase 10 — gate
+**APROVADO.** Solicitação, oferta, aceite, execução e conclusão de guincho validados com elegibilidade, veículo verificado, bloqueios, autorização, idempotência, auditoria e máquina de estados dedicada.
 
-## Fase 10 — implementação
-- [x] solicitação de towing
-- [x] origem/destino
-- [x] descrição do problema
-- [x] metadados de mídia
-- [x] oferta com preço
-- [x] aceite vinculado ao Service
-- [x] máquina dedicada de execução
-- [x] veículo verificado como pré-condição
-- [x] bloqueio entre participantes aplicado
-- [x] auditoria/notificações/idempotência
-- [x] testes de integração criados
+## Validação
+- PR #17 mesclado na `main`.
+- CI run 306: backend e mobile verdes.
+- Backend: migrations, typecheck, testes, build, lint e format check.
+- Mobile: analyze, testes e APK debug.
+- Auditoria final concluída sem bloqueador crítico.
 
-## Próximo passo do gate
-CI completo, correções de regressão e auditoria final.
+## Próxima fase
+**FASE 11 — ASSINATURA DOS PROFISSIONAIS**
+
+## Regras comerciais
+- R$99,90/mês por provider.
+- 0% de comissão.
+- Provider mantém 100% do valor do serviço.
 
 ## Blockers
-
 Nenhum bloqueador conhecido.
 
 ## Known limitations
-- Object storage binário ainda depende de adapter futuro; Fase 8 registra metadados de mídia sem expor bucket público.
-- Retenção/base legal deve continuar sujeita a revisão jurídica antes da produção.
-
-
-## Fase 9 — gate
-**APROVADO.** Negociação versionada, preço final persistido no Service, Offer real vinculado ao aceite, execução rastreável e proteção de autorização/idempotência.
-
-## Próxima fase
-**FASE 10 — GUINCHO/REBOQUE**
+- Object storage binário ainda depende de adapter futuro.
+- Retenção/base legal continua sujeita a revisão jurídica antes da produção.
