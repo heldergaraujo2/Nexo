@@ -1,11 +1,11 @@
-import { Body,Controller,Get,Headers,Param,Post,Req,UseGuards } from '@nestjs/common';
+import { Body,Controller,Get,Headers,Inject,Param,Post,Req,UseGuards } from '@nestjs/common';
 import { AuthGuard,AuthenticatedRequest } from '../auth/auth.guard';
 import { CancelSubscriptionDto } from './dto';
 import { SubscriptionService } from './subscription.service';
 @UseGuards(AuthGuard)
 @Controller('subscriptions')
 export class SubscriptionController{
- constructor(private readonly service:SubscriptionService){}
+ constructor(@Inject(SubscriptionService) private readonly service:SubscriptionService){}
  @Get('me') mine(@Req()r:AuthenticatedRequest){return this.service.getMine(r.user);}
  @Post('me') subscribe(@Req()r:AuthenticatedRequest,@Headers('idempotency-key')key:string){return this.service.subscribe(r.user,key).then(x=>x.body);}
  @Post('me/cancel') cancel(@Req()r:AuthenticatedRequest,@Headers('idempotency-key')key:string,@Body()d:CancelSubscriptionDto){return this.service.getMine(r.user).then(s=>{if(!s)throw new Error('Subscription not found');return this.service.cancel(r.user,s.id,d,key).then(x=>x.body);});}
