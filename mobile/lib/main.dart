@@ -131,7 +131,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       children: [
         Text('Plano Profissional', style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 8),
-        const Text('R$ 99,90 por mês'),
+        const Text(r'R$ 99,90 por mês'),
         const SizedBox(height: 8),
         Text('Status: $_status'),
         const SizedBox(height: 16),
