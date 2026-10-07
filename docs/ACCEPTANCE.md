@@ -90,3 +90,22 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 
 ### Resultado
 **APROVADO. FASE 7 concluída.** Próximo gate: FASE 8 — Entregas.
+
+
+## Critérios de Aceitação da FASE 8
+
+### Gate técnico
+- [x] origem/destino implementados;
+- [x] descrição do item e observações implementados;
+- [x] metadados de mídia validados;
+- [x] solicitação integrada ao marketplace;
+- [x] oferta com preço e aceite implementados;
+- [x] Delivery 1:1 Service criada no aceite;
+- [x] máquina de estados executada server-side;
+- [x] auditoria, notificações, idempotência e autorização validadas;
+- [x] lifecycle genérico não contorna Delivery;
+- [x] mobile possui fluxo inicial de solicitação;
+- [x] CI run 289 passou backend e mobile, incluindo APK debug.
+
+### Resultado
+**FASE 8 APROVADA.** Próximo gate: FASE 9 — Carga e Frete Negociável.
