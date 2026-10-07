@@ -6,8 +6,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
+import { createHash } from 'node:crypto';
 import { AuthPrincipal } from '../auth/auth.types';
 import { CreatePassengerRideDto, ChangeRideRouteDto } from './dto';
+
+type JsonObject = Record<string, unknown>;
 
 type RideState = 'accepted' | 'driver_en_route' | 'arrived' | 'started' | 'completed' | 'cancelled';
 
@@ -19,31 +22,46 @@ export class RideService {
 
   async createRequest(user: AuthPrincipal, dto: CreatePassengerRideDto, key: string) {
     if (user.role !== 'customer') throw new ForbiddenException('Customer role required');
-    if (!key) throw new ConflictException('Valid Idempotency-Key is required');
     const origin = this.normalizeCoordinate(dto.origin);
     const destination = this.normalizeCoordinate(dto.destination);
-    const distanceMeters = this.distanceMeters(origin, destination);
-    const tariff = TARIFF_CENTS_PER_KM[dto.vehicleType];
-    const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
-    const client = await this.db.connect();
-    try {
-      await client.query('BEGIN');
-      const request = await client.query(
-        `INSERT INTO service_requests (customer_id,category,requirements,origin,destination,status)
-         VALUES ($1,$2,$3,$4,$5,'open')
-         RETURNING id`,
-        [user.accountId, `passenger_${dto.vehicleType}`, { vehicleType: dto.vehicleType }, origin, destination],
-      );
-      const row = request.rows[0];
-      await this.audit(client, user.accountId, 'ride.request_created', 'service_request', row.id);
-      await client.query('COMMIT');
-      return { requestId: row.id, category: `passenger_${dto.vehicleType}`, origin, destination, distanceMeters, tariffCentsPerKm: tariff, fareCents, currency: 'BRL' };
-    } catch (error) {
-      await client.query('ROLLBACK');
-      throw error;
-    } finally {
-      client.release();
-    }
+    return this.withIdempotency(
+      user,
+      'ride.request.create',
+      key,
+      dto,
+      async (client) => {
+        const distanceMeters = this.distanceMeters(origin, destination);
+        const tariff = TARIFF_CENTS_PER_KM[dto.vehicleType];
+        const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
+        const request = await client.query(
+          `INSERT INTO service_requests (customer_id,category,requirements,origin,destination,status)
+           VALUES ($1,$2,$3,$4,$5,'open')
+           RETURNING id`,
+          [
+            user.accountId,
+            `passenger_${dto.vehicleType}`,
+            { vehicleType: dto.vehicleType },
+            origin,
+            destination,
+          ],
+        );
+        const row = request.rows[0];
+        await this.audit(client, user.accountId, 'ride.request_created', 'service_request', row.id);
+        return {
+          status: 201,
+          body: {
+            requestId: row.id,
+            category: `passenger_${dto.vehicleType}`,
+            origin,
+            destination,
+            distanceMeters,
+            tariffCentsPerKm: tariff,
+            fareCents,
+            currency: 'BRL',
+          },
+        };
+      },
+    );
   }
 
   async createRideForService(client: PoolClient, serviceId: string, vehicleType: 'car' | 'motorcycle', origin: unknown, destination: unknown) {
@@ -205,7 +223,7 @@ export class RideService {
     return Math.round(2 * R * Math.asin(Math.sqrt(h)));
   }
 
-  private publicRide(row: Record<string, any>) {
+  private publicRide(row: Record<string, unknown>) {
     return {
       id: row.id, serviceId: row.serviceId ?? row.service_id, vehicleType: row.vehicleType ?? row.vehicle_type,
       origin: row.origin, destination: row.destination, distanceMeters: Number(row.distanceMeters ?? row.distance_meters),
@@ -215,6 +233,49 @@ export class RideService {
       updatedAt: row.updated_at ?? row.updatedAt ?? null,
     };
   }
+
+  private async withIdempotency(
+    user: AuthPrincipal,
+    operation: string,
+    key: string,
+    payload: unknown,
+    work: (client: PoolClient) => Promise<{ status: number; body: JsonObject }>,
+  ) {
+    if (!key || key.length > 128) throw new ConflictException('Valid Idempotency-Key is required');
+    const requestHash = createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+    const client = await this.db.connect();
+    try {
+      await client.query('BEGIN');
+      await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [
+        `${user.accountId}:${operation}:${key}`,
+      ]);
+      const existing = await client.query(
+        `SELECT request_hash AS "requestHash",response_status AS "responseStatus",response_body AS "responseBody"
+         FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE`,
+        [user.accountId, key, operation],
+      );
+      if (existing.rowCount) {
+        const row = existing.rows[0];
+        if (row.requestHash !== requestHash) throw new ConflictException('Idempotency-Key was already used with a different payload');
+        await client.query('COMMIT');
+        return { status: row.responseStatus, body: row.responseBody as JsonObject };
+      }
+      const result = await work(client);
+      await client.query(
+        `INSERT INTO idempotency_keys (account_id,idempotency_key,operation,request_hash,response_status,response_body)
+         VALUES ($1,$2,$3,$4,$5,$6)`,
+        [user.accountId,key,operation,requestHash,result.status,result.body],
+      );
+      await client.query('COMMIT');
+      return result;
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
 
   private async audit(client: PoolClient, actorId: string, eventType: string, resourceType: string, resourceId: string) {
     await client.query(
