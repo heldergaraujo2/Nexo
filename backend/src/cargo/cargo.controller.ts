@@ -26,7 +26,7 @@ export class CargoController {
   counter(@Req() r: AuthenticatedRequest, @Param('proposalId') id: string, @Headers('idempotency-key') key: string, @Body() d: CargoProposalDto) {
     return this.cargo.counter(r.user, id, d, key).then(x => x.body);
   }
-  @HttpCode(200)
+  @HttpCode(201)
   @Post('proposals/:proposalId/accept')
   accept(@Req() r: AuthenticatedRequest, @Param('proposalId') id: string, @Headers('idempotency-key') key: string) {
     return this.cargo.accept(r.user, id, key).then(x => x.body);
