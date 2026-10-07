@@ -70,7 +70,7 @@ describe('passenger transport integration', () => {
       provider.token,
       randomUUID(),
     );
-    expect(accepted.status).toBe(201);
+    expect(accepted.status, JSON.stringify(accepted.body)).toBe(201);
 
     const rides = await db.query('SELECT id,fare_cents,vehicle_type,state FROM rides WHERE service_id=$1', [accepted.body.id]);
     expect(rides.rowCount).toBe(1);
