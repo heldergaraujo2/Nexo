@@ -35,6 +35,8 @@ Cancelamento permitido somente nos estados definidos pelo produto, com ator e mo
 ## Payment
 PENDING → CONFIRMED | FAILED | DISPUTED
 
+Confirmation requires the provider linked to the service and an amount exactly equal to the immutable service price snapshot. Dispute is available to customer/provider before confirmation.
+
 O método físico/Pix/máquina não deve ser tratado como processado pelo Nexo. O sistema registra a confirmação operacional.
 
 ## Subscription
