@@ -1,37 +1,38 @@
 # Nexo — Next Task
 
 ## Current objective
+Executar a **FASE 4 — MARKETPLACE CORE**.
 
+## FASE 4 — entregas
+- [ ] modelo de ServiceRequest
+- [ ] criação de solicitações pelo cliente
+- [ ] categorias e requisitos operacionais
+- [ ] descoberta de profissionais elegíveis
+- [ ] disponibilidade do profissional
+- [ ] matching inicial
+- [ ] ofertas e aceite quando aplicável
+- [ ] criação do Service após aceite
+- [ ] máquina de estados server-side
+- [ ] cancelamento e expiração com ator/motivo
+- [ ] histórico operacional
+- [ ] idempotência dos comandos críticos
+- [ ] auditoria de criação, matching, aceite e cancelamento
+- [ ] testes unitários, integração, concorrência, API e segurança relevantes
+- [ ] preparação específica para o fluxo de passageiro da Fase 5
 
-Concluir a **FASE 3 — CONFIANÇA E REPUTAÇÃO** com avaliações, favoritos, denúncias, bloqueios, indicadores de verificação, regras antiabuso e moderação inicial.
-
-## FASE 3 — entregas
-- [ ] avaliações
-- [ ] comentários
-- [ ] reputação bilateral
-- [ ] favoritos
-- [ ] denúncia
-- [ ] bloqueio
-- [ ] indicadores de verificação
-- [ ] regras contra abuso de avaliações
-- [ ] moderação inicial
-- [ ] autorização e privacidade
-- [ ] auditoria de ações críticas
-- [ ] testes unitários, integração, API, segurança e concorrência relevantes
-
-## Gate da FASE 3
-Usuários conseguem avaliar e denunciar com regras de autorização, integridade e auditoria. Uma avaliação só é aceita quando o serviço relacionado é elegível e concluído, e cada autor avalia uma contraparte no máximo uma vez por serviço.
+## Gate da FASE 4
+Clientes conseguem criar solicitações e profissionais elegíveis conseguem receber e aceitar oportunidades sem permitir dupla aceitação ou transições inválidas. O servidor mantém a relação íntegra entre solicitação e serviço e registra os eventos críticos.
 
 ## Critérios técnicos
-- [ ] integridade por constraints/índices no PostgreSQL
-- [ ] transições de moderação validadas no servidor
-- [ ] usuário não avalia a si próprio
-- [ ] usuário sem relação elegível com o serviço não avalia
-- [ ] avaliação duplicada é rejeitada inclusive sob concorrência
-- [ ] denúncia e bloqueio respeitam ownership/autorização
-- [ ] dados privados não aparecem nos endpoints públicos
-- [ ] indicadores de verificação não expõem documentos
-- [ ] eventos críticos são auditáveis
+- [ ] constraints e índices protegem invariantes
+- [ ] matching respeita categoria, disponibilidade e bloqueios aplicáveis
+- [ ] aceite concorrente é serializado/validado
+- [ ] ServiceRequest → Service é no máximo 1:1 após aceite
+- [ ] estados são validados no servidor
+- [ ] comandos críticos suportam retry/idempotência
+- [ ] cancelamento/expiração são auditáveis
+- [ ] endpoints protegidos respeitam ownership/capacidade
+- [ ] dados públicos não expõem informações privadas
 
 ## Próxima fase
-FASE 4 — MARKETPLACE CORE.
+FASE 5 — PASSENGER TRANSPORT.
