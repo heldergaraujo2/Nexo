@@ -78,6 +78,13 @@ describe('payments integration', () => {
     expect(forbidden.status).toBe(403);
   });
 
+  it('prevents retroactive price changes after completion', async () => {
+    const { serviceId } = await createCompletedService('passenger_car');
+    await expect(db.query('UPDATE services SET price_cents=999 WHERE id=$1', [serviceId])).rejects.toThrow(/Completed service price is immutable/);
+    const current = await db.query('SELECT price_cents FROM services WHERE id=$1', [serviceId]);
+    expect(Number(current.rows[0].price_cents)).toBe(1234);
+  });
+
   it('does not allow payment before service completion', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
