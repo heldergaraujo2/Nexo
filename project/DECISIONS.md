@@ -104,3 +104,16 @@ Identity and vehicle verification records are private operational resources. Pub
 ## DEC-025 — Initial fraud and incident model
 **Status:** ACCEPTED FOR PHASE 7
 Initial antifraud is a reviewable flagging system rather than automatic punitive blocking. Security incidents use an explicit state machine and role-restricted operations. This avoids inventing penalties while providing an auditable operational response path.
+
+
+## DEC-026 — Delivery pricing boundary
+**Status:** ACCEPTED FOR PHASE 8
+Deliveries do not use passenger fixed tariffs. A delivery must be accepted through a provider priced offer so the Service receives an immutable operational price compatible with Phase 6 payment recording. Generic direct acceptance is rejected for delivery requests.
+
+## DEC-027 — Delivery lifecycle ownership
+**Status:** ACCEPTED FOR PHASE 8
+Delivery execution is owned by the Delivery state machine. Generic Service start/complete/cancel endpoints cannot bypass delivery-specific transitions.
+
+## DEC-028 — Delivery media boundary
+**Status:** ACCEPTED FOR PHASE 8
+Delivery requests store validated media metadata only until the object-storage adapter is available. MIME, size, SHA-256 format, count and object-key safety are validated; public bucket exposure is prohibited.
