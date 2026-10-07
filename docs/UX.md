@@ -1,25 +1,38 @@
 # Nexo — UX Principles
 
+## Diretriz principal
+Nexo é **mobile-first**. Android e iOS são os produtos-alvo; PC serve para desenvolvimento e interfaces administrativas.
+
 ## Core experience
 Need → Find → Trust → Accept → Execute → Pay → Rate.
 
-## Passenger
-Show price and relevant provider information before confirmation.
+## Mobile
+- navegação orientada a toque;
+- alvos de toque adequados;
+- telas adaptáveis a diferentes tamanhos;
+- estados de carregamento e erro claros;
+- tolerância a conectividade intermitente;
+- retorno visual após toda ação;
+- consumo consciente de bateria/dados;
+- permissões solicitadas somente no contexto de necessidade.
+
+## Passageiro
+Mostrar origem, destino, modalidade, preço calculado, informações relevantes do provider e condições antes da confirmação.
 
 ## Provider
-Show opportunity details clearly before acceptance, including relevant distance, destination and value.
+Mostrar oportunidade, distância relevante, destino, categoria, valor e condições antes do aceite.
 
-## Profiles
-Profiles should feel professional rather than like a generic social network. Photos, videos and captions should increase trust and help users understand the provider/customer.
+## Perfil
+Perfil profissional deve transmitir confiança e não parecer uma rede social genérica. Fotos, vídeos, legenda, experiência e reputação devem ajudar a decisão.
 
-## Transparency
-Fees, price calculation, payment method and important status changes must be understandable.
+## Transparência
+Preço, método de pagamento, estado do serviço e mudanças importantes devem ser compreensíveis.
 
-## Safety
-Safety actions should be discoverable without creating unnecessary friction.
+## Segurança
+Denunciar, bloquear e acessar recursos de segurança deve ser fácil sem criar atrito desnecessário.
 
-## Content
-Media must have reporting/moderation controls.
+## Acessibilidade
+Tipografia legível, contraste adequado, touch targets, feedback e mensagens de erro compreensíveis.
 
-## Accessibility
-The product should target accessible typography, contrast, touch targets, feedback and clear error states.
+## Privacidade
+Nunca mostrar dados privados de identidade/contato apenas porque o usuário possui acesso a um perfil público.
