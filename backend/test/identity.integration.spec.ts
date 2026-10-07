@@ -50,9 +50,14 @@ describe('identity API integration', () => {
     expect(publicProfile.body.email).toBeUndefined();
     expect(publicProfile.body.password_hash).toBeUndefined();
 
+    const photoUpdate = await request('/v1/me/profile', 'PUT', { photoUrl: 'https://cdn.example.test/avatar.jpg' }, token);
+    expect(photoUpdate.status).toBe(200);
+    expect(photoUpdate.body.photoUrl).toBe('https://cdn.example.test/avatar.jpg');
+
     const update = await request('/v1/me/profile', 'PUT', { bio: 'Provider bio' }, token);
     expect(update.status).toBe(200);
     expect(update.body.bio).toBe('Provider bio');
+    expect(update.body.photoUrl).toBe('https://cdn.example.test/avatar.jpg');
 
     const login = await request('/v1/auth/login', 'POST', {
       email,
