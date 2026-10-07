@@ -71,8 +71,9 @@ export class AuthService {
       const found = await client.query<{id:string}>(
         'SELECT id FROM password_resets WHERE token_hash=$1 AND used_at IS NULL AND expires_at>NOW() FOR UPDATE', [hash],
       );
-      if (!found.rowCount) throw new UnauthorizedException('Invalid or expired recovery token');
-      await client.query('UPDATE accounts SET password_hash=$1, updated_at=NOW() WHERE id=$2', [await this.passwords.hash(dto.newPassword), found.rows[0].id]);
+      const reset = found.rows[0];
+      if (!found.rowCount || !reset) throw new UnauthorizedException('Invalid or expired recovery token');
+      await client.query('UPDATE accounts SET password_hash=$1, updated_at=NOW() WHERE id=$2', [await this.passwords.hash(dto.newPassword), reset.id]);
       await client.query('UPDATE password_resets SET used_at=NOW() WHERE token_hash=$1', [hash]);
       await client.query('COMMIT');
       return { message: 'Password updated' };
