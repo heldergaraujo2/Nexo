@@ -175,7 +175,7 @@ export class RideService {
       if (!['accepted','driver_en_route','arrived','started'].includes(row.state)) throw new ConflictException('Route cannot be changed in this state');
       const o = this.normalizeCoordinate(dto.origin);
       const d = this.normalizeCoordinate(dto.destination);
-      const distanceMeters = this.distanceMeters(o,d);
+      const distanceMeters = this.distanceAdapter.distanceMeters(o,d);
       const tariff = Number(row.tariff_cents_per_km);
       const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
       const version = row.route_version + 1;
