@@ -6,14 +6,16 @@ import { randomUUID } from 'node:crypto';
 import { AddressInfo } from 'node:net';
 import { AppModule } from '../src/app.module';
 
+let app: INestApplication;
+const emails: string[] = [];
+
 process.env.NODE_ENV='test';
 process.env.AUTH_TOKEN_SECRET='01234567890123456789012345678901';
 process.env.DATABASE_URL ??='postgresql://nexo:nexo@localhost:5432/nexo';
 
 describe('operational safety integration',()=>{
- let app:INestApplication; let db:Pool;
+ let db:Pool;
  let providerToken:string; let providerId:string; let adminToken:string; let adminId:string; let customerToken:string; let customerId:string;
- const emails:string[]=[];
  beforeAll(async()=>{
   const ref=await Test.createTestingModule({imports:[AppModule]}).compile();
   app=ref.createNestApplication(); app.setGlobalPrefix('v1'); await app.init(); await app.listen(0,'127.0.0.1'); db=ref.get(Pool);
