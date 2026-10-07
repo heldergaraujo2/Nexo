@@ -6,6 +6,12 @@ import { ProfileModule } from './profile/profile.module';
 import { MediaModule } from './media/media.module';
 
 @Module({
-  imports: [DatabaseModule, HealthModule, AuthModule, ProfileModule, MediaModule],
+  imports: [
+    DatabaseModule,
+    HealthModule,
+    AuthModule,
+    ProfileModule,
+    MediaModule,
+  ],
 })
 export class AppModule {}
