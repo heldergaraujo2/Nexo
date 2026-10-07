@@ -1,29 +1,35 @@
 # Nexo — Next Task
 
 ## Current objective
-Concluir o gate da **FASE 2 — IDENTIDADE, ACESSO E PERFIS** e, após CI verde, iniciar a **FASE 3 — CONFIANÇA E REPUTAÇÃO**.
+Concluir a **FASE 3 — CONFIANÇA E REPUTAÇÃO** com avaliações, favoritos, denúncias, bloqueios, indicadores de verificação, regras antiabuso e moderação inicial.
 
-## FASE 2 — entregas
-- [x] Cadastro de cliente
-- [x] Cadastro de profissional/prestador
-- [x] Login e sessão
-- [x] Recuperação de acesso
-- [x] Autorização por papel
-- [x] Perfil público
-- [x] Foto de perfil
-- [x] Biografia e informações profissionais
-- [x] Fotos e vídeos com legendas via registro seguro de mídia
-- [x] Preferências de privacidade baseline
-- [x] Testes de autorização e isolamento de dados
-- [x] Auditoria de segurança da identidade
+## FASE 3 — entregas
+- [ ] avaliações
+- [ ] comentários
+- [ ] reputação bilateral
+- [ ] favoritos
+- [ ] denúncia
+- [ ] bloqueio
+- [ ] indicadores de verificação
+- [ ] regras contra abuso de avaliações
+- [ ] moderação inicial
+- [ ] autorização e privacidade
+- [ ] auditoria de ações críticas
+- [ ] testes unitários, integração, API, segurança e concorrência relevantes
 
-## Gate da FASE 2
-Um usuário deve conseguir criar conta, autenticar-se, acessar seu perfil e visualizar ou alterar apenas os dados permitidos pelo seu papel e pelas regras de privacidade.
+## Gate da FASE 3
+Usuários conseguem avaliar e denunciar com regras de autorização, integridade e auditoria. Uma avaliação só é aceita quando o serviço relacionado é elegível e concluído, e cada autor avalia uma contraparte no máximo uma vez por serviço.
 
-**Status:** implementação concluída; aguardando CI final para aprovação formal.
-
-## Nota técnica
-Object storage S3-compatible será conectado por adapter dedicado. Nesta fase, a API de mídia já valida e persiste metadados, referência de objeto, visibilidade e estado de moderação, sem expor armazenamento privado diretamente.
+## Critérios técnicos
+- [ ] integridade por constraints/índices no PostgreSQL
+- [ ] transições de moderação validadas no servidor
+- [ ] usuário não avalia a si próprio
+- [ ] usuário sem relação elegível com o serviço não avalia
+- [ ] avaliação duplicada é rejeitada inclusive sob concorrência
+- [ ] denúncia e bloqueio respeitam ownership/autorização
+- [ ] dados privados não aparecem nos endpoints públicos
+- [ ] indicadores de verificação não expõem documentos
+- [ ] eventos críticos são auditáveis
 
 ## Próxima fase
-FASE 3 — CONFIANÇA E REPUTAÇÃO.
+FASE 4 — MARKETPLACE CORE.
