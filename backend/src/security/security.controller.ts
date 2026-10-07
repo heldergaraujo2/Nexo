@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -8,7 +8,7 @@ import { SecurityService } from './security.service';
 @UseGuards(AuthGuard)
 @Controller('security')
 export class SecurityController {
-  constructor(private readonly security: SecurityService) {}
+  constructor(@Inject(SecurityService) private readonly security: SecurityService) {}
   @Post('vehicles') createVehicle(@Req() r:AuthenticatedRequest,@Body() d:CreateVehicleDto){return this.security.createVehicle(r.user,d);}
   @Get('vehicles') myVehicles(@Req() r:AuthenticatedRequest){return this.security.myVehicles(r.user);}
   @Post('incidents') createIncident(@Req() r:AuthenticatedRequest,@Body() d:CreateIncidentDto){return this.security.createIncident(r.user,d);}
