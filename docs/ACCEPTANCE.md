@@ -114,16 +114,16 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 ## Critérios de Aceitação da FASE 10
 
 ### Gate técnico
-- [ ] solicitação de guincho com localização válida;
-- [ ] destino opcional;
-- [ ] problema e metadados de fotos validados;
-- [ ] oferta com preço e aceite vinculados ao Service;
-- [ ] provider elegível com veículo verificado;
-- [ ] bloqueio entre participantes impede operação;
-- [ ] máquina de estados dedicada e autorizada;
-- [ ] auditoria, notificações e idempotência;
-- [ ] testes de autorização, estados, API, banco e regressão;
-- [ ] CI backend/mobile verde e APK debug construído.
+- [x] solicitação de guincho com localização válida;
+- [x] destino opcional;
+- [x] problema e metadados de fotos validados;
+- [x] oferta com preço e aceite vinculados ao Service;
+- [x] provider elegível com veículo verificado;
+- [x] bloqueio entre participantes impede operação;
+- [x] máquina de estados dedicada e autorizada;
+- [x] auditoria, notificações e idempotência;
+- [x] testes de autorização, estados, API, banco e regressão;
+- [x] CI backend/mobile verde e APK debug construído.
 
 ### Resultado
-FASE 10 em execução. O gate será aprovado somente após todos os itens acima serem validados.
+**FASE 10 APROVADA.** Próximo gate: FASE 11 — Assinatura dos Profissionais.
