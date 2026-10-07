@@ -19,7 +19,9 @@ export class SubscriptionService {
   this.assertProvider(user);if(!key||key.length>128)throw new ConflictException('Valid Idempotency-Key is required');const c=await this.db.connect();
   try{await c.query('BEGIN');const r=await c.query('SELECT * FROM subscriptions WHERE id=$1 FOR UPDATE',[id]);const row=r.rows[0];
    if(!row)throw new NotFoundException('Subscription not found');if(row.provider_id!==user.accountId)throw new ForbiddenException('Subscription access denied');
-   if(!['active','past_due','suspended'].includes(row.status))throw new ConflictException('Subscription cannot be renewed');
+   if(!['pending','active','past_due','suspended'].includes(row.status))throw new ConflictException('Subscription cannot be renewed');
+   const existingByKey=await c.query('SELECT s.* FROM subscriptions s JOIN subscription_charges c ON c.subscription_id=s.id WHERE c.provider_id=$1 AND c.idempotency_key=$2 AND c.status=\'succeeded\' FOR UPDATE',[user.accountId,key]);
+   if(existingByKey.rowCount){await c.query('COMMIT');return this.public(existingByKey.rows[0]);}
    const existing=await c.query('SELECT * FROM subscription_charges WHERE subscription_id=$1 AND period_start=$2 FOR UPDATE',[id,row.current_period_start]);
    if(existing.rowCount&&existing.rows[0].status==='succeeded'){await c.query('COMMIT');return this.public(row);}
    const charge=await this.billing.charge({providerId:user.accountId,subscriptionId:id,amountCents:Number(row.amount_cents),currency:row.currency,idempotencyKey:key});
