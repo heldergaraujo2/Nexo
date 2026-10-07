@@ -106,7 +106,7 @@
 **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.**
 
 
-## 1.1.0 — FASE 6 em execução
+## 1.1.0 — FASE 6 concluída
 
 > CI validation rerun requested after migration wiring.
 ### Added
