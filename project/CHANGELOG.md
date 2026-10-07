@@ -107,6 +107,8 @@
 
 
 ## 1.1.0 — FASE 6 em execução
+
+> CI validation rerun requested after migration wiring.
 ### Added
 - PaymentRecord para dinheiro, Pix e máquina própria do provider.
 - Confirmação operacional com valor esperado versus confirmado.
