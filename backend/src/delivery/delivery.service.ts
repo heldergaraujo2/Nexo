@@ -88,7 +88,7 @@ export class DeliveryService {
       const existing=await client.query('SELECT request_hash AS "requestHash",response_status AS "responseStatus",response_body AS "responseBody" FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE',[user.accountId,key,operation]);
       if(existing.rowCount){const row=existing.rows[0];if(row.requestHash!==requestHash) throw new ConflictException('Idempotency-Key was already used with a different payload');await client.query('COMMIT');return {status:row.responseStatus,body:row.responseBody as JsonObject};}
       const result=await work(client);
-      await client.query('INSERT INTO idempotency_keys (account_id,idempotency_key,operation,request_hash,response_status,response_body) VALUES ($1,$2,$3,$4,$5,$6)',[user.accountId,key,operation,result.status,result.body]);
+      await client.query('INSERT INTO idempotency_keys (account_id,idempotency_key,operation,request_hash,response_status,response_body) VALUES ($1,$2,$3,$4,$5,$6)',[user.accountId,key,operation,requestHash,result.status,result.body]);
       await client.query('COMMIT'); return result;
     } catch(error){await client.query('ROLLBACK');throw error;} finally{client.release();}
   }
