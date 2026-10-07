@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 0.6 — FASE 3 em execução
+**Version:** 0.7 — FASE 4 em execução
 **Last updated:** 2026-10-07
 
 ## Phase
-**FASE 3 — CONFIANÇA E REPUTAÇÃO — EM EXECUÇÃO**
+**FASE 4 — MARKETPLACE CORE — EM EXECUÇÃO**
 
 ## Fase anterior
 FASE 2 — IDENTIDADE, ACESSO E PERFIS — CONCLUÍDA.
@@ -40,8 +40,22 @@ Implementar a camada inicial de confiança do marketplace:
 - moderação inicial;
 - autorização, privacidade e auditoria.
 
+## Fase 3 — conclusão
+- [x] Avaliações e comentários bilaterais
+- [x] Unicidade por autor/serviço com proteção concorrente
+- [x] Favoritos e bloqueios
+- [x] Denúncias e moderação inicial
+- [x] Indicadores públicos de verificação sem documentos
+- [x] Auditoria das ações críticas
+- [x] Máquina de estados de moderação validada
+- [x] Testes de integração, concorrência, typecheck, build, lint e formatação
+- [x] CI backend e mobile aprovados; APK debug construído
+
+## Fase 4 — objetivo
+Implementar o núcleo do marketplace: solicitações, descoberta/matching, ofertas/aceite, serviço, estados server-side e base operacional para transporte.
+
 ## Próximo gate
-Usuários devem conseguir avaliar e denunciar com regras de autorização, integridade e auditoria, sem permitir avaliações inválidas/duplicadas ou exposição indevida de dados.
+Clientes conseguem criar solicitações, profissionais elegíveis conseguem receber/aceitar oportunidades e o servidor mantém integridade das transições e do vínculo solicitação → serviço.
 
 ## Blockers
 Nenhum bloqueador conhecido.
