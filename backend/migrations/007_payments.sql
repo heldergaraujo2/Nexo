@@ -59,3 +59,22 @@ FOR EACH ROW EXECUTE FUNCTION prevent_completed_service_price_change();
 INSERT INTO schema_migrations (version)
 VALUES ('007_payments')
 ON CONFLICT (version) DO NOTHING;
+
+
+CREATE OR REPLACE FUNCTION prevent_completed_service_price_change()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF OLD.status = 'completed' AND NEW.price_cents IS DISTINCT FROM OLD.price_cents THEN
+    RAISE EXCEPTION 'Completed service price is immutable' USING ERRCODE = 'check_violation';
+  END IF;
+  IF OLD.status = 'completed' AND NEW.currency IS DISTINCT FROM OLD.currency THEN
+    RAISE EXCEPTION 'Completed service currency is immutable' USING ERRCODE = 'check_violation';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_completed_service_price_immutable ON services;
+CREATE TRIGGER trg_completed_service_price_immutable
+BEFORE UPDATE OF price_cents, currency ON services
+FOR EACH ROW EXECUTE FUNCTION prevent_completed_service_price_change();
