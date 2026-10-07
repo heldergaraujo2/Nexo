@@ -8,7 +8,7 @@ import { AppModule } from '../src/app.module';
 
 process.env.NODE_ENV = 'test';
 process.env.AUTH_TOKEN_SECRET = '01234567890123456789012345678901';
-process.env.DATABASE_URL ??= '***localhost:5432/nexo';
+process.env.DATABASE_URL ??= 'postgresql://nexo:nexo@localhost:5432/nexo';
 
 let app: INestApplication;
 let db: Pool;
