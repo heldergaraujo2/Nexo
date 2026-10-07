@@ -142,13 +142,27 @@ export class TrustService {
 
   async moderationRating(user: AuthPrincipal, ratingId: string, dto: ModerateRatingDto) {
     this.assertModerator(user.role);
+    const current = await this.db.query<{ moderation_state: 'published' | 'flagged' | 'hidden' | 'restored' }>(
+      'SELECT moderation_state FROM ratings WHERE id=$1',
+      [ratingId],
+    );
+    const currentState = current.rows[0]?.moderation_state;
+    if (!currentState) throw new NotFoundException('Rating not found');
+    const allowed: Record<string, string[]> = {
+      published: ['flagged'],
+      flagged: ['hidden', 'restored'],
+      restored: ['flagged', 'hidden'],
+      hidden: ['restored'],
+    };
+    if (!allowed[currentState]?.includes(dto.moderationState)) {
+      throw new ConflictException('Invalid rating moderation transition');
+    }
     const result = await this.db.query(
       `UPDATE ratings SET moderation_state=$1,updated_at=NOW()
        WHERE id=$2
        RETURNING id,moderation_state AS "moderationState"`,
       [dto.moderationState, ratingId],
     );
-    if (!result.rowCount) throw new NotFoundException('Rating not found');
     await this.audit(this.db, user.accountId, 'rating.moderated', 'rating', ratingId, 'success', {
       state: dto.moderationState,
     });
