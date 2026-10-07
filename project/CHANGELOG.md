@@ -206,3 +206,15 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 **Gate FASE 10 — CI backend/mobile e auditoria final.**
+
+
+## 1.6.0 — FASE 10 concluída / FASE 11 iniciada
+### Gate FASE 10
+- PR #17 mesclado na main.
+- CI run 306 aprovado: backend e mobile verdes.
+- Backend: migrations, typecheck, testes, build, lint e format check.
+- Mobile: analyze, testes e APK debug.
+- Auditoria final: localização/destino, mídia, oferta/aceite, elegibilidade por veículo verificado, bloqueio, lifecycle dedicado, autorização, idempotência, auditoria e notificações.
+
+### Next
+**FASE 11 — ASSINATURA DOS PROFISSIONAIS.**
