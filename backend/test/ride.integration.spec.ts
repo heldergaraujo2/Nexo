@@ -28,7 +28,7 @@ describe('passenger transport integration', () => {
     if (db && users.length) {
       const placeholders = users.map((_, i) => '$' + (i + 1)).join(',');
       await db.query(`DELETE FROM ride_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM ride_route_snapshots WHERE ride_id IN (SELECT id FROM rides WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))))`, [...users, ...users]);
+      await db.query(`DELETE FROM ride_route_snapshots WHERE ride_id IN (SELECT id FROM rides WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})))))`, [...users, ...users]);
       await db.query(`DELETE FROM rides WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})))`, users);
       await db.query(`DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
       await db.query(`DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
