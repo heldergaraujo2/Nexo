@@ -43,3 +43,19 @@ CREATE TABLE IF NOT EXISTS cargo_events (
 );
 CREATE INDEX IF NOT EXISTS idx_cargo_events_job ON cargo_events(cargo_job_id, created_at DESC);
 INSERT INTO schema_migrations (version) VALUES ('010_cargo') ON CONFLICT (version) DO NOTHING;
+
+CREATE OR REPLACE FUNCTION prevent_cargo_accepted_price_change()
+RETURNS TRIGGER AS $function$
+BEGIN
+  IF OLD.category = 'cargo' AND OLD.status IN ('accepted','in_progress','completed') AND (
+    NEW.price_cents IS DISTINCT FROM OLD.price_cents OR NEW.currency IS DISTINCT FROM OLD.currency
+  ) THEN
+    RAISE EXCEPTION 'Accepted cargo price is immutable' USING ERRCODE = 'check_violation';
+  END IF;
+  RETURN NEW;
+END;
+$function$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_cargo_accepted_price_immutable ON services;
+CREATE TRIGGER trg_cargo_accepted_price_immutable
+BEFORE UPDATE OF price_cents, currency ON services
+FOR EACH ROW EXECUTE FUNCTION prevent_cargo_accepted_price_change();
