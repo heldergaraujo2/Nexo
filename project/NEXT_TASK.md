@@ -1,7 +1,7 @@
 # Nexo — Next Task
 
 ## Current objective
-Concluir e aprovar a **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO**.
+Executar a **FASE 7 — SEGURANÇA OPERACIONAL**.
 
 ## Entregas
 - [x] registro de dinheiro físico
@@ -33,7 +33,14 @@ Concluir e aprovar a **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO**.
 - Mudança de rota da Fase 5 agora sincroniza o novo preço com `services.price_cents` antes da conclusão.
 
 ## Gate da FASE 6
-Um serviço concluído possui registro financeiro consistente, auditável e vinculado ao serviço, sem processamento indevido de cartão pelo Nexo e sem alteração retroativa do preço.
+**APROVADO.** Um serviço concluído possui registro financeiro consistente, auditável e vinculado ao serviço, sem processamento indevido de cartão pelo Nexo e sem alteração retroativa do preço.
 
 ## Próxima fase
 FASE 7 — SEGURANÇA OPERACIONAL.
+
+## Objetivo da FASE 7
+- [ ] verificação operacional de identidade/veículo
+- [ ] controles de segurança de viagem
+- [ ] report/block reforçados para incidentes
+- [ ] auditoria e proteção de dados operacionais
+- [ ] testes de autorização, abuso, concorrência e privacidade
