@@ -35,6 +35,19 @@ export class TowingService {
     const requirements = (requestRow.requirements ?? {}) as Record<string, unknown>;
     const description = String(requirements.problemDescription ?? requestRow.description ?? '').trim();
     if (!description) throw new ConflictException('Towing problem description is required');
+    const eligibility = await client.query(
+      `SELECT s.provider_id FROM services s
+       JOIN accounts a ON a.id=s.provider_id AND a.role='provider' AND a.status='active'
+       WHERE s.id=$1
+         AND EXISTS (SELECT 1 FROM vehicles v WHERE v.provider_id=s.provider_id AND v.status='verified')
+         AND NOT EXISTS (
+           SELECT 1 FROM blocks b
+           WHERE (b.blocker_id=s.provider_id AND b.blocked_id=s.customer_id)
+              OR (b.blocker_id=s.customer_id AND b.blocked_id=s.provider_id)
+         )`,
+      [serviceId],
+    );
+    if (!eligibility.rowCount) throw new ForbiddenException('Provider is not eligible for towing');
     const result = await client.query(
       `INSERT INTO towing_jobs (service_id,origin,destination,problem_description,media)
        VALUES ($1,$2,$3,$4,$5)
@@ -174,7 +187,7 @@ export class TowingService {
   private async audit(client: PoolClient, actorId: string, eventType: string, resourceType: string, resourceId: string) {
     await client.query(
       `INSERT INTO audit_events (actor_id,event_type,resource_type,resource_id,outcome,metadata)
-       VALUES ($1,$2,$3,$4,'success','{}'::jsonb')`,
+       VALUES ($1,$2,$3,$4,'success','{}'::jsonb)`,
       [actorId,eventType,resourceType,resourceId],
     );
   }
