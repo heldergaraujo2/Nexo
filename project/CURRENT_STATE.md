@@ -7,7 +7,7 @@
 **FASE 4 — MARKETPLACE CORE — EM EXECUÇÃO**
 
 ## Fase anterior
-FASE 2 — IDENTIDADE, ACESSO E PERFIS — CONCLUÍDA.
+FASE 3 — CONFIANÇA E REPUTAÇÃO — CONCLUÍDA.
 
 ## Fase 2 — conclusão
 - [x] Cadastro de cliente
