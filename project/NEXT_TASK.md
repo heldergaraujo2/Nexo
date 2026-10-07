@@ -44,3 +44,6 @@ FASE 7 — SEGURANÇA OPERACIONAL.
 - [ ] report/block reforçados para incidentes
 - [ ] auditoria e proteção de dados operacionais
 - [ ] testes de autorização, abuso, concorrência e privacidade
+
+
+<!-- Phase 6 CI gate retrigger marker -->
