@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Req, UseGuards, Inject } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { ConfirmPaymentDto, CreatePaymentRecordDto, DisputePaymentDto } from './dto';
 import { PaymentService } from './payment.service';
@@ -6,7 +6,7 @@ import { PaymentService } from './payment.service';
 @UseGuards(AuthGuard)
 @Controller('payment-records')
 export class PaymentController {
-  constructor(private readonly payments: PaymentService) {}
+  constructor(@Inject(PaymentService) private readonly payments: PaymentService) {}
 
   @Post('services/:serviceId')
   create(
