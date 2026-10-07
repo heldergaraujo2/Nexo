@@ -65,4 +65,4 @@
 **FASE 4 — MARKETPLACE CORE**, incluindo solicitações, matching, ofertas/aceite e vínculo solicitação → serviço.
 
 ## 0.8.0 — FASE 4 em execução
-- Marketplace Core implementado em branch de validação; primeiro CI encontrou falhas de typecheck, fixture/DI, envelope HTTP e consulta de matching/dinheiro e lint, corrigidas antes do próximo gate. Temporary canonical formatter capture enabled.
+- Marketplace Core implementado em branch de validação; primeiro CI encontrou falhas de typecheck, fixture/DI, envelope HTTP e consulta de matching/dinheiro e lint, corrigidas antes do próximo gate. Type-safe test assertion added.
