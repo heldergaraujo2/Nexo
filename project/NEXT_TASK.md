@@ -1,26 +1,30 @@
 # Nexo — Next Task
 
 ## Current objective
-Executar a **FASE 5 — PASSENGER TRANSPORT**.
+Executar a **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO**.
 
 ## Entregas
-- [ ] modelo de viagem/origem/destino
-- [ ] distância em metros
-- [ ] cálculo server-side da tarifa
-- [ ] carro: R$2,00/km
-- [ ] motocicleta: R$1,50/km
-- [ ] arredondamento half-up para centavos
-- [ ] integração com ServiceRequest/Service
-- [ ] início da viagem
-- [ ] conclusão
-- [ ] cancelamento conforme regra definida
-- [ ] alteração de rota com novo snapshot server-side
-- [ ] histórico
-- [ ] testes unitários, integração, concorrência, API e segurança
+- [ ] registro de dinheiro físico
+- [ ] registro de Pix
+- [ ] registro de cartão na máquina do próprio profissional
+- [ ] confirmação operacional do pagamento
+- [ ] valor esperado versus valor confirmado
+- [ ] estado financeiro consistente e auditável
+- [ ] vínculo PaymentRecord → Service/Ride
+- [ ] proteção contra alteração retroativa do preço concluído
+- [ ] idempotência e concorrência
+- [ ] histórico/recibo operacional
+- [ ] testes unitários, integração, API, segurança e regressão
 - [ ] validação mobile do fluxo
 
-## Gate da FASE 5
-Uma viagem pode ser solicitada, aceita, executada e concluída com preço determinístico calculado pelo servidor, sem permitir alteração indevida do valor ou transições inválidas.
+## Restrições
+- O Nexo não processa cartões inicialmente.
+- Não armazenar dados de cartão.
+- Dinheiro continua em centavos inteiros + código de moeda.
+- O preço do serviço/ride é o snapshot server-side; pagamento não pode reescrever o preço acordado.
+
+## Gate da FASE 6
+Um serviço concluído possui registro financeiro consistente, auditável e vinculado ao serviço, sem processamento indevido de cartão pelo Nexo e sem alteração retroativa do preço.
 
 ## Próxima fase
-FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.
+FASE 7 — SEGURANÇA OPERACIONAL.
