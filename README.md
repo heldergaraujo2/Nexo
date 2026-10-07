@@ -31,7 +31,7 @@ Nexo is a marketplace for mobility, deliveries, cargo transport, towing and futu
 - Provider subscriptions
 
 ## Project status
-Planning and architecture foundation.
+**FASE 0 concluída — especificação e arquitetura aprovadas.** Próxima etapa: FASE 1 — Fundação Técnica.
 
 Start with:
 1. `project/CONTEXT.md`
