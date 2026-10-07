@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 6 CONCLUÍDA — FASE 7 EM EXECUÇÃO  
+**Status:** FASE 8 CONCLUÍDA — FASE 9 PRÓXIMA  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -185,6 +185,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 8 — Entregas
+**Status:** CONCLUÍDA
 **Objetivo:** expandir o marketplace para entrega de objetos/produtos.
 
 **Entregas**
@@ -199,7 +200,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [ ] conclusão
 - [ ] avaliação
 
-**Gate:** entrega completa de ponta a ponta com rastreabilidade operacional.
+**Gate:** APROVADO — entrega completa de ponta a ponta com rastreabilidade operacional, preço por oferta, máquina de estados, auditoria, idempotência e validação mobile.
 
 ---
 
