@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { Pool, PoolClient } from 'pg';
 import { AuthPrincipal } from '../auth/auth.types';
 import { RideService } from '../ride/ride.service';
+import { DeliveryService } from '../delivery/delivery.service';
 import {
   CancelDto,
   CreateOfferDto,
@@ -23,6 +24,7 @@ export class MarketplaceService {
   constructor(
     @Inject(Pool) private readonly db: Pool,
     @Inject(RideService) private readonly rides: RideService,
+    @Inject(DeliveryService) private readonly deliveries: DeliveryService,
   ) {}
 
   async setAvailability(user: AuthPrincipal, dto: MarketplaceAvailabilityDto) {
@@ -145,7 +147,7 @@ export class MarketplaceService {
       dto,
       async (client) => {
         const request = await client.query(
-          `SELECT id,customer_id,category,status,origin,destination FROM service_requests WHERE id=$1 FOR UPDATE`,
+          `SELECT id,customer_id,category,status,origin,destination,requirements FROM service_requests WHERE id=$1 FOR UPDATE`,
           [requestId],
         );
         const row = request.rows[0];
@@ -176,6 +178,9 @@ export class MarketplaceService {
 
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
           if (dto.offerType !== 'direct_accept') throw new ConflictException('Passenger transport does not allow price negotiation');
+        }
+        if (row.category === 'delivery' && dto.offerType !== 'priced_offer') {
+          throw new ConflictException('Delivery acceptance requires a priced offer');
         }
         if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
@@ -247,7 +252,7 @@ export class MarketplaceService {
       {},
       async (client) => {
         const request = await client.query(
-          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination
+          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination,requirements
          FROM service_requests WHERE id=$1 FOR UPDATE`,
           [requestId],
         );
@@ -257,6 +262,9 @@ export class MarketplaceService {
           throw new ConflictException(
             'Request is not available for acceptance',
           );
+        }
+        if (row.category === 'delivery') {
+          throw new ConflictException('Delivery must be accepted through a priced offer');
         }
         await this.assertProviderEligible(
           client,
@@ -298,6 +306,9 @@ export class MarketplaceService {
           );
           await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
           service.rows[0].priceCents = Number(ride.fareCents);
+        }
+        if (row.category === 'delivery') {
+          await this.deliveries.createForService(client, service.rows[0].id, row);
         }
         await client.query(
           `UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW()
@@ -348,7 +359,7 @@ export class MarketplaceService {
       async (client) => {
         const offerResult = await client.query(
           `SELECT o.id,o.request_id,o.provider_id,o.offer_type,o.amount_cents,o.currency,o.status,
-                r.customer_id,r.category,r.status AS request_status,r.origin,r.destination
+                r.customer_id,r.category,r.status AS request_status,r.origin,r.destination,r.requirements
          FROM offers o JOIN service_requests r ON r.id=o.request_id
          WHERE o.id=$1 FOR UPDATE OF o`,
           [offerId],
@@ -398,6 +409,9 @@ export class MarketplaceService {
             row.currency,
           ],
         );
+        if (row.category === 'delivery') {
+          await this.deliveries.createForService(client, service.rows[0].id, row);
+        }
         await client.query(
           `UPDATE offers SET status='accepted',updated_at=NOW() WHERE id=$1`,
           [offerId],
@@ -650,6 +664,9 @@ export class MarketplaceService {
           row.provider_id !== user.accountId
         ) {
           throw new ForbiddenException('Service access denied');
+        }
+        if (row.category === 'delivery') {
+          throw new ConflictException('Delivery execution must use the delivery state machine');
         }
 
         const transitions: Record<string, string[]> = {

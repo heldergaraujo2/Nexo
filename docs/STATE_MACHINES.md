@@ -73,3 +73,11 @@ PUBLISHED → FLAGGED → HIDDEN | RESTORED
 - Não pode haver duas assinaturas ativas para o mesmo provider.
 - Preço de passageiro não pode ser alterado por negociação livre.
 - Preço de carga aceito deve corresponder à última proposta aceita.
+
+
+## Delivery
+ACCEPTED → PROVIDER_EN_ROUTE → AT_PICKUP → PICKED_UP → IN_TRANSIT → DELIVERED
+
+Saída alternativa: ACCEPTED/PROVIDER_EN_ROUTE/AT_PICKUP → CANCELLED.
+
+Somente o provider vinculado avança estados operacionais; customer/provider relacionados podem cancelar quando permitido. A máquina Delivery é a autoridade para execução e impede bypass pelos endpoints genéricos de Service.

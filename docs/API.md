@@ -113,3 +113,16 @@ Cargo usa versão/estado atual para evitar concorrência. A proposta aceita vira
 
 ## Mídia
 Upload usa URL temporária. O backend confirma tamanho, MIME, checksum e moderação antes da publicação.
+
+
+### Deliveries — Fase 8
+- POST /v1/deliveries/requests — cria solicitação de entrega.
+- GET /v1/deliveries/:deliveryId — consulta entrega pelo customer/provider relacionado.
+- POST /v1/deliveries/:deliveryId/provider-en-route — inicia deslocamento.
+- POST /v1/deliveries/:deliveryId/at-pickup — registra chegada ao pickup.
+- POST /v1/deliveries/:deliveryId/picked-up — registra coleta.
+- POST /v1/deliveries/:deliveryId/in-transit — inicia transporte.
+- POST /v1/deliveries/:deliveryId/delivered — conclui entrega.
+- POST /v1/deliveries/:deliveryId/cancel — cancela em estados permitidos.
+
+Entrega deve usar oferta com preço; o endpoint genérico de aceite direto rejeita a categoria delivery.

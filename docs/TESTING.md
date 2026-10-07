@@ -96,3 +96,16 @@ Toda fase deve produzir:
 - documentação sincronizada.
 
 Nenhum resultado de teste deve ser declarado sem execução real.
+
+
+### Fase 8 — entregas
+- Solicitação valida origem/destino e descrição do item.
+- Mídia valida MIME, tamanho, checksum e limite de itens.
+- Delivery exige oferta com preço para aceite.
+- Aceite direto genérico de delivery é rejeitado.
+- Fluxo completo de estados é validado.
+- Transições inválidas retornam conflito.
+- Usuário fora da relação customer/provider não acessa a entrega.
+- Idempotência de criação/transição é protegida por hash e lock transacional.
+- Lifecycle genérico de Service não pode contornar Delivery.
+- Mobile valida campos essenciais e build APK.
