@@ -28,7 +28,7 @@ describe('passenger transport integration', () => {
     if (db && users.length) {
       const placeholders = users.map((_, i) => '$' + (i + 1)).join(',');
       await db.query(`DELETE FROM ride_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM ride_route_snapshots WHERE ride_id IN (SELECT r.id FROM rides r JOIN services s ON s.id=r.service_id JOIN accounts c ON c.id=s.customer_id JOIN accounts p ON p.id=s.provider_id WHERE c.email IN (${placeholders}) OR p.email IN (${placeholders}))`, [...users, ...users]);
+      await db.query(`DELETE FROM ride_route_snapshots WHERE ride_id IN (SELECT r.id FROM rides r JOIN services s ON s.id=r.service_id JOIN accounts c ON c.id=s.customer_id JOIN accounts p ON p.id=s.provider_id WHERE c.email IN (${placeholders}) OR p.email IN (${placeholders}))`, users);
       await db.query(`DELETE FROM rides WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})))`, users);
       await db.query(`DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
       await db.query(`DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
@@ -54,7 +54,7 @@ describe('passenger transport integration', () => {
       destination: { latitude: -16.6828, longitude: -49.2534 },
     }, customer.token, randomUUID());
 
-    expect(rideRequest.status).toBe(201);
+    expect(rideRequest.status, JSON.stringify(rideRequest.body)).toBe(201);
     expect(rideRequest.body.category).toBe('passenger_car');
     const distanceMeters = Number(rideRequest.body.distanceMeters);
     const fareCents = Number(rideRequest.body.fareCents);
