@@ -34,3 +34,21 @@ A Fase 0 está aprovada quando:
 ## Resultado
 
 A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, mas não inicia a FASE 1 automaticamente.
+
+
+## Critérios de Aceitação da FASE 5
+
+### Gate técnico
+- [x] solicitação de corrida cria ServiceRequest de passageiro;
+- [x] distância é calculada server-side em metros;
+- [x] tarifas de carro e motocicleta são aplicadas sem floating point;
+- [x] Ride é criada somente no aceite do serviço;
+- [x] estados da viagem são validados server-side;
+- [x] rota e preço possuem snapshots versionados;
+- [x] alterações de rota rejeitam versão obsoleta;
+- [x] negociação livre de preço é rejeitada para passageiros;
+- [x] auditoria/idempotência e integração foram testadas;
+- [x] CI backend/mobile está verde e APK debug foi construído.
+
+### Resultado
+**FASE 5 APROVADA.** Próximo gate: FASE 6 — Pagamentos e Registro Financeiro.
