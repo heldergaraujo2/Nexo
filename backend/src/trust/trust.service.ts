@@ -38,8 +38,10 @@ export class TrustService {
       }
 
       const validPair =
-        (row.customer_id === user.accountId && row.provider_id === dto.subjectId) ||
-        (row.provider_id === user.accountId && row.customer_id === dto.subjectId);
+        (row.customer_id === user.accountId &&
+          row.provider_id === dto.subjectId) ||
+        (row.provider_id === user.accountId &&
+          row.customer_id === dto.subjectId);
       if (!validPair) {
         throw new ForbiddenException('Rating relationship is not allowed');
       }
@@ -49,10 +51,23 @@ export class TrustService {
          VALUES ($1,$2,$3,$4,$5)
          RETURNING id,service_id AS "serviceId",author_id AS "authorId",subject_id AS "subjectId",
          score,comment,moderation_state AS "moderationState",created_at AS "createdAt"`,
-        [dto.serviceId, user.accountId, dto.subjectId, dto.score, dto.comment ?? null],
+        [
+          dto.serviceId,
+          user.accountId,
+          dto.subjectId,
+          dto.score,
+          dto.comment ?? null,
+        ],
       );
       const rating = inserted.rows[0];
-      await this.audit(client, user.accountId, 'rating.created', 'rating', rating.id, 'success');
+      await this.audit(
+        client,
+        user.accountId,
+        'rating.created',
+        'rating',
+        rating.id,
+        'success',
+      );
       await client.query('COMMIT');
       return rating;
     } catch (error) {
@@ -74,7 +89,10 @@ export class TrustService {
        ORDER BY created_at DESC`,
       [accountId],
     );
-    const summary = await this.db.query<{ average: string | null; total: string }>(
+    const summary = await this.db.query<{
+      average: string | null;
+      total: string;
+    }>(
       `SELECT AVG(score)::numeric(3,2) AS average, COUNT(*)::text AS total
        FROM ratings WHERE subject_id=$1 AND moderation_state IN ('published','restored')`,
       [accountId],
@@ -125,9 +143,13 @@ export class TrustService {
     if (!dto.targetAccountId && !dto.serviceId) {
       throw new ConflictException('A report target is required');
     }
-    if (dto.targetAccountId) await this.assertAccountExists(dto.targetAccountId);
+    if (dto.targetAccountId)
+      await this.assertAccountExists(dto.targetAccountId);
     if (dto.serviceId) {
-      const service = await this.db.query('SELECT 1 FROM services WHERE id=$1', [dto.serviceId]);
+      const service = await this.db.query(
+        'SELECT 1 FROM services WHERE id=$1',
+        [dto.serviceId],
+      );
       if (!service.rowCount) throw new NotFoundException('Service not found');
     }
     const result = await this.db.query(
@@ -136,7 +158,13 @@ export class TrustService {
        VALUES ($1,$2,$3,$4,$5)
        RETURNING id,reporter_id AS "reporterId",target_account_id AS "targetAccountId",
        service_id AS "serviceId",category,description,status,priority,created_at AS "createdAt"`,
-      [user.accountId, dto.targetAccountId ?? null, dto.serviceId ?? null, dto.category, dto.description],
+      [
+        user.accountId,
+        dto.targetAccountId ?? null,
+        dto.serviceId ?? null,
+        dto.category,
+        dto.description,
+      ],
     );
     await this.audit(
       this.db,
@@ -158,7 +186,14 @@ export class TrustService {
       'INSERT INTO blocks (blocker_id,blocked_id) VALUES ($1,$2) ON CONFLICT DO NOTHING',
       [user.accountId, targetAccountId],
     );
-    await this.audit(this.db, user.accountId, 'account.blocked', 'account', targetAccountId, 'success');
+    await this.audit(
+      this.db,
+      user.accountId,
+      'account.blocked',
+      'account',
+      targetAccountId,
+      'success',
+    );
     return { targetAccountId, blocked: true };
   }
 
@@ -167,17 +202,26 @@ export class TrustService {
       'DELETE FROM blocks WHERE blocker_id=$1 AND blocked_id=$2',
       [user.accountId, targetAccountId],
     );
-    await this.audit(this.db, user.accountId, 'account.unblocked', 'account', targetAccountId, 'success');
+    await this.audit(
+      this.db,
+      user.accountId,
+      'account.unblocked',
+      'account',
+      targetAccountId,
+      'success',
+    );
     return { targetAccountId, blocked: false };
   }
 
-  async moderationRating(user: AuthPrincipal, ratingId: string, dto: ModerateRatingDto) {
+  async moderationRating(
+    user: AuthPrincipal,
+    ratingId: string,
+    dto: ModerateRatingDto,
+  ) {
     this.assertModerator(user.role);
     const current = await this.db.query<{
       moderation_state: 'published' | 'flagged' | 'hidden' | 'restored';
-    }>(      'SELECT moderation_state FROM ratings WHERE id=$1',
-      [ratingId],
-    );
+    }>('SELECT moderation_state FROM ratings WHERE id=$1', [ratingId]);
     const currentState = current.rows[0]?.moderation_state;
     if (!currentState) throw new NotFoundException('Rating not found');
     const allowed: Record<string, string[]> = {
@@ -207,7 +251,11 @@ export class TrustService {
     return result.rows[0];
   }
 
-  async moderationReport(user: AuthPrincipal, reportId: string, dto: ModerateReportDto) {
+  async moderationReport(
+    user: AuthPrincipal,
+    reportId: string,
+    dto: ModerateReportDto,
+  ) {
     this.assertModerator(user.role);
     const result = await this.db.query(
       `UPDATE safety_reports
