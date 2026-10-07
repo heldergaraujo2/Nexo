@@ -9,14 +9,19 @@ describe('identity security primitives', () => {
     const service = new PasswordService();
     const hash = await service.hash('correct horse battery staple');
     expect(hash).not.toContain('correct horse');
-    expect(await service.verify('correct horse battery staple', hash)).toBe(true);
+    expect(await service.verify('correct horse battery staple', hash)).toBe(
+      true,
+    );
     expect(await service.verify('wrong password', hash)).toBe(false);
   });
 
   it('signs and verifies a short-lived role token', () => {
     const service = new TokenService();
     const token = service.sign({ accountId: 'account-1', role: 'provider' });
-    expect(service.verify(token)).toEqual({ accountId: 'account-1', role: 'provider' });
+    expect(service.verify(token)).toEqual({
+      accountId: 'account-1',
+      role: 'provider',
+    });
   });
 
   it('rejects token tampering', () => {
