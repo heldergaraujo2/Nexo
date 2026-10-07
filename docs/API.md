@@ -126,3 +126,17 @@ Upload usa URL temporária. O backend confirma tamanho, MIME, checksum e modera�
 - POST /v1/deliveries/:deliveryId/cancel — cancela em estados permitidos.
 
 Entrega deve usar oferta com preço; o endpoint genérico de aceite direto rejeita a categoria delivery.
+
+
+### Towing — Fase 10
+- POST /v1/towing/requests — cria solicitação de guincho.
+- GET /v1/towing/requests/:requestId — consulta solicitação relacionada.
+- GET /v1/towing/:towingId — consulta atendimento relacionado.
+- POST /v1/towing/:towingId/provider-en-route — inicia deslocamento.
+- POST /v1/towing/:towingId/arrived — registra chegada.
+- POST /v1/towing/:towingId/loading — registra preparação/embarque.
+- POST /v1/towing/:towingId/in-tow — inicia reboque.
+- POST /v1/towing/:towingId/completed — conclui atendimento.
+- POST /v1/towing/:towingId/cancel — cancela em estados permitidos.
+
+Guincho usa oferta com preço para preservar preço rastreável no Service. O provider precisa estar elegível para a categoria, possuir veículo verificado e não estar bloqueado com o customer.
