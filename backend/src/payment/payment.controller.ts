@@ -30,6 +30,7 @@ export class PaymentController {
   }
 
   @Post(':paymentId/confirm')
+  @HttpCode(200)
   confirm(
     @Req() req: AuthenticatedRequest,
     @Param('paymentId') paymentId: string,
@@ -40,6 +41,7 @@ export class PaymentController {
   }
 
   @Post(':paymentId/dispute')
+  @HttpCode(200)
   dispute(
     @Req() req: AuthenticatedRequest,
     @Param('paymentId') paymentId: string,
