@@ -15,7 +15,7 @@ void main() {
     await tester.enterText(find.byType(TextField), '1235');
     await tester.pump();
 
-    final button = tester.widget<FilledButton>(find.text('Confirmar pagamento'));
+    final button = tester.widget<FilledButton>(find.ancestor(of: find.text('Confirmar pagamento'), matching: find.byType(FilledButton)));
     expect(button.onPressed, isNull);
   });
 }
