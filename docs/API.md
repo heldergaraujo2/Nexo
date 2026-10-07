@@ -52,6 +52,21 @@
 /v1/media — upload/moderação.
 /v1/subscriptions — assinatura.
 /v1/payment-records — registro de pagamento.
+/v1/security — segurança operacional.
+
+### Operational safety
+- POST /v1/security/vehicles — provider cadastra veículo sem expor documentação.
+- GET /v1/security/vehicles — provider consulta seus próprios veículos.
+- POST /v1/security/incidents — participante registra incidente relacionado a serviço.
+- POST /v1/security/verifications — moderator/admin cria caso privado de verificação.
+- PUT /v1/security/verifications/:id — moderator/admin revisa verificação.
+- POST /v1/security/fraud-flags — moderator/admin cria flag antifraude.
+- PUT /v1/security/fraud-flags/:id — moderator/admin revisa flag.
+- GET /v1/security/incidents — moderator/admin consulta incidentes.
+- PUT /v1/security/incidents/:id — moderator/admin avança incidente conforme máquina de estados.
+- GET /v1/security/events — moderator/admin consulta eventos de segurança.
+
+Dados privados de verificação não são retornados por endpoints públicos. Perfis públicos recebem somente indicadores de verificação confirmada.
 
 ### Payment recording
 
