@@ -179,6 +179,9 @@ export class MarketplaceService {
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
           if (dto.offerType !== 'direct_accept') throw new ConflictException('Passenger transport does not allow price negotiation');
         }
+        if (row.category === 'delivery' && dto.offerType !== 'priced_offer') {
+          throw new ConflictException('Delivery acceptance requires a priced offer');
+        }
         if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
         }
@@ -259,6 +262,9 @@ export class MarketplaceService {
           throw new ConflictException(
             'Request is not available for acceptance',
           );
+        }
+        if (row.category === 'delivery') {
+          throw new ConflictException('Delivery must be accepted through a priced offer');
         }
         await this.assertProviderEligible(
           client,
@@ -658,6 +664,9 @@ export class MarketplaceService {
           row.provider_id !== user.accountId
         ) {
           throw new ForbiddenException('Service access denied');
+        }
+        if (row.category === 'delivery') {
+          throw new ConflictException('Delivery execution must use the delivery state machine');
         }
 
         const transitions: Record<string, string[]> = {
