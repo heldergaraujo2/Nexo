@@ -52,12 +52,13 @@ export class AuthService {
     const email = dto.email.trim().toLowerCase();
     const result = await this.db.query<{id:string}>('SELECT id FROM accounts WHERE email=$1 AND status=$2', [email,'active']);
     const response: {message:string; developmentToken?:string} = { message: 'If the account exists, recovery instructions will be sent.' };
-    if (!result.rowCount || !result.rows[0]) return response;
+    const recoveryAccount = result.rows[0];
+    if (!result.rowCount || !recoveryAccount) return response;
     const raw = randomBytes(32).toString('base64url');
     const hash = createHash('sha256').update(raw).digest('hex');
     await this.db.query(
       'INSERT INTO password_resets (account_id, token_hash, expires_at) VALUES ($1,$2,NOW()+INTERVAL \'30 minutes\')',
-      [result.rows[0].id, hash],
+      [recoveryAccount.id, hash],
     );
     if (process.env.NODE_ENV !== 'production') response.developmentToken = raw;
     return response;
