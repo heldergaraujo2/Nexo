@@ -9,7 +9,7 @@
     "test": "vitest run",
     "lint": "eslint src test --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\""
+    "format:check": "prettier --check "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json""
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
@@ -17,19 +17,21 @@
     "@nestjs/platform-express": "^11.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.5",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "@eslint/js": "^9.0.0",
     "eslint": "^9.0.0",
     "prettier": "^3.6.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0",
     "vitest": "^3.2.0",
-    "@eslint/js": "^9.0.0",
     "typescript-eslint": "^8.0.0"
   }
 }
