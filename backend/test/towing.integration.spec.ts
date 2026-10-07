@@ -24,6 +24,7 @@ describe('towing integration',()=>{
   await db.query('DELETE FROM offers WHERE request_id IN (SELECT id FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])))',[emails]);
   await db.query('DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM vehicles WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
+  await db.query('DELETE FROM security_events WHERE actor_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM accounts WHERE email=ANY($1::text[])',[emails]); await app?.close();
  });
  it('creates a towing request with location, destination, problem and media metadata',async()=>{
