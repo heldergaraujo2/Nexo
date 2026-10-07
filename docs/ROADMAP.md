@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** Planejamento estruturado — FASE 0 CONCLUÍDA  
+**Status:** FASE 1 CONCLUÍDA — FASE 2 INICIANDO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -43,19 +43,19 @@ Uma fase só pode avançar quando:
 ## FASE 1 — Fundação Técnica
 **Objetivo:** criar uma aplicação executável, segura e observável.
 
-**Entregas**
-- [ ] estrutura do projeto
-- [ ] ambientes de desenvolvimento/teste/produção
-- [ ] banco de dados e migrations
-- [ ] configuração de secrets
-- [ ] logging
-- [ ] tratamento de erros
-- [ ] testes automatizados
-- [ ] CI/CD
-- [ ] health checks
-- [ ] base de monitoramento
+**Entregas — CONCLUÍDAS**
+- [x] estrutura do projeto
+- [x] ambientes de desenvolvimento/teste/produção
+- [x] banco de dados e migrations
+- [x] configuração de secrets/env
+- [x] logging e diagnóstico básico
+- [x] tratamento de erros/validação HTTP
+- [x] testes automatizados
+- [x] CI/CD
+- [x] health checks
+- [x] base de monitoramento/observabilidade
 
-**Gate:** aplicação sobe de forma reproduzível e os testes básicos passam.
+**Gate:** APROVADO — backend e mobile validados automaticamente; migration executada no CI; APK debug construído.
 
 ---
 
