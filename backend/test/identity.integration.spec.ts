@@ -3,6 +3,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { Pool } from 'pg';
 import { randomUUID } from 'node:crypto';
+import { AddressInfo } from 'node:net';
 import { AppModule } from '../src/app.module';
 
 process.env.NODE_ENV = 'test';
@@ -74,7 +75,10 @@ describe('identity API integration', () => {
 });
 
 async function request(app: INestApplication, path: string, method: string, body?: unknown, token?: string) {
-  const response = await fetch(`http://127.0.0.1:${(app as any).getHttpServer().address().port}${path}`, {
+  const address = app.getHttpServer().address();
+  if (!address || typeof address === 'string') throw new Error('Test server address unavailable');
+  const port = (address as AddressInfo).port;
+  const response = await fetch(`http://127.0.0.1:${port}${path}`, {
     method,
     headers: {
       'content-type': 'application/json',
@@ -82,5 +86,5 @@ async function request(app: INestApplication, path: string, method: string, body
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  return { status: response.status, body: await response.json() as Record<string, any> };
+  return { status: response.status, body: await response.json() as Record<string, unknown> };
 }
