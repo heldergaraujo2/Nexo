@@ -1,4 +1,5 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Reflector } from '@nestjs/common';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { AuthenticatedRequest } from './auth.guard';
 import { ROLES_KEY } from './roles.decorator';
 import { UserRole } from './auth.types';
