@@ -1,30 +1,29 @@
 # Nexo — Next Task
 
 ## Current objective
-Iniciar a **FASE 2 — IDENTIDADE, ACESSO E PERFIS**.
+Concluir o gate da **FASE 2 — IDENTIDADE, ACESSO E PERFIS** e, após CI verde, iniciar a **FASE 3 — CONFIANÇA E REPUTAÇÃO**.
 
-## Fase anterior
-FASE 1 — Fundação Técnica: **CONCLUÍDA**.
-
-## FASE 2 — tarefas
-- [ ] Cadastro de cliente
-- [ ] Cadastro de profissional/prestador
-- [ ] Login e sessão
-- [ ] Recuperação de acesso
-- [ ] Autorização por papel
-- [ ] Perfil público
-- [ ] Foto de perfil
-- [ ] Biografia e informações profissionais
-- [ ] Fotos e vídeos com legendas
-- [ ] Preferências de privacidade
-- [ ] Testes de autorização e isolamento de dados
-- [ ] Auditoria de segurança da identidade
+## FASE 2 — entregas
+- [x] Cadastro de cliente
+- [x] Cadastro de profissional/prestador
+- [x] Login e sessão
+- [x] Recuperação de acesso
+- [x] Autorização por papel
+- [x] Perfil público
+- [x] Foto de perfil
+- [x] Biografia e informações profissionais
+- [x] Fotos e vídeos com legendas via registro seguro de mídia
+- [x] Preferências de privacidade baseline
+- [x] Testes de autorização e isolamento de dados
+- [x] Auditoria de segurança da identidade
 
 ## Gate da FASE 2
 Um usuário deve conseguir criar conta, autenticar-se, acessar seu perfil e visualizar ou alterar apenas os dados permitidos pelo seu papel e pelas regras de privacidade.
 
-## Regra
-Não avançar para a FASE 3 até o gate da FASE 2 estar aprovado.
+**Status:** implementação concluída; aguardando CI final para aprovação formal.
 
-## Continuidade
-Ao concluir a FASE 2, atualizar `project/CURRENT_STATE.md`, este arquivo, `project/CHANGELOG.md` e `project/DECISIONS.md` quando houver novas decisões.
+## Nota técnica
+Object storage S3-compatible será conectado por adapter dedicado. Nesta fase, a API de mídia já valida e persiste metadados, referência de objeto, visibilidade e estado de moderação, sem expor armazenamento privado diretamente.
+
+## Próxima fase
+FASE 3 — CONFIANÇA E REPUTAÇÃO.
