@@ -1,39 +1,44 @@
 # Nexo — Changelog
 
 ## 0.1.0 — Foundation
-
-### Added
 - Repository continuity architecture
 - Agent instructions
-- Context snapshot
-- Current state tracking
-- Decision log
-- Next-task tracking
-- Product README
-- Roadmap v0.5
+- Context/state/decision/next-task tracking
+- Product README and initial roadmap
 - Master specification outline
 
-### Product baseline
-- R$99.90/month provider subscription
-- 0% commission
-- 100% of service value remains with provider
-- Car: R$2.00/km
-- Motorcycle: R$1.50/km
-- Cash, Pix and provider-owned card machine
-- Profiles with photos, videos and captions
-- Bilateral reputation
-- Cargo price negotiation
-
-### Removed from scope
-- Nexo Live
-- Hands-free
-
-
 ## 0.2.0 — Roadmap por fases
+- Roadmap reorganizado em 14 fases.
+- Gates de conclusão definidos.
+- MVP seguro = FASES 0–7.
+- Expansão/monetização = FASES 8–11.
+- Crescimento/escala = FASES 12–13.
 
-### Changed
-- Roadmap reorganizado em 14 fases, da especificação à escala.
-- Cada fase recebeu objetivo, entregas e gate de conclusão.
-- Definido MVP seguro como FASES 0–7.
-- Definida expansão de categorias/monetização nas FASES 8–11.
-- Definida estratégia de crescimento e escala nas FASES 12–13.
+## 0.3.0 — FASE 0 concluída
+### Added
+- requisitos funcionais e não funcionais;
+- modelo inicial de dados;
+- máquinas de estado;
+- estratégia de testes;
+- critérios de aceitação;
+- baseline de infraestrutura.
+
+### Consolidated
+- Master Technical Specification v1.0;
+- Architecture v1.0;
+- API contract v1.0;
+- Security baseline v1.0;
+- LGPD/privacy baseline v1.0;
+- UX mobile-first;
+- stack Flutter/Dart + NestJS/TypeScript + PostgreSQL;
+- monólito modular inicial.
+
+### Decisions
+- distância interna em metros;
+- dinheiro em centavos;
+- arredondamento inicial nearest cent/half-up;
+- sem mínimo/taxa de cancelamento por enquanto;
+- integrações externas via adapters.
+
+### Gate
+FASE 0 aprovada. Próxima fase: FASE 1 — FUNDAÇÃO TÉCNICA.
