@@ -1,5 +1,6 @@
 import {
   Body,
+  Inject,
   Controller,
   Get,
   Headers,
@@ -21,7 +22,7 @@ import { MarketplaceService } from './marketplace.service';
 @UseGuards(AuthGuard)
 @Controller()
 export class MarketplaceController {
-  constructor(private readonly marketplace: MarketplaceService) {}
+  constructor(@Inject(MarketplaceService) private readonly marketplace: MarketplaceService) {}
 
   @Put('me/marketplace')
   setAvailability(
