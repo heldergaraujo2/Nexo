@@ -9,7 +9,7 @@
     "test": "vitest run",
     "lint": "eslint src test --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "format:check": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\" && git diff -- src/trust/dto.ts src/trust/trust.service.ts test/trust.integration.spec.ts"
+    "format:check": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\" && cat src/trust/dto.ts src/trust/trust.service.ts test/trust.integration.spec.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
