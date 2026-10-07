@@ -1,4 +1,5 @@
 import { INestApplication } from '@nestjs/common';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { Pool } from 'pg';
 import { randomUUID } from 'node:crypto';
