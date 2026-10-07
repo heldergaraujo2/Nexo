@@ -5,7 +5,11 @@ import { MediaService } from './media.service';
 
 @Controller()
 export class MediaController {
-  constructor(private readonly media: MediaService) {}
+  private readonly media: MediaService;
+
+  constructor(media: MediaService) {
+    this.media = media;
+  }
 
   @UseGuards(AuthGuard)
   @Post('me/media')
