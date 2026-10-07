@@ -124,3 +124,10 @@ actor_id quando aplicável, tipo, recurso, recurso_id, ação, resultado, metada
 - Delivery contém origem/destino, descrição do item, observações, metadados de mídia e estado operacional.
 - DeliveryEvent registra transições, ator, motivo e timestamp.
 - Preço permanece no Service/Offer conforme regras financeiras existentes; não é criado tarifário fixo de passageiros para entregas.
+
+
+## Towing — Fase 10
+- TowingJob 1:1 Service.
+- TowingJob contém origem, destino opcional, descrição do problema, metadados de mídia e estado operacional.
+- TowingEvent registra transições, ator, motivo e timestamp.
+- Preço vem de Offer/Service; não existe tarifário fixo inventado para guincho.

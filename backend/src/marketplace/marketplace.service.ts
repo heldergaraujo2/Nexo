@@ -10,6 +10,7 @@ import { Pool, PoolClient } from 'pg';
 import { AuthPrincipal } from '../auth/auth.types';
 import { RideService } from '../ride/ride.service';
 import { DeliveryService } from '../delivery/delivery.service';
+import { TowingService } from '../towing/towing.service';
 import {
   CancelDto,
   CreateOfferDto,
@@ -25,6 +26,7 @@ export class MarketplaceService {
     @Inject(Pool) private readonly db: Pool,
     @Inject(RideService) private readonly rides: RideService,
     @Inject(DeliveryService) private readonly deliveries: DeliveryService,
+    @Inject(TowingService) private readonly towing: TowingService,
   ) {}
 
   async setAvailability(user: AuthPrincipal, dto: MarketplaceAvailabilityDto) {
@@ -179,8 +181,8 @@ export class MarketplaceService {
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
           if (dto.offerType !== 'direct_accept') throw new ConflictException('Passenger transport does not allow price negotiation');
         }
-        if (row.category === 'delivery' && dto.offerType !== 'priced_offer') {
-          throw new ConflictException('Delivery acceptance requires a priced offer');
+        if ((row.category === 'delivery' || row.category === 'towing') && dto.offerType !== 'priced_offer') {
+          throw new ConflictException('Delivery and towing acceptance require a priced offer');
         }
         if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
@@ -263,8 +265,8 @@ export class MarketplaceService {
             'Request is not available for acceptance',
           );
         }
-        if (row.category === 'delivery') {
-          throw new ConflictException('Delivery must be accepted through a priced offer');
+        if (row.category === 'delivery' || row.category === 'towing') {
+          throw new ConflictException('This category must be accepted through a priced offer');
         }
         await this.assertProviderEligible(
           client,
@@ -309,6 +311,9 @@ export class MarketplaceService {
         }
         if (row.category === 'delivery') {
           await this.deliveries.createForService(client, service.rows[0].id, row);
+        }
+        if (row.category === 'towing') {
+          await this.towing.createForService(client, service.rows[0].id, row);
         }
         await client.query(
           `UPDATE service_requests SET status='accepted',matched_provider_id=$1,accepted_offer_id=$2,updated_at=NOW()
@@ -411,6 +416,9 @@ export class MarketplaceService {
         );
         if (row.category === 'delivery') {
           await this.deliveries.createForService(client, service.rows[0].id, row);
+        }
+        if (row.category === 'towing') {
+          await this.towing.createForService(client, service.rows[0].id, row);
         }
         await client.query(
           `UPDATE offers SET status='accepted',updated_at=NOW() WHERE id=$1`,
@@ -665,8 +673,8 @@ export class MarketplaceService {
         ) {
           throw new ForbiddenException('Service access denied');
         }
-        if (row.category === 'delivery') {
-          throw new ConflictException('Delivery execution must use the delivery state machine');
+        if (row.category === 'delivery' || row.category === 'towing') {
+          throw new ConflictException('Category execution must use its dedicated state machine');
         }
 
         const transitions: Record<string, string[]> = {
@@ -794,6 +802,16 @@ export class MarketplaceService {
     );
     if (blocked.rowCount)
       throw new ForbiddenException('Participants are blocked');
+
+    if (category === 'towing') {
+      const verifiedVehicle = await client.query(
+        "SELECT 1 FROM vehicles WHERE provider_id=$1 AND status='verified' LIMIT 1",
+        [providerId],
+      );
+      if (!verifiedVehicle.rowCount) {
+        throw new ForbiddenException('Towing provider requires a verified vehicle');
+      }
+    }
   }
 
   private assertCustomer(user: AuthPrincipal) {

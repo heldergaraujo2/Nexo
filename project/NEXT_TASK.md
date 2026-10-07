@@ -4,19 +4,19 @@
 Executar a **FASE 10 — GUINCHO/REBOQUE**.
 
 ## Entregas
-- [ ] localização
-- [ ] destino quando necessário
-- [ ] descrição do problema
-- [ ] fotos
-- [ ] ofertas
-- [ ] negociação quando aplicável
-- [ ] aceite
-- [ ] execução
-- [ ] conclusão
-- [ ] avaliação
+- [x] localização
+- [x] destino quando necessário
+- [x] descrição do problema
+- [x] fotos/metadados
+- [x] ofertas com preço
+- [x] aceite
+- [x] execução
+- [x] conclusão
+- [x] segurança operacional aplicada
+- [x] autorização/idempotência/auditoria
 
 ## Gate
-Solicitação de guincho pode ser concluída com histórico completo, autorização, segurança e preço rastreável.
+Aguardando CI final e auditoria. Provider deve possuir veículo verificado, estar elegível para towing e não estar bloqueado com o customer.
 
 ## Próxima fase
 FASE 11 — ASSINATURA DOS PROFISSIONAIS.

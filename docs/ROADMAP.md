@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 8 CONCLUÍDA — FASE 9 PRÓXIMA  
+**Status:** FASE 10 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -228,21 +228,22 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 10 — Guincho/Reboque
+**Status:** EM EXECUÇÃO
 **Objetivo:** adicionar atendimento de emergência/assistência veicular como categoria do marketplace.
 
 **Entregas**
-- [ ] localização
-- [ ] destino quando necessário
-- [ ] descrição do problema
-- [ ] fotos
-- [ ] ofertas
-- [ ] negociação quando aplicável
-- [ ] aceite
-- [ ] execução
-- [ ] conclusão
-- [ ] avaliação
+- [x] localização
+- [x] destino quando necessário
+- [x] descrição do problema
+- [x] fotos/metadados com validação
+- [x] ofertas com preço
+- [x] negociação/aceite via fluxo de ofertas
+- [x] aceite
+- [x] execução rastreável
+- [x] conclusão
+- [x] avaliação permanece no Trust após serviço concluído
 
-**Gate:** solicitação de guincho pode ser concluída com histórico completo e regras de segurança aplicadas.
+**Gate:** EM EXECUÇÃO — aguardando CI final e auditoria.
 
 ---
 

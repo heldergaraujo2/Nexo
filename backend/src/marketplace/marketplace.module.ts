@@ -4,9 +4,10 @@ import { MarketplaceController } from './marketplace.controller';
 import { MarketplaceService } from './marketplace.service';
 import { RideModule } from '../ride/ride.module';
 import { DeliveryModule } from '../delivery/delivery.module';
+import { TowingModule } from '../towing/towing.module';
 
 @Module({
-  imports: [AuthModule, RideModule, DeliveryModule],
+  imports: [AuthModule, RideModule, DeliveryModule, TowingModule],
   controllers: [MarketplaceController],
   providers: [MarketplaceService],
 })

@@ -122,3 +122,8 @@ Delivery requests store validated media metadata only until the object-storage a
 ## DEC-029 — Cargo negotiation as versioned proposals
 **Status:** ACCEPTED FOR PHASE 9
 Cargo/freight uses a dedicated versioned proposal chain. Each response creates the next version; only the current offered proposal can be accepted. The accepted amount becomes the Service price snapshot. A real Marketplace Offer is created as the service acceptance link so existing Service invariants remain intact.
+
+
+## DEC-024 — Towing price and safety boundary
+**Status:** ACCEPTED FOR PHASE 10
+Towing does not receive a new fixed tariff. Its price is represented by a priced Marketplace Offer and becomes the Service price at acceptance. Towing execution requires an eligible provider with a verified vehicle and no active block relationship with the customer. This preserves existing pricing flexibility without changing passenger/cargo rules.
