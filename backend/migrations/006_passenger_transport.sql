@@ -50,3 +50,23 @@ CREATE INDEX IF NOT EXISTS idx_ride_events_ride ON ride_events(ride_id, created_
 INSERT INTO schema_migrations (version)
 VALUES ('006_passenger_transport')
 ON CONFLICT (version) DO NOTHING;
+
+
+-- Financial integrity: a completed service price is immutable.
+CREATE OR REPLACE FUNCTION prevent_completed_service_price_change()
+RETURNS trigger AS $$
+BEGIN
+  IF OLD.status = 'completed' AND (
+    NEW.price_cents IS DISTINCT FROM OLD.price_cents OR
+    NEW.currency IS DISTINCT FROM OLD.currency
+  ) THEN
+    RAISE EXCEPTION 'Completed service price is immutable';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_completed_service_price_immutable ON services;
+CREATE TRIGGER trg_completed_service_price_immutable
+BEFORE UPDATE ON services
+FOR EACH ROW EXECUTE FUNCTION prevent_completed_service_price_change();
