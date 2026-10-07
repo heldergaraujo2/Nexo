@@ -28,6 +28,8 @@ Toda mudança em regra de negócio deve executar a suíte correspondente e teste
 ## Casos obrigatórios de domínio
 
 ### Fase 6 — pagamentos e registro financeiro
+- Criação retorna HTTP 201 e confirmação/disputa retornam HTTP 200.
+- Migrations 001–007 são aplicadas em ambiente limpo.
 - Serviço incompleto não aceita registro de pagamento.
 - Métodos permitidos são dinheiro, Pix e máquina própria do provider.
 - Confirmar valor diferente do snapshot é rejeitado.
