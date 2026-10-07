@@ -34,12 +34,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
-      - run: npm run lint
-      - run: npm run format:check
-      - name: Validate database migration
+      - name: Apply database migrations
         working-directory: .
         env:
           DATABASE_URL: postgresql://nexo:nexo@localhost:5432/nexo
@@ -47,7 +42,11 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/001_initial.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/002_identity_profiles.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/003_profile_media.sql
-
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run format:check
   mobile:
     runs-on: ubuntu-latest
     steps:
