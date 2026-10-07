@@ -59,3 +59,20 @@ The product target is Android/iOS. PC is the development/administrative environm
 ## DEC-015 — Phase 0 gate
 **Status:** ACCEPTED
 Fase 0 is complete only after requirements, architecture, data model, states, API, security/privacy, testing, infrastructure and acceptance criteria are documented and internally consistent.
+
+
+## DEC-016 — Password hashing
+**Status:** ACCEPTED FOR INITIAL IMPLEMENTATION
+Passwords are stored as PBKDF2-SHA256 derived keys with per-account random salts. Plaintext passwords are never persisted. The format includes algorithm, iteration count, salt and derived key so the cost can be migrated safely later.
+
+## DEC-017 — Access token and recovery token security
+**Status:** ACCEPTED FOR INITIAL IMPLEMENTATION
+Access tokens are short-lived signed tokens. Password recovery uses cryptographically random opaque tokens, stores only SHA-256 hashes, expires them after 30 minutes and invalidates them after successful use. Recovery responses remain generic; development/test may expose the generated token to enable automated validation.
+
+## DEC-018 — Profile privacy boundary
+**Status:** ACCEPTED
+Public profiles expose only deliberately public profile fields. Email, password hashes and identity verification artifacts remain private. Authenticated account data is accessed through ownership-checked endpoints.
+
+## DEC-019 — Profile media boundary
+**Status:** ACCEPTED FOR PHASE 2
+Profile media metadata is persisted with owner, type, object reference, checksum, visibility and moderation state. Binary object storage is accessed through an adapter; direct public bucket exposure is prohibited.
