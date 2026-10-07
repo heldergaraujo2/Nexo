@@ -155,3 +155,25 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 **FASE 8 — ENTREGAS.**
+
+
+## 1.3.0 — FASE 8 concluída
+### Added
+- Delivery request com origem/destino, item, observações e metadados de mídia.
+- Ofertas com preço e aceite para entrega.
+- Delivery vinculada ao Service com máquina de estados operacional.
+- Eventos, notificações, auditoria, idempotência e autorização.
+- Proteções contra contorno do lifecycle genérico.
+- Tela mobile inicial de solicitação de entrega.
+
+### Validation
+- Run 289: backend e mobile aprovados.
+- Backend: migrations 001–009, typecheck, 30 testes, build, lint e format check.
+- Mobile: analyze, testes e APK debug.
+- Falhas encontradas no gate foram corrigidas: DI do DeliveryController, idempotency hash, status HTTP das transições, validação de mídia e testes mobile.
+
+### Gate
+**APROVADO. FASE 8 concluída.**
+
+### Next
+**FASE 9 — CARGA E FRETE NEGOCIÁVEL.**
