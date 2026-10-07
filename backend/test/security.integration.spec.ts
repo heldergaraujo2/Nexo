@@ -15,12 +15,12 @@ process.env.DATABASE_URL ??='postgresql://nexo:nexo@localhost:5432/nexo';
 
 describe('operational safety integration',()=>{
  let db:Pool;
- let providerToken:string; let providerId:string; let adminToken:string; let adminId:string; let customerToken:string; let customerId:string;
+ let providerToken:string; let providerId:string; let adminToken:string; let adminId:string; let customerToken:string;
  beforeAll(async()=>{
   const ref=await Test.createTestingModule({imports:[AppModule]}).compile();
   app=ref.createNestApplication(); app.setGlobalPrefix('v1'); await app.init(); await app.listen(0,'127.0.0.1'); db=ref.get(Pool);
   const provider=await register('provider'); providerToken=provider.token; providerId=provider.id;
-  const customer=await register('customer'); customerToken=customer.token; customerId=customer.id;
+  const customer=await register('customer'); customerToken=customer.token;
   const admin=await register('customer'); adminId=admin.id;
   await db.query('UPDATE accounts SET role=$1 WHERE id=$2',['admin',adminId]);
   const login=await request(app,'/v1/auth/login','POST',{email:admin.email,password:'Strong-password-123'}); adminToken=login.body.accessToken as string;
@@ -82,5 +82,5 @@ async function register(role:'customer'|'provider'){
 async function request(app:INestApplication,path:string,method:string,body?:unknown,token?:string){
  const address=app.getHttpServer().address(); if(!address||typeof address==='string')throw new Error('Test server address unavailable');
  const response=await fetch(`http://127.0.0.1:${(address as AddressInfo).port}${path}`,{method,headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}: {})},body:body===undefined?undefined:JSON.stringify(body)});
- return {status:response.status,body:await response.json() as Record<string,any>};
+ return {status:response.status,body:await response.json() as Record<string,unknown>};
 }
