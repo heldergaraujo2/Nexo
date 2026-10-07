@@ -20,6 +20,7 @@ export class PasswordService {
     if (scheme !== 'pbkdf2') return false;
     const iterations = Number(iterationsText);
     if (!Number.isInteger(iterations) || iterations < 100_000 || iterations > 1_000_000) return false;
+    if (!saltText || !keyText) return false;
     const salt = Buffer.from(saltText, 'base64url');
     const expected = Buffer.from(keyText, 'base64url');
     const actual = (await derive(password, salt, iterations, expected.length, DIGEST)) as Buffer;
