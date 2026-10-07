@@ -224,13 +224,22 @@ export class RideService {
   }
 
   private publicRide(row: Record<string, unknown>) {
+    const value = (key: string) => row[key];
     return {
-      id: row.id, serviceId: row.serviceId ?? row.service_id, vehicleType: row.vehicleType ?? row.vehicle_type,
-      origin: row.origin, destination: row.destination, distanceMeters: Number(row.distanceMeters ?? row.distance_meters),
-      tariffCentsPerKm: Number(row.tariffCentsPerKm ?? row.tariff_cents_per_km), fareCents: Number(row.fareCents ?? row.fare_cents),
-      currency: row.currency, state: row.state, routeVersion: Number(row.routeVersion ?? row.route_version),
-      startedAt: row.started_at ?? row.startedAt ?? null, completedAt: row.completed_at ?? row.completedAt ?? null,
-      updatedAt: row.updated_at ?? row.updatedAt ?? null,
+      id: value('id'),
+      serviceId: value('serviceId') ?? value('service_id'),
+      vehicleType: value('vehicleType') ?? value('vehicle_type'),
+      origin: value('origin'),
+      destination: value('destination'),
+      distanceMeters: Number(value('distanceMeters') ?? value('distance_meters')),
+      tariffCentsPerKm: Number(value('tariffCentsPerKm') ?? value('tariff_cents_per_km')),
+      fareCents: Number(value('fareCents') ?? value('fare_cents')),
+      currency: value('currency'),
+      state: value('state'),
+      routeVersion: Number(value('routeVersion') ?? value('route_version')),
+      startedAt: value('started_at') ?? value('startedAt') ?? null,
+      completedAt: value('completed_at') ?? value('completedAt') ?? null,
+      updatedAt: value('updated_at') ?? value('updatedAt') ?? null,
     };
   }
 
