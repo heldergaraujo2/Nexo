@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Pool } from 'pg';
 import { createHash, randomBytes } from 'node:crypto';
 import { LoginDto, RecoveryRequestDto, RegisterDto, ResetPasswordDto } from './dto';
@@ -8,10 +8,18 @@ import { TokenService } from './token.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly db: Pool,
-    private readonly passwords: PasswordService,
-    private readonly tokens: TokenService,
-  ) {}
+    @Inject(Pool) db: Pool,
+    @Inject(PasswordService) passwords: PasswordService,
+    @Inject(TokenService) tokens: TokenService,
+  ) {
+    this.db = db;
+    this.passwords = passwords;
+    this.tokens = tokens;
+  }
+
+  private readonly db: Pool;
+  private readonly passwords: PasswordService;
+  private readonly tokens: TokenService;
 
   async register(dto: RegisterDto) {
     const email = dto.email.trim().toLowerCase();
