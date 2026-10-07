@@ -1,32 +1,27 @@
 # Nexo — Next Task
 
 ## Current objective
-Concluir a FASE 0 — Governança e Especificação, preparando a entrada segura na FASE 1 — Fundação Técnica.
+Iniciar a **FASE 1 — FUNDAÇÃO TÉCNICA**.
 
-## Tasks
-- [ ] Define functional requirements
-- [ ] Define non-functional requirements
-- [ ] Define domain entities
-- [ ] Define database relationships
-- [ ] Define authentication and authorization
-- [ ] Define marketplace state machines
-- [ ] Define passenger fare calculation
-- [ ] Define cargo negotiation rules
-- [ ] Define payment recording rules
-- [ ] Define provider subscription lifecycle
-- [ ] Define reputation rules
-- [ ] Define media upload/moderation rules
-- [ ] Define security and privacy boundaries
-- [ ] Define API boundaries
-- [ ] Define infrastructure baseline
-- [ ] Define testing strategy
-- [ ] Define acceptance criteria
+## Fase anterior
+FASE 0 — Governança e Especificação: **CONCLUÍDA**.
 
-## Do not implement yet
-Do not start the production application until the master specification and initial architecture are reviewed and recorded.
+## FASE 1 — tarefas
+- [ ] Criar estrutura Flutter/Dart mobile
+- [ ] Criar estrutura NestJS/TypeScript backend
+- [ ] Configurar PostgreSQL e migrations
+- [ ] Configurar ambientes dev/test
+- [ ] Configurar secrets/env seguro
+- [ ] Configurar logging estruturado
+- [ ] Configurar tratamento de erros
+- [ ] Criar testes unitários/integrados iniciais
+- [ ] Configurar CI/CD
+- [ ] Criar health checks
+- [ ] Criar baseline de observabilidade
+- [ ] Executar build e testes em ambiente reproduzível
 
-## Phase gate — FASE 0
-A FASE 0 termina somente quando a especificação, arquitetura, modelo de dados, API, segurança, testes e critérios de aceite estiverem consistentes e registrados.
+## Gate da FASE 1
+A aplicação deve iniciar de forma reproduzível, banco/migrations devem funcionar, checks automatizados devem passar e os mecanismos básicos de segurança/observabilidade devem estar operacionais.
 
-## Completion criteria
-The specification must be internally consistent with `docs/ROADMAP.md` and `project/DECISIONS.md`.
+## Regra
+Não avançar para a FASE 2 até o gate da FASE 1 estar aprovado.
