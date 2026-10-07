@@ -1,53 +1,51 @@
 # Nexo — Current State
 
-**Version:** 0.3 — FASE 0 concluída  
-**Last updated:** 2026-10-06
+**Version:** 0.4 — FASE 1 concluída
+**Last updated:** 2026-10-07
 
 ## Phase
-**FASE 0 — GOVERNANÇA E ESPECIFICAÇÃO — CONCLUÍDA**
+**FASE 1 — FUNDAÇÃO TÉCNICA — CONCLUÍDA**
 
 ## Completed
 - [x] Repositório privado confirmado
 - [x] Sistema de continuidade
 - [x] Roadmap por fases
-- [x] Requisitos funcionais e não funcionais
-- [x] Master Technical Specification v1.0
-- [x] Arquitetura v1.0
-- [x] Modelo inicial de dados
-- [x] Máquinas de estado
-- [x] API v1 planejada
-- [x] Autenticação/autorização baseline
-- [x] Regras de preço e negociação
-- [x] Pagamentos
-- [x] Assinatura
-- [x] Reputação
-- [x] Mídia/moderação
-- [x] Segurança
-- [x] LGPD/privacy baseline
-- [x] Infraestrutura baseline
-- [x] Estratégia de testes
-- [x] Critérios de aceitação da Fase 0
-- [x] Stack inicial registrada
-- [x] Auditoria final de consistência
+- [x] Fase 0 de governança e especificação
+- [x] Scaffold Flutter/Dart mobile
+- [x] Scaffold NestJS/TypeScript backend
+- [x] PostgreSQL e migration inicial
+- [x] Ambientes e exemplos de configuração
+- [x] Tratamento global de validação HTTP
+- [x] Health check HTTP
+- [x] Teste unitário do health check
+- [x] Teste widget inicial do mobile
+- [x] Typecheck, build, lint e formatação do backend
+- [x] CI GitHub Actions para backend e mobile
+- [x] Validação automatizada da migration PostgreSQL
+- [x] Análise, testes e build APK debug no mobile
+- [x] Base inicial de observabilidade/diagnóstico por health check e logs de processo
+- [x] Auditoria do gate da Fase 1
 
-## Decisions recorded
-- Stack: Flutter/Dart + NestJS/TypeScript + PostgreSQL
-- Arquitetura: monólito modular
-- Preço em centavos; distância em metros
-- Arredondamento inicial: nearest cent, half-up
-- Sem mínimo/taxa de cancelamento enquanto não houver decisão explícita
-- Integrações externas atrás de adapters
-- Produto mobile-first
+## Technical baseline
+- Mobile: Flutter/Dart, Material 3, Android/iOS
+- Backend: NestJS/TypeScript, prefixo global `/v1`
+- Database: PostgreSQL 17 no CI
+- Migration ledger inicial: `schema_migrations`
+- ValidationPipe global com whitelist, rejeição de campos não permitidos e transformação
+- CI executa checks backend, migration e mobile
 
 ## Validation
-A documentação foi revisada cruzando roadmap, regras de negócio, decisões, arquitetura, modelo, estados, API, segurança, LGPD, UX, testes e infraestrutura. Não foram encontrados conflitos internos críticos que impeçam a entrada na Fase 1.
+O gate da Fase 1 foi atendido pela validação automatizada no GitHub Actions: backend com typecheck, testes, build, lint, formatação e migration; mobile com análise estática, testes e build APK debug.
 
-Não houve código de aplicação nesta fase; portanto não há suíte de aplicação para executar ainda. A validação desta fase foi documental/estrutural e de consistência.
+A geração dos hosts nativos Android/iOS ocorre no CI a partir do scaffold Flutter versionado, mantendo o repositório enxuto enquanto preserva builds reproduzíveis no pipeline.
+
+## Known quality note
+O backend ainda usa `npm install` sem `package-lock.json` versionado. Isso não bloqueia a fundação técnica validada nesta fase, mas deve ser tratado como melhoria de reprodutibilidade antes de uma operação de produção.
 
 ## Blockers
-Nenhum bloqueador técnico conhecido para iniciar a FASE 1.
+Nenhum bloqueador técnico conhecido para iniciar a FASE 2.
 
 ## Next
-**FASE 1 — FUNDAÇÃO TÉCNICA**
+**FASE 2 — IDENTIDADE, ACESSO E PERFIS**
 
-Primeiras entregas: scaffold mobile/backend, ambientes, banco/migrations, configuração segura, logging, tratamento de erros, testes, CI/CD, health checks e observabilidade.
+Primeiras entregas: cadastro/login, recuperação de acesso, identidade do cliente/profissional, perfis, mídia, privacidade e autorização por papel.
