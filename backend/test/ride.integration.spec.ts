@@ -133,7 +133,7 @@ describe('passenger transport integration', () => {
       offerType: 'priced_offer',
       amountCents: 999,
     }, provider.token, randomUUID());
-    expect(offer.status).toBe(409);
+    expect(offer.status, JSON.stringify(offer.body)).toBe(409);
   });
 });
 
