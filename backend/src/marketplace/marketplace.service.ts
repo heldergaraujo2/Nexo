@@ -870,6 +870,7 @@ export class MarketplaceService {
       return result;
     } catch (error) {
       await client.query('ROLLBACK');
+      if (process.env.NODE_ENV === 'test') console.error('Marketplace transaction error', error);
       throw error;
     } finally {
       client.release();
