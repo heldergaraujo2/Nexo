@@ -1,7 +1,7 @@
 # Nexo — Next Task
 
 ## Current objective
-Produce the Master Technical Specification before application implementation.
+Concluir a FASE 0 — Governança e Especificação, preparando a entrada segura na FASE 1 — Fundação Técnica.
 
 ## Tasks
 - [ ] Define functional requirements
@@ -24,6 +24,9 @@ Produce the Master Technical Specification before application implementation.
 
 ## Do not implement yet
 Do not start the production application until the master specification and initial architecture are reviewed and recorded.
+
+## Phase gate — FASE 0
+A FASE 0 termina somente quando a especificação, arquitetura, modelo de dados, API, segurança, testes e critérios de aceite estiverem consistentes e registrados.
 
 ## Completion criteria
 The specification must be internally consistent with `docs/ROADMAP.md` and `project/DECISIONS.md`.
