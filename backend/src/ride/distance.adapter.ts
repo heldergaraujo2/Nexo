@@ -1,9 +1,12 @@
+import { Injectable } from '@nestjs/common';
+
 export type Coordinate = { latitude: number; longitude: number };
 
 export interface DistanceAdapter {
   distanceMeters(origin: Coordinate, destination: Coordinate): number;
 }
 
+@Injectable()
 export class HaversineDistanceAdapter implements DistanceAdapter {
   distanceMeters(origin: Coordinate, destination: Coordinate) {
     const earthRadiusMeters = 6_371_000;
