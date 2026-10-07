@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 1.0 — FASE 5 concluída / FASE 6 iniciada
+**Version:** 1.1 — FASE 6 em execução
 **Last updated:** 2026-10-07
 
 ## Phase
-**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO — PRÓXIMA**
+**FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO — EM EXECUÇÃO**
 
 ## Fases concluídas
 - [x] FASE 0 — Governança e Especificação
@@ -34,12 +34,14 @@
 ## Fase 5 — gate
 **APROVADO.** A viagem de passageiro pode ser solicitada, aceita, executada, concluída ou cancelada conforme estado permitido, com distância e preço calculados pelo servidor, snapshots de rota e proteção contra alteração indevida.
 
-## Próxima fase
+## Fase atual
 **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO**
+
+Implementação em validação final no CI.
 Registrar dinheiro, Pix e cartão na máquina do próprio profissional, mantendo o Nexo fora do processamento inicial de cartões e preservando valores em centavos.
 
 ## Blockers
-Nenhum bloqueador conhecido.
+Nenhum bloqueador de produto conhecido; aguardando validação final do pipeline CI da branch da fase.
 
 ## Known limitations
 - Object storage binário ainda depende de adapter futuro.
