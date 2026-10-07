@@ -58,6 +58,7 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/007_payments.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/008_operational_safety.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/009_deliveries.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/010_subscriptions.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/010_cargo.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/011_towing.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/010_cargo.sql
