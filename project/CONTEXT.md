@@ -6,9 +6,9 @@
 Nexo é um marketplace multi-serviço mobile-first que conecta clientes a profissionais independentes.
 
 ## Estado atual
-FASE 8 — ENTREGAS — CONCLUÍDA.
+FASE 11 — ASSINATURA DOS PROFISSIONAIS.
 
-As Fases 0–7 estão concluídas. A Fase 8 adicionou verificação privada de identidade/veículo, cadastro privado de veículos, eventos de segurança, flags antifraude iniciais e fluxo operacional de incidentes, com controles de acesso por papel e indicadores públicos mínimos.
+As Fases 0–10 estão concluídas. A Fase 10 adicionou guincho/reboque com solicitação, ofertas, aceite, máquina de estados, elegibilidade, veículo verificado, bloqueios, auditoria e idempotência.
 
 ## Stack registrada
 - Flutter/Dart para mobile Android/iOS
@@ -37,4 +37,4 @@ Perfis, reputação bilateral, verificação de identidade/veículo, denúncias,
 Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speech para condução.
 
 ## Próxima fase
-FASE 9 — CARGA E FRETE NEGOCIÁVEL.
+FASE 11 — ASSINATURA DOS PROFISSIONAIS.
