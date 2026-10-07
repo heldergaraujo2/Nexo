@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 6 CONCLUÍDA — FASE 7 PRÓXIMA  
+**Status:** FASE 6 CONCLUÍDA — FASE 7 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -146,26 +146,28 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 6 — Pagamentos e Registro Financeiro
-**Status:** EM EXECUÇÃO
+**Status:** CONCLUÍDA
 **Objetivo:** registrar como o serviço foi pago sem transformar o Nexo inicialmente em processador de pagamentos.
 
-**Entregas**
-- [ ] dinheiro físico
-- [ ] Pix
-- [ ] cartão na máquina do próprio profissional
-- [ ] registro do método
-- [ ] confirmação de pagamento
+**Entregas — CONCLUÍDAS**
+- [x] dinheiro físico
+- [x] Pix
+- [x] cartão na máquina do próprio profissional
+- [x] registro do método
+- [x] confirmação de pagamento
 - [x] histórico financeiro da operação
-- [ ] regras de divergência
-- [ ] recibos/comprovantes quando aplicável
+- [x] regras de divergência
+- [x] proteção contra alteração retroativa do preço
+- [x] recibo/estado financeiro operacional
 
 **Regra:** o Nexo não cobra comissão sobre o serviço.
 
-**Gate:** APROVADO — serviço concluído possui estado financeiro consistente e auditável, sem processamento de cartão pelo Nexo e sem alteração retroativa do preço.
+**Gate:** **APROVADO** — serviço concluído possui estado financeiro consistente e auditável, sem processamento de cartão pelo Nexo e sem alteração retroativa do preço.
 
 ---
 
 ## FASE 7 — Segurança Operacional
+**Status:** EM EXECUÇÃO
 **Objetivo:** aumentar a segurança antes de ampliar categorias e escala.
 
 **Entregas**
