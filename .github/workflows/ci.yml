@@ -49,7 +49,7 @@ jobs:
       - name: Temporary formatting diff
         run: |
           npx prettier --write "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json"
-          git diff -- backend
+          git diff -- .
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
