@@ -49,7 +49,7 @@ export class PaymentService {
         [serviceId, dto.method, Number(row.price_cents), row.currency, dto.externalReference ?? null],
       );
       const payment = this.publicPayment(inserted.rows[0]);
-      await this.audit(client, user.accountId, 'payment.created', payment.id, {
+      await this.audit(client, user.accountId, 'payment.created', String(payment.id), {
         method: dto.method,
         expectedAmountCents: payment.expectedAmountCents,
       });
@@ -170,6 +170,10 @@ export class PaymentService {
       createdAt: row.createdAt ?? row.created_at,
       updatedAt: row.updatedAt ?? row.updated_at,
     };
+  }
+
+  private assertProvider(user: AuthPrincipal) {
+    if (user.role !== 'provider') throw new ForbiddenException('Provider role required');
   }
 
   private assertCustomer(user: AuthPrincipal) {
