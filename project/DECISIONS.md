@@ -76,3 +76,7 @@ Public profiles expose only deliberately public profile fields. Email, password 
 ## DEC-019 — Profile media boundary
 **Status:** ACCEPTED FOR PHASE 2
 Profile media metadata is persisted with owner, type, object reference, checksum, visibility and moderation state. Binary object storage is accessed through an adapter; direct public bucket exposure is prohibited.
+
+## DEC-020 — Marketplace core as category-agnostic service lifecycle
+**Status:** ACCEPTED
+The generic marketplace owns request, matching, offer/acceptance, service lifecycle, cancellation, history, notifications and audit/idempotency primitives. Passenger-specific pricing and route rules remain in Phase 5 and must not be embedded into the generic marketplace.
