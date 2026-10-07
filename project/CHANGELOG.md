@@ -104,3 +104,19 @@
 
 ### Next
 **FASE 6 — PAGAMENTOS E REGISTRO FINANCEIRO.**
+
+
+## 1.1.0 — FASE 6 em execução
+### Added
+- PaymentRecord para dinheiro, Pix e máquina própria do provider.
+- Confirmação operacional com valor esperado versus confirmado.
+- Disputa pré-confirmação.
+- Auditoria, ownership, idempotência e locks transacionais.
+- Proteção PostgreSQL contra alteração retroativa do preço após conclusão.
+- Sincronização do preço do Service quando uma rota de Ride é alterada.
+- Tela mobile inicial de registro/confirmação de pagamento.
+
+### Validation
+- Migrations 001–007 executadas em CI.
+- Falhas encontradas no primeiro gate corrigidas: quoting PostgreSQL, autorização/tipagem TypeScript e teste Flutter de moeda.
+- Gate final ainda depende de execução CI verde da revisão mais recente.
