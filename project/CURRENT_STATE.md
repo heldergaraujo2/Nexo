@@ -1,54 +1,53 @@
 # Nexo — Current State
 
-**Version:** 0.2 roadmap por fases  
+**Version:** 0.3 — FASE 0 concluída  
 **Last updated:** 2026-10-06
 
 ## Phase
-FASE 0 — GOVERNANÇA E ESPECIFICAÇÃO
+**FASE 0 — GOVERNANÇA E ESPECIFICAÇÃO — CONCLUÍDA**
 
 ## Completed
-- [x] Repository initialized
-- [x] Continuity system defined
-- [x] Roadmap v0.5 consolidated
-- [x] Core business model documented
-- [x] Initial pricing documented
-- [x] Payment methods documented
-- [x] Scope exclusions documented
-- [x] Agent instructions created
-- [x] Roadmap dividido em fases com critérios de saída
+- [x] Repositório privado confirmado
+- [x] Sistema de continuidade
+- [x] Roadmap por fases
+- [x] Requisitos funcionais e não funcionais
+- [x] Master Technical Specification v1.0
+- [x] Arquitetura v1.0
+- [x] Modelo inicial de dados
+- [x] Máquinas de estado
+- [x] API v1 planejada
+- [x] Autenticação/autorização baseline
+- [x] Regras de preço e negociação
+- [x] Pagamentos
+- [x] Assinatura
+- [x] Reputação
+- [x] Mídia/moderação
+- [x] Segurança
+- [x] LGPD/privacy baseline
+- [x] Infraestrutura baseline
+- [x] Estratégia de testes
+- [x] Critérios de aceitação da Fase 0
+- [x] Stack inicial registrada
+- [x] Auditoria final de consistência
 
-## In progress
-- Master technical specification
-- Architecture definition
-- Database model
-- API definition
-- Critérios de aceite e gates da FASE 0
+## Decisions recorded
+- Stack: Flutter/Dart + NestJS/TypeScript + PostgreSQL
+- Arquitetura: monólito modular
+- Preço em centavos; distância em metros
+- Arredondamento inicial: nearest cent, half-up
+- Sem mínimo/taxa de cancelamento enquanto não houver decisão explícita
+- Integrações externas atrás de adapters
+- Produto mobile-first
 
-## Not started
-- Application implementation
-- Authentication
-- Profiles
-- Marketplace
-- Mobility flows
-- Subscription billing
-- Deliveries
-- Cargo
-- Towing
+## Validation
+A documentação foi revisada cruzando roadmap, regras de negócio, decisões, arquitetura, modelo, estados, API, segurança, LGPD, UX, testes e infraestrutura. Não foram encontrados conflitos internos críticos que impeçam a entrada na Fase 1.
+
+Não houve código de aplicação nesta fase; portanto não há suíte de aplicação para executar ainda. A validação desta fase foi documental/estrutural e de consistência.
 
 ## Blockers
-None currently.
+Nenhum bloqueador técnico conhecido para iniciar a FASE 1.
 
-## Critical current rules
-- R$99.90/month provider subscription.
-- 0% platform commission on completed work.
-- Provider keeps 100% of service value.
-- Car passenger fare: R$2.00/km.
-- Motorcycle passenger fare: R$1.50/km.
-- Cargo pricing negotiable.
-- Payments: cash, Pix, provider's own card machine.
-- Profiles support photos, videos and captions.
-- No Nexo Live.
-- No hands-free.
+## Next
+**FASE 1 — FUNDAÇÃO TÉCNICA**
 
-## Continuity rule
-Every meaningful development task must update this file and `project/NEXT_TASK.md`.
+Primeiras entregas: scaffold mobile/backend, ambientes, banco/migrations, configuração segura, logging, tratamento de erros, testes, CI/CD, health checks e observabilidade.
