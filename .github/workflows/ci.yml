@@ -41,7 +41,7 @@ jobs:
           node-version: 22
       - run: npm install
       - name: Check Prettier formatting
-        run: npx prettier --check src/app.module.ts src/marketplace/marketplace.service.ts src/subscription/*.ts test/subscription.integration.spec.ts
+        run: npx prettier --check src/app.module.ts src/marketplace/marketplace.service.ts src/subscription/*.ts src/growth/*.ts test/subscription.integration.spec.ts test/growth.integration.spec.ts
       - name: Apply database migrations
         working-directory: .
         env:
@@ -59,6 +59,7 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/010_cargo.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/011_towing.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/012_subscriptions.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/013_growth_retention.sql
       - name: Run npm run typecheck
         run: |
           set +e
