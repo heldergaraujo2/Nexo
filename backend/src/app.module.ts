@@ -14,7 +14,6 @@ import { DeliveryModule } from './delivery/delivery.module';
 import { CargoModule } from './cargo/cargo.module';
 import { TowingModule } from './towing/towing.module';
 
-
 @Module({
   imports: [
     DatabaseModule,
