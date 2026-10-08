@@ -84,7 +84,7 @@ class NexoApiClient {
     String? idempotencyKey,
   }) async {
     final headers = <String, String>{'Content-Type': 'application/json'};
-    if (_token != null && _token!.isNotEmpty) {
+    if (_token != null && _token.isNotEmpty) {
       headers['Authorization'] = 'Bearer $_token';
     }
     if (idempotencyKey != null) {
