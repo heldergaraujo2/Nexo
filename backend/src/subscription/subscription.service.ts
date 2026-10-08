@@ -28,7 +28,12 @@ export class SubscriptionService {
     this.assertProvider(user);
     if (dto.planCode && dto.planCode !== 'professional_monthly')
       throw new ConflictException('Unsupported subscription plan');
-    return this.idempotent(user, 'subscription.create', key, dto, async (c) => {
+    return this.idempotent(
+      user,
+      'subscription.create',
+      key,
+      dto,
+      async (c) => {
       const active = await c.query(
         'SELECT id FROM subscriptions WHERE provider_id=$1 AND status=ANY($2) FOR UPDATE',
         [user.accountId, ACTIVE],
@@ -48,8 +53,9 @@ export class SubscriptionService {
         r.rows[0].id,
         { amountCents: AMOUNT_CENTS },
       );
-      return { status: 201, body: this.public(r.rows[0]) };
-    });
+        return { status: 201, body: this.public(r.rows[0]) };
+      },
+    );
   }
   async get(user: AuthPrincipal) {
     this.assertProvider(user);
@@ -180,7 +186,7 @@ export class SubscriptionService {
     if (s.rows[0].provider_id !== user.accountId)
       throw new ForbiddenException('Subscription access denied');
     const r = await this.db.query(
-      'SELECT id,period_start AS "periodStart",period_end AS "periodEnd",amount_cents AS "amountCents",currency,status,external_reference AS "externalReference",failure_reason AS "failureReason",created_at AS "createdAt",paid_at AS "paidAt" FROM subscription_charges WHERE subscription_id=$1 ORDER BY period_start DESC',
+      'SELECT id,period_start AS 'periodStart',period_end AS 'periodEnd',amount_cents AS 'amountCents',currency,status,external_reference AS 'externalReference',failure_reason AS 'failureReason',created_at AS 'createdAt',paid_at AS 'paidAt' FROM subscription_charges WHERE subscription_id=$1 ORDER BY period_start DESC',
       [id],
     );
     return r.rows.map((x) => ({ ...x, amountCents: Number(x.amountCents) }));
@@ -234,7 +240,7 @@ export class SubscriptionService {
         u.accountId + ':' + op,
       ]);
       const e = await c.query(
-        'SELECT request_hash AS "requestHash",response_status AS "responseStatus",response_body AS "responseBody" FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE',
+        'SELECT request_hash AS 'requestHash',response_status AS 'responseStatus',response_body AS 'responseBody' FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE',
         [u.accountId, key, op],
       );
       if (e.rowCount) {
