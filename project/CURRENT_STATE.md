@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 1.8 — FASE 12 em execução
+**Version:** 1.9 — FASE 13 em execução
 **Last updated:** 2026-10-08
 
 ## Phase
-**FASE 12 — CRESCIMENTO E RETENÇÃO**
+**FASE 13 — ESCALA E EXPANSÃO**
 
 Fases 0–11 permanecem concluídas e validadas.
 
@@ -34,11 +34,13 @@ Entregas oficiais:
 - métricas de retenção;
 - ferramentas administrativas.
 
-## Blockers
-- Validação CI da Fase 12 ainda não executada para o HEAD atual. O conector GitHub consegue criar/alterar commits e PRs, mas não expõe `workflow_dispatch`/aprovação de workflow; tentativas de reabrir/criar PR e habilitar `push` no branch não produziram nova execução. O bloqueio é de acionamento/ambiente, não de implementação.
+## Gate FASE 12
+**APROVADO.** CI run 37819635305 verde em backend e mobile: migration 013, typecheck, 45 testes, build, lint, Flutter analyze, Flutter tests e APK debug.
 
-## Regras comerciais
-- R$99,90/mês por provider.
-- 0% de comissão.
-- Provider mantém 100% do valor do serviço.
-- Assinatura não altera retroativamente preço de serviço concluído.
+## FASE 13
+Objetivo: preparar o Nexo para crescimento geográfico e técnico.
+
+Entregas a executar: performance, observabilidade avançada, recuperação de desastres, hardening, custos, expansão geográfica, novas categorias e matching avançado.
+
+## Blockers
+Nenhum bloqueio crítico conhecido.
