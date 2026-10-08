@@ -1,9 +1,9 @@
 # Nexo — Next Task
 
 ## Current objective
-Concluir o gate da **FASE 12 — CRESCIMENTO E RETENÇÃO** conforme o roadmap oficial.
+Iniciar a **FASE 13 — ESCALA E EXPANSÃO** conforme o roadmap oficial.
 
-PR de validação: #24 — `feat: phase 12 growth and retention`.
+Fase 12 aprovada pelo CI run 37819635305.
 
 ## Entregas
 - [x] indicação
@@ -17,14 +17,8 @@ PR de validação: #24 — `feat: phase 12 growth and retention`.
 - [x] métricas de retenção
 - [x] ferramentas administrativas
 
-## Gate
-PENDENTE — métricas principais implementadas; falta validação CI completa da Fase 12.
+## Gate anterior
+APROVADO — CI run 37819635305.
 
-### BLOQUEIO DE AMBIENTE
-O workflow não iniciou para o HEAD atual. É necessário um disparo/execução de GitHub Actions que não está disponível nas ferramentas atuais. Nenhuma funcionalidade da Fase 12 depende do usuário para implementação; somente a execução do pipeline permanece externa.
-
-## Critérios de execução
-Preservar autorização, privacidade, auditoria, idempotência e integridade financeira existentes. Não alterar silenciosamente as regras comerciais do Nexo.
-
-## Próxima fase
-FASE 13 — ESCALA E EXPANSÃO, somente após aprovação do gate da FASE 12.
+## Próximo objetivo
+Implementar performance, observabilidade avançada, recuperação de desastres, hardening de segurança, otimização de custos, expansão geográfica, novas categorias e matching avançado, conforme o gate da Fase 13.
