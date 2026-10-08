@@ -30,7 +30,7 @@ class LoginPage extends StatefulWidget{const LoginPage({super.key});@override St
 class _LoginPageState extends State<LoginPage>{
   final email=TextEditingController(),password=TextEditingController(),name=TextEditingController(),base=TextEditingController();
   String role='customer';bool register=false,busy=false;String? error;
-  @override void initState(){super.initState();NexoApiClient.session().then((s){if(mounted)base.text=s['apiBaseUrl']??'';});}
+  @override void initState(){super.initState();unawaited(NexoApiClient.session().then((s){if(mounted)base.text=s['apiBaseUrl']??'';}));}
   @override void dispose(){email.dispose();password.dispose();name.dispose();base.dispose();super.dispose();}
   Future<void> submit()async{
     setState(()=>busy=true);error=null;
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage>{
 class PassengerHomePage extends StatefulWidget{const PassengerHomePage({super.key});@override State<PassengerHomePage> createState()=>_PassengerHomePageState();}
 class _PassengerHomePageState extends State<PassengerHomePage>{
   NexoApiClient? api;final map=MapController();LatLng? origin,destination;String vehicle='car';bool locating=false,requesting=false;String? error;
-  @override void initState(){super.initState();NexoApiClient.load().then((a){if(mounted){setState(()=>api=a);locate();}});}
+  @override void initState(){super.initState();unawaited(NexoApiClient.load().then((a){if(mounted){setState(()=>api=a);unawaited(locate());}}));}
   Future<void> locate()async{setState(()=>locating=true);try{final p=await NexoLocationService.current();final x=LatLng(p.latitude,p.longitude);if(!mounted)return;setState((){origin=x;destination??=LatLng(p.latitude+0.01,p.longitude+0.01);});map.move(x,14);}catch(e){if(mounted)setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>locating=false);}}
   Future<void> requestRide()async{if(api==null||origin==null||destination==null)return;setState(()=>requesting=true);try{final r=await api!.post('/rides/requests',{'vehicleType':vehicle,'origin':{'latitude':origin!.latitude,'longitude':origin!.longitude},'destination':{'latitude':destination!.latitude,'longitude':destination!.longitude}},idempotencyKey:'ride-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['requestId'] as String,passenger:true)));}catch(e){if(mounted)setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>requesting=false);}}
   @override Widget build(BuildContext context){final c=origin??const LatLng(-16.6869,-49.2648);return Scaffold(
@@ -80,7 +80,7 @@ class _PassengerHomePageState extends State<PassengerHomePage>{
 class DriverHomePage extends StatefulWidget{const DriverHomePage({super.key});@override State<DriverHomePage> createState()=>_DriverHomePageState();}
 class _DriverHomePageState extends State<DriverHomePage>{
   NexoApiClient? api;Timer? timer;Timer? locationTimer;List<Map<String,dynamic>> requests=[];bool online=false,busy=false;String? error;
-  @override void initState(){super.initState();NexoApiClient.load().then((a){if(mounted)setState(()=>api=a);});}
+  @override void initState(){super.initState();unawaited(NexoApiClient.load().then((a){if(mounted)setState(()=>api=a);}));}
   @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
   Future<void> setOnline(bool value)async{if(api==null)return;setState(()=>busy=true);try{await api!.put('/me/marketplace',{'categories':['passenger_car','passenger_motorcycle'],'availability':value?'available':'offline','acceptingRequests':value});if(!mounted)return;setState(()=>online=value);timer?.cancel();if(value){await pushAvailabilityLocation();await refresh();if(!mounted)return;timer=Timer.periodic(const Duration(seconds:4),(_)=>unawaited(refresh()));locationTimer=Timer.periodic(const Duration(seconds:10),(_)=>unawaited(pushAvailabilityLocation()));}else{locationTimer?.cancel();setState(()=>requests=[]);}}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   Future<void> pushAvailabilityLocation()async{
@@ -108,7 +108,7 @@ class RideTrackingPage extends StatefulWidget{
 }
 class _RideTrackingPageState extends State<RideTrackingPage>{
   Timer? timer;Timer? locationTimer;String state='open';int? fare;String? error;String? rideId;String? serviceId;String? subjectId;String? paymentStatus;Map<String,dynamic>? driverLocation;bool rated=false;
-  @override void initState(){super.initState();rideId=widget.rideId;serviceId=widget.serviceId;poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>unawaited(poll()));if(!widget.passenger){locationTimer=Timer.periodic(const Duration(seconds:8),(_)=>unawaited(pushDriverLocation()));}}
+  @override void initState(){super.initState();rideId=widget.rideId;serviceId=widget.serviceId;unawaited(poll());timer=Timer.periodic(const Duration(seconds:3),(_)=>unawaited(poll()));if(!widget.passenger){locationTimer=Timer.periodic(const Duration(seconds:8),(_)=>unawaited(pushDriverLocation()));}}
   @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
   Future<void> poll()async{try{
     final r=await widget.api.get('/requests/'+widget.requestId);if(mounted)setState(()=>state=r['status']?.toString()??state);
