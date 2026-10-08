@@ -13,22 +13,31 @@ import { Coordinate, HaversineDistanceAdapter } from './distance.adapter';
 
 type JsonObject = Record<string, unknown>;
 
-type RideState = 'accepted' | 'driver_en_route' | 'arrived' | 'started' | 'completed' | 'cancelled';
+type RideState =
+  | 'accepted'
+  | 'driver_en_route'
+  | 'arrived'
+  | 'started'
+  | 'completed'
+  | 'cancelled';
 
 const TARIFF_CENTS_PER_KM = { car: 200, motorcycle: 150 } as const;
 
 @Injectable()
 export class RideService {
-  constructor(
-    @Inject(Pool) private readonly db: Pool,
-  ) {
+  constructor(@Inject(Pool) private readonly db: Pool) {
     this.distanceAdapter = new HaversineDistanceAdapter();
   }
 
   private readonly distanceAdapter: HaversineDistanceAdapter;
 
-  async createRequest(user: AuthPrincipal, dto: CreatePassengerRideDto, key: string) {
-    if (user.role !== 'customer') throw new ForbiddenException('Customer role required');
+  async createRequest(
+    user: AuthPrincipal,
+    dto: CreatePassengerRideDto,
+    key: string,
+  ) {
+    if (user.role !== 'customer')
+      throw new ForbiddenException('Customer role required');
     const origin = this.normalizeCoordinate(dto.origin);
     const destination = this.normalizeCoordinate(dto.destination);
     return this.withIdempotency(
@@ -37,7 +46,10 @@ export class RideService {
       key,
       dto,
       async (client) => {
-        const distanceMeters = this.distanceAdapter.distanceMeters(origin, destination);
+        const distanceMeters = this.distanceAdapter.distanceMeters(
+          origin,
+          destination,
+        );
         const tariff = TARIFF_CENTS_PER_KM[dto.vehicleType];
         const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
         const request = await client.query(
@@ -53,7 +65,13 @@ export class RideService {
           ],
         );
         const row = request.rows[0];
-        await this.audit(client, user.accountId, 'ride.request_created', 'service_request', row.id);
+        await this.audit(
+          client,
+          user.accountId,
+          'ride.request_created',
+          'service_request',
+          row.id,
+        );
         return {
           status: 201,
           body: {
@@ -71,7 +89,13 @@ export class RideService {
     );
   }
 
-  async createRideForService(client: PoolClient, serviceId: string, vehicleType: 'car' | 'motorcycle', origin: unknown, destination: unknown) {
+  async createRideForService(
+    client: PoolClient,
+    serviceId: string,
+    vehicleType: 'car' | 'motorcycle',
+    origin: unknown,
+    destination: unknown,
+  ) {
     const o = this.normalizeCoordinate(origin);
     const d = this.normalizeCoordinate(destination);
     const distanceMeters = this.distanceAdapter.distanceMeters(o, d);
@@ -103,13 +127,22 @@ export class RideService {
     );
     const row = result.rows[0];
     if (!row) throw new NotFoundException('Ride not found');
-    if (row.customerId !== user.accountId && row.providerId !== user.accountId) {
+    if (
+      row.customerId !== user.accountId &&
+      row.providerId !== user.accountId
+    ) {
       throw new ForbiddenException('Ride access denied');
     }
     return this.publicRide(row);
   }
 
-  async transition(user: AuthPrincipal, rideId: string, next: RideState, key: string, reason?: string) {
+  async transition(
+    user: AuthPrincipal,
+    rideId: string,
+    next: RideState,
+    key: string,
+    reason?: string,
+  ) {
     if (!key) throw new ConflictException('Valid Idempotency-Key is required');
     const client = await this.db.connect();
     try {
@@ -121,7 +154,10 @@ export class RideService {
       );
       const row = result.rows[0];
       if (!row) throw new NotFoundException('Ride not found');
-      if (row.customer_id !== user.accountId && row.provider_id !== user.accountId) {
+      if (
+        row.customer_id !== user.accountId &&
+        row.provider_id !== user.accountId
+      ) {
         throw new ForbiddenException('Ride access denied');
       }
       const allowed: Record<string, RideState[]> = {
@@ -129,9 +165,10 @@ export class RideService {
         arrived: ['driver_en_route'],
         started: ['arrived'],
         completed: ['started'],
-        cancelled: ['accepted','driver_en_route','arrived'],
+        cancelled: ['accepted', 'driver_en_route', 'arrived'],
       };
-      if (!allowed[next]?.includes(row.state)) throw new ConflictException('Invalid ride state transition');
+      if (!allowed[next]?.includes(row.state))
+        throw new ConflictException('Invalid ride state transition');
       if (next !== 'cancelled' && user.accountId !== row.provider_id) {
         throw new ForbiddenException('Only the driver can advance the ride');
       }
@@ -149,11 +186,20 @@ export class RideService {
       await client.query(
         `UPDATE services SET status=$1,completed_at=CASE WHEN $1='completed' THEN NOW() ELSE completed_at END,updated_at=NOW()
          WHERE id=$2`,
-        [next === 'started' ? 'in_progress' : next === 'completed' ? 'completed' : next === 'cancelled' ? 'cancelled' : 'accepted', row.service_id],
+        [
+          next === 'started'
+            ? 'in_progress'
+            : next === 'completed'
+              ? 'completed'
+              : next === 'cancelled'
+                ? 'cancelled'
+                : 'accepted',
+          row.service_id,
+        ],
       );
       await client.query(
         `INSERT INTO ride_events (ride_id,actor_id,from_state,to_state,reason) VALUES ($1,$2,$3,$4,$5)`,
-        [rideId,user.accountId,row.state,next,reason ?? null],
+        [rideId, user.accountId, row.state, next, reason ?? null],
       );
       await client.query('COMMIT');
       return this.publicRide(updated.rows[0]);
@@ -165,8 +211,14 @@ export class RideService {
     }
   }
 
-  async changeRoute(user: AuthPrincipal, rideId: string, dto: ChangeRideRouteDto, key: string) {
-    if (user.role !== 'provider') throw new ForbiddenException('Only the driver can change the route');
+  async changeRoute(
+    user: AuthPrincipal,
+    rideId: string,
+    dto: ChangeRideRouteDto,
+    key: string,
+  ) {
+    if (user.role !== 'provider')
+      throw new ForbiddenException('Only the driver can change the route');
     if (!key) throw new ConflictException('Valid Idempotency-Key is required');
     const client = await this.db.connect();
     try {
@@ -177,18 +229,25 @@ export class RideService {
       );
       const row = result.rows[0];
       if (!row) throw new NotFoundException('Ride not found');
-      if (row.provider_id !== user.accountId) throw new ForbiddenException('Ride access denied');
-      if (row.route_version !== dto.expectedRouteVersion) throw new ConflictException('Route version is stale');
-      if (!['accepted','driver_en_route','arrived','started'].includes(row.state)) throw new ConflictException('Route cannot be changed in this state');
+      if (row.provider_id !== user.accountId)
+        throw new ForbiddenException('Ride access denied');
+      if (row.route_version !== dto.expectedRouteVersion)
+        throw new ConflictException('Route version is stale');
+      if (
+        !['accepted', 'driver_en_route', 'arrived', 'started'].includes(
+          row.state,
+        )
+      )
+        throw new ConflictException('Route cannot be changed in this state');
       const o = this.normalizeCoordinate(dto.origin);
       const d = this.normalizeCoordinate(dto.destination);
-      const distanceMeters = this.distanceAdapter.distanceMeters(o,d);
+      const distanceMeters = this.distanceAdapter.distanceMeters(o, d);
       const tariff = Number(row.tariff_cents_per_km);
       const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
       const version = row.route_version + 1;
       await client.query(
         `UPDATE rides SET origin=$1,destination=$2,distance_meters=$3,fare_cents=$4,route_version=$5,updated_at=NOW() WHERE id=$6`,
-        [o,d,distanceMeters,fareCents,version,rideId],
+        [o, d, distanceMeters, fareCents, version, rideId],
       );
       await client.query(
         `UPDATE services SET price_cents=$1,currency=$2,updated_at=NOW() WHERE id=$3`,
@@ -197,11 +256,11 @@ export class RideService {
       await client.query(
         `INSERT INTO ride_route_snapshots (ride_id,version,origin,destination,distance_meters,tariff_cents_per_km,fare_cents,currency,reason)
          VALUES ($1,$2,$3,$4,$5,$6,$7,'BRL','route_change')`,
-        [rideId,version,o,d,distanceMeters,tariff,fareCents],
+        [rideId, version, o, d, distanceMeters, tariff, fareCents],
       );
       await client.query(
         `INSERT INTO ride_events (ride_id,actor_id,from_state,to_state,reason) VALUES ($1,$2,$3,$3,$4)`,
-        [rideId,user.accountId,row.state,'route_change'],
+        [rideId, user.accountId, row.state, 'route_change'],
       );
       await client.query('COMMIT');
       return this.get(user, rideId);
@@ -214,16 +273,23 @@ export class RideService {
   }
 
   private normalizeCoordinate(value: unknown): Coordinate {
-    if (!value || typeof value !== 'object') throw new ConflictException('Invalid coordinates');
+    if (!value || typeof value !== 'object')
+      throw new ConflictException('Invalid coordinates');
     const row = value as Record<string, unknown>;
     const latitude = Number(row.latitude);
     const longitude = Number(row.longitude);
-    if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+    if (
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude) ||
+      latitude < -90 ||
+      latitude > 90 ||
+      longitude < -180 ||
+      longitude > 180
+    ) {
       throw new ConflictException('Invalid coordinates');
     }
     return { latitude, longitude };
   }
-
 
   private publicRide(row: Record<string, unknown>) {
     const value = (key: string) => row[key];
@@ -233,8 +299,12 @@ export class RideService {
       vehicleType: value('vehicleType') ?? value('vehicle_type'),
       origin: value('origin'),
       destination: value('destination'),
-      distanceMeters: Number(value('distanceMeters') ?? value('distance_meters')),
-      tariffCentsPerKm: Number(value('tariffCentsPerKm') ?? value('tariff_cents_per_km')),
+      distanceMeters: Number(
+        value('distanceMeters') ?? value('distance_meters'),
+      ),
+      tariffCentsPerKm: Number(
+        value('tariffCentsPerKm') ?? value('tariff_cents_per_km'),
+      ),
       fareCents: Number(value('fareCents') ?? value('fare_cents')),
       currency: value('currency'),
       state: value('state'),
@@ -252,8 +322,11 @@ export class RideService {
     payload: unknown,
     work: (client: PoolClient) => Promise<{ status: number; body: JsonObject }>,
   ) {
-    if (!key || key.length > 128) throw new ConflictException('Valid Idempotency-Key is required');
-    const requestHash = createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+    if (!key || key.length > 128)
+      throw new ConflictException('Valid Idempotency-Key is required');
+    const requestHash = createHash('sha256')
+      .update(JSON.stringify(payload))
+      .digest('hex');
     const client = await this.db.connect();
     try {
       await client.query('BEGIN');
@@ -267,15 +340,28 @@ export class RideService {
       );
       if (existing.rowCount) {
         const row = existing.rows[0];
-        if (row.requestHash !== requestHash) throw new ConflictException('Idempotency-Key was already used with a different payload');
+        if (row.requestHash !== requestHash)
+          throw new ConflictException(
+            'Idempotency-Key was already used with a different payload',
+          );
         await client.query('COMMIT');
-        return { status: row.responseStatus, body: row.responseBody as JsonObject };
+        return {
+          status: row.responseStatus,
+          body: row.responseBody as JsonObject,
+        };
       }
       const result = await work(client);
       await client.query(
         `INSERT INTO idempotency_keys (account_id,idempotency_key,operation,request_hash,response_status,response_body)
          VALUES ($1,$2,$3,$4,$5,$6)`,
-        [user.accountId,key,operation,requestHash,result.status,result.body],
+        [
+          user.accountId,
+          key,
+          operation,
+          requestHash,
+          result.status,
+          result.body,
+        ],
       );
       await client.query('COMMIT');
       return result;
@@ -287,12 +373,17 @@ export class RideService {
     }
   }
 
-
-  private async audit(client: PoolClient, actorId: string, eventType: string, resourceType: string, resourceId: string) {
+  private async audit(
+    client: PoolClient,
+    actorId: string,
+    eventType: string,
+    resourceType: string,
+    resourceId: string,
+  ) {
     await client.query(
       `INSERT INTO audit_events (actor_id,event_type,resource_type,resource_id,outcome,metadata)
        VALUES ($1,$2,$3,$4,'success','{}'::jsonb)`,
-      [actorId,eventType,resourceType,resourceId],
+      [actorId, eventType, resourceType, resourceId],
     );
   }
 }

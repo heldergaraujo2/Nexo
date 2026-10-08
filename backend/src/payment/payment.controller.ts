@@ -1,12 +1,29 @@
-import { Body, Controller, Get, Headers, Param, Post, Req, UseGuards, Inject, HttpCode } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+  Inject,
+  HttpCode,
+} from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
-import { ConfirmPaymentDto, CreatePaymentRecordDto, DisputePaymentDto } from './dto';
+import {
+  ConfirmPaymentDto,
+  CreatePaymentRecordDto,
+  DisputePaymentDto,
+} from './dto';
 import { PaymentService } from './payment.service';
 
 @UseGuards(AuthGuard)
 @Controller('payment-records')
 export class PaymentController {
-  constructor(@Inject(PaymentService) private readonly payments: PaymentService) {}
+  constructor(
+    @Inject(PaymentService) private readonly payments: PaymentService,
+  ) {}
 
   @Post('services/:serviceId')
   @HttpCode(201)
@@ -16,11 +33,16 @@ export class PaymentController {
     @Headers('idempotency-key') key: string,
     @Body() dto: CreatePaymentRecordDto,
   ) {
-    return this.payments.create(req.user, serviceId, dto, key).then((result) => result.body);
+    return this.payments
+      .create(req.user, serviceId, dto, key)
+      .then((result) => result.body);
   }
 
   @Get('services/:serviceId')
-  listForService(@Req() req: AuthenticatedRequest, @Param('serviceId') serviceId: string) {
+  listForService(
+    @Req() req: AuthenticatedRequest,
+    @Param('serviceId') serviceId: string,
+  ) {
     return this.payments.listForService(req.user, serviceId);
   }
 
@@ -37,7 +59,9 @@ export class PaymentController {
     @Headers('idempotency-key') key: string,
     @Body() dto: ConfirmPaymentDto,
   ) {
-    return this.payments.confirm(req.user, paymentId, dto, key).then((result) => result.body);
+    return this.payments
+      .confirm(req.user, paymentId, dto, key)
+      .then((result) => result.body);
   }
 
   @Post(':paymentId/dispute')
@@ -48,6 +72,8 @@ export class PaymentController {
     @Headers('idempotency-key') key: string,
     @Body() dto: DisputePaymentDto,
   ) {
-    return this.payments.dispute(req.user, paymentId, dto, key).then((result) => result.body);
+    return this.payments
+      .dispute(req.user, paymentId, dto, key)
+      .then((result) => result.body);
   }
 }

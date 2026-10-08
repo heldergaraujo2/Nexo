@@ -46,11 +46,15 @@ describe('marketplace API integration', () => {
         users,
       );
       await db.query(
-        'DELETE FROM subscription_charges WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (' + placeholders + '))',
+        'DELETE FROM subscription_charges WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (' +
+          placeholders +
+          '))',
         users,
       );
       await db.query(
-        'DELETE FROM subscriptions WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (' + placeholders + '))',
+        'DELETE FROM subscriptions WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (' +
+          placeholders +
+          '))',
         users,
       );
       await db.query(
