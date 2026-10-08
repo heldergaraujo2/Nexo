@@ -79,10 +79,17 @@ class _PassengerHomePageState extends State<PassengerHomePage>{
 
 class DriverHomePage extends StatefulWidget{const DriverHomePage({super.key});@override State<DriverHomePage> createState()=>_DriverHomePageState();}
 class _DriverHomePageState extends State<DriverHomePage>{
-  NexoApiClient? api;Timer? timer;List<Map<String,dynamic>> requests=[];bool online=false,busy=false;String? error;
+  NexoApiClient? api;Timer? timer;Timer? locationTimer;List<Map<String,dynamic>> requests=[];bool online=false,busy=false;String? error;
   @override void initState(){super.initState();NexoApiClient.load().then((a){if(mounted)setState(()=>api=a);});}
-  @override void dispose(){timer?.cancel();super.dispose();}
-  Future<void> setOnline(bool value)async{if(api==null)return;setState(()=>busy=true);try{await api!.put('/me/marketplace',{'categories':['passenger_car','passenger_motorcycle'],'availability':value?'available':'offline','acceptingRequests':value});if(!mounted)return;setState(()=>online=value);timer?.cancel();if(value){await refresh();if(!mounted)return;timer=Timer.periodic(const Duration(seconds:4),(_)=>unawaited(refresh()));}else{setState(()=>requests=[]);}}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
+  @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
+  Future<void> setOnline(bool value)async{if(api==null)return;setState(()=>busy=true);try{await api!.put('/me/marketplace',{'categories':['passenger_car','passenger_motorcycle'],'availability':value?'available':'offline','acceptingRequests':value});if(!mounted)return;setState(()=>online=value);timer?.cancel();if(value){await pushAvailabilityLocation();await refresh();if(!mounted)return;timer=Timer.periodic(const Duration(seconds:4),(_)=>unawaited(refresh()));locationTimer=Timer.periodic(const Duration(seconds:10),(_)=>unawaited(pushAvailabilityLocation()));}else{locationTimer?.cancel();setState(()=>requests=[]);}}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
+  Future<void> pushAvailabilityLocation()async{
+    if(api==null||!online)return;
+    try{
+      final p=await NexoLocationService.current();
+      await api!.put('/me/marketplace/location',{'latitude':p.latitude,'longitude':p.longitude});
+    }catch(e){if(mounted)setState(()=>error=_friendlyError(e));}
+  }
   Future<void> refresh()async{if(api==null||!online)return;try{final d=await api!.get('/requests/available');if(mounted)setState(()=>requests=List<Map<String,dynamic>>.from(d as List));}catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/'+r['id'].toString()+'/accept',{},idempotencyKey:'accept-'+r['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?,rideId:s['rideId'] as String?)));await refresh();}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Nexo • Motorista'),actions:[IconButton(onPressed:logout,icon:const Icon(Icons.logout))]),body:RefreshIndicator(onRefresh:refresh,child:ListView(padding:const EdgeInsets.all(16),children:[
@@ -91,7 +98,7 @@ class _DriverHomePageState extends State<DriverHomePage>{
     if(!online)const Card(child:Padding(padding:EdgeInsets.all(20),child:Text('Ative o modo online.')))else if(requests.isEmpty)const Card(child:Padding(padding:EdgeInsets.all(20),child:Text('Nenhuma corrida agora. Atualização automática ativa.')))
     else ...requests.map((r)=>Card(child:ListTile(leading:Icon(r['category']=='passenger_motorcycle'?Icons.two_wheeler:Icons.directions_car),title:Text(r['category']=='passenger_motorcycle'?'Passageiro • Moto':'Passageiro • Carro'),subtitle:Text('Solicitada por '+(r['customerName']?.toString()??'cliente')),trailing:FilledButton(onPressed:busy?null:()=>accept(r),child:const Text('Aceitar'))))),
   ])));
-  Future<void> logout()async{timer?.cancel();await NexoApiClient.clearSession();if(!mounted)return;Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false);}
+  Future<void> logout()async{timer?.cancel();locationTimer?.cancel();await NexoApiClient.clearSession();if(!mounted)return;Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false);}
 }
 
 class RideTrackingPage extends StatefulWidget{
