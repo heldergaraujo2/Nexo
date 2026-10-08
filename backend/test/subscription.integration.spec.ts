@@ -75,7 +75,12 @@ describe('phase 11 subscriptions', () => {
     expect(create.status).toBe(201);
     expect(create.body.amountCents).toBe(9990);
     expect(create.body.currency).toBe('BRL');
-    const current = await call('/v1/subscriptions/me', 'GET', undefined, p.token);
+    const current = await call(
+      '/v1/subscriptions/me',
+      'GET',
+      undefined,
+      p.token,
+    );
     expect(current.status).toBe(200);
     expect(current.body.id).toBe(create.body.id);
     const invalidPlan = await call(
@@ -168,7 +173,13 @@ describe('phase 11 subscriptions', () => {
         concurrentProvider.token,
         randomUUID(),
       ),
-      call('/v1/subscriptions', 'POST', {}, concurrentProvider.token, randomUUID()),
+      call(
+        '/v1/subscriptions',
+        'POST',
+        {},
+        concurrentProvider.token,
+        randomUUID(),
+      ),
     ]);
     expect(concurrent.filter((x) => x.status === 201)).toHaveLength(1);
     expect(concurrent.filter((x) => x.status === 409)).toHaveLength(1);
@@ -185,7 +196,9 @@ describe('phase 11 subscriptions', () => {
       ).status,
     ).toBe(403);
   });
-  it('rejects providers without an active subscription in marketplace eligibility', async () => {
+  it(
+    'rejects providers without an active subscription in marketplace eligibility',
+    async () => {
     const p = await register('provider');
     const c = await register('customer');
     await call(
@@ -219,7 +232,9 @@ describe('phase 11 subscriptions', () => {
     );
     expect(offer.status).toBe(403);
   });
-  it('blocks new marketplace offers after subscription cancellation', async () => {
+  it(
+    'blocks new marketplace offers after subscription cancellation',
+    async () => {
     const p = await register('provider');
     const c = await register('customer');
     await call(
@@ -282,7 +297,9 @@ describe('phase 11 subscriptions', () => {
     );
     expect(offer.status).toBe(403);
   });
-  it('enforces database ownership between charges and subscriptions', async () => {
+  it(
+    'enforces database ownership between charges and subscriptions',
+    async () => {
     const p = await register('provider');
     const other = await register('provider');
     const sub = await call(
