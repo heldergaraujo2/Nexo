@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
@@ -14,6 +14,7 @@ import { DeliveryModule } from './delivery/delivery.module';
 import { CargoModule } from './cargo/cargo.module';
 import { TowingModule } from './towing/towing.module';
 import { GrowthModule } from './growth/growth.module';
+import { RequestContextMiddleware } from './observability/request-context.middleware';
 
 @Module({
   imports: [
@@ -34,4 +35,8 @@ import { GrowthModule } from './growth/growth.module';
     GrowthModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(RequestContextMiddleware).forRoutes('*');
+  }
+}
