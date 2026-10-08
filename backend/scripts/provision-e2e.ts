@@ -3,12 +3,8 @@ import { randomUUID } from 'node:crypto';
 const baseUrl = (process.env.NEXO_API_URL ?? 'http://127.0.0.1:3000/v1').replace(/\/$/, '');
 const driverEmail = process.env.NEXO_E2E_DRIVER_EMAIL ?? 'nexo.e2e.driver@example.test';
 const passengerEmail = process.env.NEXO_E2E_PASSENGER_EMAIL ?? 'nexo.e2e.passenger@example.test';
-const driverPassword = process.env.NEXO_E2E_DRIVER_PASSWORD;
-const passengerPassword = process.env.NEXO_E2E_PASSENGER_PASSWORD;
-
-if (!driverPassword || !passengerPassword) {
-  throw new Error('Set NEXO_E2E_DRIVER_PASSWORD and NEXO_E2E_PASSENGER_PASSWORD before provisioning.');
-}
+const driverPassword = process.env.NEXO_E2E_DRIVER_PASSWORD ?? '123456789';
+const passengerPassword = process.env.NEXO_E2E_PASSENGER_PASSWORD ?? '123456789';
 
 async function call(path: string, method: string, body?: unknown, token?: string) {
   const response = await fetch(baseUrl + path, {
