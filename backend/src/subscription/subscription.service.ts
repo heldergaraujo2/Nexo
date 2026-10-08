@@ -51,6 +51,8 @@ export class SubscriptionService {
       );
       return { status: 201, body: this.public(r.rows[0]) };
     });
+  }
+
   async get(user: AuthPrincipal) {
     this.assertProvider(user);
     const r = await this.db.query(
