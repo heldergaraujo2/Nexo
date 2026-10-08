@@ -61,3 +61,12 @@ Começar com um backend modular e uma base relacional. Escalar vertical/horizont
 - Correlation ID é propagado no header `x-request-id`; quando ausente, o backend gera UUID.
 - Medição de duração usa `process.hrtime.bigint()` para evitar dependência de relógio de parede.
 - Performance inicial é tratada com índices PostgreSQL derivados das consultas reais antes de introduzir Redis ou microserviços.
+
+
+## Fase 13 — Escala e Expansão
+- PostgreSQL continua como autoridade transacional; migrations 014–016 adicionam índices, localização operacional opcional e catálogo extensível de categorias.
+- O pool PostgreSQL possui limites configuráveis e timeouts de conexão/ociosidade.
+- O backend pode ser replicado horizontalmente porque o estado crítico permanece no PostgreSQL e operações críticas são idempotentes/transacionais.
+- Matching usa categoria, elegibilidade, disponibilidade, bloqueios, proximidade quando há localização válida e reputação como critérios ordenados.
+- Redis, filas e microserviços não entram no caminho crítico sem evidência operacional.
+- Expansão geográfica usa coordenadas server-side e não expõe localização operacional do provider no resultado público de matching.
