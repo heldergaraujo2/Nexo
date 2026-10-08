@@ -57,7 +57,7 @@ describe('phase 11 subscriptions', () => {
       emails,
     ]);
     await app?.close();
-  });
+    });
   it('runs subscription lifecycle and preserves service price', async () => {
     const p = await register('provider');
     const c = await register('customer');
@@ -149,7 +149,7 @@ describe('phase 11 subscriptions', () => {
       p.token,
     );
     expect(afterCancel.body.status).toBe('canceled');
-  });
+    });
   it('enforces idempotency, authorization and concurrent create', async () => {
     const p = await register('provider');
     const key = randomUUID();
@@ -195,11 +195,11 @@ describe('phase 11 subscriptions', () => {
         )
       ).status,
     ).toBe(403);
-  });
+    });
   it(
     'rejects providers without an active subscription in marketplace eligibility',
     async () => {
-    const p = await register('provider');
+      const p = await register('provider');
     const c = await register('customer');
     await call(
       '/v1/me/marketplace',
@@ -231,11 +231,11 @@ describe('phase 11 subscriptions', () => {
       randomUUID(),
     );
     expect(offer.status).toBe(403);
-  });
+    });
   it(
     'blocks new marketplace offers after subscription cancellation',
     async () => {
-    const p = await register('provider');
+      const p = await register('provider');
     const c = await register('customer');
     await call(
       '/v1/me/marketplace',
@@ -296,11 +296,11 @@ describe('phase 11 subscriptions', () => {
       randomUUID(),
     );
     expect(offer.status).toBe(403);
-  });
+    });
   it(
     'enforces database ownership between charges and subscriptions',
     async () => {
-    const p = await register('provider');
+      const p = await register('provider');
     const other = await register('provider');
     const sub = await call(
       '/v1/subscriptions',
@@ -318,7 +318,7 @@ describe('phase 11 subscriptions', () => {
         [sub.body.id, other.id, randomUUID()],
       ),
     ).rejects.toThrow();
-  });
+    });
   it('rejects foreign history and missing idempotency key', async () => {
     const p = await register('provider');
     const other = await register('provider');
