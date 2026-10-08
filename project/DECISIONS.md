@@ -107,3 +107,7 @@ Android/iOS is the product target.
 ## DEC-031 — Subscription monetization boundary
 **Status:** ACCEPTED FOR PHASE 11
 Provider subscription is fixed at 9990 integer cents in BRL. Nexo does not take service commissions. Subscription billing is isolated behind a BillingAdapter; no card credentials or payment-provider secrets are stored by Nexo. Completed-service prices remain immutable and independent from subscription state.
+
+## DEC-032 — Phase 11 gate approval
+**Status:** ACCEPTED
+CI run 37815556772 is the authoritative validation for the FASE 11 gate: backend migrations, typecheck, tests, build, lint and formatting passed; mobile analyze, tests and debug APK build passed. FASE 12 may start without changing the subscription business rules.
