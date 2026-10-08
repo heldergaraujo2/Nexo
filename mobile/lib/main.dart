@@ -215,26 +215,3 @@ class _DeliveryRequestPageState extends State<DeliveryRequestPage> {
     );
   }
 }
-
-
-class SubscriptionPage extends StatelessWidget {
-  const SubscriptionPage({super.key});
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Assinatura profissional')),
-    body: ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text('Plano profissional', style: Theme.of(context).textTheme.headlineSmall),
-        const SizedBox(height: 12),
-        Text('R$ 99,90 / mês', style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: 12),
-        const Text('0% de comissão sobre os serviços. Você mantém 100% do valor do serviço.'),
-        const SizedBox(height: 24),
-        FilledButton(onPressed: () {}, child: const Text('Assinar plano')),
-        const SizedBox(height: 12),
-        OutlinedButton(onPressed: () {}, child: const Text('Ver histórico de cobrança')),
-      ],
-    ),
-  );
-}
