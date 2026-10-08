@@ -74,15 +74,37 @@ describe('phase 11 subscriptions', () => {
     );
     expect(create.status).toBe(201);
     expect(create.body.amountCents).toBe(9990);
+    expect(create.body.currency).toBe('BRL');
+    const current = await call('/v1/subscriptions/me', 'GET', undefined, p.token);
+    expect(current.status).toBe(200);
+    expect(current.body.id).toBe(create.body.id);
+    const invalidPlan = await call(
+      '/v1/subscriptions',
+      'POST',
+      { planCode: 'enterprise' },
+      p.token,
+      randomUUID(),
+    );
+    expect(invalidPlan.status).toBe(409);
+    const renewKey = randomUUID();
     const renew = await call(
       '/v1/subscriptions/' + create.body.id + '/renew',
       'POST',
       undefined,
       p.token,
-      randomUUID(),
+      renewKey,
     );
     expect(renew.status).toBe(200);
     expect(renew.body.status).toBe('active');
+    const renewReplay = await call(
+      '/v1/subscriptions/' + create.body.id + '/renew',
+      'POST',
+      undefined,
+      p.token,
+      renewKey,
+    );
+    expect(renewReplay.status).toBe(200);
+    expect(renewReplay.body.id).toBe(renew.body.id);
     const history = await call(
       '/v1/subscriptions/' + create.body.id + '/history',
       'GET',
@@ -96,15 +118,32 @@ describe('phase 11 subscriptions', () => {
       [service.rows[0].id],
     );
     expect(Number(price.rows[0].price_cents)).toBe(2500);
+    const cancelKey = randomUUID();
     const cancel = await call(
       '/v1/subscriptions/' + create.body.id + '/cancel',
       'POST',
       { reason: 'voluntary' },
       p.token,
-      randomUUID(),
+      cancelKey,
     );
     expect(cancel.status).toBe(200);
     expect(cancel.body.status).toBe('canceled');
+    const cancelReplay = await call(
+      '/v1/subscriptions/' + create.body.id + '/cancel',
+      'POST',
+      { reason: 'voluntary' },
+      p.token,
+      cancelKey,
+    );
+    expect(cancelReplay.status).toBe(200);
+    expect(cancelReplay.body.status).toBe('canceled');
+    const afterCancel = await call(
+      '/v1/subscriptions/me',
+      'GET',
+      undefined,
+      p.token,
+    );
+    expect(afterCancel.body.status).toBe('canceled');
   });
   it('enforces idempotency, authorization and concurrent create', async () => {
     const p = await register('provider');
