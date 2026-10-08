@@ -1,5 +1,6 @@
 name: Nexo CI
 # Phase gate validation
+# Operational PC + Android validation artifacts
 
 on:
   workflow_dispatch:
