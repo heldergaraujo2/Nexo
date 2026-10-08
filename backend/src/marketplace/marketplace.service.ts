@@ -90,7 +90,7 @@ export class MarketplaceService {
       `SELECT r.id,r.category,r.description,r.origin,r.destination,r.requirements,r.status,r.created_at AS "createdAt"
        FROM service_requests r
        JOIN provider_marketplace p ON p.account_id=$1
-       WHERE r.status IN ('open','matched') AND p.availability IN ('available','busy')
+       WHERE r.status='open' AND p.availability IN ('available','busy')
          AND p.accepting_requests=true AND r.category=ANY(p.categories) AND r.customer_id<>$1
          AND NOT EXISTS (SELECT 1 FROM services s WHERE s.request_id=r.id)
          AND NOT EXISTS (SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=r.customer_id) OR (b.blocker_id=r.customer_id AND b.blocked_id=$1))
@@ -275,9 +275,10 @@ export class MarketplaceService {
         const row = request.rows[0];
         if (!row) throw new NotFoundException('Service request not found');
         if (!['open', 'matched'].includes(row.status)) {
-          throw new ConflictException(
-            'Request is not available for acceptance',
-          );
+          throw new ConflictException('Request is not available for acceptance');
+        }
+        if (row.status === 'matched' && row.matched_provider_id !== user.accountId) {
+          throw new ForbiddenException('Request is matched to another provider');
         }
         if (row.category === 'delivery' || row.category === 'towing') {
           throw new ConflictException('This category must be accepted through a priced offer');
