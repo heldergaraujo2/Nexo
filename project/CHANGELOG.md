@@ -218,3 +218,13 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 **FASE 11 — ASSINATURA DOS PROFISSIONAIS.**
+
+
+## 1.7.0 — Preparação da validação operacional PC + Android
+- Cliente Flutter operacional para passageiro e motorista, com API LAN configurável, autenticação e polling.
+- GPS do passageiro integrado por Geolocator.
+- Descoberta autenticada de solicitações abertas para providers.
+- Proteção contra aceitação por provider diferente do provider já associado à solicitação.
+- Script seguro de provisionamento de contas fictícias via API oficial.
+- CI preparado para gerar APK Android debug e cliente Windows do motorista.
+- **Validação física ainda pendente; nenhum APK novo foi declarado como disponível sem evidência de build.**
