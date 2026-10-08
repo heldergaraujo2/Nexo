@@ -1,17 +1,15 @@
-import { Body,Controller,Get,Headers,HttpCode,Inject,Param,Post,Req,UseGuards } from '@nestjs/common';
-import { AuthGuard,AuthenticatedRequest } from '../auth/auth.guard';
-import { CancelSubscriptionDto } from './dto';
+import { Body, Controller, Get, Headers, HttpCode, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
+import { CancelSubscriptionDto, CreateSubscriptionDto, SetSubscriptionStatusDto } from './dto';
 import { SubscriptionService } from './subscription.service';
 @UseGuards(AuthGuard)
 @Controller('subscriptions')
 export class SubscriptionController {
- private readonly service: SubscriptionService;
- constructor(@Inject(SubscriptionService) service: SubscriptionService) {
-   this.service = service;
- }
- @Get('me') mine(@Req()r:AuthenticatedRequest){return this.service.getMine(r.user);}
- @Post('me') subscribe(@Req()r:AuthenticatedRequest,@Headers('idempotency-key')key:string){return this.service.subscribe(r.user,key).then(x=>x.body);}
- @HttpCode(200) @Post('me/cancel') cancel(@Req()r:AuthenticatedRequest,@Headers('idempotency-key')key:string,@Body()d:CancelSubscriptionDto){return this.service.getMine(r.user).then(s=>{if(!s)throw new Error('Subscription not found');return this.service.cancel(r.user,s.id,d,key).then(x=>x.body);});}
- @HttpCode(200) @Post(':id/renew') renew(@Req()r:AuthenticatedRequest,@Param('id')id:string,@Headers('idempotency-key')key:string){return this.service.renew(r.user,id,key).then(x=>x.body);}
- @Get(':id/history') history(@Req()r:AuthenticatedRequest,@Param('id')id:string){return this.service.getHistory(r.user,id);}
+ constructor(private readonly subscriptions:SubscriptionService){}
+ @Post() create(@Req() r:AuthenticatedRequest,@Body() d:CreateSubscriptionDto,@Headers('idempotency-key') k:string){return this.subscriptions.create(r.user,d,k);}
+ @Get('me') get(@Req() r:AuthenticatedRequest){return this.subscriptions.get(r.user);}
+ @HttpCode(200) @Post(':id/renew') renew(@Req() r:AuthenticatedRequest,@Param('id') id:string,@Headers('idempotency-key') k:string){return this.subscriptions.renew(r.user,id,k);}
+ @HttpCode(200) @Post(':id/cancel') cancel(@Req() r:AuthenticatedRequest,@Param('id') id:string,@Body() d:CancelSubscriptionDto,@Headers('idempotency-key') k:string){return this.subscriptions.cancel(r.user,id,d,k);}
+ @Put(':id/status') setStatus(@Req() r:AuthenticatedRequest,@Param('id') id:string,@Body() d:SetSubscriptionStatusDto,@Headers('idempotency-key') k:string){return this.subscriptions.setStatus(r.user,id,d,k);}
+ @Get(':id/history') history(@Req() r:AuthenticatedRequest,@Param('id') id:string){return this.subscriptions.history(r.user,id);}
 }
