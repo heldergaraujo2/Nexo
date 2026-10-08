@@ -107,26 +107,31 @@ export class MarketplaceService {
     const result = await this.db.query(
       `SELECT r.id,r.customer_id AS "customerId",r.category,r.description,r.requirements,
               r.origin,r.destination,r.status,r.created_at AS "createdAt",
-              p.display_name AS "customerName"
+              p.display_name AS "customerName",
+              CASE
+                WHEN r.origin IS NULL OR pm.current_latitude IS NULL OR pm.current_longitude IS NULL THEN NULL
+                ELSE 6371000 * acos(LEAST(1, GREATEST(-1,
+                  cos(radians(pm.current_latitude)) * cos(radians((r.origin->>'latitude')::double precision)) *
+                  cos(radians((r.origin->>'longitude')::double precision) - radians(pm.current_longitude)) +
+                  sin(radians(pm.current_latitude)) * sin(radians((r.origin->>'latitude')::double precision))
+                )))
+              END AS "distanceMeters"
        FROM service_requests r
        JOIN profiles p ON p.account_id=r.customer_id
+       CROSS JOIN provider_marketplace pm
        WHERE r.status IN ('open','matched')
          AND r.category IN ('passenger_car','passenger_motorcycle')
-         AND EXISTS (
-           SELECT 1
-           FROM provider_marketplace pm
-           WHERE pm.account_id=$1
-             AND pm.availability='available'
-             AND pm.accepting_requests=true
-             AND r.category = ANY(pm.categories)
-         )
+         AND pm.account_id=$1
+         AND pm.availability='available'
+         AND pm.accepting_requests=true
+         AND r.category = ANY(pm.categories)
          AND r.customer_id <> $1
          AND NOT EXISTS (
            SELECT 1 FROM blocks b
            WHERE (b.blocker_id=$1 AND b.blocked_id=r.customer_id)
               OR (b.blocker_id=r.customer_id AND b.blocked_id=$1)
          )
-       ORDER BY r.created_at DESC
+       ORDER BY "distanceMeters" ASC NULLS LAST, r.created_at DESC
        LIMIT 50`,
       [user.accountId],
     );
