@@ -195,7 +195,10 @@ export class MarketplaceService {
             'Delivery and towing acceptance require a priced offer',
           );
         }
-        if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
+        if (
+          dto.offerType === 'priced_offer' &&
+          dto.amountCents === undefined
+        ) {
           throw new ConflictException('Priced offers require amountCents');
         }
         const expiresAt = dto.expiresInMinutes
