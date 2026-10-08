@@ -66,3 +66,11 @@ A implementação deve seguir LGPD.md e revisão jurídica antes do uso comercia
 - Readiness do backend valida conectividade PostgreSQL antes de considerar a instância pronta.
 - Requests recebem `x-request-id` e registram método, rota, status e duração; logs não incluem payloads, tokens ou PII.
 - Índices da migration 014 são orientados às consultas operacionais de crescimento e matching, mantendo constraints existentes.
+
+
+## Escala — Fase 13
+- O hook de instalação não executa checkout, commit ou push automático.
+- Pool PostgreSQL possui timeout de conexão e ociosidade configuráveis.
+- Localização do provider é opcional, validada por latitude/longitude e usada somente para ranking operacional; não é retornada no endpoint público de matching.
+- Correlation IDs e logs de request não incluem payload, token ou PII.
+- O catálogo de categorias não altera regras de preço nem cria comissão ou incentivo financeiro.
