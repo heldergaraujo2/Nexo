@@ -364,6 +364,7 @@ async function register(role: 'customer' | 'provider') {
     token: r.body.accessToken as string,
   };
 }
+
 async function call(
   path: string,
   method: string,
