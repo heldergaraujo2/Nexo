@@ -184,8 +184,13 @@ export class MarketplaceService {
               'Passenger transport does not allow price negotiation',
             );
         }
-        if ((row.category === 'delivery' || row.category === 'towing') && dto.offerType !== 'priced_offer') {
-          throw new ConflictException('Delivery and towing acceptance require a priced offer');
+        if (
+          (row.category === 'delivery' || row.category === 'towing') &&
+          dto.offerType !== 'priced_offer'
+        ) {
+          throw new ConflictException(
+            'Delivery and towing acceptance require a priced offer',
+          );
         }
         if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
@@ -680,8 +685,8 @@ export class MarketplaceService {
         }
         if (row.category === 'delivery' || row.category === 'towing') {
           throw new ConflictException(
-              'Category execution must use its dedicated state machine',
-            );
+            'Category execution must use its dedicated state machine',
+          );
         }
 
         const transitions: Record<string, string[]> = {
