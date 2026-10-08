@@ -111,3 +111,8 @@ Provider subscription is fixed at 9990 integer cents in BRL. Nexo does not take 
 ## DEC-032 — Phase 11 gate approval
 **Status:** ACCEPTED
 CI run 37815556772 is the authoritative validation for the FASE 11 gate: backend migrations, typecheck, tests, build, lint and formatting passed; mobile analyze, tests and debug APK build passed. FASE 12 may start without changing the subscription business rules.
+
+
+## DEC-033 — Growth incentives boundary
+**Status:** ACCEPTED FOR PHASE 12
+Indications, campaigns and the founder program are tracked operationally in this phase, but no discount, credit, cash reward or commission change is created without an explicit product rule. This prevents growth features from silently changing Nexo's commercial model.
