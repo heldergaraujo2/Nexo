@@ -10,6 +10,12 @@ export class BillingStub implements BillingAdapter {
     currency: string;
     idempotencyKey: string;
   }): Promise<BillingCharge> {
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        status: 'failed',
+        failureReason: 'External billing adapter not configured',
+      };
+    }
     return {
       status: 'succeeded',
       externalReference: 'stub:' + input.idempotencyKey,
