@@ -1794,18 +1794,6 @@ export class MarketplaceService {
       client.release();
     }
   }
-}
-
-            AND p.last_latitude IS NOT NULL AND p.last_longitude IS NOT NULL
-           THEN 0 ELSE 1
-         END,
-         CASE
-           WHEN (request.origin->>'latitude') ~ '^-?[0-9]+(\\.[0-9]+)?`,
-      [request.category, user.accountId, requestId],
-    );
-    return result.rows;
-  }
-
   async createOffer(
     user: AuthPrincipal,
     requestId: string,
