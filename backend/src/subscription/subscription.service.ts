@@ -34,19 +34,19 @@ export class SubscriptionService {
       key,
       dto,
       async (c) => {
-      const active = await c.query(
+        const active = await c.query(
         'SELECT id FROM subscriptions WHERE provider_id=$1 AND status=ANY($2) FOR UPDATE',
         [user.accountId, ACTIVE],
       );
-      if (active.rowCount)
-        throw new ConflictException(
+        if (active.rowCount)
+          throw new ConflictException(
           'Provider already has an active subscription',
         );
-      const r = await c.query(
+        const r = await c.query(
         "INSERT INTO subscriptions(provider_id,plan_code,amount_cents,currency,status,current_period_start,current_period_end) VALUES($1,'professional_monthly',$2,'BRL','pending',NOW(),NOW()+INTERVAL '1 month') RETURNING *",
         [user.accountId, AMOUNT_CENTS],
       );
-      await this.audit(
+        await this.audit(
         c,
         user.accountId,
         'subscription.created',
