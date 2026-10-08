@@ -1,12 +1,14 @@
 # Nexo — Current State
 
-**Version:** 1.6 — FASE 11 iniciada
-**Last updated:** 2026-10-07
+**Version:** 1.7 — BLOCO MOBILIDADE E2E EM EXECUÇÃO
+**Last updated:** 2026-10-08
 
 ## Phase
-**FASE 11 — ASSINATURA DOS PROFISSIONAIS**
+**BLOCO MOBILIDADE E2E — MOB-0 a MOB-10**
 
-## Fases concluídas
+A base de domínio das FASES 0–10 continua válida. O foco foi temporariamente deslocado da FASE 11 para transformar o transporte de passageiros em uma experiência operacional real, com dois papéis no Flutter e API server-side.
+
+## Fases de domínio concluídas
 - [x] FASE 0 — Governança e Especificação
 - [x] FASE 1 — Fundação Técnica
 - [x] FASE 2 — Identidade, Acesso e Perfis
@@ -19,26 +21,48 @@
 - [x] FASE 9 — Carga e Frete Negociável
 - [x] FASE 10 — Guincho/Reboque
 
-## Fase 10 — gate
-**APROVADO.** Solicitação, oferta, aceite, execução e conclusão de guincho validados com elegibilidade, veículo verificado, bloqueios, autorização, idempotência, auditoria e máquina de estados dedicada.
+## Mobilidade implementada nesta etapa
+- [x] cliente HTTP Flutter autenticado
+- [x] sessão persistida e logout
+- [x] login/cadastro de customer e provider
+- [x] URL da API configurável para ambiente LAN
+- [x] GPS e permissão de localização
+- [x] mapa interativo com origem/destino
+- [x] solicitação de corrida carro/moto
+- [x] motorista online/offline
+- [x] descoberta de solicitações elegíveis
+- [x] aceite da corrida
+- [x] acompanhamento por polling
+- [x] notificações persistidas de aceite e transições de Ride
+- [x] execução accepted → driver_en_route → arrived → started → completed
+- [x] idempotência e autorização permanecem server-side
 
-## Validação
-- PR #17 mesclado na `main`.
-- CI run 306: backend e mobile verdes.
-- Backend: migrations, typecheck, testes, build, lint e format check.
-- Mobile: analyze, testes e APK debug.
-- Auditoria final concluída sem bloqueador crítico.
+## Backend alterado
+- GET /v1/requests/available para providers online elegíveis.
+- Aceite de corrida retorna rideId para o app.
+- Notificação de aceite inclui rideId.
+- Transições de Ride notificam o participante oposto.
 
-## Próxima fase
-**FASE 11 — ASSINATURA DOS PROFISSIONAIS**
+## Gate atual
+**NÃO APROVADO.** O código da vertical slice está implementado, mas ainda falta executar o E2E físico com passageiro e motorista em dispositivos distintos.
 
-## Regras comerciais
+## Pendências do bloco MOB
+- cancelamento mobile
+- pagamento/recibo conectado à corrida
+- rating conectado à corrida
+- localização contínua do motorista
+- ranking por distância real
+- timeout/expiração operacional
+- WebSocket/SSE, se polling deixar de ser suficiente
+- E2E físico, estabilidade, permissões e regressão
+
+## Próximo passo determinístico
+Executar/validar MOB-9 e MOB-10. Somente após o gate físico aprovado a continuidade comercial volta para FASE 11 — Assinatura dos Profissionais.
+
+## Regras comerciais preservadas
 - R$99,90/mês por provider.
 - 0% de comissão.
 - Provider mantém 100% do valor do serviço.
-
-## Blockers
-Nenhum bloqueador conhecido.
 
 ## Known limitations
 - Object storage binário ainda depende de adapter futuro.
