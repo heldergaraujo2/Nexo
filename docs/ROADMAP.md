@@ -283,9 +283,9 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [x] escolha carro/moto
 - [x] solicitação de corrida
 - [x] acompanhamento do estado da solicitação
-- [ ] cancelamento mobile completo
-- [ ] pagamento e recibo conectados ao serviço
-- [ ] avaliação pós-corrida conectada ao serviço
+- [x] cancelamento mobile completo
+- [x] pagamento e recibo conectados ao serviço
+- [x] avaliação pós-corrida conectada ao serviço
 
 ## MOB-4 — Motorista
 - [x] online/offline
@@ -294,14 +294,14 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [x] lista de novas corridas
 - [x] aceite concorrente protegido pelo backend
 - [x] tela operacional da corrida
-- [ ] envio contínuo de localização do motorista
+- [x] envio contínuo de localização do motorista
 
 ## MOB-5 — Matching operacional
 - [x] endpoint server-side de solicitações abertas elegíveis
 - [x] bloqueios e elegibilidade preservados
 - [x] concorrência/idempotência preservadas
-- [ ] ranking por distância real
-- [ ] expiração/timeout operacional automático
+- [x] ranking por distância real
+- [x] expiração/timeout operacional automático
 
 ## MOB-6 — Tempo quase real
 - [x] polling de solicitações do motorista
@@ -325,9 +325,9 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [x] started
 - [x] completed
 - [x] notificações de transição
-- [ ] cancelamento completo na UX
-- [ ] pagamento conectado
-- [ ] rating conectado
+- [x] cancelamento completo na UX
+- [x] pagamento conectado
+- [x] rating conectado
 
 ## MOB-9 — E2E físico
 - [ ] PostgreSQL + backend executando no PC
