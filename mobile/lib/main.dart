@@ -84,7 +84,7 @@ class _DriverHomePageState extends State<DriverHomePage>{
   @override void dispose(){timer?.cancel();super.dispose();}
   Future<void> setOnline(bool value)async{if(api==null)return;setState(()=>busy=true);try{await api!.put('/me/marketplace',{'categories':['passenger_car','passenger_motorcycle'],'availability':value?'available':'offline','acceptingRequests':value});setState(()=>online=value);timer?.cancel();if(value){await refresh();timer=Timer.periodic(const Duration(seconds:4),(_)=>refresh());}else{setState(()=>requests=[]);}}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   Future<void> refresh()async{if(api==null||!online)return;try{final d=await api!.get('/requests/available');if(mounted)setState(()=>requests=List<Map<String,dynamic>>.from(d as List));}catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
-  Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/'+r['id'].toString()+'/accept',{},idempotencyKey:'accept-'+r['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?)));await refresh();}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
+  Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/'+r['id'].toString()+'/accept',{},idempotencyKey:'accept-'+r['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?,rideId:s['rideId'] as String?)));await refresh();}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Nexo • Motorista'),actions:[IconButton(onPressed:logout,icon:const Icon(Icons.logout))]),body:RefreshIndicator(onRefresh:refresh,child:ListView(padding:const EdgeInsets.all(16),children:[
     Card(child:SwitchListTile(title:Text(online?'Você está ONLINE':'Você está OFFLINE'),subtitle:Text(online?'Buscando novas corridas automaticamente.':'Fique online para receber solicitações.'),value:online,onChanged:busy?null:setOnline)),
     if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),const SizedBox(height:8),Text('Solicitações disponíveis',style:Theme.of(context).textTheme.headlineSmall),const SizedBox(height:8),
@@ -95,13 +95,13 @@ class _DriverHomePageState extends State<DriverHomePage>{
 }
 
 class RideTrackingPage extends StatefulWidget{
-  const RideTrackingPage({super.key,required this.api,required this.requestId,required this.passenger,this.serviceId});
-  final NexoApiClient api;final String requestId;final bool passenger;final String? serviceId;
+  const RideTrackingPage({super.key,required this.api,required this.requestId,required this.passenger,this.serviceId,this.rideId});
+  final NexoApiClient api;final String requestId;final bool passenger;final String? serviceId;final String? rideId;
   @override State<RideTrackingPage> createState()=>_RideTrackingPageState();
 }
 class _RideTrackingPageState extends State<RideTrackingPage>{
   Timer? timer;String state='open';int? fare;String? error;String? rideId;
-  @override void initState(){super.initState();poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>poll());}
+  @override void initState(){super.initState();rideId=widget.rideId;poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>poll());}
   @override void dispose(){timer?.cancel();super.dispose();}
   Future<void> poll()async{try{
     final r=await widget.api.get('/requests/'+widget.requestId);if(mounted)setState(()=>state=r['status']?.toString()??state);
