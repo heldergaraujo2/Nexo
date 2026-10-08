@@ -40,10 +40,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - name: Temporary Prettier formatting check
-        run: |
-          npx prettier --write "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json"
-          for f in src/ride/distance.adapter.ts src/ride/ride.controller.ts src/ride/ride.service.ts src/marketplace/marketplace.service.ts test/ride.integration.spec.ts; do echo "FORMAT_FILE:$f"; base64 -w0 "$f"; echo; done
+      - name: Check Prettier formatting
+        run: npx prettier --check "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json"
       - name: Apply database migrations
         working-directory: .
         env:
@@ -60,7 +58,7 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/009_deliveries.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/010_cargo.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/011_towing.sql
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/010_cargo.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/012_subscriptions.sql
       - run: npm run typecheck
       - run: npm test
       - run: npm run build

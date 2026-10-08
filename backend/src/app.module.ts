@@ -8,6 +8,7 @@ import { TrustModule } from './trust/trust.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { RideModule } from './ride/ride.module';
 import { PaymentModule } from './payment/payment.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 import { SecurityModule } from './security/security.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { CargoModule } from './cargo/cargo.module';
@@ -24,6 +25,7 @@ import { TowingModule } from './towing/towing.module';
     MarketplaceModule,
     RideModule,
     PaymentModule,
+    SubscriptionModule,
     SecurityModule,
     DeliveryModule,
     CargoModule,

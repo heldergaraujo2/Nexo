@@ -795,6 +795,14 @@ export class MarketplaceService {
     if (!provider.rowCount)
       throw new ForbiddenException('Provider is not eligible for this request');
 
+    const subscription = await client.query(
+      `SELECT status FROM subscriptions WHERE provider_id=$1 ORDER BY created_at DESC LIMIT 1`,
+      [providerId],
+    );
+    if (subscription.rowCount && subscription.rows[0].status !== 'active') {
+      throw new ForbiddenException('Professional subscription is not active');
+    }
+
     const blocked = await client.query(
       `SELECT 1 FROM blocks
        WHERE (blocker_id=$1 AND blocked_id=$2) OR (blocker_id=$2 AND blocked_id=$1)`,
