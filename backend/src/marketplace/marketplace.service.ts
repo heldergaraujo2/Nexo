@@ -321,6 +321,7 @@ export class MarketplaceService {
         );
         const offerId = offer.rows[0].id;
 
+        let acceptedRideId: string | null = null;
         const service = await client.query(
           `INSERT INTO services
          (request_id,accepted_offer_id,customer_id,provider_id,category,status)
@@ -359,6 +360,7 @@ export class MarketplaceService {
         await this.notify(client, row.customer_id, 'service_request.accepted', {
           requestId,
           serviceId: service.rows[0].id,
+          rideId: acceptedRideId,
         });
         await this.audit(
           client,
