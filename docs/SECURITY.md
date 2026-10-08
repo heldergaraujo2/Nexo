@@ -52,3 +52,12 @@ A implementação deve seguir LGPD.md e revisão jurídica antes do uso comercia
 - Flags antifraude iniciais são revisáveis e não impõem punição automática sem regra de produto.
 - Incidentes possuem estados explícitos e acesso operacional por papel.
 - Nenhuma nova tabela armazena número de cartão, CVV, documento bruto ou credencial.
+
+
+## Growth & Retention — Fase 12
+- Métricas administrativas são restritas a `admin` e `moderator` por autorização server-side.
+- Indicação bloqueia autoindicação e múltiplas indicações para a mesma conta.
+- Resgates de campanha são protegidos por constraint única e idempotência transacional.
+- Campanhas não recebem valores monetários ou créditos implícitos sem regra comercial aprovada.
+- Relatórios administrativos ficam atrás de autenticação/autorização e expõem somente dados operacionais necessários.
+- Operações de crescimento são auditadas.
