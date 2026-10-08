@@ -186,7 +186,7 @@ export class SubscriptionService {
     if (s.rows[0].provider_id !== user.accountId)
       throw new ForbiddenException('Subscription access denied');
     const r = await this.db.query(
-      'SELECT id,period_start AS 'periodStart',period_end AS 'periodEnd',amount_cents AS 'amountCents',currency,status,external_reference AS 'externalReference',failure_reason AS 'failureReason',created_at AS 'createdAt',paid_at AS 'paidAt' FROM subscription_charges WHERE subscription_id=$1 ORDER BY period_start DESC',
+      'SELECT id,period_start AS "periodStart",period_end AS "periodEnd",amount_cents AS "amountCents",currency,status,external_reference AS "externalReference",failure_reason AS "failureReason",created_at AS "createdAt",paid_at AS "paidAt" FROM subscription_charges WHERE subscription_id=$1 ORDER BY period_start DESC',
       [id],
     );
     return r.rows.map((x) => ({ ...x, amountCents: Number(x.amountCents) }));
