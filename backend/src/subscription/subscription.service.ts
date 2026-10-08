@@ -29,36 +29,28 @@ export class SubscriptionService {
     this.assertProvider(user);
     if (dto.planCode && dto.planCode !== 'professional_monthly')
       throw new ConflictException('Unsupported subscription plan');
-    return this.idempotent(
-      user,
-      'subscription.create',
-      key,
-      dto,
-      async (c) => {
-        const active = await c.query(
-          'SELECT id FROM subscriptions WHERE provider_id=$1 AND status=ANY($2) FOR UPDATE',
-          [user.accountId, ACTIVE],
+    return this.idempotent(user, 'subscription.create', key, dto, async (c) => {
+      const active = await c.query(
+        'SELECT id FROM subscriptions WHERE provider_id=$1 AND status=ANY($2) FOR UPDATE',
+        [user.accountId, ACTIVE],
+      );
+      if (active.rowCount)
+        throw new ConflictException(
+          'Provider already has an active subscription',
         );
-        if (active.rowCount)
-          throw new ConflictException(
-            'Provider already has an active subscription',
-          );
-        const r = await c.query(
-          "INSERT INTO subscriptions(provider_id,plan_code,amount_cents,currency,status,current_period_start,current_period_end) VALUES($1,'professional_monthly',$2,'BRL','pending',NOW(),NOW()+INTERVAL '1 month') RETURNING *",
-          [user.accountId, AMOUNT_CENTS],
-        );
-        await this.audit(
-          c,
-          user.accountId,
-          'subscription.created',
-          r.rows[0].id,
-          { amountCents: AMOUNT_CENTS },
-        );
-        return { status: 201, body: this.public(r.rows[0]) };
-      },
-    );
-  }
-
+      const r = await c.query(
+        "INSERT INTO subscriptions(provider_id,plan_code,amount_cents,currency,status,current_period_start,current_period_end) VALUES($1,'professional_monthly',$2,'BRL','pending',NOW(),NOW()+INTERVAL '1 month') RETURNING *",
+        [user.accountId, AMOUNT_CENTS],
+      );
+      await this.audit(
+        c,
+        user.accountId,
+        'subscription.created',
+        r.rows[0].id,
+        { amountCents: AMOUNT_CENTS },
+      );
+      return { status: 201, body: this.public(r.rows[0]) };
+    });
   async get(user: AuthPrincipal) {
     this.assertProvider(user);
     const r = await this.db.query(
@@ -172,8 +164,7 @@ export class SubscriptionService {
           'UPDATE subscriptions SET status=$1,updated_at=NOW() WHERE id=$2 RETURNING *',
           [dto.status, id],
         );
-        if (!r.rowCount)
-          throw new NotFoundException('Subscription not found');
+        if (!r.rowCount) throw new NotFoundException('Subscription not found');
         await this.audit(c, user.accountId, 'subscription.status_changed', id, {
           status: dto.status,
         });
