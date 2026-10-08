@@ -120,23 +120,13 @@ describe('phase 11 subscriptions', () => {
       key,
     );
     expect(conflict.status).toBe(409);
+    const concurrentProvider = await register('provider');
     const concurrent = await Promise.all([
-      call(
-        '/v1/subscriptions',
-        'POST',
-        {},
-        (await register('provider')).token,
-        randomUUID(),
-      ),
-      call(
-        '/v1/subscriptions',
-        'POST',
-        {},
-        (await register('provider')).token,
-        randomUUID(),
-      ),
+      call('/v1/subscriptions', 'POST', {}, concurrentProvider.token, randomUUID()),
+      call('/v1/subscriptions', 'POST', {}, concurrentProvider.token, randomUUID()),
     ]);
-    expect(concurrent.every((x) => x.status === 201)).toBe(true);
+    expect(concurrent.filter((x) => x.status === 201)).toHaveLength(1);
+    expect(concurrent.filter((x) => x.status === 409)).toHaveLength(1);
     const customer = await register('customer');
     expect(
       (
@@ -150,7 +140,41 @@ describe('phase 11 subscriptions', () => {
       ).status,
     ).toBe(403);
   });
-  it('blocks new marketplace offers after subscription cancellation', async () => {
+  it('rejects providers without an active subscription in marketplace eligibility', async () => {
+    const p = await register('provider');
+    const c = await register('customer');
+    await call(
+      '/v1/me/marketplace',
+      'PUT',
+      {
+        categories: ['passenger_car'],
+        availability: 'available',
+        acceptingRequests: true,
+      },
+      p.token,
+    );
+    const request = await call(
+      '/v1/requests',
+      'POST',
+      {
+        category: 'passenger_car',
+        origin: { latitude: 0, longitude: 0 },
+        destination: { latitude: 0.01, longitude: 0.01 },
+      },
+      c.token,
+      randomUUID(),
+    );
+    expect(request.status).toBe(201);
+    const offer = await call(
+      '/v1/requests/' + request.body.id + '/offers',
+      'POST',
+      { offerType: 'direct_accept' },
+      p.token,
+      randomUUID(),
+    );
+    expect(offer.status).toBe(403);
+  });
+  it('blocks new marketplace offers after subscription cancellation', async () =>
     const p = await register('provider');
     const c = await register('customer');
     await call(
