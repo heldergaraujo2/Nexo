@@ -237,6 +237,26 @@ describe('phase 11 subscriptions', () => {
     );
     expect(offer.status).toBe(403);
   });
+  it('enforces database ownership between charges and subscriptions', async () => {
+    const p = await register('provider');
+    const other = await register('provider');
+    const sub = await call(
+      '/v1/subscriptions',
+      'POST',
+      {},
+      p.token,
+      randomUUID(),
+    );
+    await expect(
+      db.query(
+        `INSERT INTO subscription_charges(
+          subscription_id,provider_id,period_start,period_end,
+          amount_cents,currency,status,idempotency_key
+        ) VALUES($1,$2,NOW(),NOW()+INTERVAL '1 month',9990,'BRL','pending',$3)`,
+        [sub.body.id, other.id, randomUUID()],
+      ),
+    ).rejects.toThrow();
+  });
   it('rejects foreign history and missing idempotency key', async () => {
     const p = await register('provider');
     const other = await register('provider');
