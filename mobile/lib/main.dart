@@ -51,48 +51,37 @@ class NexoHomePage extends StatelessWidget {
 }
 
 class SubscriptionPage extends StatefulWidget {
-  const SubscriptionPage({super.key});
-  @override
-  State<SubscriptionPage> createState() => _SubscriptionPageState();
+  const SubscriptionPage({super.key, required this.subscription});
+  final SubscriptionView subscription;
+  @override State<SubscriptionPage> createState() => _SubscriptionPageState();
 }
-
+class SubscriptionView {
+  const SubscriptionView({required this.status, required this.amountCents, required this.currentPeriodEnd});
+  final String status; final int amountCents; final DateTime currentPeriodEnd;
+  bool get canCancel => const {'pending','active','past_due','suspended'}.contains(status);
+  bool get canRenew => const {'pending','active','past_due'}.contains(status);
+}
 class _SubscriptionPageState extends State<SubscriptionPage> {
-  bool _cancelAtPeriodEnd = false;
-  String _status = 'active';
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Assinatura profissional')),
-        body: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            Text('Nexo Profissional', style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: 8),
-            Text('R\$ 99,90 / mês', style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(height: 8),
-            const Text('0% de comissão. Você mantém 100% do valor dos serviços.'),
-            const SizedBox(height: 24),
-            ListTile(title: const Text('Status'), trailing: Text(_status)),
-            SwitchListTile(
-              title: const Text('Cancelar ao fim do período'),
-              subtitle: const Text('O acesso permanece ativo até a data de renovação.'),
-              value: _cancelAtPeriodEnd,
-              onChanged: _status == 'active' ? (v) => setState(() => _cancelAtPeriodEnd = v) : null,
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: _status == 'active' ? () => setState(() => _cancelAtPeriodEnd = true) : null,
-              child: const Text('Salvar cancelamento'),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: _status == 'cancelled' ? () => setState(() { _status = 'active'; _cancelAtPeriodEnd = false; }) : null,
-              child: const Text('Renovar assinatura'),
-            ),
-          ],
-        ),
-      );
+  late String _status;
+  @override void initState() { super.initState(); _status = widget.subscription.status; }
+  @override Widget build(BuildContext context) {
+    final s = SubscriptionView(status:_status, amountCents:widget.subscription.amountCents, currentPeriodEnd:widget.subscription.currentPeriodEnd);
+    return Scaffold(appBar:AppBar(title:const Text('Assinatura profissional')), body:ListView(padding:const EdgeInsets.all(20), children:[
+      Text('Nexo Profissional',style:Theme.of(context).textTheme.headlineSmall),
+      const SizedBox(height:8),
+      Text('R\$ ${(s.amountCents / 100).toStringAsFixed(2).replaceAll('.', ',')} / mês',style:Theme.of(context).textTheme.headlineMedium),
+      const SizedBox(height:8), const Text('0% de comissão. Você mantém 100% do valor dos serviços.'),
+      const SizedBox(height:24), ListTile(title:const Text('Status'),trailing:Text(s.status)),
+      ListTile(title:const Text('Próximo vencimento'),trailing:Text('${s.currentPeriodEnd.day.toString().padLeft(2,'0')}/${s.currentPeriodEnd.month.toString().padLeft(2,'0')}/${s.currentPeriodEnd.year}')),
+      const SizedBox(height:16),
+      FilledButton(onPressed:s.canCancel?()=>setState(()=>_status='canceled'):null,child:const Text('Cancelar assinatura')),
+      const SizedBox(height:12),
+      OutlinedButton(onPressed:s.canRenew?()=>setState(()=>_status='active'):null,child:const Text('Renovar assinatura')),
+      const SizedBox(height:24),
+      Text('O backend continua sendo a autoridade sobre cobrança, status e acesso.',style:Theme.of(context).textTheme.bodySmall),
+    ]));
+  }
 }
-
 class PaymentRecordPage extends StatefulWidget {
   const PaymentRecordPage({super.key, required this.expectedAmountCents});
   final int expectedAmountCents;
