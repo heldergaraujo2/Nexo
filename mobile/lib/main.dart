@@ -74,7 +74,7 @@ class _PassengerHomePageState extends State<PassengerHomePage>{
         if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),const SizedBox(height:8),
         SizedBox(width:double.infinity,child:FilledButton.icon(onPressed:locating||requesting||origin==null||destination==null?null:requestRide,icon:const Icon(Icons.local_taxi),label:Text(requesting?'Solicitando...':'Solicitar corrida'))),
       ]))) ]));}
-  Future<void> logout()async{await NexoApiClient.clearSession();if(!mounted)return;Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false);}
+  Future<void> logout()async{await NexoApiClient.clearSession();if(!mounted)return;unawaited(Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false));}
 }
 
 class DriverHomePage extends StatefulWidget{const DriverHomePage({super.key});@override State<DriverHomePage> createState()=>_DriverHomePageState();}
