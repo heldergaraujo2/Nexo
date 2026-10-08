@@ -85,5 +85,49 @@ jobs:
         working-directory: mobile
       - run: flutter test
         working-directory: mobile
+      - name: Prepare Android LAN permissions
+        working-directory: mobile
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('android/app/src/main/AndroidManifest.xml'); s=p.read_text()
+          marker='<application '
+          perms='''<uses-permission android:name="android.permission.INTERNET" />\n<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n'''
+          if 'android.permission.INTERNET' not in s: s=s.replace(marker,perms+marker,1)
+          if 'android:usesCleartextTraffic' not in s: s=s.replace(marker,'<application android:usesCleartextTraffic="true" ',1)
+          p.write_text(s)
+          PY
       - run: flutter build apk --debug
         working-directory: mobile
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexo-android-debug
+          path: mobile/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+
+
+  windows-driver:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Generate Windows host
+        working-directory: mobile
+        run: flutter create --platforms=windows .
+      - run: flutter pub get
+        working-directory: mobile
+      - run: flutter build windows --release
+        working-directory: mobile
+      - name: Package driver app
+        shell: pwsh
+        run: Compress-Archive -Path mobile/build/windows/x64/runner/Release/* -DestinationPath mobile/build/nexo-windows-driver.zip
+      - name: Upload driver app
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexo-windows-driver
+          path: mobile/build/nexo-windows-driver.zip
+          if-no-files-found: error
