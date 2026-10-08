@@ -123,3 +123,9 @@ Nenhum resultado de teste deve ser declarado sem execução real.
 - Retenção é derivada de coortes do primeiro serviço concluído.
 - Migration 013 deve executar com ON_ERROR_STOP no CI.
 - Backend e mobile continuam sujeitos ao pipeline oficial de typecheck, testes, lint, format e build.
+
+### Fase 13 — escala inicial
+- Migration 014 deve executar em banco limpo com ON_ERROR_STOP.
+- `/v1/health` deve permanecer liveness simples e `/v1/health/ready` deve validar PostgreSQL.
+- Requests devem devolver `x-request-id` e registrar duração sem dados sensíveis.
+- Typecheck, testes, build, lint e format permanecem obrigatórios; mobile continua no pipeline.
