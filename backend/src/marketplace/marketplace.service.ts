@@ -84,6 +84,20 @@ export class MarketplaceService {
     );
   }
 
+  async openRequests(user: AuthPrincipal) {
+    this.assertProvider(user);
+    const result = await this.db.query(
+      `SELECT r.id,r.category,r.description,r.origin,r.destination,r.requirements,r.status,r.created_at AS "createdAt"
+       FROM service_requests r
+       JOIN provider_marketplace p ON p.account_id=$1
+       WHERE r.status IN ('open','matched') AND p.availability IN ('available','busy')
+         AND p.accepting_requests=true AND r.category=ANY(p.categories) AND r.customer_id<>$1
+         AND NOT EXISTS (SELECT 1 FROM services s WHERE s.request_id=r.id)
+         AND NOT EXISTS (SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=r.customer_id) OR (b.blocker_id=r.customer_id AND b.blocked_id=$1))
+       ORDER BY r.created_at ASC LIMIT 50`, [user.accountId]);
+    return { requests: result.rows };
+  }
+
   async getRequest(user: AuthPrincipal, requestId: string) {
     const result = await this.db.query(
       `SELECT id,customer_id AS "customerId",category,description,requirements,origin,destination,status,
@@ -631,10 +645,11 @@ export class MarketplaceService {
 
   async getService(user: AuthPrincipal, serviceId: string) {
     const result = await this.db.query(
-      `SELECT id,request_id AS "requestId",customer_id AS "customerId",provider_id AS "providerId",
-              category,status,price_cents AS "priceCents",currency,created_at AS "createdAt",
-              updated_at AS "updatedAt",completed_at AS "completedAt"
-       FROM services WHERE id=$1`,
+      `SELECT s.id,s.request_id AS "requestId",s.customer_id AS "customerId",s.provider_id AS "providerId",
+              s.category,s.status,s.price_cents AS "priceCents",s.currency,s.created_at AS "createdAt",
+              s.updated_at AS "updatedAt",s.completed_at AS "completedAt",
+              r.id AS "rideId",r.state AS "rideState"
+       FROM services s LEFT JOIN rides r ON r.service_id=s.id WHERE s.id=$1`,
       [serviceId],
     );
     const row = result.rows[0];
