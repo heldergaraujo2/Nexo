@@ -5,6 +5,8 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomUUID } from 'node:crypto';
 import { AddressInfo } from 'node:net';
 import { AppModule } from '../src/app.module';
+import { PasswordService } from '../src/auth/password.service';
+import { TokenService } from '../src/auth/token.service';
 
 process.env.NODE_ENV = 'test';
 process.env.AUTH_TOKEN_SECRET = '01234567890123456789012345678901';
@@ -50,7 +52,7 @@ describe('phase 12 growth and retention', () => {
   });
 
   it('redeems campaign and enrolls founder without monetary side effects', async () => {
-    const admin = await register('admin');
+    const admin = await createAdmin();
     const customer = await register('customer');
     const campaign = await call('/v1/admin/growth/campaigns', 'POST', { code: 'PHASE12-TEST-CAMPAIGN', name: 'Phase 12 Test', status: 'active' }, admin.token);
     expect(campaign.status).toBe(201);
@@ -66,7 +68,7 @@ describe('phase 12 growth and retention', () => {
   });
 
   it('keeps growth metrics admin-only and exposes conversion data', async () => {
-    const admin = await register('admin');
+    const admin = await createAdmin();
     const customer = await register('customer');
     const denied = await call('/v1/admin/growth/metrics/conversion', 'GET', undefined, customer.token);
     expect(denied.status).toBe(403);
@@ -78,7 +80,7 @@ describe('phase 12 growth and retention', () => {
   });
 });
 
-async function register(role: 'customer' | 'provider' | 'admin') {
+async function register(role: 'customer' | 'provider') {
   const email = 'phase12-' + role + '-' + randomUUID() + '@example.test';
   emails.push(email);
   const r = await call('/v1/auth/register', 'POST', { email, password: 'Strong-password-123', displayName: 'Phase 12', role });
@@ -91,4 +93,23 @@ async function call(path: string, method: string, body?: unknown, token?: string
   if (!address || typeof address === 'string') throw new Error('server address unavailable');
   const r = await fetch('http://127.0.0.1:' + (address as AddressInfo).port + path, { method, headers: { 'content-type': 'application/json', ...(token ? { authorization: 'Bearer ' + token } : {}), ...(key ? { 'idempotency-key': key } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
   return { status: r.status, body: (await r.json()) as Record<string, unknown> };
+}
+async function createAdmin() {
+  const email = 'phase12-admin-' + randomUUID() + '@example.test';
+  emails.push(email);
+  const passwords = app.get(PasswordService);
+  const tokens = app.get(TokenService);
+  const passwordHash = await passwords.hash('Strong-password-123');
+  const account = await db.query(
+    'INSERT INTO accounts(email,password_hash,role) VALUES($1,$2,$3) RETURNING id',
+    [email, passwordHash, 'admin'],
+  );
+  await db.query(
+    'INSERT INTO profiles(account_id,display_name) VALUES($1,$2)',
+    [account.rows[0].id, 'Phase 12 Admin'],
+  );
+  return {
+    id: account.rows[0].id as string,
+    token: tokens.sign({ accountId: account.rows[0].id, role: 'admin' }),
+  };
 }
