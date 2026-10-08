@@ -1,7 +1,9 @@
 ALTER TABLE rides
   ADD COLUMN IF NOT EXISTS driver_latitude DOUBLE PRECISION,
   ADD COLUMN IF NOT EXISTS driver_longitude DOUBLE PRECISION,
-  ADD COLUMN IF NOT EXISTS driver_location_updated_at TIMESTAMPTZ;
+  ADD COLUMN IF NOT EXISTS driver_location_updated_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS driver_speed_mps DOUBLE PRECISION,
+  ADD COLUMN IF NOT EXISTS driver_heading_degrees DOUBLE PRECISION;
 
 ALTER TABLE rides
   DROP CONSTRAINT IF EXISTS rides_driver_location_pair;
