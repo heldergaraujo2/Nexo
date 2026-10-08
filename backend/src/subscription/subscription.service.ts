@@ -35,24 +35,24 @@ export class SubscriptionService {
       dto,
       async (c) => {
         const active = await c.query(
-        'SELECT id FROM subscriptions WHERE provider_id=$1 AND status=ANY($2) FOR UPDATE',
-        [user.accountId, ACTIVE],
-      );
+          'SELECT id FROM subscriptions WHERE provider_id=$1 AND status=ANY($2) FOR UPDATE',
+          [user.accountId, ACTIVE],
+        );
         if (active.rowCount)
           throw new ConflictException(
-          'Provider already has an active subscription',
-        );
+            'Provider already has an active subscription',
+          );
         const r = await c.query(
-        "INSERT INTO subscriptions(provider_id,plan_code,amount_cents,currency,status,current_period_start,current_period_end) VALUES($1,'professional_monthly',$2,'BRL','pending',NOW(),NOW()+INTERVAL '1 month') RETURNING *",
-        [user.accountId, AMOUNT_CENTS],
-      );
+          "INSERT INTO subscriptions(provider_id,plan_code,amount_cents,currency,status,current_period_start,current_period_end) VALUES($1,'professional_monthly',$2,'BRL','pending',NOW(),NOW()+INTERVAL '1 month') RETURNING *",
+          [user.accountId, AMOUNT_CENTS],
+        );
         await this.audit(
-        c,
-        user.accountId,
-        'subscription.created',
-        r.rows[0].id,
-        { amountCents: AMOUNT_CENTS },
-      );
+          c,
+          user.accountId,
+          'subscription.created',
+          r.rows[0].id,
+          { amountCents: AMOUNT_CENTS },
+        );
         return { status: 201, body: this.public(r.rows[0]) };
       },
     );
