@@ -156,7 +156,7 @@ class _PassengerPageState extends State<PassengerPage> {
       const SizedBox(height: 20),
       if (ride != null) ...[
         Text('Estado: ${ride!['state']}', style: Theme.of(context).textTheme.headlineSmall),
-        Text('Preço server-authoritative: R$ ${((ride!['fareCents'] as num) / 100).toStringAsFixed(2)}'),
+        Text('Preço server-authoritative: R\$ ${((ride!['fareCents'] as num) / 100).toStringAsFixed(2)}'),
       ] else const Text('Aguardando motorista…'),
       if (error != null) Text(error!),
     ]),
