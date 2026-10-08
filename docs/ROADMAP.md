@@ -277,7 +277,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 **Status:** CONCLUÍDA
 **Objetivo:** melhorar liquidez do marketplace e retenção.
 
-**Entregas — IMPLEMENTADAS; GATE PENDENTE**
+**Entregas — CONCLUÍDAS**
 - [x] indicação
 - [x] campanhas
 - [x] programa inicial/fundadores
@@ -307,7 +307,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [x] novas categorias — catálogo extensível com category codes sem alteração do schema de requests
 - [x] mecanismos avançados de matching — elegibilidade, bloqueios, disponibilidade, reputação e proximidade
 
-Gate:** APROVADO — CI run 37831723696 verde em backend e mobile; migrations 014–016, typecheck, testes, build, lint, format:check, Flutter analyze, Flutter tests e APK debug aprovados.
+**Gate:** APROVADO — CI run 37831723696 verde em backend e mobile; migrations 014–016, typecheck, testes, build, lint, format:check, Flutter analyze, Flutter tests e APK debug aprovados.
 
 ---
 
