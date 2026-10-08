@@ -56,6 +56,7 @@ describe('towing integration',()=>{
  });
  it('rejects outsider access, unverified providers and invalid transitions',async()=>{
   const customer=await register('customer'); const provider=await register('provider'); const outsider=await register('customer');
+  await activateSubscription(provider.token);
   await call('/v1/me/marketplace','PUT',{categories:['towing'],availability:'available',acceptingRequests:true},provider.token);
   const request=await call('/v1/towing/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},problemDescription:'Pane'},customer.token,randomUUID());
   const offer=await call('/v1/requests/'+request.body.id+'/offers','POST',{offerType:'priced_offer',amountCents:5000},provider.token,randomUUID());
