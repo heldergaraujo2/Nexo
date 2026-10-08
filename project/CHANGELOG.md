@@ -218,3 +218,22 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 **FASE 11 — ASSINATURA DOS PROFISSIONAIS.**
+
+
+## 1.7.0 — BLOCO MOBILIDADE E2E iniciado
+### Added
+- Cliente HTTP Flutter com autenticação Bearer, sessão persistida e URL de API configurável.
+- Login/cadastro para customer e provider.
+- Fluxo de passageiro com GPS, mapa, origem/destino, carro/moto e solicitação de corrida.
+- Fluxo de motorista com online/offline, polling de solicitações e aceite.
+- Tela de acompanhamento de corrida e comandos operacionais do motorista.
+- GET /v1/requests/available para descoberta server-side de solicitações elegíveis.
+- Aceite de corrida retorna rideId e notificação de aceite inclui rideId.
+- Transições de Ride geram notificações persistidas para o outro participante.
+- Roadmap MOB-0 → MOB-10 inserido antes da FASE 11.
+
+### Gate
+**EM EXECUÇÃO.** Falta validar a corrida completa em dois dispositivos físicos e concluir estabilização.
+
+### Next
+Concluir MOB-9/MOB-10 e somente então retomar FASE 11 — Assinatura dos Profissionais.
