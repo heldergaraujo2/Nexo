@@ -796,7 +796,7 @@ export class MarketplaceService {
       throw new ForbiddenException('Provider is not eligible for this request');
 
     const subscription = await client.query(
-      'SELECT 1 FROM subscriptions WHERE provider_id=$1 AND status=\'active\' LIMIT 1',
+      "SELECT 1 FROM subscriptions WHERE provider_id=$1 AND status='active' LIMIT 1",
       [providerId],
     );
     if (!subscription.rowCount) {
