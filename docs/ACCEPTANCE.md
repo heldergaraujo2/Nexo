@@ -127,3 +127,23 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 
 ### Resultado
 **FASE 10 APROVADA.** Próximo gate: FASE 11 — Assinatura dos Profissionais.
+
+
+## Critérios de Aceitação da FASE 11
+
+### Gate técnico
+- [x] assinatura profissional mensal com preço fixo de 9990 centavos/BRL;
+- [x] ciclo de estados de assinatura persistido e validado;
+- [x] cobrança isolada por BillingAdapter, sem persistência de credenciais de cartão;
+- [x] renovação idempotente com histórico de cobrança;
+- [x] falha de cobrança leva a `past_due` sem alterar preço de serviços;
+- [x] cancelamento autorizado por ownership;
+- [x] status operacional restrito a moderator/admin;
+- [x] restrição de novas ofertas para provider sem assinatura ativa;
+- [x] integridade de ownership entre subscription e charge protegida no banco;
+- [x] auditoria das operações críticas;
+- [x] testes de concorrência/idempotência e autorização implementados;
+- [ ] CI completo backend/mobile aprovado.
+
+### Resultado
+**PENDENTE.** A implementação está pronta para validação final do CI; a FASE 12 somente pode iniciar após o gate completo.
