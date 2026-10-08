@@ -131,7 +131,25 @@ export class MarketplaceService {
          )
        ORDER BY
          CASE
-           WHEN (request.origin->>'latitude') ~ '^-?[0-9]+(\\.[0-9]+)?,
+           WHEN (request.origin->>'latitude') ~ '^-?[0-9]+(\\.[0-9]+)?$'
+            AND (request.origin->>'longitude') ~ '^-?[0-9]+(\\.[0-9]+)?$'
+            AND p.last_latitude IS NOT NULL AND p.last_longitude IS NOT NULL
+           THEN 0 ELSE 1
+         END,
+         CASE
+           WHEN (request.origin->>'latitude') ~ '^-?[0-9]+(\\.[0-9]+)?$'
+            AND (request.origin->>'longitude') ~ '^-?[0-9]+(\\.[0-9]+)?$'
+            AND p.last_latitude IS NOT NULL AND p.last_longitude IS NOT NULL
+           THEN 6371 * 2 * ASIN(SQRT(
+             POWER(SIN(RADIANS(p.last_latitude - (request.origin->>'latitude')::double precision) / 2), 2) +
+             COS(RADIANS((request.origin->>'latitude')::double precision)) *
+             COS(RADIANS(p.last_latitude)) *
+             POWER(SIN(RADIANS(p.last_longitude - (request.origin->>'longitude')::double precision) / 2), 2)
+           ))
+           ELSE 1e12
+         END ASC,
+         "ratingAverage" DESC, p.updated_at DESC
+       LIMIT 50`,
       [request.category, user.accountId, requestId],
     );
     return result.rows;
