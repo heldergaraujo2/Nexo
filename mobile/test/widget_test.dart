@@ -36,7 +36,16 @@ void main() {
     expect(enabled.onPressed, isNotNull);
   });
   testWidgets('subscription screen exposes fixed monthly plan and cancellation controls', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: SubscriptionPage()));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SubscriptionPage(
+          subscription: SubscriptionView(
+            status: 'active',
+            amountCents: 9990,
+            currentPeriodEnd: DateTime(2026, 11, 8),
+          ),
+        ),
+      ),
     expect(find.text('Nexo Profissional'), findsOneWidget);
     expect(find.text(r'R$ 99,90 / mês'), findsOneWidget);
     expect(find.text('0% de comissão. Você mantém 100% do valor dos serviços.'), findsOneWidget);
