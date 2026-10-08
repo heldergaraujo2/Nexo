@@ -107,7 +107,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
     final r=await widget.api.get('/requests/'+widget.requestId);if(mounted)setState(()=>state=r['status']?.toString()??state);
     final ns=await widget.api.get('/me/notifications');
     if(ns is List)for(final n in ns){if(n is Map){final p=n['payload'];if(p is Map&&p['requestId']==widget.requestId&&n['type']=='service_request.accepted'){state='accepted';final sid=p['serviceId'];if(sid is String){final s=await widget.api.get('/services/'+sid);if(mounted)setState((){serviceId=sid;fare=s['priceCents'] as int?;subjectId=(widget.passenger?s['providerId']:s['customerId'])?.toString();});}}if(n['type'].toString().startsWith('ride.')&&p is Map&&p['rideId']!=null)rideId=p['rideId'].toString();}}
-    if(rideId!=null){final ride=await widget.api.get('/rides/'+rideId!);if(mounted)setState((){state=ride['state']?.toString()??state;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}
+    if(rideId!=null){final ride=await widget.api.get('/rides/'+rideId!);if(mounted)setState((){state=ride['state']?.toString()??state;fare=ride['fareCents'] is num? (ride['fareCents'] as num).toInt():fare;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}
   }catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   Future<void> pushDriverLocation()async{
     if(widget.passenger||rideId==null||!['accepted','driver_en_route','arrived','started'].contains(state))return;
