@@ -131,3 +131,13 @@ actor_id quando aplicável, tipo, recurso, recurso_id, ação, resultado, metada
 - TowingJob contém origem, destino opcional, descrição do problema, metadados de mídia e estado operacional.
 - TowingEvent registra transições, ator, motivo e timestamp.
 - Preço vem de Offer/Service; não existe tarifário fixo inventado para guincho.
+
+
+## Growth & Retention — Fase 12
+- ReferralCode 1:1 Account, com código público único.
+- Referral referencia a conta indicadora e conta indicada, com uma indicação por conta indicada e status de qualificação.
+- Campaign 1:N CampaignRedemption, com unicidade por campanha/conta.
+- FounderProgram 1:1 Account, com cohort e timestamp de adesão.
+- Favorite já existente no Trust atende ao requisito de favoritos e não foi duplicado.
+- Métricas de crescimento são derivadas dos dados operacionais, sem cópia paralela de fatos financeiros.
+- Referral é qualificado automaticamente no primeiro serviço concluído do customer indicado.
