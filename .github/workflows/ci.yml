@@ -89,8 +89,19 @@ jobs:
         run: flutter analyze
       - name: Flutter analyze warnings diagnostic
         id: analyze_warning_diag
+        continue-on-error: true
         working-directory: mobile
         run: flutter analyze --no-fatal-warnings
+      - name: Upload mobile analyzer output
+        if: steps.analyze_diag.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-analyzer-output
+          path: mobile/flutter-analyze.txt
+          retention-days: 2
+      - name: Fail on mobile analyzer errors
+        if: steps.analyze_diag.outcome == 'failure'
+        run: exit 1
       - run: flutter test
         working-directory: mobile
       - run: flutter build apk --debug
