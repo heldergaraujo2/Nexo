@@ -6,6 +6,8 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  IsLatitude,
+  IsLongitude,
   MaxLength,
   Min,
 } from 'class-validator';
@@ -33,6 +35,14 @@ export class CreateServiceRequestDto {
   destination?: Record<string, unknown>;
 }
 
+export class ProviderLocationDto {
+  @IsLatitude()
+  latitude!: number;
+
+  @IsLongitude()
+  longitude!: number;
+}
+
 export class MarketplaceAvailabilityDto {
   @IsArray()
   @IsString({ each: true })
@@ -43,6 +53,10 @@ export class MarketplaceAvailabilityDto {
   availability!: 'offline' | 'available' | 'busy';
 
   acceptingRequests!: boolean;
+
+  @IsOptional()
+  @IsObject()
+  location?: ProviderLocationDto;
 }
 
 export class CreateOfferDto {
