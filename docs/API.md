@@ -140,3 +140,14 @@ Entrega deve usar oferta com preço; o endpoint genérico de aceite direto rejei
 - POST /v1/towing/:towingId/cancel — cancela em estados permitidos.
 
 Guincho usa oferta com preço para preservar preço rastreável no Service. O provider precisa estar elegível para a categoria, possuir veículo verificado e não estar bloqueado com o customer.
+
+
+### Subscriptions — Fase 11
+- POST /v1/subscriptions — provider creates the professional monthly subscription; requires Idempotency-Key.
+- GET /v1/subscriptions/me — provider reads the latest subscription owned by the authenticated account.
+- POST /v1/subscriptions/:id/renew — provider requests a monthly renewal; requires Idempotency-Key.
+- POST /v1/subscriptions/:id/cancel — provider cancels an eligible subscription; requires Idempotency-Key.
+- PUT /v1/subscriptions/:id/status — moderator/admin changes operational subscription status; requires Idempotency-Key.
+- GET /v1/subscriptions/:id/history — provider reads the billing history for an owned subscription.
+
+The professional plan is fixed at 9990 integer cents (R$99.90) in BRL. Billing is accessed through a BillingAdapter; the repository stub is test/development-only and production fails closed until an external billing provider is configured. Subscription state never changes a completed service price.
