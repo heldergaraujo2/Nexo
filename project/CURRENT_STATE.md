@@ -1,6 +1,6 @@
 # Nexo — Current State
 
-**Version:** 1.9 — FASE 13 em execução
+**Version:** 1.10 — FASE 13 em execução
 **Last updated:** 2026-10-08
 
 ## Phase
@@ -40,7 +40,7 @@ Entregas oficiais:
 ## FASE 13
 Objetivo: preparar o Nexo para crescimento geográfico e técnico.
 
-Entregas em execução: performance inicial com migration 014, readiness PostgreSQL e observabilidade HTTP com correlation ID. Pendentes: observabilidade avançada completa, HA, DR, hardening, custos, expansão geográfica, novas categorias e matching avançado.
+Entregas implementadas nesta etapa: migrations 014–016, pool PostgreSQL configurável, readiness, correlation ID/duração, hardening de instalação/runtime, localização operacional opcional, matching por proximidade e catálogo extensível de categorias. O gate permanece aguardando CI do HEAD final.
 
 ## Blockers
 Nenhum bloqueio crítico conhecido.
