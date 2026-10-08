@@ -38,3 +38,7 @@ Nexo Live, streaming, hands-free, câmera ao vivo e speech-to-text/text-to-speec
 
 ## Próxima fase
 FASE 11 — ASSINATURA DOS PROFISSIONAIS.
+
+
+## Estado atualizado — 2026-10-08
+A Fase 12 está aprovada. A Fase 13 está em execução na branch de continuidade. A base de escala inclui migrations 014–016, readiness PostgreSQL, correlation IDs, duração HTTP, pool configurável, hardening de instalação/runtime, localização operacional opcional, matching por proximidade e catálogo extensível de categorias. O gate da Fase 13 depende do CI do HEAD final.
