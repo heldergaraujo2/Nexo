@@ -91,6 +91,37 @@ describe('passenger transport integration', () => {
     expect(completed.body.state).toBe('completed');
   });
 
+  it('accepts idempotent driver location updates and exposes them to the passenger', async () => {
+    const customer = await register('customer');
+    const provider = await register('provider');
+    await marketplace(provider.token, {
+      categories: ['passenger_car'],
+      availability: 'available',
+      acceptingRequests: true,
+    });
+    const created = await request(app, '/v1/rides/requests', 'POST', {
+      vehicleType: 'car',
+      origin: { latitude: -16.6869, longitude: -49.2648 },
+      destination: { latitude: -16.6828, longitude: -49.2534 },
+    }, customer.token, randomUUID());
+    const accepted = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, provider.token, randomUUID());
+    const ride = await request(app, `/v1/rides/${accepted.body.rideId}`, 'GET', undefined, customer.token);
+    const key = randomUUID();
+    const location = await request(app, `/v1/rides/${ride.body.id}/location`, 'POST', {
+      latitude: -16.684,
+      longitude: -49.260,
+      speedMetersPerSecond: 8.5,
+      headingDegrees: 120,
+    }, provider.token, key);
+    expect(location.status, JSON.stringify(location.body)).toBe(201);
+    const passengerView = await request(app, `/v1/rides/${ride.body.id}`, 'GET', undefined, customer.token);
+    expect(passengerView.status).toBe(200);
+    expect(passengerView.body.driverLocation.latitude).toBeCloseTo(-16.684, 6);
+    expect(passengerView.body.driverLocation.longitude).toBeCloseTo(-49.260, 6);
+    expect(passengerView.body.driverLocation.speedMetersPerSecond).toBe(8.5);
+    expect(passengerView.body.driverLocation.headingDegrees).toBe(120);
+  });
+
   it('recalculates price on route change and rejects stale route versions', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
