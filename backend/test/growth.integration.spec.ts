@@ -30,6 +30,10 @@ describe('phase 12 growth and retention', () => {
 
   afterAll(async () => {
     await db.query(
+      'DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',
+      [emails],
+    );
+    await db.query(
       'DELETE FROM campaign_redemptions WHERE account_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',
       [emails],
     );
