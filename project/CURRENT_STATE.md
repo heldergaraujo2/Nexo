@@ -6,7 +6,7 @@
 ## Phase
 **ROADMAP COMPLETO — FASES 0–13 APROVADAS**
 
-Fases 0–11 permanecem concluídas e validadas.
+Fases 0–13 permanecem concluídas e validadas.
 
 ## FASE 11
 Gate aprovado pelo CI run 37815556772:
@@ -40,7 +40,7 @@ Entregas oficiais:
 ## FASE 13
 Objetivo: preparar o Nexo para crescimento geográfico e técnico.
 
-Entregas implementadas nesta etapa: migrations 014–016, pool PostgreSQL configurável, readiness, correlation ID/duração, hardening de instalação/runtime, localização operacional opcional, matching por proximidade e catálogo extensível de categorias. O gate permanece aguardando CI do HEAD final.
+Entregas implementadas nesta etapa: migrations 014–016, pool PostgreSQL configurável, readiness, correlation ID/duração, hardening de instalação/runtime, localização operacional opcional, matching por proximidade e catálogo extensível de categorias. Gate aprovado pelo CI run 37831723696.
 
 ## Blockers
 Nenhum bloqueio crítico conhecido.
