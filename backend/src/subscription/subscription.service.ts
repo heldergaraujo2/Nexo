@@ -231,7 +231,7 @@ export class SubscriptionService {
     try {
       await c.query('BEGIN');
       await c.query('SELECT pg_advisory_xact_lock(hashtext($1))', [
-        u.accountId + ':' + op + ':' + key,
+        u.accountId + ':' + op,
       ]);
       const e = await c.query(
         'SELECT request_hash AS "requestHash",response_status AS "responseStatus",response_body AS "responseBody" FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE',
