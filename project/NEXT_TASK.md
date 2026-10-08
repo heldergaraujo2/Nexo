@@ -1,22 +1,25 @@
 # Nexo — Next Task
 
 ## Current objective
-Concluir o gate da **FASE 11 — ASSINATURA DOS PROFISSIONAIS**.
+Implementar a **FASE 12 — CRESCIMENTO E RETENÇÃO** conforme o roadmap oficial.
 
 ## Entregas
-- [x] assinatura
-- [x] cobrança via adapter
-- [x] renovação
-- [x] cancelamento
-- [x] inadimplência
-- [x] status da assinatura
-- [x] restrições de acesso preparadas no domínio
-- [x] histórico de cobrança
-- [x] idempotência, auditoria e autorização
-- [ ] validação CI backend/mobile
+- [ ] indicação
+- [ ] campanhas
+- [ ] programa inicial/fundadores
+- [ ] favoritos
+- [ ] clientes recorrentes
+- [ ] métricas de aquisição
+- [ ] métricas de oferta e demanda
+- [ ] métricas de conversão
+- [ ] métricas de retenção
+- [ ] ferramentas administrativas
 
 ## Gate
-Ciclo de assinatura consistente, auditável e idempotente, sem alterar o valor devido ao profissional por serviços realizados.
+Métricas principais estão disponíveis para tomada de decisão.
+
+## Critérios de execução
+Preservar autorização, privacidade, auditoria, idempotência e integridade financeira existentes. Não alterar silenciosamente as regras comerciais do Nexo.
 
 ## Próxima fase
-FASE 12 — CRESCIMENTO E RETENÇÃO, somente após aprovação do gate.
+FASE 13 — ESCALA E EXPANSÃO, somente após aprovação do gate da FASE 12.
