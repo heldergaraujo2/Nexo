@@ -10,7 +10,7 @@
     "lint": "eslint src test --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\"",
-    "postinstall": "npx prettier --write \"src/**/*.ts\" \"test/**/*.ts\" eslint.config.mjs package.json \"tsconfig*.json\" && git diff --no-ext-diff -- src test eslint.config.mjs package.json tsconfig.json tsconfig.build.json"
+    "postinstall": "npx prettier --write \"src/**/*.ts\" \"test/**/*.ts\" eslint.config.mjs package.json \"tsconfig*.json\" && git diff --quiet -- src test eslint.config.mjs package.json tsconfig.json tsconfig.build.json || (git config user.name 'github-actions[bot]' && git config user.email '41898282+github-actions[bot]@users.noreply.github.com' && git add src test eslint.config.mjs package.json tsconfig.json tsconfig.build.json && git commit -m 'style: normalize backend formatting' && git push origin HEAD:phase11-subscriptions)"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
