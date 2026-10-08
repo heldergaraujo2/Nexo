@@ -116,3 +116,7 @@ CI run 37815556772 is the authoritative validation for the FASE 11 gate: backend
 ## DEC-033 — Growth incentives boundary
 **Status:** ACCEPTED FOR PHASE 12
 Indications, campaigns and the founder program are tracked operationally in this phase, but no discount, credit, cash reward or commission change is created without an explicit product rule. This prevents growth features from silently changing Nexo's commercial model.
+
+## DEC-034 — Fase 13: observabilidade e performance incremental
+**Status:** ACCEPTED
+A primeira camada de escala usa readiness real, correlation IDs e índices PostgreSQL orientados por consultas. Redis, filas e microserviços permanecem fora do caminho crítico até evidência operacional justificar a complexidade.
