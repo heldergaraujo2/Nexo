@@ -24,6 +24,7 @@ export class SubscriptionService {
     @Inject(Pool) private readonly db: Pool,
     @Inject('BILLING_ADAPTER') private readonly billing: BillingAdapter,
   ) {}
+
   async create(user: AuthPrincipal, dto: CreateSubscriptionDto, key: string) {
     this.assertProvider(user);
     if (dto.planCode && dto.planCode !== 'professional_monthly')
@@ -57,6 +58,7 @@ export class SubscriptionService {
       },
     );
   }
+
   async get(user: AuthPrincipal) {
     this.assertProvider(user);
     const r = await this.db.query(
@@ -65,6 +67,7 @@ export class SubscriptionService {
     );
     return r.rows[0] ? this.public(r.rows[0]) : null;
   }
+
   async renew(user: AuthPrincipal, id: string, key: string) {
     this.assertProvider(user);
     return this.idempotent(
@@ -117,6 +120,7 @@ export class SubscriptionService {
       },
     );
   }
+
   async cancel(
     user: AuthPrincipal,
     id: string,
@@ -149,6 +153,7 @@ export class SubscriptionService {
       },
     );
   }
+
   async setStatus(
     user: AuthPrincipal,
     id: string,
@@ -176,6 +181,7 @@ export class SubscriptionService {
       },
     );
   }
+
   async history(user: AuthPrincipal, id: string) {
     this.assertProvider(user);
     const s = await this.db.query(
@@ -191,6 +197,7 @@ export class SubscriptionService {
     );
     return r.rows.map((x) => ({ ...x, amountCents: Number(x.amountCents) }));
   }
+
   private public(r: Record<string, any>) {
     return {
       id: r.id,
@@ -203,10 +210,12 @@ export class SubscriptionService {
       canceledAt: r.canceled_at ?? null,
     };
   }
+
   private assertProvider(u: AuthPrincipal) {
     if (u.role !== 'provider')
       throw new ForbiddenException('Provider role required');
   }
+
   private async audit(
     c: PoolClient,
     actor: string,
@@ -219,6 +228,7 @@ export class SubscriptionService {
       [actor, type, id, metadata],
     );
   }
+
   private async idempotent(
     u: AuthPrincipal,
     op: string,
