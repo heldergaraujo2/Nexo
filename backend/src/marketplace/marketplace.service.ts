@@ -811,6 +811,14 @@ export class MarketplaceService {
     if (blocked.rowCount)
       throw new ForbiddenException('Participants are blocked');
 
+    const subscription = await client.query(
+      "SELECT status FROM subscriptions WHERE provider_id=$1 ORDER BY created_at DESC LIMIT 1",
+      [providerId],
+    );
+    if (subscription.rowCount && subscription.rows[0].status !== 'active') {
+      throw new ForbiddenException('Provider subscription is not active');
+    }
+
     if (category === 'towing') {
       const verifiedVehicle = await client.query(
         "SELECT 1 FROM vehicles WHERE provider_id=$1 AND status='verified' LIMIT 1",
