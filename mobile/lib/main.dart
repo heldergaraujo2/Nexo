@@ -31,7 +31,15 @@ class NexoHomePage extends StatelessWidget {
               const SizedBox(height: 12),
               FilledButton(
                 onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (_) => const SubscriptionPage()),
+                  MaterialPageRoute<void>(
+                    builder: (_) => SubscriptionPage(
+                      subscription: SubscriptionView(
+                        status: 'active',
+                        amountCents: 9990,
+                        currentPeriodEnd: DateTime(2026, 11, 8),
+                      ),
+                    ),
+                  ),
                 ),
                 child: const Text('Assinatura profissional'),
               ),
