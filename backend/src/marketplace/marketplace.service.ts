@@ -84,6 +84,37 @@ export class MarketplaceService {
     );
   }
 
+  async availableRequests(user: AuthPrincipal) {
+    this.assertProvider(user);
+    const result = await this.db.query(
+      `SELECT r.id,r.customer_id AS "customerId",r.category,r.description,r.requirements,
+              r.origin,r.destination,r.status,r.created_at AS "createdAt",
+              p.display_name AS "customerName"
+       FROM service_requests r
+       JOIN profiles p ON p.account_id=r.customer_id
+       WHERE r.status IN ('open','matched')
+         AND r.category IN ('passenger_car','passenger_motorcycle')
+         AND EXISTS (
+           SELECT 1
+           FROM provider_marketplace pm
+           WHERE pm.account_id=$1
+             AND pm.availability='available'
+             AND pm.accepting_requests=true
+             AND r.category = ANY(pm.categories)
+         )
+         AND r.customer_id <> $1
+         AND NOT EXISTS (
+           SELECT 1 FROM blocks b
+           WHERE (b.blocker_id=$1 AND b.blocked_id=r.customer_id)
+              OR (b.blocker_id=r.customer_id AND b.blocked_id=$1)
+         )
+       ORDER BY r.created_at DESC
+       LIMIT 50`,
+      [user.accountId],
+    );
+    return result.rows;
+  }
+
   async getRequest(user: AuthPrincipal, requestId: string) {
     const result = await this.db.query(
       `SELECT id,customer_id AS "customerId",category,description,requirements,origin,destination,status,
