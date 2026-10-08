@@ -1,0 +1,26 @@
+name: Phase 11 formatting helper
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  format-artifact:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx prettier --write src/app.module.ts src/marketplace/marketplace.service.ts src/subscription/*.ts test/subscription.integration.spec.ts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase11-formatted-backend
+          path: backend/src
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase11-formatted-tests
+          path: backend/test/subscription.integration.spec.ts
