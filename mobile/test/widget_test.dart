@@ -51,7 +51,6 @@ void main() {
     expect(find.text(r'R$ 99,90 / mês'), findsOneWidget);
     expect(find.text('0% de comissão. Você mantém 100% do valor dos serviços.'), findsOneWidget);
     expect(find.text('Cancelar assinatura'), findsOneWidget);
-    expect(find.text('Cancelar assinatura'), findsOneWidget);
   });
 
   testWidgets(
