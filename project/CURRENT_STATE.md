@@ -35,7 +35,7 @@ Entregas oficiais:
 - ferramentas administrativas.
 
 ## Blockers
-Nenhum bloqueio externo conhecido.
+- Validação CI da Fase 12 ainda não executada para o HEAD atual. O conector GitHub consegue criar/alterar commits e PRs, mas não expõe `workflow_dispatch`/aprovação de workflow; tentativas de reabrir/criar PR e habilitar `push` no branch não produziram nova execução. O bloqueio é de acionamento/ambiente, não de implementação.
 
 ## Regras comerciais
 - R$99,90/mês por provider.
