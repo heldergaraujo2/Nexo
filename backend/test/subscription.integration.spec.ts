@@ -161,7 +161,13 @@ describe('phase 11 subscriptions', () => {
     expect(conflict.status).toBe(409);
     const concurrentProvider = await register('provider');
     const concurrent = await Promise.all([
-      call('/v1/subscriptions', 'POST', {}, concurrentProvider.token, randomUUID()),
+      call(
+        '/v1/subscriptions',
+        'POST',
+        {},
+        concurrentProvider.token,
+        randomUUID(),
+      ),
       call('/v1/subscriptions', 'POST', {}, concurrentProvider.token, randomUUID()),
     ]);
     expect(concurrent.filter((x) => x.status === 201)).toHaveLength(1);
