@@ -49,6 +49,23 @@ CREATE TABLE IF NOT EXISTS founder_program (
 
 CREATE INDEX IF NOT EXISTS idx_founder_program_cohort ON founder_program(cohort, enrolled_at DESC);
 
+CREATE OR REPLACE FUNCTION qualify_referral_on_service_completion()
+RETURNS trigger AS $
+BEGIN
+  IF NEW.status = 'completed' AND (OLD.status IS DISTINCT FROM NEW.status) THEN
+    UPDATE referrals
+    SET status='qualified',qualified_at=NOW()
+    WHERE referred_id=NEW.customer_id AND status='pending';
+  END IF;
+  RETURN NEW;
+END;
+$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_qualify_referral_on_service_completion ON services;
+CREATE TRIGGER trg_qualify_referral_on_service_completion
+AFTER UPDATE OF status ON services
+FOR EACH ROW EXECUTE FUNCTION qualify_referral_on_service_completion();
+
 INSERT INTO schema_migrations (version)
 VALUES ('013_growth_retention')
 ON CONFLICT (version) DO NOTHING;
