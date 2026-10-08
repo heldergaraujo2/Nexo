@@ -108,7 +108,7 @@ class NexoApiClient {
     dynamic decoded;
     try {
       decoded = response.body.isEmpty ? null : jsonDecode(response.body);
-    } catch (_) {
+    } on FormatException {
       decoded = response.body;
     }
 
