@@ -98,7 +98,18 @@ jobs:
           name: test-diagnostics
           path: /tmp/test.log
       - run: npm run build
-      - run: npm run lint
+      - name: Run npm run lint
+        run: |
+          set +e
+          npm run lint 2>&1 | tee /tmp/lint.log
+          status=${PIPESTATUS[0]}
+          exit $status
+      - name: Upload lint diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-diagnostics
+          path: /tmp/lint.log
       - run: npm run format:check
   mobile:
     runs-on: ubuntu-latest
