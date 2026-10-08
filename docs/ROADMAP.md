@@ -296,18 +296,18 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ## FASE 13 — Escala e Expansão
 **Objetivo:** preparar o Nexo para crescimento geográfico e técnico.
 
-**Entregas**
-- [ ] otimização de performance
-- [ ] observabilidade avançada
-- [ ] alta disponibilidade conforme necessidade
-- [ ] recuperação de desastres
-- [ ] hardening de segurança
-- [ ] otimização de custos
-- [ ] expansão geográfica
-- [ ] novas categorias
-- [ ] mecanismos avançados de matching
+**Entregas — IMPLEMENTADAS NA BASE INICIAL**
+- [x] otimização de performance — índices 014 e pool PostgreSQL configurável
+- [x] observabilidade avançada — readiness, correlation ID, duração e response-time header
+- [x] alta disponibilidade conforme necessidade — backend stateless e desenho horizontal documentado
+- [x] recuperação de desastres — procedimento operacional de backup/restore documentado
+- [x] hardening de segurança — remoção de postinstall mutável, validação de localização, timeouts de pool e headers básicos
+- [x] otimização de custos — sem Redis/filas/microserviços prematuros e pool limitado
+- [x] expansão geográfica — localização operacional opcional e matching por proximidade
+- [x] novas categorias — catálogo extensível com category codes sem alteração do schema de requests
+- [x] mecanismos avançados de matching — elegibilidade, bloqueios, disponibilidade, reputação e proximidade
 
-**Gate:** capacidade técnica e operacional compatível com a próxima escala do negócio.
+**Gate:** PENDENTE até o CI validar o HEAD final desta implementação.
 
 ---
 
