@@ -25,6 +25,8 @@ describe('towing integration',()=>{
   await db.query('DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM vehicles WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM security_events WHERE actor_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
+  await db.query('DELETE FROM subscription_charges WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
+  await db.query('DELETE FROM subscriptions WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM accounts WHERE email=ANY($1::text[])',[emails]); await app?.close();
  });
  it('creates a towing request with location, destination, problem and media metadata',async()=>{
@@ -34,6 +36,7 @@ describe('towing integration',()=>{
  });
  it('requires eligible verified vehicle and executes the towing state machine',async()=>{
   const customer=await register('customer'); const provider=await register('provider');
+  await activateSubscription(provider.token);
   await call('/v1/me/marketplace','PUT',{categories:['towing'],availability:'available',acceptingRequests:true},provider.token);
   const vehicle=await call('/v1/security/vehicles','POST',{vehicleType:'car',make:'Marca',model:'Modelo',modelYear:2024,plateLast4:'AB12'},provider.token);
   expect(vehicle.status).toBe(201);
@@ -69,6 +72,8 @@ describe('towing integration',()=>{
   expect(invalid.status).toBe(409);
  });
 });
+
+async function activateSubscription(token:string){const created=await call('/v1/subscriptions','POST',{},token,randomUUID());expect(created.status,JSON.stringify(created.body)).toBe(201);const renewed=await call('/v1/subscriptions/'+created.body.id+'/renew','POST',undefined,token,randomUUID());expect(renewed.status,JSON.stringify(renewed.body)).toBe(200);}
 
 async function register(role:'customer'|'provider'){const email='phase10-'+role+'-'+randomUUID()+'@example.test';emails.push(email);const r=await call('/v1/auth/register','POST',{email,password:'Strong-password-123',displayName:'Phase 10',role});expect(r.status,JSON.stringify(r.body)).toBe(201);return {id:r.body.accountId as string,token:r.body.accessToken as string};}
 async function call(path:string,method:string,body?:unknown,token?:string,key?:string){const address=app.getHttpServer().address();if(!address||typeof address==='string')throw new Error('Test server address unavailable');const r=await fetch('http://127.0.0.1:'+(address as AddressInfo).port+path,{method,headers:{'content-type':'application/json',...(token?{authorization:'Bearer '+token}:{}),...(key?{'idempotency-key':key}:{})},body:body===undefined?undefined:JSON.stringify(body)});return {status:r.status,body:await r.json() as Record<string,unknown>};}
