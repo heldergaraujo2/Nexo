@@ -109,3 +109,17 @@ Nenhum resultado de teste deve ser declarado sem execução real.
 - Idempotência de criação/transição é protegida por hash e lock transacional.
 - Lifecycle genérico de Service não pode contornar Delivery.
 - Mobile valida campos essenciais e build APK.
+
+
+### Fase 12 — crescimento e retenção
+- Código de indicação não permite autoindicação.
+- Claim de indicação é idempotente e não permite segunda indicação para a mesma conta.
+- Conclusão de serviço qualifica indicação pendente.
+- Campanha só pode ser resgatada quando ativa e dentro da janela configurada.
+- Resgate duplicado é rejeitado pela constraint do banco.
+- Adesão ao programa de fundadores é idempotente.
+- Métricas exigem papel `admin` ou `moderator`.
+- Taxas de oferta, aceite e conclusão são calculadas sem divisão por zero.
+- Retenção é derivada de coortes do primeiro serviço concluído.
+- Migration 013 deve executar com ON_ERROR_STOP no CI.
+- Backend e mobile continuam sujeitos ao pipeline oficial de typecheck, testes, lint, format e build.
