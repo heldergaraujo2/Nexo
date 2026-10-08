@@ -1,9 +1,10 @@
 # Nexo — Next Task
 
 ## Current objective
-Concluir o gate da **FASE 13 — ESCALA E EXPANSÃO** conforme o roadmap oficial.
+**ROADMAP COMPLETO — todos os gates oficiais aprovados.**
 
-Fase 12 aprovada pelo CI run 37819635305.
+Não há próxima fase registrada no roadmap atual.
+
 
 ## Entregas
 - [x] indicação
@@ -32,4 +33,4 @@ APROVADO — CI run 37819635305.
 - [x] matching avançado por proximidade + elegibilidade + reputação
 
 ## Gate
-PENDENTE — aguardar CI do HEAD final e auditoria de regressão.
+APROVADO — CI run 37831723696 verde em backend e mobile.
