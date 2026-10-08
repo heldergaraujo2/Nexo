@@ -326,7 +326,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
     }on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}
   }
 
-  Future<void> action(String a)async{if(rideId==null){if(mounted)setState(()=>error='A corrida ainda está sendo vinculada. Aguarde alguns segundos.');return;}try{await widget.api.post('/rides/$rideId/$a',{},idempotencyKey:'ride-${rideId}-${a}-${DateTime.now().microsecondsSinceEpoch}');await poll();}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
+  Future<void> action(String a)async{if(rideId==null){if(mounted)setState(()=>error='A corrida ainda está sendo vinculada. Aguarde alguns segundos.');return;}try{await widget.api.post('/rides/$rideId/$a',{},idempotencyKey:'ride-$rideId-$a-${DateTime.now().microsecondsSinceEpoch}');await poll();}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   String label()=>switch(state){'accepted'=>'Motorista aceitou a corrida','driver_en_route'=>'Motorista a caminho','arrived'=>'Motorista chegou','started'=>'Viagem em andamento','completed'=>'Viagem concluída','cancelled'=>'Corrida cancelada',_=>'Aguardando motorista'};
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.passenger?'Sua corrida':'Corrida em atendimento')),body:ListView(padding:const EdgeInsets.all(20),children:[
     Card(child:Padding(padding:const EdgeInsets.all(20),child:Column(children:[const Icon(Icons.local_taxi,size:64),const SizedBox(height:12),Text(label(),style:Theme.of(context).textTheme.headlineSmall,textAlign:TextAlign.center),Text('Solicitação: $state'),if(fare!=null)Text('Tarifa: R\$ ${(fare! / 100).toStringAsFixed(2)}',style:Theme.of(context).textTheme.titleLarge)]))),
