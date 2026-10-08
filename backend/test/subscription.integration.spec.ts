@@ -57,7 +57,7 @@ describe('phase 11 subscriptions', () => {
       emails,
     ]);
     await app?.close();
-    });
+  });
   it('runs subscription lifecycle and preserves service price', async () => {
     const p = await register('provider');
     const c = await register('customer');
@@ -149,7 +149,7 @@ describe('phase 11 subscriptions', () => {
       p.token,
     );
     expect(afterCancel.body.status).toBe('canceled');
-    });
+  });
   it('enforces idempotency, authorization and concurrent create', async () => {
     const p = await register('provider');
     const key = randomUUID();
@@ -195,13 +195,13 @@ describe('phase 11 subscriptions', () => {
         )
       ).status,
     ).toBe(403);
-    });
+  });
   it(
-    'rejects providers without an active subscription in marketplace eligibility',
-    async () => {
+      'rejects providers without an active subscription in marketplace eligibility',
+      async () => {
       const p = await register('provider');
-    const c = await register('customer');
-    await call(
+      const c = await register('customer');
+      await call(
       '/v1/me/marketplace',
       'PUT',
       {
@@ -210,8 +210,8 @@ describe('phase 11 subscriptions', () => {
         acceptingRequests: true,
       },
       p.token,
-    );
-    const request = await call(
+      );
+      const request = await call(
       '/v1/requests',
       'POST',
       {
@@ -221,23 +221,23 @@ describe('phase 11 subscriptions', () => {
       },
       c.token,
       randomUUID(),
-    );
-    expect(request.status).toBe(201);
-    const offer = await call(
+      );
+      expect(request.status).toBe(201);
+      const offer = await call(
       '/v1/requests/' + request.body.id + '/offers',
       'POST',
       { offerType: 'direct_accept' },
       p.token,
       randomUUID(),
-    );
-    expect(offer.status).toBe(403);
-    });
+      );
+      expect(offer.status).toBe(403);
+  });
   it(
-    'blocks new marketplace offers after subscription cancellation',
-    async () => {
+      'blocks new marketplace offers after subscription cancellation',
+      async () => {
       const p = await register('provider');
-    const c = await register('customer');
-    await call(
+      const c = await register('customer');
+      await call(
       '/v1/me/marketplace',
       'PUT',
       {
@@ -246,8 +246,8 @@ describe('phase 11 subscriptions', () => {
         acceptingRequests: true,
       },
       p.token,
-    );
-    const request = await call(
+      );
+      const request = await call(
       '/v1/requests',
       'POST',
       {
@@ -257,16 +257,16 @@ describe('phase 11 subscriptions', () => {
       },
       c.token,
       randomUUID(),
-    );
-    expect(request.status).toBe(201);
-    const sub = await call(
+      );
+      expect(request.status).toBe(201);
+      const sub = await call(
       '/v1/subscriptions',
       'POST',
       {},
       p.token,
       randomUUID(),
-    );
-    expect(
+      );
+      expect(
       (
         await call(
           '/v1/subscriptions/' + sub.body.id + '/renew',
@@ -276,8 +276,8 @@ describe('phase 11 subscriptions', () => {
           randomUUID(),
         )
       ).status,
-    ).toBe(200);
-    expect(
+      ).toBe(200);
+      expect(
       (
         await call(
           '/v1/subscriptions/' + sub.body.id + '/cancel',
@@ -287,29 +287,29 @@ describe('phase 11 subscriptions', () => {
           randomUUID(),
         )
       ).status,
-    ).toBe(200);
-    const offer = await call(
+      ).toBe(200);
+      const offer = await call(
       '/v1/requests/' + request.body.id + '/offers',
       'POST',
       { offerType: 'direct_accept' },
       p.token,
       randomUUID(),
-    );
-    expect(offer.status).toBe(403);
-    });
+      );
+      expect(offer.status).toBe(403);
+  });
   it(
-    'enforces database ownership between charges and subscriptions',
-    async () => {
+      'enforces database ownership between charges and subscriptions',
+      async () => {
       const p = await register('provider');
-    const other = await register('provider');
-    const sub = await call(
+      const other = await register('provider');
+      const sub = await call(
       '/v1/subscriptions',
       'POST',
       {},
       p.token,
       randomUUID(),
-    );
-    await expect(
+      );
+      await expect(
       db.query(
         `INSERT INTO subscription_charges(
           subscription_id,provider_id,period_start,period_end,
@@ -317,8 +317,8 @@ describe('phase 11 subscriptions', () => {
         ) VALUES($1,$2,NOW(),NOW()+INTERVAL '1 month',9990,'BRL','pending',$3)`,
         [sub.body.id, other.id, randomUUID()],
       ),
-    ).rejects.toThrow();
-    });
+      ).rejects.toThrow();
+  });
   it('rejects foreign history and missing idempotency key', async () => {
     const p = await register('provider');
     const other = await register('provider');
