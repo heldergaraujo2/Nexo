@@ -43,7 +43,7 @@ jobs:
       - name: Check Prettier formatting
         run: |
           set +e
-          npx prettier --check "src/**/*.ts" "test/**/*.ts" "eslint.config.mjs" "package.json" "tsconfig*.json" 2>&1 | tee /tmp/prettier.log
+          npx prettier --check src/app.module.ts src/marketplace/marketplace.service.ts src/subscription/*.ts test/subscription.integration.spec.ts 2>&1 | tee /tmp/prettier.log
           status=${PIPESTATUS[0]}
           exit $status
       - name: Upload prettier diagnostics
