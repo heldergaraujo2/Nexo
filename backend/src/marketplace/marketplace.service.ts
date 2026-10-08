@@ -31,6 +31,7 @@ export class MarketplaceService {
 
   async setAvailability(user: AuthPrincipal, dto: MarketplaceAvailabilityDto) {
     this.assertProvider(user);
+    await this.db.query(`UPDATE service_requests SET status='expired',updated_at=NOW() WHERE status IN ('open','matched') AND expires_at IS NOT NULL AND expires_at<=NOW()`);
     const result = await this.db.query(
       `INSERT INTO provider_marketplace
        (account_id,categories,availability,accepting_requests)
@@ -41,6 +42,24 @@ export class MarketplaceService {
        RETURNING account_id AS "accountId",categories,availability,"accepting_requests" AS "acceptingRequests",updated_at AS "updatedAt"`,
       [user.accountId, dto.categories, dto.availability, dto.acceptingRequests],
     );
+    return result.rows[0];
+  }
+
+  async updateProviderLocation(user: AuthPrincipal, dto: { latitude: number; longitude: number }) {
+    this.assertProvider(user);
+    const latitude = Number(dto.latitude);
+    const longitude = Number(dto.longitude);
+    if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+      throw new ConflictException('Invalid provider location');
+    }
+    const result = await this.db.query(
+      `UPDATE provider_marketplace
+       SET current_latitude=$1,current_longitude=$2,location_updated_at=NOW(),updated_at=NOW()
+       WHERE account_id=$3
+       RETURNING current_latitude AS "latitude",current_longitude AS "longitude",location_updated_at AS "updatedAt"`,
+      [latitude, longitude, user.accountId],
+    );
+    if (!result.rowCount) throw new NotFoundException('Provider marketplace profile not found');
     return result.rows[0];
   }
 
@@ -82,6 +101,43 @@ export class MarketplaceService {
         return { status: 201, body: request };
       },
     );
+  }
+
+  async availableRequests(user: AuthPrincipal) {
+    this.assertProvider(user);
+    await this.db.query(`UPDATE service_requests SET status='expired',updated_at=NOW() WHERE status IN ('open','matched') AND expires_at IS NOT NULL AND expires_at<=NOW()`);
+    const result = await this.db.query(
+      `SELECT r.id,r.customer_id AS "customerId",r.category,r.description,r.requirements,
+              r.origin,r.destination,r.status,r.created_at AS "createdAt",
+              p.display_name AS "customerName",
+              CASE
+                WHEN r.origin IS NULL OR pm.current_latitude IS NULL OR pm.current_longitude IS NULL THEN NULL
+                ELSE 6371000 * acos(LEAST(1, GREATEST(-1,
+                  cos(radians(pm.current_latitude)) * cos(radians((r.origin->>'latitude')::double precision)) *
+                  cos(radians((r.origin->>'longitude')::double precision) - radians(pm.current_longitude)) +
+                  sin(radians(pm.current_latitude)) * sin(radians((r.origin->>'latitude')::double precision))
+                )))
+              END AS "distanceMeters"
+       FROM service_requests r
+       JOIN profiles p ON p.account_id=r.customer_id
+       CROSS JOIN provider_marketplace pm
+       WHERE r.status IN ('open','matched') AND (r.expires_at IS NULL OR r.expires_at>NOW())
+         AND r.category IN ('passenger_car','passenger_motorcycle')
+         AND pm.account_id=$1
+         AND pm.availability='available'
+         AND pm.accepting_requests=true
+         AND r.category = ANY(pm.categories)
+         AND r.customer_id <> $1
+         AND NOT EXISTS (
+           SELECT 1 FROM blocks b
+           WHERE (b.blocker_id=$1 AND b.blocked_id=r.customer_id)
+              OR (b.blocker_id=r.customer_id AND b.blocked_id=$1)
+         )
+       ORDER BY "distanceMeters" ASC NULLS LAST, r.created_at DESC
+       LIMIT 50`,
+      [user.accountId],
+    );
+    return result.rows;
   }
 
   async getRequest(user: AuthPrincipal, requestId: string) {
@@ -254,7 +310,7 @@ export class MarketplaceService {
       {},
       async (client) => {
         const request = await client.query(
-          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination,requirements
+          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination,requirements,expires_at
          FROM service_requests WHERE id=$1 FOR UPDATE`,
           [requestId],
         );
@@ -264,6 +320,10 @@ export class MarketplaceService {
           throw new ConflictException(
             'Request is not available for acceptance',
           );
+        }
+        if (row.expires_at && new Date(row.expires_at).getTime() <= Date.now()) {
+          await client.query(`UPDATE service_requests SET status='expired',updated_at=NOW() WHERE id=$1`, [requestId]);
+          throw new ConflictException('Request has expired');
         }
         if (row.category === 'delivery' || row.category === 'towing') {
           throw new ConflictException('This category must be accepted through a priced offer');
@@ -290,6 +350,7 @@ export class MarketplaceService {
         );
         const offerId = offer.rows[0].id;
 
+        let acceptedRideId: string | null = null;
         const service = await client.query(
           `INSERT INTO services
          (request_id,accepted_offer_id,customer_id,provider_id,category,status)
@@ -306,6 +367,7 @@ export class MarketplaceService {
             row.origin,
             row.destination,
           );
+          acceptedRideId = ride.id as string;
           await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
           service.rows[0].priceCents = Number(ride.fareCents);
         }
@@ -328,6 +390,7 @@ export class MarketplaceService {
         await this.notify(client, row.customer_id, 'service_request.accepted', {
           requestId,
           serviceId: service.rows[0].id,
+          rideId: acceptedRideId,
         });
         await this.audit(
           client,
@@ -340,6 +403,7 @@ export class MarketplaceService {
           status: 201,
           body: {
             ...service.rows[0],
+            rideId: acceptedRideId,
             priceCents:
               service.rows[0].priceCents === null
                 ? null

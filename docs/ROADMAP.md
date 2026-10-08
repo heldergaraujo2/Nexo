@@ -189,16 +189,16 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 **Objetivo:** expandir o marketplace para entrega de objetos/produtos.
 
 **Entregas**
-- [ ] origem/destino
-- [ ] descrição do item
-- [ ] fotos/mídia
-- [ ] observações
-- [ ] solicitação
-- [ ] ofertas
-- [ ] aceite
-- [ ] execução
-- [ ] conclusão
-- [ ] avaliação
+- [x] origem/destino
+- [x] descrição do item
+- [x] fotos/mídia
+- [x] observações
+- [x] solicitação
+- [x] ofertas
+- [x] aceite
+- [x] execução
+- [x] conclusão
+- [x] avaliação
 
 **Gate:** APROVADO — entrega completa de ponta a ponta com rastreabilidade operacional, preço por oferta, máquina de estados, auditoria, idempotência e validação mobile.
 
@@ -246,6 +246,113 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 **Gate:** APROVADO — CI run 306 backend/mobile verde, APK debug construído e auditoria final concluída.
 
 ---
+
+
+---
+
+# BLOCO MOBILIDADE E2E — Prioridade operacional antes da FASE 11
+
+**Objetivo:** transformar o backend já concluído de transporte em uma experiência real de mobilidade no estilo Uber/99, com passageiro e motorista usando o app Flutter, API autenticada, localização, mapa, matching, atualizações quase em tempo real e execução completa.
+
+> Este bloco é uma ponte operacional entre as FASES 0–10 e a FASE 11. A FASE 11 não deve ser considerada o próximo marco de produto até que o gate físico de mobilidade esteja aprovado.
+
+## MOB-0 — Auditoria operacional
+- [x] identificar lacunas entre backend e app mobile
+- [x] definir vertical slice: passageiro → API → motorista → aceite → estado
+- [x] separar dependências que só podem ser validadas em dispositivo físico
+
+## MOB-1 — Fundação Mobile/API
+- [x] cliente HTTP autenticado
+- [x] persistência de sessão
+- [x] URL de API configurável
+- [x] tratamento de erros
+- [x] idempotency-key para comandos críticos
+- [x] suporte a ambiente físico/LAN sem localhost
+
+## MOB-2 — Identidade no app
+- [x] login
+- [x] cadastro
+- [x] escolha de papel passageiro/motorista
+- [x] restauração de sessão
+- [x] logout
+
+## MOB-3 — Passageiro
+- [x] permissão/GPS
+- [x] origem pela localização do aparelho
+- [x] seleção de destino no mapa
+- [x] escolha carro/moto
+- [x] solicitação de corrida
+- [x] acompanhamento do estado da solicitação
+- [x] cancelamento mobile completo
+- [x] pagamento e recibo conectados ao serviço
+- [x] avaliação pós-corrida conectada ao serviço
+
+## MOB-4 — Motorista
+- [x] online/offline
+- [x] categorias habilitadas
+- [x] descoberta de solicitações elegíveis
+- [x] lista de novas corridas
+- [x] aceite concorrente protegido pelo backend
+- [x] tela operacional da corrida
+- [x] envio contínuo de localização do motorista
+
+## MOB-5 — Matching operacional
+- [x] endpoint server-side de solicitações abertas elegíveis
+- [x] bloqueios e elegibilidade preservados
+- [x] concorrência/idempotência preservadas
+- [x] ranking por distância real
+- [x] expiração/timeout operacional automático
+
+## MOB-6 — Tempo quase real
+- [x] polling de solicitações do motorista
+- [x] polling de notificações do usuário
+- [x] notificações persistidas de aceite e estados da corrida
+- [x] atualização de estado sem refresh manual
+- [ ] WebSocket/SSE quando a necessidade operacional justificar
+
+## MOB-7 — Localização e mapa
+- [x] geolocalização do dispositivo
+- [x] mapa interativo
+- [x] origem/destino em coordenadas
+- [x] cálculo server-side preservado
+- [ ] rastreamento contínuo motorista → passageiro
+- [ ] rota/navegação externa ou adapter de routing
+
+## MOB-8 — Execução completa
+- [x] accepted
+- [x] driver_en_route
+- [x] arrived
+- [x] started
+- [x] completed
+- [x] notificações de transição
+- [x] cancelamento completo na UX
+- [x] pagamento conectado
+- [x] rating conectado
+
+## MOB-9 — E2E físico
+- [ ] PostgreSQL + backend executando no PC
+- [ ] celular Android na mesma rede LAN
+- [ ] passageiro real solicita corrida
+- [ ] motorista real recebe solicitação
+- [ ] motorista aceita
+- [ ] passageiro recebe aceite
+- [ ] estados avançam em dois dispositivos
+- [ ] corrida é concluída
+- [ ] regressão de segurança/idempotência aprovada
+
+## MOB-10 — Estabilização e gate
+- [ ] corrigir falhas encontradas no dispositivo
+- [ ] validar permissões de localização
+- [ ] validar intermitência/offline/resume
+- [ ] validar telas pequenas e acessibilidade
+- [ ] validar performance básica
+- [ ] atualizar documentação, estado, changelog e decisões
+- [ ] gate E2E aprovado
+
+**Gate do bloco:** um passageiro e um motorista conseguem completar uma corrida real em dispositivos distintos contra a API Nexo, sem intervenção manual no banco e com os estados do backend permanecendo autoritativos.
+
+### Depois do gate
+**FASE 11 → FASE 12 → FASE 13**
 
 ## FASE 11 — Assinatura dos Profissionais
 **Objetivo:** ativar o modelo comercial do Nexo.

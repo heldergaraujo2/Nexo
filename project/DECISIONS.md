@@ -127,3 +127,45 @@ Cargo/freight uses a dedicated versioned proposal chain. Each response creates t
 ## DEC-024 — Towing price and safety boundary
 **Status:** ACCEPTED FOR PHASE 10
 Towing does not receive a new fixed tariff. Its price is represented by a priced Marketplace Offer and becomes the Service price at acceptance. Towing execution requires an eligible provider with a verified vehicle and no active block relationship with the customer. This preserves existing pricing flexibility without changing passenger/cargo rules.
+
+
+## DEC-030 — Mobility E2E before monetization
+**Status:** ACCEPTED
+The existing domain phases 0–10 remain complete at the backend/domain level, but the product roadmap inserts an operational mobility block before Fase 11. The first commercial mobility milestone is a real passenger + driver vertical slice in Flutter against the Nexo API. Subscription/growth work resumes only after the physical E2E gate is approved.
+
+## DEC-031 — Initial mobile real-time strategy
+**Status:** ACCEPTED FOR MVP
+The first mobile vertical slice uses persisted notifications plus short-interval polling. This keeps the server authoritative and avoids introducing WebSocket infrastructure before measured need. WebSocket/SSE may replace or complement polling after E2E validation.
+
+## DEC-032 — API endpoint configuration
+**Status:** ACCEPTED
+The mobile app must not assume localhost for a physical device. The API base URL is configurable and persisted in the app; Android emulator defaults may use the emulator host alias, while a physical phone must use the development PC LAN address.
+
+## DEC-033 — Location and map adapters
+**Status:** ACCEPTED FOR MVP
+Flutter uses device geolocation and an interactive map for origin/destination selection. Server-side distance and fare calculation remain authoritative. Continuous driver tracking and routing providers are separate follow-up work.
+
+
+## DEC-030 — Mobility E2E before monetization
+**Status:** ACCEPTED
+The transport domain remains complete at backend level, but the product roadmap requires an operational Flutter passenger/driver vertical slice before monetization phases resume.
+
+## DEC-031 — Polling-first mobile real-time strategy
+**Status:** ACCEPTED FOR MVP
+Persisted notifications plus short-interval polling are the initial real-time mechanism. WebSocket/SSE remains optional until measured operational need justifies it.
+
+## DEC-032 — Device API configuration
+**Status:** ACCEPTED
+Mobile API base URL is configurable and persisted. Physical devices must use the development PC LAN address rather than localhost.
+
+## DEC-033 — Driver location storage boundary
+**Status:** ACCEPTED
+Only the latest operational driver location is stored for active availability/rides. Location heartbeats are not appended to the ride event history to avoid unbounded event-log growth. The backend remains authoritative for visibility and state.
+
+## DEC-034 — Passenger request expiry
+**Status:** ACCEPTED FOR MVP
+Passenger ride requests expire after five minutes. Expiration is enforced transactionally during acceptance and cleaned up during provider discovery, avoiding a scheduler dependency in the initial vertical slice.
+
+## DEC-035 — Proximity ranking
+**Status:** ACCEPTED FOR MVP
+Available passenger requests are ordered by provider proximity when provider/request coordinates are available, with creation time as the fallback. The ranking does not alter server-authoritative fare calculation.

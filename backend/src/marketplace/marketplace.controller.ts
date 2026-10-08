@@ -17,6 +17,7 @@ import {
   CreateOfferDto,
   CreateServiceRequestDto,
   MarketplaceAvailabilityDto,
+  ProviderLocationDto,
 } from './dto';
 import { MarketplaceService } from './marketplace.service';
 
@@ -27,6 +28,11 @@ export class MarketplaceController {
     @Inject(MarketplaceService)
     private readonly marketplace: MarketplaceService,
   ) {}
+
+  @Put('me/marketplace/location')
+  updateProviderLocation(@Req() req: AuthenticatedRequest, @Body() dto: ProviderLocationDto) {
+    return this.marketplace.updateProviderLocation(req.user, dto);
+  }
 
   @Put('me/marketplace')
   setAvailability(
@@ -46,6 +52,11 @@ export class MarketplaceController {
     return this.marketplace
       .createRequest(req.user, dto, key)
       .then((result) => result.body);
+  }
+
+  @Get('requests/available')
+  availableRequests(@Req() req: AuthenticatedRequest) {
+    return this.marketplace.availableRequests(req.user);
   }
 
   @Get('requests/:requestId')

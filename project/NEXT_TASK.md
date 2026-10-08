@@ -1,28 +1,30 @@
 # Nexo — Next Task
 
 ## Current objective
-Executar a **FASE 11 — ASSINATURA DOS PROFISSIONAIS**.
+Concluir o **BLOCO MOBILIDADE E2E (MOB-0 → MOB-10)** antes de retomar a FASE 11.
 
-## Entregas
-- [ ] assinatura
-- [ ] cobrança
-- [ ] renovação
-- [ ] cancelamento
-- [ ] inadimplência
-- [ ] status da assinatura
-- [ ] restrições de acesso quando aplicável
-- [ ] histórico de cobrança
-- [ ] idempotência, auditoria e autorização
-- [ ] validação mobile
+## Já implementado
+- cliente HTTP e sessão Flutter
+- login/cadastro por papel
+- passenger flow com GPS/mapa e pedido de corrida
+- driver online/offline e descoberta de solicitações
+- aceite de corrida
+- polling de notificações/estado
+- estados operacionais de Ride
+- endpoints backend para solicitação disponível e rideId no aceite
 
-## Regras
-- R$99,90/mês.
-- 0% de comissão.
-- Provider mantém 100% do valor do serviço.
-- A assinatura nunca altera retroativamente o preço de serviços realizados.
+## Próximas entregas
+- [x] cancelamento mobile
+- [x] pagamento conectado à corrida e confirmação pelo provider
+- [x] rating pós-corrida
+- [x] localização contínua do motorista
+- [x] matching/ranking por distância real
+- [x] timeout/expiração operacional
+- [ ] E2E físico passageiro + motorista
+- [ ] estabilização e regressão
 
 ## Gate
-Ciclo de assinatura consistente, auditável e idempotente, sem alterar o valor devido ao profissional por serviços realizados.
+Um passageiro e um motorista conseguem completar uma corrida real em dispositivos distintos contra a API Nexo, com o backend como autoridade dos estados, sem intervenção manual no banco. O código está preparado para o gate, mas a validação física ainda não foi executada.
 
-## Próxima fase
-FASE 12 — CRESCIMENTO E RETENÇÃO.
+## Depois do gate
+Retomar **FASE 11 — Assinatura dos Profissionais** e seguir automaticamente para FASE 12 e FASE 13 conforme os gates do roadmap.

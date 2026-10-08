@@ -5,6 +5,9 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  IsLatitude,
+  IsLongitude,
+  IsNumber,
   IsUUID,
   MaxLength,
   Min,
@@ -75,4 +78,21 @@ export class CancelDto {
   @IsString()
   @MaxLength(500)
   reason?: string;
+}
+
+
+export class ProviderLocationDto {
+  @IsLatitude()
+  latitude!: number;
+
+  @IsLongitude()
+  longitude!: number;
+
+  @IsNumber()
+  @IsOptional()
+  speedMetersPerSecond?: number;
+
+  @IsNumber()
+  @IsOptional()
+  headingDegrees?: number;
 }

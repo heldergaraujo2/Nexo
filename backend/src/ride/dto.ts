@@ -5,6 +5,7 @@ import {
   IsLongitude,
   IsNumber,
   IsObject,
+  IsOptional,
   ValidateNested,
 } from 'class-validator';
 
@@ -45,4 +46,23 @@ export class ChangeRideRouteDto {
 export class RideReasonDto {
   @IsObject()
   metadata?: Record<string, unknown>;
+}
+
+
+export class UpdateDriverLocationDto {
+  @IsLatitude()
+  latitude!: number;
+
+  @IsLongitude()
+  longitude!: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  speedMetersPerSecond?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  headingDegrees?: number;
 }
