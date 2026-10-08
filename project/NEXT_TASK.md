@@ -20,6 +20,9 @@ PR de validação: #24 — `feat: phase 12 growth and retention`.
 ## Gate
 PENDENTE — métricas principais implementadas; falta validação CI completa da Fase 12.
 
+### BLOQUEIO DE AMBIENTE
+O workflow não iniciou para o HEAD atual. É necessário um disparo/execução de GitHub Actions que não está disponível nas ferramentas atuais. Nenhuma funcionalidade da Fase 12 depende do usuário para implementação; somente a execução do pipeline permanece externa.
+
 ## Critérios de execução
 Preservar autorização, privacidade, auditoria, idempotência e integridade financeira existentes. Não alterar silenciosamente as regras comerciais do Nexo.
 
