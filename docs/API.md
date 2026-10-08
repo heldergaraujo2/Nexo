@@ -151,3 +151,21 @@ Guincho usa oferta com preço para preservar preço rastreável no Service. O pr
 - GET /v1/subscriptions/:id/history — provider reads the billing history for an owned subscription.
 
 The professional plan is fixed at 9990 integer cents (R$99.90) in BRL. Billing is accessed through a BillingAdapter; the repository stub is test/development-only and production fails closed until an external billing provider is configured. Subscription state never changes a completed service price.
+
+
+### Growth & Retention — Fase 12
+- GET /v1/growth/me/referral-code — gera/retorna código de indicação.
+- POST /v1/growth/referrals/claim — associa indicação; exige Idempotency-Key e bloqueia autoindicação.
+- GET /v1/growth/campaigns — lista campanhas ativas.
+- POST /v1/growth/campaigns/redeem — registra resgate; exige Idempotency-Key.
+- POST /v1/growth/founders/enroll — registra participação no programa inicial/fundadores; exige Idempotency-Key.
+- GET /v1/growth/me/recurring-customers — clientes recorrentes do provider ou status de recorrência do customer.
+- GET /v1/admin/growth/metrics/acquisition — métricas de aquisição; admin/moderator.
+- GET /v1/admin/growth/metrics/supply-demand — métricas de oferta/demanda; admin/moderator.
+- GET /v1/admin/growth/metrics/conversion — métricas de conversão; admin/moderator.
+- GET /v1/admin/growth/metrics/retention — coortes de retenção; admin/moderator.
+- POST /v1/admin/growth/campaigns — cria campanha; admin/moderator.
+- GET /v1/admin/growth/referrals — consulta indicações; admin/moderator.
+- GET /v1/admin/growth/founders — consulta fundadores; admin/moderator.
+
+Campanhas e programa de fundadores não introduzem descontos ou recompensas financeiras não definidos pelo produto.
