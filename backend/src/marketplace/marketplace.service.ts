@@ -178,7 +178,10 @@ export class MarketplaceService {
           );
         }
 
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+        if (
+          row.category === 'passenger_car' ||
+          row.category === 'passenger_motorcycle'
+        ) {
           if (dto.offerType !== 'direct_accept')
             throw new ConflictException(
               'Passenger transport does not allow price negotiation',
@@ -274,7 +277,9 @@ export class MarketplaceService {
           );
         }
         if (row.category === 'delivery' || row.category === 'towing') {
-          throw new ConflictException('This category must be accepted through a priced offer');
+          throw new ConflictException(
+            'This category must be accepted through a priced offer',
+          );
         }
         await this.assertProviderEligible(
           client,
@@ -306,7 +311,10 @@ export class MarketplaceService {
          provider_id AS "providerId",category,status,created_at AS "createdAt"`,
           [requestId, offerId, row.customer_id, user.accountId, row.category],
         );
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+        if (
+          row.category === 'passenger_car' ||
+          row.category === 'passenger_motorcycle'
+        ) {
           const ride = await this.rides.createRideForService(
             client,
             service.rows[0].id,
@@ -314,7 +322,10 @@ export class MarketplaceService {
             row.origin,
             row.destination,
           );
-          await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
+          await client.query(
+            "UPDATE services SET price_cents=$1,currency='BRL',updated_at=NOW() WHERE id=$2",
+            [ride.fareCents, service.rows[0].id],
+          );
           service.rows[0].priceCents = Number(ride.fareCents);
         }
         if (row.category === 'delivery') {
@@ -402,7 +413,10 @@ export class MarketplaceService {
           row.category,
           row.customer_id,
         );
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+        if (
+          row.category === 'passenger_car' ||
+          row.category === 'passenger_motorcycle'
+        ) {
           throw new ConflictException(
             'Passenger transport does not allow negotiated offers',
           );
