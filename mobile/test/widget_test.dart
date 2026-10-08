@@ -35,4 +35,13 @@ void main() {
     );
     expect(enabled.onPressed, isNotNull);
   });
+  testWidgets('subscription screen exposes fixed monthly plan and history', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: SubscriptionPage()));
+    expect(find.text('Assinatura profissional'), findsOneWidget);
+    expect(find.text(r'R$ 99,90 / mês'), findsOneWidget);
+    expect(find.text('0% de comissão sobre os serviços. Você mantém 100% do valor do serviço.'), findsOneWidget);
+    expect(find.text('Ver histórico de cobrança'), findsOneWidget);
+  });
 }
+
+
