@@ -71,7 +71,7 @@ class _PassengerHomePageState extends State<PassengerHomePage>{
       Material(elevation:8,child:Padding(padding:const EdgeInsets.all(16),child:Column(children:[
         SegmentedButton<String>(segments:const[ButtonSegment(value:'car',label:Text('Carro'),icon:Icon(Icons.directions_car)),ButtonSegment(value:'motorcycle',label:Text('Moto'),icon:Icon(Icons.two_wheeler))],selected:{vehicle},onSelectionChanged:(v)=>setState(()=>vehicle=v.first)),
         const SizedBox(height:8),Text(destination==null?'Toque no mapa para escolher o destino.':'Destino selecionado. Toque no mapa para alterar.'),
-        if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),const SizedBox(height:8),
+        if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),const SizedBox(height:8),
         SizedBox(width:double.infinity,child:FilledButton.icon(onPressed:locating||requesting||origin==null||destination==null?null:requestRide,icon:const Icon(Icons.local_taxi),label:Text(requesting?'Solicitando...':'Solicitar corrida'))),
       ]))) ]));}
   Future<void> logout()async{await NexoApiClient.clearSession();if(!mounted)return;Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false);}
@@ -81,7 +81,7 @@ class DriverHomePage extends StatefulWidget{const DriverHomePage({super.key});@o
 class _DriverHomePageState extends State<DriverHomePage>{
   NexoApiClient? api;Timer? timer;List<Map<String,dynamic>> requests=[];bool online=false,busy=false;String? error;
   @override void initState(){super.initState();NexoApiClient.load().then((a){if(mounted)setState(()=>api=a);});}
-  @override void dispose(){timer?.cancel();super.dispose();}
+  @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
   Future<void> setOnline(bool value)async{if(api==null)return;setState(()=>busy=true);try{await api!.put('/me/marketplace',{'categories':['passenger_car','passenger_motorcycle'],'availability':value?'available':'offline','acceptingRequests':value});if(!mounted)return;setState(()=>online=value);timer?.cancel();if(value){await refresh();if(!mounted)return;timer=Timer.periodic(const Duration(seconds:4),(_)=>unawaited(refresh()));}else{setState(()=>requests=[]);}}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   Future<void> refresh()async{if(api==null||!online)return;try{final d=await api!.get('/requests/available');if(mounted)setState(()=>requests=List<Map<String,dynamic>>.from(d as List));}catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/'+r['id'].toString()+'/accept',{},idempotencyKey:'accept-'+r['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?,rideId:s['rideId'] as String?)));await refresh();}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
@@ -100,15 +100,24 @@ class RideTrackingPage extends StatefulWidget{
   @override State<RideTrackingPage> createState()=>_RideTrackingPageState();
 }
 class _RideTrackingPageState extends State<RideTrackingPage>{
-  Timer? timer;String state='open';int? fare;String? error;String? rideId;
-  @override void initState(){super.initState();rideId=widget.rideId;poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>poll());}
+  Timer? timer;Timer? locationTimer;String state='open';int? fare;String? error;String? rideId;Map<String,dynamic>? driverLocation;
+  @override void initState(){super.initState();rideId=widget.rideId;poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>unawaited(poll()));if(!widget.passenger){locationTimer=Timer.periodic(const Duration(seconds:8),(_)=>unawaited(pushDriverLocation()));}}
   @override void dispose(){timer?.cancel();super.dispose();}
   Future<void> poll()async{try{
     final r=await widget.api.get('/requests/'+widget.requestId);if(mounted)setState(()=>state=r['status']?.toString()??state);
     final ns=await widget.api.get('/me/notifications');
     if(ns is List)for(final n in ns){if(n is Map){final p=n['payload'];if(p is Map&&p['requestId']==widget.requestId&&n['type']=='service_request.accepted'){state='accepted';final sid=p['serviceId'];if(sid is String){final s=await widget.api.get('/services/'+sid);if(mounted)setState(()=>fare=s['priceCents'] as int?);}}if(n['type'].toString().startsWith('ride.')&&p is Map&&p['rideId']!=null)rideId=p['rideId'].toString();}}
-    if(rideId!=null){final ride=await widget.api.get('/rides/'+rideId!);if(mounted)setState(()=>state=ride['state']?.toString()??state);}
+    if(rideId!=null){final ride=await widget.api.get('/rides/'+rideId!);if(mounted)setState((){state=ride['state']?.toString()??state;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}
   }catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
+  Future<void> pushDriverLocation()async{
+    if(widget.passenger||rideId==null||!['accepted','driver_en_route','arrived','started'].contains(state))return;
+    try{
+      final p=await NexoLocationService.current();
+      await widget.api.post('/rides/'+rideId!+'/location',{'latitude':p.latitude,'longitude':p.longitude},idempotencyKey:'location-'+rideId!+'-'+DateTime.now().millisecondsSinceEpoch.toString());
+    }catch(e){
+      if(mounted)setState(()=>error=_friendlyError(e));
+    }
+  }
   Future<void> action(String a)async{if(rideId==null){setState(()=>error='A corrida ainda está sendo vinculada. Aguarde alguns segundos.');return;}try{await widget.api.post('/rides/'+rideId!+'/'+a,{},idempotencyKey:'ride-'+rideId!+'-'+a+'-'+DateTime.now().microsecondsSinceEpoch.toString());await poll();}catch(e){setState(()=>error=_friendlyError(e));}}
   String label()=>switch(state){'accepted'=>'Motorista aceitou a corrida','driver_en_route'=>'Motorista a caminho','arrived'=>'Motorista chegou','started'=>'Viagem em andamento','completed'=>'Viagem concluída','cancelled'=>'Corrida cancelada',_=>'Aguardando motorista'};
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.passenger?'Sua corrida':'Corrida em atendimento')),body:ListView(padding:const EdgeInsets.all(20),children:[
