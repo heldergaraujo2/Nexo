@@ -52,6 +52,7 @@ jobs:
         with:
           name: prettier-diagnostics
           path: /tmp/prettier.log
+        continue-on-error: true
       - name: Apply database migrations
         working-directory: .
         env:
