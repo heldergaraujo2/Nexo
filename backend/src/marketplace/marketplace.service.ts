@@ -31,6 +31,7 @@ export class MarketplaceService {
 
   async setAvailability(user: AuthPrincipal, dto: MarketplaceAvailabilityDto) {
     this.assertProvider(user);
+    await this.db.query(`UPDATE service_requests SET status='expired',updated_at=NOW() WHERE status IN ('open','matched') AND expires_at IS NOT NULL AND expires_at<=NOW()`);
     const result = await this.db.query(
       `INSERT INTO provider_marketplace
        (account_id,categories,availability,accepting_requests)
@@ -119,7 +120,7 @@ export class MarketplaceService {
        FROM service_requests r
        JOIN profiles p ON p.account_id=r.customer_id
        CROSS JOIN provider_marketplace pm
-       WHERE r.status IN ('open','matched')
+       WHERE r.status IN ('open','matched') AND (r.expires_at IS NULL OR r.expires_at>NOW())
          AND r.category IN ('passenger_car','passenger_motorcycle')
          AND pm.account_id=$1
          AND pm.availability='available'
@@ -308,7 +309,7 @@ export class MarketplaceService {
       {},
       async (client) => {
         const request = await client.query(
-          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination,requirements
+          `SELECT id,customer_id,category,status,matched_provider_id,origin,destination,requirements,expires_at
          FROM service_requests WHERE id=$1 FOR UPDATE`,
           [requestId],
         );
@@ -318,6 +319,10 @@ export class MarketplaceService {
           throw new ConflictException(
             'Request is not available for acceptance',
           );
+        }
+        if (row.expires_at && new Date(row.expires_at).getTime() <= Date.now()) {
+          await client.query(`UPDATE service_requests SET status='expired',updated_at=NOW() WHERE id=$1`, [requestId]);
+          throw new ConflictException('Request has expired');
         }
         if (row.category === 'delivery' || row.category === 'towing') {
           throw new ConflictException('This category must be accepted through a priced offer');
