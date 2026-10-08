@@ -44,6 +44,24 @@ export class MarketplaceService {
     return result.rows[0];
   }
 
+  async updateProviderLocation(user: AuthPrincipal, dto: { latitude: number; longitude: number }) {
+    this.assertProvider(user);
+    const latitude = Number(dto.latitude);
+    const longitude = Number(dto.longitude);
+    if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+      throw new ConflictException('Invalid provider location');
+    }
+    const result = await this.db.query(
+      `UPDATE provider_marketplace
+       SET current_latitude=$1,current_longitude=$2,location_updated_at=NOW(),updated_at=NOW()
+       WHERE account_id=$3
+       RETURNING current_latitude AS "latitude",current_longitude AS "longitude",location_updated_at AS "updatedAt"`,
+      [latitude, longitude, user.accountId],
+    );
+    if (!result.rowCount) throw new NotFoundException('Provider marketplace profile not found');
+    return result.rows[0];
+  }
+
   async createRequest(
     user: AuthPrincipal,
     dto: CreateServiceRequestDto,
