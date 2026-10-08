@@ -1,13 +1,14 @@
 # Nexo — Changelog
 
-## 1.8.0 — FASE 12 em execução
+## 1.9.0 — FASE 13 em execução
 - Gate da FASE 11 aprovado pelo CI run 37815556772.
 - Backend: migrations, typecheck, testes, build, lint e format:check verdes.
 - Mobile: analyze, testes e APK debug verdes.
 - FASE 12 iniciada automaticamente conforme roadmap oficial.
 - Implementada a base de crescimento e retenção: indicação, campanhas, fundadores, clientes recorrentes e métricas administrativas.
 - Migration 013 adicionada com qualificação automática de indicação após serviço concluído.
-- PR #24 aberta para validação do gate.
+- PR #24 validada pelo CI run 37819635305 com backend e mobile verdes.
+- Fase 12 oficialmente aprovada; Fase 13 iniciada automaticamente.
 
 ## 1.7.0 — FASE 11 em execução
 - Migration 012 para subscriptions e subscription_charges.
