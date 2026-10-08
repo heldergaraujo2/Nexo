@@ -374,6 +374,7 @@ export class MarketplaceService {
           status: 201,
           body: {
             ...service.rows[0],
+            rideId: acceptedRideId,
             priceCents:
               service.rows[0].priceCents === null
                 ? null
