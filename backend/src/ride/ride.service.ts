@@ -41,8 +41,8 @@ export class RideService {
         const tariff = TARIFF_CENTS_PER_KM[dto.vehicleType];
         const fareCents = Math.floor((distanceMeters * tariff + 50) / 100);
         const request = await client.query(
-          `INSERT INTO service_requests (customer_id,category,requirements,origin,destination,status)
-           VALUES ($1,$2,$3,$4,$5,'open')
+          `INSERT INTO service_requests (customer_id,category,requirements,origin,destination,status,expires_at)
+           VALUES ($1,$2,$3,$4,$5,'open',NOW()+INTERVAL '5 minutes')
            RETURNING id`,
           [
             user.accountId,
