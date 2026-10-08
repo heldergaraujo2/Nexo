@@ -10,7 +10,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
-import { ChangeRideRouteDto, CreatePassengerRideDto } from './dto';
+import { ChangeRideRouteDto, CreatePassengerRideDto, UpdateDriverLocationDto } from './dto';
 import { RideService } from './ride.service';
 
 @UseGuards(AuthGuard)
@@ -30,6 +30,16 @@ export class RideController {
   @Get(':rideId')
   get(@Req() req: AuthenticatedRequest, @Param('rideId') rideId: string) {
     return this.rides.get(req.user, rideId);
+  }
+
+  @Post(':rideId/location')
+  updateDriverLocation(
+    @Req() req: AuthenticatedRequest,
+    @Param('rideId') rideId: string,
+    @Headers('idempotency-key') key: string,
+    @Body() dto: UpdateDriverLocationDto,
+  ) {
+    return this.rides.updateDriverLocation(req.user, rideId, dto, key);
   }
 
   @Post(':rideId/driver-en-route')
