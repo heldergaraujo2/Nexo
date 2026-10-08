@@ -237,3 +237,21 @@ Run 258: backend verde; Android APK falhou por erro transitório do runner ao ba
 
 ### Next
 Concluir MOB-9/MOB-10 e somente então retomar FASE 11 — Assinatura dos Profissionais.
+
+
+## 1.8.0 — MOBILIDADE E2E operacionalizada
+### Added
+- cancelamento mobile de solicitações/corridas
+- registro de pagamento e confirmação pelo provider no fluxo da corrida
+- avaliação pós-corrida conectada ao Trust
+- localização contínua do provider durante a corrida
+- localização operacional do provider enquanto online
+- ranking de solicitações de passageiros por proximidade
+- expiração operacional de solicitações de passageiros
+- testes de integração para localização e ranking
+- migration 012 para localização durante corrida
+- migration 013 para localização de provider
+- CI atualizado para aplicar as novas migrations e removida aplicação duplicada da migration de cargo
+
+### Gate
+**PENDENTE:** validação E2E física com passageiro e motorista em dispositivos distintos, permissões, LAN/GPS, estabilidade e regressão final.
