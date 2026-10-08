@@ -10,9 +10,11 @@ export class RequestContextMiddleware implements NestMiddleware {
     const requestId = req.header('x-request-id')?.trim() || randomUUID();
     const startedAt = process.hrtime.bigint();
     res.setHeader('x-request-id', requestId);
+    res.setHeader('x-content-type-options', 'nosniff');
     res.on('finish', () => {
       const durationMs =
         Number(process.hrtime.bigint() - startedAt) / 1_000_000;
+      res.setHeader('x-response-time-ms', String(Math.round(durationMs * 100) / 100));
       this.logger.log(
         JSON.stringify({
           requestId,
