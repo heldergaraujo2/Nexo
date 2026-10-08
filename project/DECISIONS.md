@@ -127,3 +127,20 @@ Cargo/freight uses a dedicated versioned proposal chain. Each response creates t
 ## DEC-024 — Towing price and safety boundary
 **Status:** ACCEPTED FOR PHASE 10
 Towing does not receive a new fixed tariff. Its price is represented by a priced Marketplace Offer and becomes the Service price at acceptance. Towing execution requires an eligible provider with a verified vehicle and no active block relationship with the customer. This preserves existing pricing flexibility without changing passenger/cargo rules.
+
+
+## DEC-030 — Mobility E2E before monetization
+**Status:** ACCEPTED
+The existing domain phases 0–10 remain complete at the backend/domain level, but the product roadmap inserts an operational mobility block before Fase 11. The first commercial mobility milestone is a real passenger + driver vertical slice in Flutter against the Nexo API. Subscription/growth work resumes only after the physical E2E gate is approved.
+
+## DEC-031 — Initial mobile real-time strategy
+**Status:** ACCEPTED FOR MVP
+The first mobile vertical slice uses persisted notifications plus short-interval polling. This keeps the server authoritative and avoids introducing WebSocket infrastructure before measured need. WebSocket/SSE may replace or complement polling after E2E validation.
+
+## DEC-032 — API endpoint configuration
+**Status:** ACCEPTED
+The mobile app must not assume localhost for a physical device. The API base URL is configurable and persisted in the app; Android emulator defaults may use the emulator host alias, while a physical phone must use the development PC LAN address.
+
+## DEC-033 — Location and map adapters
+**Status:** ACCEPTED FOR MVP
+Flutter uses device geolocation and an interactive map for origin/destination selection. Server-side distance and fare calculation remain authoritative. Continuous driver tracking and routing providers are separate follow-up work.
