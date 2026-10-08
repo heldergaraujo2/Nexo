@@ -29,8 +29,12 @@ CREATE TABLE IF NOT EXISTS subscription_charges (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   paid_at TIMESTAMPTZ,
   UNIQUE(subscription_id,period_start),
+  UNIQUE(subscription_id,provider_id),
   UNIQUE(provider_id,idempotency_key),
-  CHECK (period_end>period_start)
+  CHECK (period_end>period_start),
+  CONSTRAINT fk_subscription_charges_subscription_provider
+    FOREIGN KEY (subscription_id, provider_id)
+    REFERENCES subscriptions(id, provider_id)
 );
 CREATE INDEX IF NOT EXISTS idx_subscription_charges_provider ON subscription_charges(provider_id,created_at DESC);
 INSERT INTO schema_migrations(version) VALUES ('012_subscriptions') ON CONFLICT(version) DO NOTHING;
