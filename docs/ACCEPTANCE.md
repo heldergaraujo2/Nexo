@@ -147,3 +147,17 @@ A aprovação deste gate autoriza o início da FASE 1 — Fundação Técnica, m
 
 ### Resultado
 **PENDENTE.** A implementação está pronta para validação final do CI; a FASE 12 somente pode iniciar após o gate completo.
+
+
+## Fase 12 — Crescimento e Retenção
+- [x] indicação rastreável e protegida contra autoindicação/duplicidade
+- [x] campanhas com janela e resgate auditável
+- [x] programa inicial/fundadores
+- [x] favoritos existentes no Trust preservados
+- [x] clientes recorrentes derivados de serviços concluídos
+- [x] métricas de aquisição
+- [x] métricas de oferta e demanda
+- [x] métricas de conversão
+- [x] métricas de retenção por coorte
+- [x] ferramentas administrativas com RBAC
+- [ ] gate final: CI da Fase 12 verde após todos os artefatos e regressões
