@@ -443,7 +443,11 @@ export class MarketplaceService {
           ],
         );
         if (row.category === 'delivery') {
-          await this.deliveries.createForService(client, service.rows[0].id, row);
+          await this.deliveries.createForService(
+            client,
+            service.rows[0].id,
+            row,
+          );
         }
         if (row.category === 'towing') {
           await this.towing.createForService(client, service.rows[0].id, row);
