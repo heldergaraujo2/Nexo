@@ -48,6 +48,11 @@ export class MarketplaceController {
       .then((result) => result.body);
   }
 
+  @Get('requests/available')
+  availableRequests(@Req() req: AuthenticatedRequest) {
+    return this.marketplace.availableRequests(req.user);
+  }
+
   @Get('requests/:requestId')
   getRequest(
     @Req() req: AuthenticatedRequest,
