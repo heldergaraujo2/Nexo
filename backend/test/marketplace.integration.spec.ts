@@ -46,6 +46,14 @@ describe('marketplace API integration', () => {
         users,
       );
       await db.query(
+        'DELETE FROM subscription_charges WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (' + placeholders + '))',
+        users,
+      );
+      await db.query(
+        'DELETE FROM subscriptions WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (' + placeholders + '))',
+        users,
+      );
+      await db.query(
         `DELETE FROM accounts WHERE email IN (${placeholders})`,
         users,
       );
@@ -56,6 +64,7 @@ describe('marketplace API integration', () => {
   it('creates a request, discovers eligible providers and supports idempotent direct acceptance', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
+    await activateSubscription(provider.token);
     await marketplace(provider.token, {
       categories: ['general'],
       availability: 'available',
@@ -150,6 +159,7 @@ describe('marketplace API integration', () => {
     const providerA = await register('provider');
     const providerB = await register('provider');
     for (const provider of [providerA, providerB]) {
+      await activateSubscription(provider.token);
       await marketplace(provider.token, {
         categories: ['concurrency'],
         availability: 'available',
@@ -196,6 +206,7 @@ describe('marketplace API integration', () => {
   it('supports priced offers, customer acceptance and service state transitions', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
+    await activateSubscription(provider.token);
     await marketplace(provider.token, {
       categories: ['priced'],
       availability: 'available',
@@ -281,6 +292,27 @@ describe('marketplace API integration', () => {
     expect(missingKey.status).toBe(409);
   });
 });
+
+async function activateSubscription(token: string) {
+  const created = await request(
+    app,
+    '/v1/subscriptions',
+    'POST',
+    {},
+    token,
+    randomUUID(),
+  );
+  expect(created.status, JSON.stringify(created.body)).toBe(201);
+  const renewed = await request(
+    app,
+    `/v1/subscriptions/${created.body.id}/renew`,
+    'POST',
+    undefined,
+    token,
+    randomUUID(),
+  );
+  expect(renewed.status, JSON.stringify(renewed.body)).toBe(200);
+}
 
 async function register(role: 'customer' | 'provider') {
   const email = `phase4-${role}-${randomUUID()}@example.test`;
