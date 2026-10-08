@@ -197,132 +197,126 @@ describe('phase 11 subscriptions', () => {
       ).status,
     ).toBe(403);
   });
-  it(
-    'rejects providers without an active subscription in marketplace eligibility',
-    async () => {
-      const p = await register('provider');
-      const c = await register('customer');
-      await call(
-        '/v1/me/marketplace',
-        'PUT',
-        {
-          categories: ['passenger_car'],
-          availability: 'available',
-          acceptingRequests: true,
-        },
-        p.token,
-      );
-      const request = await call(
-        '/v1/requests',
-        'POST',
-        {
-          category: 'passenger_car',
-          origin: { latitude: 0, longitude: 0 },
-          destination: { latitude: 0.01, longitude: 0.01 },
-        },
-        c.token,
-        randomUUID(),
-      );
-      expect(request.status).toBe(201);
-      const offer = await call(
-        '/v1/requests/' + request.body.id + '/offers',
-        'POST',
-        { offerType: 'direct_accept' },
-        p.token,
-        randomUUID(),
-      );
-      expect(offer.status).toBe(403);
-    },
-  );
-  it(
-    'blocks new marketplace offers after subscription cancellation',
-    async () => {
-      const p = await register('provider');
-      const c = await register('customer');
-      await call(
-        '/v1/me/marketplace',
-        'PUT',
-        {
-          categories: ['passenger_car'],
-          availability: 'available',
-          acceptingRequests: true,
-        },
-        p.token,
-      );
-      const request = await call(
-        '/v1/requests',
-        'POST',
-        {
-          category: 'passenger_car',
-          origin: { latitude: 0, longitude: 0 },
-          destination: { latitude: 0.01, longitude: 0.01 },
-        },
-        c.token,
-        randomUUID(),
-      );
-      expect(request.status).toBe(201);
-      const sub = await call(
-        '/v1/subscriptions',
-        'POST',
-        {},
-        p.token,
-        randomUUID(),
-      );
-      expect(
-        (
-          await call(
-            '/v1/subscriptions/' + sub.body.id + '/renew',
-            'POST',
-            undefined,
-            p.token,
-            randomUUID(),
-          )
-        ).status,
-      ).toBe(200);
-      expect(
-        (
-          await call(
-            '/v1/subscriptions/' + sub.body.id + '/cancel',
-            'POST',
-            { reason: 'test' },
-            p.token,
-            randomUUID(),
-          )
-        ).status,
-      ).toBe(200);
-      const offer = await call(
-        '/v1/requests/' + request.body.id + '/offers',
-        'POST',
-        { offerType: 'direct_accept' },
-        p.token,
-        randomUUID(),
-      );
-      expect(offer.status).toBe(403);
-    },
-  );
-  it(
-    'enforces database ownership between charges and subscriptions',
-    async () => {
-      const p = await register('provider');
-      const other = await register('provider');
-      const sub = await call(
-        '/v1/subscriptions',
-        'POST',
-        {},
-        p.token,
-        randomUUID(),
-      );
-      await expect(
-        db.query(
-          `INSERT INTO subscription_charges(
-            subscription_id,provider_id,period_start,period_end,
-            amount_cents,currency,status,idempotency_key
-          ) VALUES($1,$2,NOW(),NOW()+INTERVAL '1 month',9990,'BRL','pending',$3)`,
-          [sub.body.id, other.id, randomUUID()],
-        ),
-      ).rejects.toThrow();
-    },
-  );
+  it('rejects providers without an active subscription in marketplace eligibility', async () => {
+    const p = await register('provider');
+    const c = await register('customer');
+    await call(
+      '/v1/me/marketplace',
+      'PUT',
+      {
+        categories: ['passenger_car'],
+        availability: 'available',
+        acceptingRequests: true,
+      },
+      p.token,
+    );
+    const request = await call(
+      '/v1/requests',
+      'POST',
+      {
+        category: 'passenger_car',
+        origin: { latitude: 0, longitude: 0 },
+        destination: { latitude: 0.01, longitude: 0.01 },
+      },
+      c.token,
+      randomUUID(),
+    );
+    expect(request.status).toBe(201);
+    const offer = await call(
+      '/v1/requests/' + request.body.id + '/offers',
+      'POST',
+      { offerType: 'direct_accept' },
+      p.token,
+      randomUUID(),
+    );
+    expect(offer.status).toBe(403);
+  
+  });
+  it('blocks new marketplace offers after subscription cancellation', async () => {
+    const p = await register('provider');
+    const c = await register('customer');
+    await call(
+      '/v1/me/marketplace',
+      'PUT',
+      {
+        categories: ['passenger_car'],
+        availability: 'available',
+        acceptingRequests: true,
+      },
+      p.token,
+    );
+    const request = await call(
+      '/v1/requests',
+      'POST',
+      {
+        category: 'passenger_car',
+        origin: { latitude: 0, longitude: 0 },
+        destination: { latitude: 0.01, longitude: 0.01 },
+      },
+      c.token,
+      randomUUID(),
+    );
+    expect(request.status).toBe(201);
+    const sub = await call(
+      '/v1/subscriptions',
+      'POST',
+      {},
+      p.token,
+      randomUUID(),
+    );
+    expect(
+      (
+        await call(
+          '/v1/subscriptions/' + sub.body.id + '/renew',
+          'POST',
+          undefined,
+          p.token,
+          randomUUID(),
+        )
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await call(
+          '/v1/subscriptions/' + sub.body.id + '/cancel',
+          'POST',
+          { reason: 'test' },
+          p.token,
+          randomUUID(),
+        )
+      ).status,
+    ).toBe(200);
+    const offer = await call(
+      '/v1/requests/' + request.body.id + '/offers',
+      'POST',
+      { offerType: 'direct_accept' },
+      p.token,
+      randomUUID(),
+    );
+    expect(offer.status).toBe(403);
+  
+  });
+  it('enforces database ownership between charges and subscriptions', async () => {
+    const p = await register('provider');
+    const other = await register('provider');
+    const sub = await call(
+      '/v1/subscriptions',
+      'POST',
+      {},
+      p.token,
+      randomUUID(),
+    );
+    await expect(
+      db.query(
+        `INSERT INTO subscription_charges(
+          subscription_id,provider_id,period_start,period_end,
+          amount_cents,currency,status,idempotency_key
+        ) VALUES($1,$2,NOW(),NOW()+INTERVAL '1 month',9990,'BRL','pending',$3)`,
+        [sub.body.id, other.id, randomUUID()],
+      ),
+    ).rejects.toThrow();
+  
+  });
   it('rejects foreign history and missing idempotency key', async () => {
     const p = await register('provider');
     const other = await register('provider');
