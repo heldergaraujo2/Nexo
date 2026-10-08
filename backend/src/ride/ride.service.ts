@@ -95,6 +95,70 @@ export class RideService {
     return result.rows[0];
   }
 
+  async updateDriverLocation(
+    user: AuthPrincipal,
+    rideId: string,
+    dto: { latitude: number; longitude: number; speedMetersPerSecond?: number; headingDegrees?: number },
+    key: string,
+  ) {
+    if (user.role !== 'provider') throw new ForbiddenException('Only the driver can update location');
+    if (!key || key.length > 128) throw new ConflictException('Valid Idempotency-Key is required');
+    const latitude = Number(dto.latitude);
+    const longitude = Number(dto.longitude);
+    const speed = dto.speedMetersPerSecond == null ? null : Number(dto.speedMetersPerSecond);
+    const heading = dto.headingDegrees == null ? null : Number(dto.headingDegrees);
+    if (
+      !Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
+      !Number.isFinite(longitude) || longitude < -180 || longitude > 180 ||
+      (speed !== null && (!Number.isFinite(speed) || speed < 0)) ||
+      (heading !== null && (!Number.isFinite(heading) || heading < 0 || heading >= 360))
+    ) {
+      throw new ConflictException('Invalid driver location');
+    }
+
+    const client = await this.db.connect();
+    try {
+      await client.query('BEGIN');
+      await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [
+        `ride-location:${user.accountId}:${rideId}:${key}`,
+      ]);
+      const result = await client.query(
+        `SELECT r.id,r.state,s.provider_id FROM rides r
+         JOIN services s ON s.id=r.service_id WHERE r.id=$1 FOR UPDATE`,
+        [rideId],
+      );
+      const row = result.rows[0];
+      if (!row) throw new NotFoundException('Ride not found');
+      if (row.provider_id !== user.accountId) throw new ForbiddenException('Ride access denied');
+      if (!['accepted', 'driver_en_route', 'arrived', 'started'].includes(row.state)) {
+        throw new ConflictException('Driver location cannot be updated in this state');
+      }
+      const updated = await client.query(
+        `UPDATE rides
+         SET driver_latitude=$1,driver_longitude=$2,driver_speed_mps=$3,
+             driver_heading_degrees=$4,driver_location_updated_at=NOW(),updated_at=NOW()
+         WHERE id=$5
+         RETURNING id,driver_latitude AS "latitude",driver_longitude AS "longitude",
+                   driver_speed_mps AS "speedMetersPerSecond",
+                   driver_heading_degrees AS "headingDegrees",
+                   driver_location_updated_at AS "updatedAt"`,
+        [latitude, longitude, speed, heading, rideId],
+      );
+      await client.query(
+        `INSERT INTO ride_events (ride_id,actor_id,from_state,to_state,reason)
+         VALUES ($1,$2,$3,$3,'driver_location')`,
+        [rideId, user.accountId, row.state],
+      );
+      await client.query('COMMIT');
+      return updated.rows[0];
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
   async get(user: AuthPrincipal, rideId: string) {
     const result = await this.db.query(
       `SELECT r.*,s.customer_id AS "customerId",s.provider_id AS "providerId"
@@ -115,7 +179,7 @@ export class RideService {
     try {
       await client.query('BEGIN');
       const result = await client.query(
-        `SELECT r.id,r.state,r.service_id,s.customer_id,s.provider_id
+        `SELECT r.*,r.id,r.state,r.service_id,s.customer_id,s.provider_id
          FROM rides r JOIN services s ON s.id=r.service_id WHERE r.id=$1 FOR UPDATE`,
         [rideId],
       );
@@ -249,6 +313,13 @@ export class RideService {
       startedAt: value('started_at') ?? value('startedAt') ?? null,
       completedAt: value('completed_at') ?? value('completedAt') ?? null,
       updatedAt: value('updated_at') ?? value('updatedAt') ?? null,
+      driverLocation: value('driverLocation') ?? (value('driver_latitude') == null ? null : {
+        latitude: Number(value('driver_latitude')),
+        longitude: Number(value('driver_longitude')),
+        speedMetersPerSecond: value('driver_speed_mps') == null ? null : Number(value('driver_speed_mps')),
+        headingDegrees: value('driver_heading_degrees') == null ? null : Number(value('driver_heading_degrees')),
+        updatedAt: value('driver_location_updated_at') ?? null,
+      }),
     };
   }
 
