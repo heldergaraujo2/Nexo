@@ -42,6 +42,14 @@ describe('phase 11 subscriptions', () => {
       [emails],
     );
     await db.query(
+      'DELETE FROM offers WHERE request_id IN (SELECT id FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])))',
+      [emails],
+    );
+    await db.query(
+      'DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',
+      [emails],
+    );
+    await db.query(
       'DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])) OR provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',
       [emails],
     );
