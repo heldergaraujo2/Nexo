@@ -113,7 +113,7 @@ describe('passenger transport integration', () => {
     expect((open.body.requests as unknown[]).some((item) => (item as Record<string, unknown>).id === created.body.requestId)).toBe(false);
 
     const denied = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, second.token, randomUUID());
-    expect(denied.status).toBe(403);
+    expect(denied.status).toBe(409);
   });
 
   it('recalculates price on route change and rejects stale route versions', async () => {
