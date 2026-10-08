@@ -107,14 +107,14 @@ class RideTrackingPage extends StatefulWidget{
   @override State<RideTrackingPage> createState()=>_RideTrackingPageState();
 }
 class _RideTrackingPageState extends State<RideTrackingPage>{
-  Timer? timer;Timer? locationTimer;String state='open';int? fare;String? error;String? rideId;String? serviceId;String? subjectId;Map<String,dynamic>? driverLocation;bool rated=false;
+  Timer? timer;Timer? locationTimer;String state='open';int? fare;String? error;String? rideId;String? serviceId;String? subjectId;String? paymentStatus;Map<String,dynamic>? driverLocation;bool rated=false;
   @override void initState(){super.initState();rideId=widget.rideId;serviceId=widget.serviceId;poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>unawaited(poll()));if(!widget.passenger){locationTimer=Timer.periodic(const Duration(seconds:8),(_)=>unawaited(pushDriverLocation()));}}
   @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
   Future<void> poll()async{try{
     final r=await widget.api.get('/requests/'+widget.requestId);if(mounted)setState(()=>state=r['status']?.toString()??state);
     final ns=await widget.api.get('/me/notifications');
     if(ns is List)for(final n in ns){if(n is Map){final p=n['payload'];if(p is Map&&p['requestId']==widget.requestId&&n['type']=='service_request.accepted'){state='accepted';final sid=p['serviceId'];if(sid is String){final s=await widget.api.get('/services/'+sid);if(mounted)setState((){serviceId=sid;fare=s['priceCents'] as int?;subjectId=(widget.passenger?s['providerId']:s['customerId'])?.toString();});}}if(n['type'].toString().startsWith('ride.')&&p is Map&&p['rideId']!=null)rideId=p['rideId'].toString();}}
-    if(rideId!=null){final ride=await widget.api.get('/rides/'+rideId!);if(mounted)setState((){state=ride['state']?.toString()??state;fare=ride['fareCents'] is num? (ride['fareCents'] as num).toInt():fare;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}
+    if(rideId!=null){final ride=await widget.api.get('/rides/'+rideId!);if(mounted)setState((){state=ride['state']?.toString()??state;fare=ride['fareCents'] is num? (ride['fareCents'] as num).toInt():fare;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}if(state=='completed'&&serviceId!=null){try{final payments=await widget.api.get('/payment-records/services/'+serviceId!);if(payments is List&&payments.isNotEmpty&&mounted)setState(()=>paymentStatus=payments.first['status']?.toString());}catch(_){}}
   }catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   Future<void> pushDriverLocation()async{
     if(widget.passenger||rideId==null||!['accepted','driver_en_route','arrived','started'].contains(state))return;
@@ -125,6 +125,17 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
       if(mounted)setState(()=>error=_friendlyError(e));
     }
   }
+  Future<void> confirmPayment()async{
+    if(serviceId==null||fare==null)return;
+    try{
+      final payments=await widget.api.get('/payment-records/services/'+serviceId!);
+      if(payments is! List||payments.isEmpty){if(mounted)setState(()=>error='O passageiro ainda não registrou o pagamento.');return;}
+      final payment=Map<String,dynamic>.from(payments.first as Map);
+      await widget.api.post('/payment-records/'+payment['id'].toString()+'/confirm',{'confirmedAmountCents':fare},idempotencyKey:'payment-confirm-'+payment['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());
+      if(mounted)setState(()=>paymentStatus='confirmed');
+    }catch(e){if(mounted)setState(()=>error=_friendlyError(e));}
+  }
+
   Future<void> cancelRide()async{
     try{
       if(rideId!=null){
@@ -158,7 +169,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
   String label()=>switch(state){'accepted'=>'Motorista aceitou a corrida','driver_en_route'=>'Motorista a caminho','arrived'=>'Motorista chegou','started'=>'Viagem em andamento','completed'=>'Viagem concluída','cancelled'=>'Corrida cancelada',_=>'Aguardando motorista'};
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.passenger?'Sua corrida':'Corrida em atendimento')),body:ListView(padding:const EdgeInsets.all(20),children:[
     Card(child:Padding(padding:const EdgeInsets.all(20),child:Column(children:[const Icon(Icons.local_taxi,size:64),const SizedBox(height:12),Text(label(),style:Theme.of(context).textTheme.headlineSmall,textAlign:TextAlign.center),Text('Solicitação: '+state),if(fare!=null)Text('Tarifa: R\\$ '+(fare!/100).toStringAsFixed(2),style:Theme.of(context).textTheme.titleLarge)]))),
-    if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),if(widget.passenger&&state!='completed'&&state!='cancelled')FilledButton.icon(onPressed:cancelRide,icon:const Icon(Icons.close),label:const Text('Cancelar corrida')),if(state=='completed'&&serviceId!=null&&widget.passenger)FilledButton.icon(onPressed:()=>Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>PaymentRecordPage(expectedAmountCents:fare??0,api:widget.api,serviceId:serviceId))),icon:const Icon(Icons.payments),label:const Text('Registrar pagamento')),if(state=='completed'&&serviceId!=null&&subjectId!=null&&!rated)FilledButton.icon(onPressed:rateService,icon:const Icon(Icons.star),label:const Text('Avaliar corrida')),
+    if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),if(widget.passenger&&state!='completed'&&state!='cancelled')FilledButton.icon(onPressed:cancelRide,icon:const Icon(Icons.close),label:const Text('Cancelar corrida')),if(state=='completed'&&serviceId!=null&&widget.passenger)FilledButton.icon(onPressed:()=>Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>PaymentRecordPage(expectedAmountCents:fare??0,api:widget.api,serviceId:serviceId))),icon:const Icon(Icons.payments),label:const Text('Registrar pagamento')),if(state=='completed'&&!widget.passenger&&paymentStatus!='confirmed')FilledButton.icon(onPressed:confirmPayment,icon:const Icon(Icons.verified),label:const Text('Confirmar pagamento')),if(paymentStatus=='confirmed')const ListTile(leading:Icon(Icons.check_circle),title:Text('Pagamento confirmado')),if(state=='completed'&&serviceId!=null&&subjectId!=null&&!rated)FilledButton.icon(onPressed:rateService,icon:const Icon(Icons.star),label:const Text('Avaliar corrida')),
     if(!widget.passenger&&rideId!=null)...[const SizedBox(height:12),FilledButton.icon(onPressed:()=>action('driver-en-route'),icon:const Icon(Icons.navigation),label:const Text('A caminho')),FilledButton.icon(onPressed:()=>action('arrived'),icon:const Icon(Icons.place),label:const Text('Cheguei')),FilledButton.icon(onPressed:()=>action('start'),icon:const Icon(Icons.play_arrow),label:const Text('Iniciar viagem')),FilledButton.icon(onPressed:()=>action('complete'),icon:const Icon(Icons.flag),label:const Text('Finalizar viagem'))],
   ]));
 }
