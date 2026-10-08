@@ -105,6 +105,7 @@ export class MarketplaceService {
 
   async availableRequests(user: AuthPrincipal) {
     this.assertProvider(user);
+    await this.db.query(`UPDATE service_requests SET status='expired',updated_at=NOW() WHERE status IN ('open','matched') AND expires_at IS NOT NULL AND expires_at<=NOW()`);
     const result = await this.db.query(
       `SELECT r.id,r.customer_id AS "customerId",r.category,r.description,r.requirements,
               r.origin,r.destination,r.status,r.created_at AS "createdAt",
