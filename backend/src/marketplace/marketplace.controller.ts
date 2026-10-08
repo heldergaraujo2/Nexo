@@ -28,6 +28,11 @@ export class MarketplaceController {
     private readonly marketplace: MarketplaceService,
   ) {}
 
+  @Get('me/marketplace/open-requests')
+  openRequests(@Req() req: AuthenticatedRequest) {
+    return this.marketplace.openRequests(req.user);
+  }
+
   @Put('me/marketplace')
   setAvailability(
     @Req() req: AuthenticatedRequest,
