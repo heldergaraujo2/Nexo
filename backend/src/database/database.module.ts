@@ -12,7 +12,9 @@ import { Pool } from 'pg';
           max: Number(process.env.DB_POOL_MAX ?? 10),
           min: Number(process.env.DB_POOL_MIN ?? 0),
           idleTimeoutMillis: Number(process.env.DB_IDLE_TIMEOUT_MS ?? 30000),
-          connectionTimeoutMillis: Number(process.env.DB_CONNECTION_TIMEOUT_MS ?? 5000),
+          connectionTimeoutMillis: Number(
+            process.env.DB_CONNECTION_TIMEOUT_MS ?? 5000,
+          ),
         }),
     },
   ],
