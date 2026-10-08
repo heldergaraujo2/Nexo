@@ -144,11 +144,6 @@ export class RideService {
                    driver_location_updated_at AS "updatedAt"`,
         [latitude, longitude, speed, heading, rideId],
       );
-      await client.query(
-        `INSERT INTO ride_events (ride_id,actor_id,from_state,to_state,reason)
-         VALUES ($1,$2,$3,$3,'driver_location')`,
-        [rideId, user.accountId, row.state],
-      );
       await client.query('COMMIT');
       return updated.rows[0];
     } catch (error) {
