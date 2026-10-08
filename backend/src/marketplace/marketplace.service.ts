@@ -195,10 +195,7 @@ export class MarketplaceService {
             'Delivery and towing acceptance require a priced offer',
           );
         }
-        if (
-          dto.offerType === 'priced_offer' &&
-          dto.amountCents === undefined
-        ) {
+        if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
         }
         const expiresAt = dto.expiresInMinutes
@@ -332,7 +329,11 @@ export class MarketplaceService {
           service.rows[0].priceCents = Number(ride.fareCents);
         }
         if (row.category === 'delivery') {
-          await this.deliveries.createForService(client, service.rows[0].id, row);
+          await this.deliveries.createForService(
+            client,
+            service.rows[0].id,
+            row,
+          );
         }
         if (row.category === 'towing') {
           await this.towing.createForService(client, service.rows[0].id, row);
