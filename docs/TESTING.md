@@ -140,3 +140,14 @@ Nenhum resultado de teste deve ser declarado sem execução real.
 - Coordenadas inválidas são rejeitadas pelo DTO e nunca entram no ranking.
 - Catálogo de categorias é extensível sem alterar o schema de solicitações.
 - CI executa backend e mobile completos antes do gate.
+
+
+### Fase 13 — escala e expansão
+- Migrations 014, 015 e 016 executam em banco limpo com ON_ERROR_STOP.
+- Pool PostgreSQL aceita limites e timeouts configuráveis sem comprometer readiness.
+- Correlation ID fornecido pelo cliente é preservado e um ID é gerado quando ausente.
+- Resposta inclui duração de request sem registrar payload.
+- Matching mantém categoria, elegibilidade, bloqueios e disponibilidade e pode priorizar distância quando há coordenadas válidas.
+- Coordenadas inválidas são rejeitadas pelo DTO e nunca entram no ranking.
+- Catálogo de categorias é extensível sem alterar o schema de solicitações.
+- CI executa backend e mobile completos antes do gate.
