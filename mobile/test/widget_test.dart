@@ -44,25 +44,33 @@ void main() {
     expect(find.text('Salvar cancelamento'), findsOneWidget);
   });
 
-  testWidgets('subscription lifecycle disables renewal after cancellation', (tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: SubscriptionPage(
-        subscription: SubscriptionView(
-          status: 'active',
-          amountCents: 9990,
-          currentPeriodEnd: DateTime(2026, 11, 8),
+  testWidgets(
+    'subscription lifecycle disables renewal after cancellation',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SubscriptionPage(
+            subscription: SubscriptionView(
+              status: 'active',
+              amountCents: 9990,
+              currentPeriodEnd: DateTime(2026, 11, 8),
+            ),
+          ),
         ),
-      ),
-    ));
+      );
     expect(find.text(r'R$ 99,90 / mês'), findsOneWidget);
     expect(find.text('Cancelar assinatura'), findsOneWidget);
     await tester.tap(find.text('Cancelar assinatura'));
     await tester.pump();
-    final renew = tester.widget<OutlinedButton>(
-      find.ancestor(of: find.text('Renovar assinatura'), matching: find.byType(OutlinedButton)),
-    );
-    expect(renew.onPressed, isNull);
-  });
+      final renew = tester.widget<OutlinedButton>(
+        find.ancestor(
+          of: find.text('Renovar assinatura'),
+          matching: find.byType(OutlinedButton),
+        ),
+      );
+      expect(renew.onPressed, isNull);
+    },
+  );
 }
 
 
