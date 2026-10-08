@@ -240,7 +240,7 @@ export class SubscriptionService {
         u.accountId + ':' + op,
       ]);
       const e = await c.query(
-        'SELECT request_hash AS 'requestHash',response_status AS 'responseStatus',response_body AS 'responseBody' FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE',
+        'SELECT request_hash AS "requestHash",response_status AS "responseStatus",response_body AS "responseBody" FROM idempotency_keys WHERE account_id=$1 AND idempotency_key=$2 AND operation=$3 FOR UPDATE',
         [u.accountId, key, op],
       );
       if (e.rowCount) {
