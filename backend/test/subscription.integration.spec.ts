@@ -348,6 +348,7 @@ describe('phase 11 subscriptions', () => {
     );
   });
 });
+
 async function register(role: 'customer' | 'provider') {
   const email = 'phase11-' + role + '-' + randomUUID() + '@example.test';
   emails.push(email);
