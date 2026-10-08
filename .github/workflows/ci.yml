@@ -60,6 +60,7 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/011_towing.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/012_subscriptions.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/013_growth_retention.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/014_scale_indexes.sql
       - name: Run npm run typecheck
         run: |
           set +e
