@@ -61,3 +61,8 @@ A implementação deve seguir LGPD.md e revisão jurídica antes do uso comercia
 - Campanhas não recebem valores monetários ou créditos implícitos sem regra comercial aprovada.
 - Relatórios administrativos ficam atrás de autenticação/autorização e expõem somente dados operacionais necessários.
 - Operações de crescimento são auditadas.
+
+## Escala — Fase 13
+- Readiness do backend valida conectividade PostgreSQL antes de considerar a instância pronta.
+- Requests recebem `x-request-id` e registram método, rota, status e duração; logs não incluem payloads, tokens ou PII.
+- Índices da migration 014 são orientados às consultas operacionais de crescimento e matching, mantendo constraints existentes.
