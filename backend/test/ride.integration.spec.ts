@@ -42,6 +42,7 @@ describe('passenger transport integration', () => {
   it('creates a passenger request, calculates deterministic fare and completes a ride', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
+    await activateSubscription(provider.token);
     await marketplace(provider.token, {
       categories: ['passenger_car'],
       availability: 'available',
@@ -94,6 +95,7 @@ describe('passenger transport integration', () => {
   it('recalculates price on route change and rejects stale route versions', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
+    await activateSubscription(provider.token);
     await marketplace(provider.token, { categories: ['passenger_motorcycle'], availability: 'available', acceptingRequests: true });
     const created = await request(app, '/v1/rides/requests', 'POST', {
       vehicleType: 'motorcycle',
@@ -123,6 +125,7 @@ describe('passenger transport integration', () => {
   it('rejects negotiated passenger offers', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
+    await activateSubscription(provider.token);
     await marketplace(provider.token, { categories: ['passenger_car'], availability: 'available', acceptingRequests: true });
     const created = await request(app, '/v1/rides/requests', 'POST', {
       vehicleType: 'car',
@@ -136,6 +139,13 @@ describe('passenger transport integration', () => {
     expect(offer.status, JSON.stringify(offer.body)).toBe(409);
   });
 });
+
+async function activateSubscription(token: string) {
+  const created = await request(app, '/v1/subscriptions', 'POST', {}, token, randomUUID());
+  expect(created.status, JSON.stringify(created.body)).toBe(201);
+  const renewed = await request(app, `/v1/subscriptions/${created.body.id}/renew`, 'POST', undefined, token, randomUUID());
+  expect(renewed.status, JSON.stringify(renewed.body)).toBe(200);
+}
 
 async function register(role: 'customer' | 'provider') {
   const email = `phase5-${role}-${randomUUID()}@example.test`;
