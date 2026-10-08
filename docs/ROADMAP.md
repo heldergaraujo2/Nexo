@@ -189,16 +189,16 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 **Objetivo:** expandir o marketplace para entrega de objetos/produtos.
 
 **Entregas**
-- [ ] origem/destino
-- [ ] descrição do item
-- [ ] fotos/mídia
-- [ ] observações
-- [ ] solicitação
-- [ ] ofertas
-- [ ] aceite
-- [ ] execução
-- [ ] conclusão
-- [ ] avaliação
+- [x] origem/destino
+- [x] descrição do item
+- [x] fotos/mídia
+- [x] observações
+- [x] solicitação
+- [x] ofertas
+- [x] aceite
+- [x] execução
+- [x] conclusão
+- [x] avaliação
 
 **Gate:** APROVADO — entrega completa de ponta a ponta com rastreabilidade operacional, preço por oferta, máquina de estados, auditoria, idempotência e validação mobile.
 
