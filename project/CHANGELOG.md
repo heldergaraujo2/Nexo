@@ -1,5 +1,12 @@
 # Nexo — Changelog
 
+## 1.8.0 — FASE 12 iniciada
+- Gate da FASE 11 aprovado pelo CI run 37815556772.
+- Backend: migrations, typecheck, testes, build, lint e format:check verdes.
+- Mobile: analyze, testes e APK debug verdes.
+- FASE 12 iniciada automaticamente conforme roadmap oficial.
+- Próximo foco: crescimento, retenção, métricas e ferramentas administrativas.
+
 ## 1.7.0 — FASE 11 em execução
 - Migration 012 para subscriptions e subscription_charges.
 - Plano profissional fixo em R$99,90 usando integer cents e BRL.
