@@ -976,12 +976,6 @@ export class MarketplaceService {
   }
 }
 
-            AND (request.origin->>'longitude') ~ '^-?[0-9]+(\\.[0-9]+)?`,
-      [request.category, user.accountId, requestId],
-    );
-    return result.rows;
-  }
-
   async createOffer(
     user: AuthPrincipal,
     requestId: string,
