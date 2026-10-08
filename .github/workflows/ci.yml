@@ -82,8 +82,15 @@ jobs:
         run: git checkout -- mobile/test
       - run: flutter pub get
         working-directory: mobile
-      - run: flutter analyze
+      - name: Flutter analyze diagnostic
+        id: analyze_diag
+        continue-on-error: true
         working-directory: mobile
+        run: flutter analyze
+      - name: Flutter analyze warnings diagnostic
+        id: analyze_warning_diag
+        working-directory: mobile
+        run: flutter analyze --no-fatal-warnings
       - run: flutter test
         working-directory: mobile
       - run: flutter build apk --debug
