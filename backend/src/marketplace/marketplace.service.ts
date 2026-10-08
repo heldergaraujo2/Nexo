@@ -796,10 +796,13 @@ export class MarketplaceService {
       throw new ForbiddenException('Provider is not eligible for this request');
 
     const subscription = await client.query(
-      "SELECT status FROM subscriptions WHERE provider_id=$1 ORDER BY created_at DESC LIMIT 1",
+      'SELECT status FROM subscriptions WHERE provider_id=$1 ORDER BY created_at DESC LIMIT 1',
       [providerId],
     );
-    if (subscription.rowCount && subscription.rows[0].status !== 'active') {
+    if (
+      subscription.rowCount &&
+      subscription.rows[0].status !== 'active'
+    ) {
       throw new ForbiddenException('Provider subscription is not active');
     }
 
