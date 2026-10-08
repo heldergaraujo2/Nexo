@@ -116,10 +116,11 @@ describe('passenger transport integration', () => {
     expect(location.status, JSON.stringify(location.body)).toBe(201);
     const passengerView = await request(app, `/v1/rides/${ride.body.id}`, 'GET', undefined, customer.token);
     expect(passengerView.status).toBe(200);
-    expect(passengerView.body.driverLocation.latitude).toBeCloseTo(-16.684, 6);
-    expect(passengerView.body.driverLocation.longitude).toBeCloseTo(-49.260, 6);
-    expect(passengerView.body.driverLocation.speedMetersPerSecond).toBe(8.5);
-    expect(passengerView.body.driverLocation.headingDegrees).toBe(120);
+    const driverLocation = passengerView.body.driverLocation as Record<string, unknown>;
+    expect(Number(driverLocation.latitude)).toBeCloseTo(-16.684, 6);
+    expect(Number(driverLocation.longitude)).toBeCloseTo(-49.260, 6);
+    expect(Number(driverLocation.speedMetersPerSecond)).toBe(8.5);
+    expect(Number(driverLocation.headingDegrees)).toBe(120);
   });
 
   it('recalculates price on route change and rejects stale route versions', async () => {
