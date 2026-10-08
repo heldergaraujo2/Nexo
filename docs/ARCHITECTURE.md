@@ -54,3 +54,10 @@ Começar com um backend modular e uma base relacional. Escalar vertical/horizont
 - Redis opcional quando necessário
 - CI/CD automatizado
 - observabilidade estruturada
+
+
+## Fase 13 — observabilidade e performance
+- Health liveness não depende do banco; readiness depende de `SELECT 1` no PostgreSQL.
+- Correlation ID é propagado no header `x-request-id`; quando ausente, o backend gera UUID.
+- Medição de duração usa `process.hrtime.bigint()` para evitar dependência de relógio de parede.
+- Performance inicial é tratada com índices PostgreSQL derivados das consultas reais antes de introduzir Redis ou microserviços.
