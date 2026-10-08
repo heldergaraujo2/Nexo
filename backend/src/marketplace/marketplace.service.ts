@@ -179,7 +179,10 @@ export class MarketplaceService {
         }
 
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          if (dto.offerType !== 'direct_accept') throw new ConflictException('Passenger transport does not allow price negotiation');
+          if (dto.offerType !== 'direct_accept')
+            throw new ConflictException(
+              'Passenger transport does not allow price negotiation',
+            );
         }
         if ((row.category === 'delivery' || row.category === 'towing') && dto.offerType !== 'priced_offer') {
           throw new ConflictException('Delivery and towing acceptance require a priced offer');
@@ -395,7 +398,9 @@ export class MarketplaceService {
           row.customer_id,
         );
         if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          throw new ConflictException('Passenger transport does not allow negotiated offers');
+          throw new ConflictException(
+            'Passenger transport does not allow negotiated offers',
+          );
         }
         const service = await client.query(
           `INSERT INTO services
@@ -674,7 +679,9 @@ export class MarketplaceService {
           throw new ForbiddenException('Service access denied');
         }
         if (row.category === 'delivery' || row.category === 'towing') {
-          throw new ConflictException('Category execution must use its dedicated state machine');
+          throw new ConflictException(
+              'Category execution must use its dedicated state machine',
+            );
         }
 
         const transitions: Record<string, string[]> = {
@@ -817,7 +824,9 @@ export class MarketplaceService {
         [providerId],
       );
       if (!verifiedVehicle.rowCount) {
-        throw new ForbiddenException('Towing provider requires a verified vehicle');
+        throw new ForbiddenException(
+          'Towing provider requires a verified vehicle',
+        );
       }
     }
   }
