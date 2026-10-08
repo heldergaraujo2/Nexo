@@ -277,19 +277,19 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 **Status:** EM EXECUÇÃO
 **Objetivo:** melhorar liquidez do marketplace e retenção.
 
-**Entregas**
-- [ ] indicação
-- [ ] campanhas
-- [ ] programa inicial/fundadores
-- [ ] favoritos
-- [ ] clientes recorrentes
-- [ ] métricas de aquisição
-- [ ] métricas de oferta e demanda
-- [ ] métricas de conversão
-- [ ] métricas de retenção
-- [ ] ferramentas administrativas
+**Entregas — IMPLEMENTADAS; GATE PENDENTE**
+- [x] indicação
+- [x] campanhas
+- [x] programa inicial/fundadores
+- [x] favoritos — já existentes no Trust
+- [x] clientes recorrentes
+- [x] métricas de aquisição
+- [x] métricas de oferta e demanda
+- [x] métricas de conversão
+- [x] métricas de retenção
+- [x] ferramentas administrativas
 
-**Gate:** métricas principais estão disponíveis para tomada de decisão.
+**Gate:** PENDENTE — CI da Fase 12 ainda precisa validar migration 013, typecheck, testes, build, lint, formatação e mobile.
 
 ---
 
