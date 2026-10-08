@@ -120,3 +120,12 @@ Indications, campaigns and the founder program are tracked operationally in this
 ## DEC-034 — Fase 13: observabilidade e performance incremental
 **Status:** ACCEPTED
 A primeira camada de escala usa readiness real, correlation IDs e índices PostgreSQL orientados por consultas. Redis, filas e microserviços permanecem fora do caminho crítico até evidência operacional justificar a complexidade.
+
+
+## DEC-035 — Escala sem infraestrutura prematura
+**Status:** ACCEPTED FOR PHASE 13
+O Nexo permanece em monólito modular e PostgreSQL. Redis, filas e microserviços só entram após evidência operacional de necessidade. O backend deve permanecer stateless e preparado para múltiplas instâncias.
+
+## DEC-036 — Localização operacional para matching
+**Status:** ACCEPTED FOR PHASE 13
+A localização atual do provider é opcional, validada e usada server-side para ranking por proximidade. Não é exposta no resultado público de matching.
