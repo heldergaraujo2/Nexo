@@ -9,7 +9,8 @@
     "test": "vitest run",
     "lint": "eslint src test --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\""
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig*.json\"",
+    "postinstall": "npx prettier --write \"src/**/*.ts\" \"test/**/*.ts\" eslint.config.mjs package.json \"tsconfig*.json\" && git diff --no-ext-diff -- src test eslint.config.mjs package.json tsconfig.json tsconfig.build.json"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
