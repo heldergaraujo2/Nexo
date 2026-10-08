@@ -20,6 +20,8 @@ Gate aprovado pelo CI run 37815556772:
 ## FASE 12
 Objetivo: melhorar liquidez do marketplace e retenção.
 
+Implementação presente na branch: migration 013, referrals, campaigns, founder program, recurring customers, administrative acquisition/supply-demand/conversion/retention metrics, RBAC, idempotency, audit and integration tests.
+
 Entregas oficiais:
 - indicação;
 - campanhas;
