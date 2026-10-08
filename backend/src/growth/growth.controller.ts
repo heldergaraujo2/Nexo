@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Headers,
+  Inject,
   Post,
   Query,
   Req,
@@ -22,7 +23,7 @@ import { GrowthService } from './growth.service';
 @UseGuards(AuthGuard)
 @Controller()
 export class GrowthController {
-  constructor(private readonly growth: GrowthService) {}
+  constructor(@Inject(GrowthService) private readonly growth: GrowthService) {}
 
   @Get('growth/me/referral-code')
   referralCode(@Req() req: AuthenticatedRequest) {
