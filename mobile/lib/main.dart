@@ -252,7 +252,7 @@ class _DriverHomePageState extends State<DriverHomePage>{
     }on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}
   }
   Future<void> refresh()async{if(api==null||!online)return;try{final d=await api!.get('/requests/available');if(mounted)setState(()=>requests=List<Map<String,dynamic>>.from(d as List));}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
-  Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/'+r['id'].toString()+'/accept',{},idempotencyKey:'accept-'+r['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;unawaited(Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?,rideId:s['rideId'] as String?))));await refresh();}on Exception catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
+  Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/${r['id']}/accept',{},idempotencyKey:'accept-${r['id']}-${DateTime.now().microsecondsSinceEpoch}');if(!mounted)return;unawaited(Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?,rideId:s['rideId'] as String?))));await refresh();}on Exception catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Nexo • Motorista'),actions:[IconButton(onPressed:logout,icon:const Icon(Icons.logout))]),body:RefreshIndicator(onRefresh:refresh,child:ListView(padding:const EdgeInsets.all(16),children:[
     Card(child:SwitchListTile(title:Text(online?'Você está ONLINE':'Você está OFFLINE'),subtitle:Text(online?'Buscando novas corridas automaticamente.':'Fique online para receber solicitações.'),value:online,onChanged:busy?null:setOnline)),
     if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),const SizedBox(height:8),Text('Solicitações disponíveis',style:Theme.of(context).textTheme.headlineSmall),const SizedBox(height:8),
@@ -275,13 +275,13 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
     final r=await widget.api.get('/requests/${widget.requestId}');if(mounted)setState(()=>state=r['status']?.toString()??state);
     final ns=await widget.api.get('/me/notifications');
     if(ns is List)for(final n in ns){if(n is Map){final p=n['payload'];if(p is Map&&p['requestId']==widget.requestId&&n['type']=='service_request.accepted'){state='accepted';final sid=p['serviceId'];if(sid is String){final s=await widget.api.get('/services/$sid');if(mounted)setState((){serviceId=sid;fare=s['priceCents'] as int?;subjectId=(widget.passenger?s['providerId']:s['customerId'])?.toString();});}}if(n['type'].toString().startsWith('ride.')&&p is Map&&p['rideId']!=null)rideId=p['rideId'].toString();}}
-    if(rideId!=null){final ride=await widget.api.get('/rides/$rideId');if(mounted)setState((){state=ride['state']?.toString()??state;fare=ride['fareCents'] is num? (ride['fareCents'] as num).toInt():fare;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}if(state=='completed'&&serviceId!=null){try{final payments=await widget.api.get('/payment-records/services/'+serviceId!);if(payments is List&&payments.isNotEmpty&&mounted)setState(()=>paymentStatus=payments.first['status']?.toString());}on Exception catch (_) {if(mounted)setState(()=>paymentStatus ??= 'unknown');}}
+    if(rideId!=null){final ride=await widget.api.get('/rides/$rideId');if(mounted)setState((){state=ride['state']?.toString()??state;fare=ride['fareCents'] is num? (ride['fareCents'] as num).toInt():fare;driverLocation=ride['driverLocation'] is Map<String,dynamic>?Map<String,dynamic>.from(ride['driverLocation'] as Map):null;});}if(state=='completed'&&serviceId!=null){try{final payments=await widget.api.get('/payment-records/services/$serviceId');if(payments is List&&payments.isNotEmpty&&mounted)setState(()=>paymentStatus=payments.first['status']?.toString());}on Exception catch (_) {if(mounted)setState(()=>paymentStatus ??= 'unknown');}}
   }on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   Future<void> pushDriverLocation()async{
     if(widget.passenger||rideId==null||!['accepted','driver_en_route','arrived','started'].contains(state))return;
     try{
       final p=await NexoLocationService.current();
-      await widget.api.post('/rides/$rideId'+'/location',{'latitude':p.latitude,'longitude':p.longitude},idempotencyKey:'location-${rideId}-${DateTime.now().millisecondsSinceEpoch}');
+      await widget.api.post('/rides/$rideId/location',{'latitude':p.latitude,'longitude':p.longitude},idempotencyKey:'location-$rideId-${DateTime.now().millisecondsSinceEpoch}');
     }on Exception catch(e){
       if(mounted)setState(()=>error=_friendlyError(e));
     }
@@ -289,7 +289,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
   Future<void> confirmPayment()async{
     if(serviceId==null||fare==null)return;
     try{
-      final payments=await widget.api.get('/payment-records/services/'+serviceId!);
+      final payments=await widget.api.get('/payment-records/services/$serviceId');
       if(payments is! List||payments.isEmpty){if(mounted)setState(()=>error='O passageiro ainda não registrou o pagamento.');return;}
       final payment=Map<String,dynamic>.from(payments.first as Map);
       await widget.api.post('/payment-records/${payment['id']}/confirm',{'confirmedAmountCents':fare},idempotencyKey:'payment-confirm-${payment['id']}-${DateTime.now().microsecondsSinceEpoch}');
@@ -300,9 +300,9 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
   Future<void> cancelRide()async{
     try{
       if(rideId!=null){
-        await widget.api.post('/rides/$rideId'+'/cancel',{'reason':'cancelled_by_user'},idempotencyKey:'cancel-${rideId}-${DateTime.now().microsecondsSinceEpoch}');
+        await widget.api.post('/rides/$rideId/cancel',{'reason':'cancelled_by_user'},idempotencyKey:'cancel-$rideId-${DateTime.now().microsecondsSinceEpoch}');
       }else{
-        await widget.api.post('/requests/${widget.requestId}'+'/cancel',{'reason':'cancelled_by_user'},idempotencyKey:'cancel-request-${widget.requestId}-${DateTime.now().microsecondsSinceEpoch}');
+        await widget.api.post('/requests/${widget.requestId}/cancel',{'reason':'cancelled_by_user'},idempotencyKey:'cancel-request-${widget.requestId}-${DateTime.now().microsecondsSinceEpoch}');
       }
       await poll();
     }on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}
@@ -326,7 +326,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
     }on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}
   }
 
-  Future<void> action(String a)async{if(rideId==null){if(mounted)setState(()=>error='A corrida ainda está sendo vinculada. Aguarde alguns segundos.');return;}try{await widget.api.post('/rides/$rideId'+'/'+a,{},idempotencyKey:'ride-${rideId}-${a}-${DateTime.now().microsecondsSinceEpoch}');await poll();}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
+  Future<void> action(String a)async{if(rideId==null){if(mounted)setState(()=>error='A corrida ainda está sendo vinculada. Aguarde alguns segundos.');return;}try{await widget.api.post('/rides/$rideId/$a',{},idempotencyKey:'ride-${rideId}-${a}-${DateTime.now().microsecondsSinceEpoch}');await poll();}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   String label()=>switch(state){'accepted'=>'Motorista aceitou a corrida','driver_en_route'=>'Motorista a caminho','arrived'=>'Motorista chegou','started'=>'Viagem em andamento','completed'=>'Viagem concluída','cancelled'=>'Corrida cancelada',_=>'Aguardando motorista'};
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.passenger?'Sua corrida':'Corrida em atendimento')),body:ListView(padding:const EdgeInsets.all(20),children:[
     Card(child:Padding(padding:const EdgeInsets.all(20),child:Column(children:[const Icon(Icons.local_taxi,size:64),const SizedBox(height:12),Text(label(),style:Theme.of(context).textTheme.headlineSmall,textAlign:TextAlign.center),Text('Solicitação: $state'),if(fare!=null)Text('Tarifa: R\$ ${(fare! / 100).toStringAsFixed(2)}',style:Theme.of(context).textTheme.titleLarge)]))),
