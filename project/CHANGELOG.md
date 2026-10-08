@@ -21,3 +21,11 @@
 - Autorização por papel e ownership.
 - Testes de integração cobrindo lifecycle, concorrência/idempotência, autorização e preservação do preço de serviços concluídos.
 - CI preparado para validar migration 012.
+
+## 1.10.0 — FASE 13 em execução
+- Migrations 014–016: índices de escala, localização operacional opcional e catálogo extensível de categorias.
+- Pool PostgreSQL com limites e timeouts configuráveis.
+- Hardening do runtime e remoção do postinstall que modificava/pushava a branch automaticamente.
+- Matching avançado com proximidade, elegibilidade, bloqueios, disponibilidade e reputação.
+- Documentação de escala, HA/DR, custos e expansão geográfica sincronizada.
+- Gate final pendente do CI no HEAD desta implementação.
