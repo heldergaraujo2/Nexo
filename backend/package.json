@@ -6,6 +6,7 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/main.js",
     "start:dev": "tsx watch src/main.ts",
+    "e2e:provision": "tsx scripts/provision-e2e.ts",
     "test": "vitest run",
     "lint": "eslint src test --max-warnings=0",
     "typecheck": "tsc --noEmit",
