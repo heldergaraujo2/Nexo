@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS founder_program (
 CREATE INDEX IF NOT EXISTS idx_founder_program_cohort ON founder_program(cohort, enrolled_at DESC);
 
 CREATE OR REPLACE FUNCTION qualify_referral_on_service_completion()
-RETURNS trigger AS $
+RETURNS trigger AS $$
 BEGIN
   IF NEW.status = 'completed' AND (OLD.status IS DISTINCT FROM NEW.status) THEN
     UPDATE referrals
@@ -59,7 +59,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS trg_qualify_referral_on_service_completion ON services;
 CREATE TRIGGER trg_qualify_referral_on_service_completion
