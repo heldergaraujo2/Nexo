@@ -91,6 +91,31 @@ describe('passenger transport integration', () => {
     expect(completed.body.state).toBe('completed');
   });
 
+
+  it('does not expose or allow acceptance of a request already matched to another provider', async () => {
+    const customer = await register('customer');
+    const first = await register('provider');
+    const second = await register('provider');
+    await marketplace(first.token, { categories: ['passenger_car'], availability: 'available', acceptingRequests: true });
+    await marketplace(second.token, { categories: ['passenger_car'], availability: 'available', acceptingRequests: true });
+
+    const created = await request(app, '/v1/rides/requests', 'POST', {
+      vehicleType: 'car',
+      origin: { latitude: -16.6869, longitude: -49.2648 },
+      destination: { latitude: -16.6828, longitude: -49.2534 },
+    }, customer.token, randomUUID());
+
+    const accepted = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, first.token, randomUUID());
+    expect(accepted.status).toBe(201);
+
+    const open = await request(app, '/v1/me/marketplace/open-requests', 'GET', undefined, second.token);
+    expect(open.status).toBe(200);
+    expect((open.body.requests as unknown[]).some((item) => (item as Record<string, unknown>).id === created.body.requestId)).toBe(false);
+
+    const denied = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, second.token, randomUUID());
+    expect(denied.status).toBe(403);
+  });
+
   it('recalculates price on route change and rejects stale route versions', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
