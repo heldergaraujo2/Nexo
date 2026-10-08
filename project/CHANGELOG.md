@@ -28,9 +28,10 @@
 - Hardening do runtime e remoção do postinstall que modificava/pushava a branch automaticamente.
 - Matching avançado com proximidade, elegibilidade, bloqueios, disponibilidade e reputação.
 - Documentação de escala, HA/DR, custos e expansão geográfica sincronizada.
-- Gate final pendente do CI no HEAD desta implementação.
+- Gate da Fase 13 aprovado pelo CI run 37831723696.
 
 ## 1.11.0 — ROADMAP COMPLETO
+- Estado oficial sincronizado após a validação final do CI.
 - FASE 13 aprovada pelo CI run 37831723696.
 - Backend e mobile verdes no HEAD final validado.
 - Todos os gates oficiais das Fases 0–13 estão aprovados.
