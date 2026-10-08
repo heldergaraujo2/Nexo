@@ -155,6 +155,13 @@ export class RideService {
         `INSERT INTO ride_events (ride_id,actor_id,from_state,to_state,reason) VALUES ($1,$2,$3,$4,$5)`,
         [rideId,user.accountId,row.state,next,reason ?? null],
       );
+      const recipientId = row.customer_id === user.accountId ? row.provider_id : row.customer_id;
+      if (recipientId) {
+        await client.query(
+          'INSERT INTO notifications (recipient_id,type,payload) VALUES ($1,$2,$3)',
+          [recipientId, `ride.${next}`, { rideId, state: next }],
+        );
+      }
       await client.query('COMMIT');
       return this.publicRide(updated.rows[0]);
     } catch (error) {
