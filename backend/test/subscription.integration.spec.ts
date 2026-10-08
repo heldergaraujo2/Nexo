@@ -58,6 +58,7 @@ describe('phase 11 subscriptions', () => {
     ]);
     await app?.close();
   });
+
   it('runs subscription lifecycle and preserves service price', async () => {
     const p = await register('provider');
     const c = await register('customer');
