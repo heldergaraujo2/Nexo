@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 11 EM EXECUÇÃO  
+**Status:** FASE 12 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -248,6 +248,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 11 — Assinatura dos Profissionais
+**Status:** CONCLUÍDA
 **Objetivo:** ativar o modelo comercial do Nexo.
 
 **Regras**
@@ -255,22 +256,25 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - **0% de comissão**
 - profissional mantém **100% do valor do serviço**
 
-**Entregas**
-- [ ] assinatura
-- [ ] período de teste, se aprovado
-- [ ] cobrança
-- [ ] renovação
-- [ ] cancelamento
-- [ ] inadimplência
-- [ ] status da assinatura
-- [ ] restrições de acesso quando aplicável
-- [ ] histórico de cobrança
+**Entregas — CONCLUÍDAS**
+- [x] assinatura
+- [x] período de teste — não adotado no escopo atual
+- [x] cobrança
+- [x] renovação
+- [x] cancelamento
+- [x] inadimplência
+- [x] status da assinatura
+- [x] restrições de acesso quando aplicável
+- [x] histórico de cobrança
+- [x] idempotência, auditoria e autorização
+- [x] preservação do preço de serviços concluídos
 
-**Gate:** ciclo de assinatura é consistente e não altera o valor devido ao profissional por serviços realizados.
+**Gate: APROVADO** — CI run 37815556772 verde em backend e mobile; ciclo de assinatura consistente, auditável e idempotente, sem alterar o valor devido ao profissional por serviços realizados.
 
 ---
 
 ## FASE 12 — Crescimento e Retenção
+**Status:** EM EXECUÇÃO
 **Objetivo:** melhorar liquidez do marketplace e retenção.
 
 **Entregas**
