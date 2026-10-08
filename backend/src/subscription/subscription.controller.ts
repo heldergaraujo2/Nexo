@@ -18,6 +18,7 @@ import {
   SetSubscriptionStatusDto,
 } from './dto';
 import { SubscriptionService } from './subscription.service';
+
 @UseGuards(AuthGuard)
 @Controller('subscriptions')
 export class SubscriptionController {
@@ -25,6 +26,7 @@ export class SubscriptionController {
     @Inject(SubscriptionService)
     private readonly subscriptions: SubscriptionService,
   ) {}
+
   @HttpCode(201)
   @Post()
   create(
@@ -32,38 +34,55 @@ export class SubscriptionController {
     @Body() d: CreateSubscriptionDto,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.create(r.user, d, k).then((result) => result.body);
+    return this.subscriptions
+      .create(r.user, d, k)
+      .then((result) => result.body);
   }
-  @Get('me') get(@Req() r: AuthenticatedRequest) {
+
+  @Get('me')
+  get(@Req() r: AuthenticatedRequest) {
     return this.subscriptions.get(r.user);
   }
-  @HttpCode(200) @Post(':id/renew') renew(
+
+  @HttpCode(200)
+  @Post(':id/renew')
+  renew(
     @Req() r: AuthenticatedRequest,
     @Param('id') id: string,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.renew(r.user, id, k).then((result) => result.body);
+    return this.subscriptions
+      .renew(r.user, id, k)
+      .then((result) => result.body);
   }
-  @HttpCode(200) @Post(':id/cancel') cancel(
+
+  @HttpCode(200)
+  @Post(':id/cancel')
+  cancel(
     @Req() r: AuthenticatedRequest,
     @Param('id') id: string,
     @Body() d: CancelSubscriptionDto,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.cancel(r.user, id, d, k).then((result) => result.body);
+    return this.subscriptions
+      .cancel(r.user, id, d, k)
+      .then((result) => result.body);
   }
-  @Put(':id/status') setStatus(
+
+  @Put(':id/status')
+  setStatus(
     @Req() r: AuthenticatedRequest,
     @Param('id') id: string,
     @Body() d: SetSubscriptionStatusDto,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.setStatus(r.user, id, d, k).then((result) => result.body);
+    return this.subscriptions
+      .setStatus(r.user, id, d, k)
+      .then((result) => result.body);
   }
-  @Get(':id/history') history(
-    @Req() r: AuthenticatedRequest,
-    @Param('id') id: string,
-  ) {
+
+  @Get(':id/history')
+  history(@Req() r: AuthenticatedRequest, @Param('id') id: string) {
     return this.subscriptions.history(r.user, id);
   }
 }
