@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage>{
     try{
       final url=base.text.trim().isEmpty?const String.fromEnvironment('NEXO_API_BASE_URL',defaultValue:'http://10.0.2.2:3000/v1'):base.text.trim();
       final api=NexoApiClient.forLogin(url);
-      final data=await(register?api.post('/auth/register',{'email':email.text.trim(),'password':password.text,'displayName':name.text.trim(),'role':role}:api.post('/auth/login',{'email':email.text.trim(),'password':password.text}));
+      final data=register ? await api.post('/auth/register',{'email':email.text.trim(),'password':password.text,'displayName':name.text.trim(),'role':role}) : await api.post('/auth/login',{'email':email.text.trim(),'password':password.text});
       await NexoApiClient.saveSession(baseUrl:url,accessToken:data['accessToken'] as String,accountId:data['accountId'] as String,role:data['role'] as String);
       if(!mounted)return;unawaited(Navigator.pushReplacement(context,MaterialPageRoute<void>(builder:(_)=>data['role']=='provider'?const DriverHomePage():const PassengerHomePage())));
     }on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}
