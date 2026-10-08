@@ -71,7 +71,7 @@ class _PassengerHomePageState extends State<PassengerHomePage>{
       Material(elevation:8,child:Padding(padding:const EdgeInsets.all(16),child:Column(children:[
         SegmentedButton<String>(segments:const[ButtonSegment(value:'car',label:Text('Carro'),icon:Icon(Icons.directions_car)),ButtonSegment(value:'motorcycle',label:Text('Moto'),icon:Icon(Icons.two_wheeler))],selected:{vehicle},onSelectionChanged:(v)=>setState(()=>vehicle=v.first)),
         const SizedBox(height:8),Text(destination==null?'Toque no mapa para escolher o destino.':'Destino selecionado. Toque no mapa para alterar.'),
-        if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),const SizedBox(height:8),
+        if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),const SizedBox(height:8),
         SizedBox(width:double.infinity,child:FilledButton.icon(onPressed:locating||requesting||origin==null||destination==null?null:requestRide,icon:const Icon(Icons.local_taxi),label:Text(requesting?'Solicitando...':'Solicitar corrida'))),
       ]))) ]));}
   Future<void> logout()async{await NexoApiClient.clearSession();if(!mounted)return;Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false);}
@@ -81,7 +81,7 @@ class DriverHomePage extends StatefulWidget{const DriverHomePage({super.key});@o
 class _DriverHomePageState extends State<DriverHomePage>{
   NexoApiClient? api;Timer? timer;List<Map<String,dynamic>> requests=[];bool online=false,busy=false;String? error;
   @override void initState(){super.initState();NexoApiClient.load().then((a){if(mounted)setState(()=>api=a);});}
-  @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
+  @override void dispose(){timer?.cancel();super.dispose();}
   Future<void> setOnline(bool value)async{if(api==null)return;setState(()=>busy=true);try{await api!.put('/me/marketplace',{'categories':['passenger_car','passenger_motorcycle'],'availability':value?'available':'offline','acceptingRequests':value});if(!mounted)return;setState(()=>online=value);timer?.cancel();if(value){await refresh();if(!mounted)return;timer=Timer.periodic(const Duration(seconds:4),(_)=>unawaited(refresh()));}else{setState(()=>requests=[]);}}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
   Future<void> refresh()async{if(api==null||!online)return;try{final d=await api!.get('/requests/available');if(mounted)setState(()=>requests=List<Map<String,dynamic>>.from(d as List));}catch(e){if(mounted)setState(()=>error=_friendlyError(e));}}
   Future<void> accept(Map<String,dynamic> r)async{if(api==null)return;setState(()=>busy=true);try{final s=await api!.post('/requests/'+r['id'].toString()+'/accept',{},idempotencyKey:'accept-'+r['id'].toString()+'-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['id'].toString(),passenger:false,serviceId:s['id'] as String?,rideId:s['rideId'] as String?)));await refresh();}catch(e){setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>busy=false);}}
@@ -102,7 +102,7 @@ class RideTrackingPage extends StatefulWidget{
 class _RideTrackingPageState extends State<RideTrackingPage>{
   Timer? timer;Timer? locationTimer;String state='open';int? fare;String? error;String? rideId;Map<String,dynamic>? driverLocation;
   @override void initState(){super.initState();rideId=widget.rideId;poll();timer=Timer.periodic(const Duration(seconds:3),(_)=>unawaited(poll()));if(!widget.passenger){locationTimer=Timer.periodic(const Duration(seconds:8),(_)=>unawaited(pushDriverLocation()));}}
-  @override void dispose(){timer?.cancel();super.dispose();}
+  @override void dispose(){timer?.cancel();locationTimer?.cancel();super.dispose();}
   Future<void> poll()async{try{
     final r=await widget.api.get('/requests/'+widget.requestId);if(mounted)setState(()=>state=r['status']?.toString()??state);
     final ns=await widget.api.get('/me/notifications');
@@ -122,7 +122,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
   String label()=>switch(state){'accepted'=>'Motorista aceitou a corrida','driver_en_route'=>'Motorista a caminho','arrived'=>'Motorista chegou','started'=>'Viagem em andamento','completed'=>'Viagem concluída','cancelled'=>'Corrida cancelada',_=>'Aguardando motorista'};
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.passenger?'Sua corrida':'Corrida em atendimento')),body:ListView(padding:const EdgeInsets.all(20),children:[
     Card(child:Padding(padding:const EdgeInsets.all(20),child:Column(children:[const Icon(Icons.local_taxi,size:64),const SizedBox(height:12),Text(label(),style:Theme.of(context).textTheme.headlineSmall,textAlign:TextAlign.center),Text('Solicitação: '+state),if(fare!=null)Text('Tarifa: R\\$ '+(fare!/100).toStringAsFixed(2),style:Theme.of(context).textTheme.titleLarge)]))),
-    if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),
+    if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),
     if(!widget.passenger&&rideId!=null)...[const SizedBox(height:12),FilledButton.icon(onPressed:()=>action('driver-en-route'),icon:const Icon(Icons.navigation),label:const Text('A caminho')),FilledButton.icon(onPressed:()=>action('arrived'),icon:const Icon(Icons.place),label:const Text('Cheguei')),FilledButton.icon(onPressed:()=>action('start'),icon:const Icon(Icons.play_arrow),label:const Text('Iniciar viagem')),FilledButton.icon(onPressed:()=>action('complete'),icon:const Icon(Icons.flag),label:const Text('Finalizar viagem'))],
   ]));
 }
