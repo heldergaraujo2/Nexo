@@ -1,7 +1,7 @@
 # Nexo — Roadmap de Desenvolvimento por Fases
 
 **Versão:** 1.0  
-**Status:** FASE 12 EM EXECUÇÃO  
+**Status:** FASE 13 EM EXECUÇÃO  
 **Princípio:** nenhuma fase deve ser considerada concluída sem seus critérios de aceite, testes e documentação atualizados.
 
 ## Objetivo
@@ -274,7 +274,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 ---
 
 ## FASE 12 — Crescimento e Retenção
-**Status:** EM EXECUÇÃO
+**Status:** CONCLUÍDA
 **Objetivo:** melhorar liquidez do marketplace e retenção.
 
 **Entregas — IMPLEMENTADAS; GATE PENDENTE**
@@ -289,7 +289,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [x] métricas de retenção
 - [x] ferramentas administrativas
 
-**Gate:** PENDENTE — CI da Fase 12 ainda precisa validar migration 013, typecheck, testes, build, lint, formatação e mobile.
+**Gate:** APROVADO — CI run 37819635305 verde em backend e mobile; migration 013, typecheck, 45 testes, build, lint, Flutter analyze, Flutter tests e APK debug aprovados.
 
 ---
 
