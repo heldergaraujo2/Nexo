@@ -198,7 +198,7 @@ export class SubscriptionService {
     return r.rows.map((x) => ({ ...x, amountCents: Number(x.amountCents) }));
   }
 
-  private public(r: Record<string, any>) {
+  private public(r: Record<string, unknown>) {
     return {
       id: r.id,
       planCode: r.plan_code,
