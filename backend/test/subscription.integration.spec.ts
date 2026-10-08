@@ -213,7 +213,7 @@ describe('phase 11 subscriptions', () => {
     );
     expect(offer.status).toBe(403);
   });
-  it('blocks new marketplace offers after subscription cancellation', async () =>
+  it('blocks new marketplace offers after subscription cancellation', async () => {
     const p = await register('provider');
     const c = await register('customer');
     await call(
