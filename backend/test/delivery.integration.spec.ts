@@ -27,6 +27,8 @@ describe('delivery integration',()=>{
   await db.query('DELETE FROM notifications WHERE recipient_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[])) OR provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
+  await db.query('DELETE FROM subscription_charges WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
+  await db.query('DELETE FROM subscriptions WHERE provider_id IN (SELECT id FROM accounts WHERE email=ANY($1::text[]))',[emails]);
   await db.query('DELETE FROM accounts WHERE email=ANY($1::text[])',[emails]);
   await app?.close();
  });
@@ -41,6 +43,7 @@ describe('delivery integration',()=>{
  });
  it('requires a priced offer for delivery acceptance',async()=>{
   const customer=await register('customer'); const provider=await register('provider');
+  await activateSubscription(provider.token);
   await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
   const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pacote'},customer.token,randomUUID());
   const direct=await call('/v1/requests/'+created.body.id+'/accept','POST',undefined,provider.token,randomUUID());
@@ -53,6 +56,7 @@ describe('delivery integration',()=>{
  it('accepts delivery through marketplace and executes the delivery state machine',async()=>{
   const customer=await register('customer');
   const provider=await register('provider');
+  await activateSubscription(provider.token);
   await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
   const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pequeno pacote'},customer.token,randomUUID());
   expect(created.status).toBe(201);
@@ -85,6 +89,13 @@ describe('delivery integration',()=>{
   expect(invalid.status).toBe(409);
  });
 });
+
+async function activateSubscription(token:string){
+ const created=await call('/v1/subscriptions','POST',{},token,randomUUID());
+ expect(created.status,JSON.stringify(created.body)).toBe(201);
+ const renewed=await call('/v1/subscriptions/'+created.body.id+'/renew','POST',undefined,token,randomUUID());
+ expect(renewed.status,JSON.stringify(renewed.body)).toBe(200);
+}
 
 async function register(role:'customer'|'provider'){
  const email=`phase8-${role}-${randomUUID()}@example.test`; emails.push(email);
