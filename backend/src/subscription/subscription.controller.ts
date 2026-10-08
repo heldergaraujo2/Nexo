@@ -25,12 +25,14 @@ export class SubscriptionController {
     @Inject(SubscriptionService)
     private readonly subscriptions: SubscriptionService,
   ) {}
-  @Post() create(
+  @HttpCode(201)
+  @Post()
+  create(
     @Req() r: AuthenticatedRequest,
     @Body() d: CreateSubscriptionDto,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.create(r.user, d, k);
+    return this.subscriptions.create(r.user, d, k).then((result) => result.body);
   }
   @Get('me') get(@Req() r: AuthenticatedRequest) {
     return this.subscriptions.get(r.user);
@@ -40,7 +42,7 @@ export class SubscriptionController {
     @Param('id') id: string,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.renew(r.user, id, k);
+    return this.subscriptions.renew(r.user, id, k).then((result) => result.body);
   }
   @HttpCode(200) @Post(':id/cancel') cancel(
     @Req() r: AuthenticatedRequest,
@@ -48,7 +50,7 @@ export class SubscriptionController {
     @Body() d: CancelSubscriptionDto,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.cancel(r.user, id, d, k);
+    return this.subscriptions.cancel(r.user, id, d, k).then((result) => result.body);
   }
   @Put(':id/status') setStatus(
     @Req() r: AuthenticatedRequest,
@@ -56,7 +58,7 @@ export class SubscriptionController {
     @Body() d: SetSubscriptionStatusDto,
     @Headers('idempotency-key') k: string,
   ) {
-    return this.subscriptions.setStatus(r.user, id, d, k);
+    return this.subscriptions.setStatus(r.user, id, d, k).then((result) => result.body);
   }
   @Get(':id/history') history(
     @Req() r: AuthenticatedRequest,
