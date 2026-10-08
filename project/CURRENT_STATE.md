@@ -40,7 +40,7 @@ Entregas oficiais:
 ## FASE 13
 Objetivo: preparar o Nexo para crescimento geográfico e técnico.
 
-Entregas a executar: performance, observabilidade avançada, recuperação de desastres, hardening, custos, expansão geográfica, novas categorias e matching avançado.
+Entregas em execução: performance inicial com migration 014, readiness PostgreSQL e observabilidade HTTP com correlation ID. Pendentes: observabilidade avançada completa, HA, DR, hardening, custos, expansão geográfica, novas categorias e matching avançado.
 
 ## Blockers
 Nenhum bloqueio crítico conhecido.
