@@ -307,7 +307,7 @@ Necessidade → Solicitação → Encontrar profissional → Oferta/aceite → E
 - [x] novas categorias — catálogo extensível com category codes sem alteração do schema de requests
 - [x] mecanismos avançados de matching — elegibilidade, bloqueios, disponibilidade, reputação e proximidade
 
-**Gate:** PENDENTE até o CI validar o HEAD final desta implementação.
+Gate:** APROVADO — CI run 37831723696 verde em backend e mobile; migrations 014–016, typecheck, testes, build, lint, format:check, Flutter analyze, Flutter tests e APK debug aprovados.
 
 ---
 
