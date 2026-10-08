@@ -78,6 +78,7 @@ describe('delivery integration',()=>{
  });
  it('rejects invalid transitions and unauthorized access',async()=>{
   const customer=await register('customer'); const provider=await register('provider'); const outsider=await register('customer');
+  await activateSubscription(provider.token);
   await call('/v1/me/marketplace','PUT',{categories:['delivery'],availability:'available',acceptingRequests:true},provider.token);
   const created=await call('/v1/deliveries/requests','POST',{origin:{latitude:-16.68,longitude:-49.25},destination:{latitude:-16.69,longitude:-49.24},itemDescription:'Pacote'},customer.token,randomUUID());
   const offer=await call('/v1/requests/'+created.body.id+'/offers','POST',{offerType:'priced_offer',amountCents:2500},provider.token,randomUUID());
