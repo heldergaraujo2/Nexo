@@ -1,10 +1,10 @@
 # Nexo — Current State
 
-**Version:** 1.10 — FASE 13 em execução
+**Version:** 1.11 — ROADMAP CONCLUÍDO
 **Last updated:** 2026-10-08
 
 ## Phase
-**FASE 13 — ESCALA E EXPANSÃO**
+**ROADMAP COMPLETO — FASES 0–13 APROVADAS**
 
 Fases 0–11 permanecem concluídas e validadas.
 
