@@ -1,7 +1,7 @@
 # Nexo — Current State
 
-**Version:** 1.6 — FASE 11 iniciada
-**Last updated:** 2026-10-07
+**Version:** 1.7 — VALIDAÇÃO OPERACIONAL PC + ANDROID EM PREPARAÇÃO
+**Last updated:** 2026-10-08
 
 ## Phase
 **FASE 11 — ASSINATURA DOS PROFISSIONAIS**
@@ -37,8 +37,17 @@
 - 0% de comissão.
 - Provider mantém 100% do valor do serviço.
 
+## Operational validation status
+- Client Flutter real preparado para login, passageiro, motorista, polling, solicitação, aceite e transições da corrida.
+- API LAN configurável no cliente; backend continua ouvindo em `0.0.0.0`.
+- Endpoint autenticado de solicitações abertas adicionado para o motorista.
+- Isolamento de solicitações já vinculadas a outro motorista endurecido.
+- Provisionamento reproduzível de contas fictícias adicionado sem credenciais no repositório.
+- CI foi configurado para publicar APK Android debug e cliente Windows do motorista.
+- **Ainda sem aprovação operacional:** nenhum novo run/artefato de CI ficou disponível para o commit da validação durante esta sessão; portanto o APK não foi declarado pronto.
+
 ## Blockers
-Nenhum bloqueador conhecido.
+- **BLOCKER:** build/artefato CI novo ainda não disponível; sem APK verificável não é possível iniciar o teste físico PC + Android.
 
 ## Known limitations
 - Object storage binário ainda depende de adapter futuro.
