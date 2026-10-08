@@ -338,6 +338,7 @@ export class MarketplaceService {
             row.origin,
             row.destination,
           );
+          acceptedRideId = ride.id as string;
           await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
           service.rows[0].priceCents = Number(ride.fareCents);
         }
