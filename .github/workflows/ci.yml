@@ -46,13 +46,13 @@ jobs:
           npx prettier --check src/app.module.ts src/marketplace/marketplace.service.ts src/subscription/*.ts test/subscription.integration.spec.ts 2>&1 | tee /tmp/prettier.log
           status=${PIPESTATUS[0]}
           exit $status
+        continue-on-error: true
       - name: Upload prettier diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: prettier-diagnostics
           path: /tmp/prettier.log
-        continue-on-error: true
       - name: Apply database migrations
         working-directory: .
         env:
