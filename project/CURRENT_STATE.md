@@ -1,6 +1,6 @@
 # Nexo — Current State
 
-**Version:** 1.7 — BLOCO MOBILIDADE E2E EM EXECUÇÃO
+**Version:** 1.8 — MOBILIDADE E2E EM ESTABILIZAÇÃO
 **Last updated:** 2026-10-08
 
 ## Phase
