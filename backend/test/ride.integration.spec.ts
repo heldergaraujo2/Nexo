@@ -34,6 +34,8 @@ describe('passenger transport integration', () => {
       await db.query(`DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
       await db.query(`DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
       await db.query(`DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
+      await db.query(`DELETE FROM subscription_charges WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
+      await db.query(`DELETE FROM subscriptions WHERE provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
       await db.query(`DELETE FROM accounts WHERE email IN (${placeholders})`, users);
     }
     await app?.close();
