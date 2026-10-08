@@ -974,7 +974,6 @@ export class MarketplaceService {
       client.release();
     }
   }
-}
 
   async createOffer(
     user: AuthPrincipal,
