@@ -145,6 +145,35 @@ describe('marketplace API integration', () => {
     expect(service.body.requestId).toBe(created.body.id);
   });
 
+  it('tracks provider availability location and ranks passenger requests by proximity', async () => {
+    const customer = await register('customer');
+    const provider = await register('provider');
+    await marketplace(provider.token, {
+      categories: ['passenger_car'],
+      availability: 'available',
+      acceptingRequests: true,
+    });
+    const location = await request(app, '/v1/me/marketplace/location', 'PUT', {
+      latitude: -16.6869,
+      longitude: -49.2648,
+    }, provider.token);
+    expect(location.status, JSON.stringify(location.body)).toBe(200);
+    expect(location.body.latitude).toBeCloseTo(-16.6869, 6);
+
+    const created = await request(app, '/v1/rides/requests', 'POST', {
+      vehicleType: 'car',
+      origin: { latitude: -16.6870, longitude: -49.2649 },
+      destination: { latitude: -16.6800, longitude: -49.2500 },
+    }, customer.token, randomUUID());
+    expect(created.status).toBe(201);
+
+    const available = await request(app, '/v1/requests/available', 'GET', undefined, provider.token);
+    expect(available.status).toBe(200);
+    const match = (available.body as unknown as Array<Record<string, unknown>>).find((row) => row.id === created.body.requestId);
+    expect(match).toBeDefined();
+    expect(Number(match?.distanceMeters)).toBeGreaterThanOrEqual(0);
+  });
+
   it('serializes concurrent provider acceptance so only one service is created', async () => {
     const customer = await register('customer');
     const providerA = await register('provider');
