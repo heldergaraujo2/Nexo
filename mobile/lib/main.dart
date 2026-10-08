@@ -57,26 +57,187 @@ class _LoginPageState extends State<LoginPage>{
     ]))))));
 }
 
-class PassengerHomePage extends StatefulWidget{const PassengerHomePage({super.key});@override State<PassengerHomePage> createState()=>_PassengerHomePageState();}
-class _PassengerHomePageState extends State<PassengerHomePage>{
-  NexoApiClient? api;final map=MapController();LatLng? origin,destination;String vehicle='car';bool locating=false,requesting=false;String? error;
-  @override void initState(){super.initState();unawaited(NexoApiClient.load().then((a){if(mounted){setState(()=>api=a);unawaited(locate());}}));}
-  Future<void> locate()async{setState(()=>locating=true);try{final p=await NexoLocationService.current();final x=LatLng(p.latitude,p.longitude);if(!mounted)return;setState((){origin=x;destination??=LatLng(p.latitude+0.01,p.longitude+0.01);});map.move(x,14);}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>locating=false);}}
-  Future<void> requestRide()async{if(api==null||origin==null||destination==null)return;setState(()=>requesting=true);try{final r=await api!.post('/rides/requests',{'vehicleType':vehicle,'origin':{'latitude':origin!.latitude,'longitude':origin!.longitude},'destination':{'latitude':destination!.latitude,'longitude':destination!.longitude}},idempotencyKey:'ride-'+DateTime.now().microsecondsSinceEpoch.toString());if(!mounted)return;unawaited(Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>RideTrackingPage(api:api!,requestId:r['requestId'] as String,passenger:true))));}on Exception catch(e){if(mounted)setState(()=>error=_friendlyError(e));}finally{if(mounted)setState(()=>requesting=false);}}
-  @override Widget build(BuildContext context){final c=origin??const LatLng(-16.6869,-49.2648);return Scaffold(
-    appBar:AppBar(title:const Text('Nexo • Passageiro'),actions:[IconButton(onPressed:locate,icon:const Icon(Icons.my_location)),IconButton(onPressed:logout,icon:const Icon(Icons.logout))]),
-    body:Column(children:[Expanded(child:FlutterMap(mapController:map,options:MapOptions(initialCenter:c,initialZoom:13,onTap:(_,p)=>setState(()=>destination=p)),children:[
-      TileLayer(urlTemplate:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',userAgentPackageName:'com.pixelumgames.nexo'),
-      MarkerLayer(markers:[if(origin!=null)Marker(point:origin!,width:44,height:44,child:const Icon(Icons.trip_origin,size:36)),if(destination!=null)Marker(point:destination!,width:44,height:44,child:const Icon(Icons.location_pin,size:42))])]),
-      Material(elevation:8,child:Padding(padding:const EdgeInsets.all(16),child:Column(children:[
-        SegmentedButton<String>(segments:const[ButtonSegment(value:'car',label:Text('Carro'),icon:Icon(Icons.directions_car)),ButtonSegment(value:'motorcycle',label:Text('Moto'),icon:Icon(Icons.two_wheeler))],selected:{vehicle},onSelectionChanged:(v)=>setState(()=>vehicle=v.first)),
-        const SizedBox(height:8),Text(destination==null?'Toque no mapa para escolher o destino.':'Destino selecionado. Toque no mapa para alterar.'),
-        if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),const SizedBox(height:8),
-        SizedBox(width:double.infinity,child:FilledButton.icon(onPressed:locating||requesting||origin==null||destination==null?null:requestRide,icon:const Icon(Icons.local_taxi),label:Text(requesting?'Solicitando...':'Solicitar corrida'))),
-      ]))) ]));}
-  Future<void> logout()async{await NexoApiClient.clearSession();if(!mounted)return;unawaited(Navigator.pushAndRemoveUntil(context,MaterialPageRoute<void>(builder:(_)=>const LoginPage()),(_)=>false));}
+class PassengerHomePage extends StatefulWidget {
+  const PassengerHomePage({super.key});
+
+  @override
+  State<PassengerHomePage> createState() => _PassengerHomePageState();
 }
 
+class _PassengerHomePageState extends State<PassengerHomePage> {
+  NexoApiClient? api;
+  final map = MapController();
+  LatLng? origin;
+  LatLng? destination;
+  String vehicle = 'car';
+  bool locating = false;
+  bool requesting = false;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(NexoApiClient.load().then((a) {
+      if (!mounted) return;
+      setState(() => api = a);
+      unawaited(locate());
+    }));
+  }
+
+  Future<void> locate() async {
+    setState(() => locating = true);
+    try {
+      final p = await NexoLocationService.current();
+      final x = LatLng(p.latitude, p.longitude);
+      if (!mounted) return;
+      setState(() {
+        origin = x;
+        destination ??= LatLng(p.latitude + 0.01, p.longitude + 0.01);
+      });
+      map.move(x, 14);
+    } on Exception catch (e) {
+      if (mounted) setState(() => error = _friendlyError(e));
+    } finally {
+      if (mounted) setState(() => locating = false);
+    }
+  }
+
+  Future<void> requestRide() async {
+    if (api == null || origin == null || destination == null) return;
+    setState(() => requesting = true);
+    try {
+      final r = await api!.post(
+        '/rides/requests',
+        {
+          'vehicleType': vehicle,
+          'origin': {
+            'latitude': origin!.latitude,
+            'longitude': origin!.longitude,
+          },
+          'destination': {
+            'latitude': destination!.latitude,
+            'longitude': destination!.longitude,
+          },
+        },
+        idempotencyKey: 'ride-' + DateTime.now().microsecondsSinceEpoch.toString(),
+      );
+      if (!mounted) return;
+      unawaited(
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+            builder: (_) => RideTrackingPage(
+              api: api!,
+              requestId: r['requestId'] as String,
+              passenger: true,
+            ),
+          ),
+        ),
+      );
+    } on Exception catch (e) {
+      if (mounted) setState(() => error = _friendlyError(e));
+    } finally {
+      if (mounted) setState(() => requesting = false);
+    }
+  }
+
+  Future<void> logout() async {
+    await NexoApiClient.clearSession();
+    if (!mounted) return;
+    unawaited(
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute<void>(builder: (_) => const LoginPage()),
+        (_) => false,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final center = origin ?? const LatLng(-16.6869, -49.2648);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Nexo • Passageiro'),
+        actions: [
+          IconButton(onPressed: locate, icon: const Icon(Icons.my_location)),
+          IconButton(onPressed: logout, icon: const Icon(Icons.logout)),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FlutterMap(
+              mapController: map,
+              options: MapOptions(
+                initialCenter: center,
+                initialZoom: 13,
+                onTap: (_, point) => setState(() => destination = point),
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.pixelumgames.nexo',
+                ),
+                MarkerLayer(
+                  markers: [
+                    if (origin != null)
+                      Marker(
+                        point: origin!,
+                        width: 44,
+                        height: 44,
+                        child: const Icon(Icons.trip_origin, size: 36),
+                      ),
+                    if (destination != null)
+                      Marker(
+                        point: destination!,
+                        width: 44,
+                        height: 44,
+                        child: const Icon(Icons.location_pin, size: 42),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Material(
+            elevation: 8,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  SegmentedButton<String>(
+                    segments: const [
+                      ButtonSegment(value: 'car', label: Text('Carro'), icon: Icon(Icons.directions_car)),
+                      ButtonSegment(value: 'motorcycle', label: Text('Moto'), icon: Icon(Icons.two_wheeler)),
+                    ],
+                    selected: {vehicle},
+                    onSelectionChanged: (value) => setState(() => vehicle = value.first),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(destination == null
+                      ? 'Toque no mapa para escolher o destino.'
+                      : 'Destino selecionado. Toque no mapa para alterar.'),
+                  if (error != null)
+                    Text(error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: locating || requesting || origin == null || destination == null ? null : requestRide,
+                      icon: const Icon(Icons.local_taxi),
+                      label: Text(requesting ? 'Solicitando...' : 'Solicitar corrida'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 class DriverHomePage extends StatefulWidget{const DriverHomePage({super.key});@override State<DriverHomePage> createState()=>_DriverHomePageState();}
 class _DriverHomePageState extends State<DriverHomePage>{
   NexoApiClient? api;Timer? timer;Timer? locationTimer;List<Map<String,dynamic>> requests=[];bool online=false,busy=false;String? error;
@@ -169,7 +330,7 @@ class _RideTrackingPageState extends State<RideTrackingPage>{
   String label()=>switch(state){'accepted'=>'Motorista aceitou a corrida','driver_en_route'=>'Motorista a caminho','arrived'=>'Motorista chegou','started'=>'Viagem em andamento','completed'=>'Viagem concluída','cancelled'=>'Corrida cancelada',_=>'Aguardando motorista'};
   @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:Text(widget.passenger?'Sua corrida':'Corrida em atendimento')),body:ListView(padding:const EdgeInsets.all(20),children:[
     Card(child:Padding(padding:const EdgeInsets.all(20),child:Column(children:[const Icon(Icons.local_taxi,size:64),const SizedBox(height:12),Text(label(),style:Theme.of(context).textTheme.headlineSmall,textAlign:TextAlign.center),Text('Solicitação: '+state),if(fare!=null)Text('Tarifa: R\$ '+(fare!/100).toStringAsFixed(2),style:Theme.of(context).textTheme.titleLarge)]))),
-    if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),if(widget.passenger&&state!='completed'&&state!='cancelled')FilledButton.icon(onPressed:cancelRide,icon:const Icon(Icons.close),label:const Text('Cancelar corrida')),if(state=='completed'&&serviceId!=null&&widget.passenger)FilledButton.icon(onPressed:()=>unawaited(Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>PaymentRecordPage(expectedAmountCents:fare??0,api:widget.api,serviceId:serviceId))),icon:const Icon(Icons.payments),label:const Text('Registrar pagamento')),if(state=='completed'&&!widget.passenger&&paymentStatus!='confirmed')FilledButton.icon(onPressed:confirmPayment,icon:const Icon(Icons.verified),label:const Text('Confirmar pagamento')),if(paymentStatus=='confirmed')const ListTile(leading:Icon(Icons.check_circle),title:Text('Pagamento confirmado')),if(state=='completed'&&serviceId!=null&&subjectId!=null&&!rated)FilledButton.icon(onPressed:rateService,icon:const Icon(Icons.star),label:const Text('Avaliar corrida')),
+    if(error!=null)Text(error!,style:TextStyle(color:Theme.of(context).colorScheme.error)),if(driverLocation!=null)Card(child:ListTile(leading:const Icon(Icons.my_location),title:const Text('Localização do motorista'),subtitle:Text('${driverLocation!['latitude']}, ${driverLocation!['longitude']}'),)),if(widget.passenger&&state!='completed'&&state!='cancelled')FilledButton.icon(onPressed:cancelRide,icon:const Icon(Icons.close),label:const Text('Cancelar corrida')),if(state=='completed'&&serviceId!=null&&widget.passenger)FilledButton.icon(onPressed:()=>unawaited(Navigator.push(context,MaterialPageRoute<void>(builder:(_)=>PaymentRecordPage(expectedAmountCents:fare??0,api:widget.api,serviceId:serviceId)))),icon:const Icon(Icons.payments),label:const Text('Registrar pagamento')),if(state=='completed'&&!widget.passenger&&paymentStatus!='confirmed')FilledButton.icon(onPressed:confirmPayment,icon:const Icon(Icons.verified),label:const Text('Confirmar pagamento')),if(paymentStatus=='confirmed')const ListTile(leading:Icon(Icons.check_circle),title:Text('Pagamento confirmado')),if(state=='completed'&&serviceId!=null&&subjectId!=null&&!rated)FilledButton.icon(onPressed:rateService,icon:const Icon(Icons.star),label:const Text('Avaliar corrida')),
     if(!widget.passenger&&rideId!=null)...[const SizedBox(height:12),FilledButton.icon(onPressed:()=>action('driver-en-route'),icon:const Icon(Icons.navigation),label:const Text('A caminho')),FilledButton.icon(onPressed:()=>action('arrived'),icon:const Icon(Icons.place),label:const Text('Cheguei')),FilledButton.icon(onPressed:()=>action('start'),icon:const Icon(Icons.play_arrow),label:const Text('Iniciar viagem')),FilledButton.icon(onPressed:()=>action('complete'),icon:const Icon(Icons.flag),label:const Text('Finalizar viagem'))],
   ]));
 }
