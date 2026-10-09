@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>NEXO Motorista - Painel Operacional</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Font Setup: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            nexo: {
+              bg: '#0B0813',
+              card: '#151026',
+              cardElevated: '#1D1636',
+              violet: '#8A3FFC',
+              neonViolet: '#9E53FF',
+              accent: '#A855F7',
+              cyan: '#00F0FF',
+              emerald: '#10B981',
+              darkBorder: '#271E47',
+              lightBorder: '#3E2E6E'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-purple': '0 0 25px -4px rgba(138, 63, 252, 0.45)',
+            'glow-cyan': '0 0 20px -3px rgba(0, 240, 255, 0.4)',
+            'glow-pulse': '0 0 35px 2px rgba(168, 85, 247, 0.55)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom App Styles -->
+<style data-purpose="base-styling">
+    body {
+      background-color: #07050D;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    /* Hide scrollbars for clean mobile appearance */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style data-purpose="animations-and-effects">
+    @keyframes radarPulse {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.9;
+      }
+      50% {
+        transform: scale(1.6);
+        opacity: 0.25;
+      }
+      100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
+    .animate-radar {
+      animation: radarPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    }
+    
+    @keyframes countdownRing {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 125.6; }
+    }
+    .ring-timer {
+      stroke-dasharray: 125.6;
+      animation: countdownRing 15s linear infinite;
+    }
+
+    /* Subtle neon gradient borders */
+    .neon-border-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(29, 22, 54, 0.95), rgba(15, 11, 28, 0.98));
+      border: 1px solid rgba(138, 63, 252, 0.45);
+    }
+    
+    .neon-pulse-card {
+      border: 1.5px solid rgba(168, 85, 247, 0.8);
+      box-shadow: 0 0 25px -2px rgba(138, 63, 252, 0.5);
+    }
+  </style>
+<!-- END: Custom App Styles -->
+<meta content="mobile_tab" name="shell-type"/><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4 text-white antialiased">
+<!-- Mobile Frame Container (Contexto B: Motorista NEXO) -->
+<main class="w-full max-w-[420px] h-[915px] bg-[#0B0813] sm:rounded-[44px] overflow-hidden flex flex-col relative shadow-2xl border-0 sm:border-8 sm:border-[#1E1736]" data-purpose="driver-mobile-viewport"><div class="flex flex-col w-full relative select-none overflow-hidden">
+<!-- Interactive Fullscreen Dark Map Canvas Simulator -->
+<div class="relative w-full h-[840px] overflow-hidden bg-surface-container-lowest">
+<!-- Stylized Dark Vector Map Grid & Roads -->
+<div class="absolute inset-0 opacity-40 pointer-events-none" style="background-image: radial-gradient(rgba(138, 63, 252, 0.15) 1px, transparent 1px), radial-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px); background-size: 32px 32px; background-position: 0 0, 16px 16px;"></div>
+<!-- Procedural Vector Map Lines (Streets & Avenues) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="routeGlow" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#8a3ffc" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#00f0ff" stop-opacity="0.9"></stop>
+</lineargradient>
+<radialgradient cx="50%" cy="50%" id="surgePaulista" r="50%">
+<stop offset="0%" stop-color="#8a3ffc" stop-opacity="0.45"></stop>
+<stop offset="60%" stop-color="#8a3ffc" stop-opacity="0.18"></stop>
+<stop offset="100%" stop-color="#8a3ffc" stop-opacity="0"></stop>
+</radialgradient>
+<radialgradient cx="50%" cy="50%" id="surgeFariaLima" r="50%">
+<stop offset="0%" stop-color="#27e0aa" stop-opacity="0.35"></stop>
+<stop offset="65%" stop-color="#8a3ffc" stop-opacity="0.12"></stop>
+<stop offset="100%" stop-color="#8a3ffc" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- Thermal Heatmap Dynamic Areas -->
+<circle cx="280" cy="190" fill="url(#surgePaulista)" r="110"></circle>
+<circle cx="95" cy="420" fill="url(#surgeFariaLima)" r="130"></circle>
+<!-- Major Arterials and Blocks -->
+<path d="M -20 180 Q 140 210 210 320 T 450 490" fill="none" stroke="#211e2a" stroke-width="14"></path>
+<path d="M 440 90 L 190 280 L -30 460" fill="none" stroke="#211e2a" stroke-width="12"></path>
+<path d="M 120 -20 L 195 285 L 230 760" fill="none" stroke="#2c2834" stroke-width="9"></path>
+<path d="M -10 610 L 430 360" fill="none" stroke="#211e2a" stroke-width="8"></path>
+<!-- Luminous Main Avenues (Av. Paulista / Faria Lima Corridor) -->
+<path d="M -20 180 Q 140 210 210 320 T 450 490" fill="none" stroke="#373340" stroke-linecap="round" stroke-width="3"></path>
+<path d="M 120 -20 L 195 285 L 230 760" fill="none" opacity="0.6" stroke="url(#routeGlow)" stroke-dasharray="8 6" stroke-linecap="round" stroke-width="3"></path>
+<path d="M 440 90 L 190 280 L -30 460" fill="none" stroke="#4b4455" stroke-width="2.5"></path>
+</svg>
+<!-- Surge Multiplier Tags Floating on Heatmaps -->
+<div class="absolute top-[175px] right-[24px] pointer-events-none flex flex-col items-end">
+<div class="flex items-center space-x-1.5 bg-primary-container/90 text-on-primary-container px-2.5 py-1 rounded-full shadow-lg backdrop-blur-md">
+<span class="material-symbols-outlined text-label-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-sm text-label-sm tracking-wide">1.6x Paulista Alta</span>
+</div>
+<span class="text-[10px] font-body-sm text-on-surface-variant font-medium mt-0.5 mr-1">Demanda Extrema</span>
+</div>
+<div class="absolute top-[390px] left-[18px] pointer-events-none flex flex-col items-start">
+<div class="flex items-center space-x-1.5 bg-surface-container-high/90 text-tertiary-fixed-dim px-2.5 py-1 rounded-full shadow-md backdrop-blur-md">
+<span class="material-symbols-outlined text-label-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="font-label-sm text-label-sm tracking-wide">1.3x Itaim Bibi</span>
+</div>
+<span class="text-[10px] font-body-sm text-on-surface-variant font-medium mt-0.5 ml-1">Fluxo Noturno</span>
+</div>
+<!-- Peer Drivers Nearby (Minimalist Dots showing live network) -->
+<div class="absolute top-[260px] left-[85px] w-2.5 h-2.5 rounded-full bg-outline/60 shadow-sm pointer-events-none animate-pulse"></div>
+<div class="absolute top-[130px] right-[115px] w-2.5 h-2.5 rounded-full bg-outline/60 shadow-sm pointer-events-none"></div>
+<div class="absolute top-[490px] right-[65px] w-2.5 h-2.5 rounded-full bg-outline/50 shadow-sm pointer-events-none"></div>
+<!-- Driver Vehicle & Multi-Ring Scanning Radar -->
+<div class="absolute top-[340px] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+<!-- Outer Pulsing Radar Waves -->
+<div class="absolute w-64 h-64 rounded-full bg-primary-container/10 border border-primary/20 animate-ping" style="animation-duration: 3.2s;"></div>
+<div class="absolute w-44 h-44 rounded-full bg-cyan-400/10 border border-cyan-400/25 animate-pulse" style="animation-duration: 2.2s;"></div>
+<!-- Directional Heading Beam -->
+<div class="absolute w-36 h-36 rounded-full bg-gradient-to-t from-transparent via-primary-container/20 to-transparent rotate-45 pointer-events-none"></div>
+<!-- Vehicle Geolocation Halo -->
+<div class="relative w-16 h-16 rounded-full bg-surface-container-high/90 shadow-2xl flex items-center justify-center p-1.5 backdrop-blur-md">
+<div class="w-full h-full rounded-full bg-primary-container flex items-center justify-center shadow-lg">
+<!-- Sleek Driver Vehicle Icon (Toyota Corolla Night Spec) -->
+<span class="material-symbols-outlined text-on-primary text-headline-sm rotate-0" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+</div>
+<!-- Directional GPS Arrow Indicator -->
+<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[7px] border-b-tertiary"></div>
+</div>
+</div>
+<!-- Floating Top Bar: Real-time Telemetry & Status HUD -->
+<div class="absolute top-4 inset-x-3 flex flex-col space-y-2 pointer-events-auto">
+<div class="bg-surface-container-low/90 backdrop-blur-xl rounded-2xl p-2.5 shadow-2xl flex items-center justify-between">
+<!-- Live Status Pill with Pulsing LED -->
+<div class="flex items-center space-x-2 pl-1.5">
+<div class="relative flex items-center justify-center w-3 h-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-tertiary"></span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-tertiary tracking-wider uppercase font-bold">Online</span>
+<span class="font-body-sm text-[10px] text-on-surface-variant flex items-center">
+<span class="material-symbols-outlined text-[11px] mr-0.5 text-on-surface-variant">cell_tower</span>
+              5G • GPS Alta Precisão
+            </span>
+</div>
+</div>
+<!-- Shift Online/Offline Toggle -->
+<div class="flex items-center space-x-1.5">
+<button class="bg-surface-variant/80 hover:bg-surface-variant text-on-surface font-label-sm text-label-sm px-3 py-1.5 rounded-full flex items-center space-x-1 transition active:scale-95 shadow-sm" id="btnShiftToggle" type="button">
+<span class="material-symbols-outlined text-label-sm text-tertiary">pause_circle</span>
+<span>Pausar</span>
+</button>
+</div>
+</div>
+<!-- Quick Action Floating Sub-Row (Heatmap, Destination Filter, Safe Shield) -->
+<div class="flex items-center justify-between px-1">
+<!-- Live Filter Tags -->
+<div class="flex items-center space-x-1.5">
+<button class="bg-surface-container/85 hover:bg-surface-container text-on-surface px-2.5 py-1.5 rounded-full flex items-center space-x-1 backdrop-blur-md shadow-md active:scale-95" id="toggleHeatmap" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">local_fire_department</span>
+<span class="font-label-sm text-[11px]">Dinâmica Ativa</span>
+</button>
+<button class="bg-surface-container/85 hover:bg-surface-container text-on-surface-variant px-2.5 py-1.5 rounded-full flex items-center space-x-1 backdrop-blur-md shadow-md active:scale-95" id="btnTraffic" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">traffic</span>
+<span class="font-label-sm text-[11px]">Trânsito</span>
+</button>
+</div>
+<!-- Map Floating Utility Stack -->
+<div class="flex items-center space-x-1.5">
+<!-- Destination Filter ("Ir para Casa") -->
+<button class="w-9 h-9 rounded-full bg-surface-container/90 text-on-surface flex items-center justify-center shadow-lg backdrop-blur-md active:scale-90 hover:bg-surface-container" id="btnSetDestination" title="Definir Destino" type="button">
+<span class="material-symbols-outlined text-[19px] text-primary-fixed-dim">near_me</span>
+</button>
+<!-- SOS Nexo Shield 24/7 -->
+<button class="w-9 h-9 rounded-full bg-error-container/80 text-on-error-container flex items-center justify-center shadow-lg backdrop-blur-md active:scale-90 hover:bg-error-container" id="btnNexoShield" title="Proteção 24/7 Nexo Shield" type="button">
+<span class="material-symbols-outlined text-[18px]">shield</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Surge Callout Card (Floating in lower-mid map area) -->
+<div class="absolute bottom-[275px] inset-x-3 bg-gradient-to-r from-surface-container-high/95 via-surface-container/95 to-surface-container-high/95 backdrop-blur-xl rounded-2xl p-3 shadow-2xl flex items-center justify-between transition-all" id="surgeHotspotAlert">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-headline-sm" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-bold truncate">Zona Quente a 600m</span>
+<span class="bg-primary/20 text-primary-fixed-dim text-[10px] px-1.5 py-0.2 rounded-full font-bold">+R$ 14</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface-variant truncate">Itaim Bibi • Alta procura agora</span>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm shrink-0 flex items-center space-x-1 shadow-md active:scale-95 hover:bg-primary-container/90" id="btnGoToSurge" type="button">
+<span>Navegar</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+<!-- Ergonomic Driver HUD / Operational Bottom Sheet -->
+<div class="absolute bottom-0 inset-x-0 bg-surface-container-low/95 backdrop-blur-2xl rounded-t-3xl pt-2 pb-6 px-4 shadow-[0_-12px_40px_rgba(0,0,0,0.65)] flex flex-col space-y-3">
+<!-- Drag Handle -->
+<div class="w-10 h-1 bg-outline-variant/60 rounded-full mx-auto mb-1"></div>
+<!-- Turn Earnings Summary & Trip Counter -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container/80 p-2.5 rounded-2xl">
+<div class="flex flex-col items-center justify-center p-1 text-center">
+<span class="font-body-sm text-[11px] text-on-surface-variant font-medium">Ganhos Hoje</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-extrabold tracking-tight">R$ 248,50</span>
+</div>
+<div class="flex flex-col items-center justify-center p-1 text-center border-x-0">
+<span class="font-body-sm text-[11px] text-on-surface-variant font-medium">Viagens</span>
+<span class="font-headline-sm text-headline-sm text-tertiary font-extrabold">6</span>
+</div>
+<div class="flex flex-col items-center justify-center p-1 text-center">
+<span class="font-body-sm text-[11px] text-on-surface-variant font-medium">Conectado</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-extrabold">3h 15m</span>
+</div>
+</div>
+<!-- Radar Activity State Banner -->
+<div class="bg-surface-container-high/60 rounded-xl px-3 py-2 flex items-center justify-between">
+<div class="flex items-center space-x-2.5">
+<div class="relative w-3.5 h-3.5 flex items-center justify-center">
+<span class="animate-ping absolute w-full h-full rounded-full bg-primary opacity-60"></span>
+<span class="material-symbols-outlined text-primary text-[15px]">radar</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Radar NEXO em Varredura Ativa</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Buscando viagens num raio de 3.5 km</span>
+</div>
+</div>
+<span class="font-label-sm text-[11px] text-tertiary font-bold bg-tertiary-container/30 px-2 py-0.5 rounded-md">Pronto</span>
+</div>
+<!-- Vehicle Category Toggle Chips -->
+<div class="flex items-center space-x-2 pt-0.5 overflow-x-auto no-scrollbar">
+<button class="category-chip bg-primary-container text-on-primary-container px-3 py-1.5 rounded-full flex items-center space-x-1.5 shrink-0 shadow-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Nexo Black</span>
+</button>
+<button class="category-chip bg-surface-container-high text-on-surface px-3 py-1.5 rounded-full flex items-center space-x-1.5 shrink-0 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px] text-tertiary">check_circle</span>
+<span class="font-label-sm text-label-sm">Nexo Conforto</span>
+</button>
+<button class="category-chip bg-surface-container-high text-on-surface px-3 py-1.5 rounded-full flex items-center space-x-1.5 shrink-0 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px] text-tertiary">check_circle</span>
+<span class="font-label-sm text-label-sm">Nexo Pop</span>
+</button>
+</div>
+<!-- Simulated Floating Incoming Call Notification (Hidden initially, triggered on demo click) -->
+<div class="hidden bg-surface-container-highest/95 p-3.5 rounded-2xl shadow-2xl backdrop-blur-2xl flex-col space-y-2.5" id="incomingCallModal">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-tertiary">notifications_active</span>
+<span class="font-label-lg text-label-lg text-on-surface">Nova Chamada Recebida!</span>
+</div>
+<span class="bg-primary/20 text-primary-fixed-dim px-2 py-0.5 rounded-full text-label-sm font-bold">14s</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container p-2.5 rounded-xl">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-tertiary font-bold">R$ 38,90</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Nexo Black • 6.2 km (18 min)</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface">Embarque: Rua Oscar Freire</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant block">3 min até o passageiro</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="bg-surface-variant text-on-surface-variant py-2.5 rounded-full font-label-md text-label-md active:scale-95" id="btnDeclineTrip" type="button">Recusar</button>
+<button class="bg-primary-container text-on-primary-container py-2.5 rounded-full font-label-md text-label-md font-bold shadow-lg shadow-primary-container/30 active:scale-95" id="btnAcceptTrip" type="button">Aceitar Corrida</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function () {
+    // Quick Shift Pause Toggle
+    const btnShift = document.getElementById('btnShiftToggle');
+    let isPaused = false;
+    if (btnShift) {
+      btnShift.addEventListener('click', function () {
+        isPaused = !isPaused;
+        const icon = btnShift.querySelector('span.material-symbols-outlined');
+        const text = btnShift.querySelector('span:last-child');
+        if (isPaused) {
+          icon.textContent = 'play_circle';
+          icon.className = 'material-symbols-outlined text-label-sm text-primary';
+          text.textContent = 'Retomar';
+          btnShift.classList.add('bg-primary/20');
+        } else {
+          icon.textContent = 'pause_circle';
+          icon.className = 'material-symbols-outlined text-label-sm text-tertiary';
+          text.textContent = 'Pausar';
+          btnShift.classList.remove('bg-primary/20');
+        }
+      });
+    }
+
+    // Toggle Heatmap visibility feedback
+    const toggleHeatmap = document.getElementById('toggleHeatmap');
+    let heatmapActive = true;
+    if (toggleHeatmap) {
+      toggleHeatmap.addEventListener('click', function () {
+        heatmapActive = !heatmapActive;
+        if (heatmapActive) {
+          toggleHeatmap.classList.remove('opacity-50');
+          toggleHeatmap.querySelector('span:last-child').textContent = 'Dinâmica Ativa';
+        } else {
+          toggleHeatmap.classList.add('opacity-50');
+          toggleHeatmap.querySelector('span:last-child').textContent = 'Dinâmica Oculta';
+        }
+      });
+    }
+
+    // Interactive Demo Ride Trigger when tapping 'Navegar' to Surge
+    const btnGoSurge = document.getElementById('btnGoToSurge');
+    const modal = document.getElementById('incomingCallModal');
+    const surgeAlert = document.getElementById('surgeHotspotAlert');
+    if (btnGoSurge && modal) {
+      btnGoSurge.addEventListener('click', function () {
+        surgeAlert.classList.add('hidden');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      });
+    }
+
+    // Decline / Accept Incoming Call micro-interactions
+    const btnDecline = document.getElementById('btnDeclineTrip');
+    const btnAccept = document.getElementById('btnAcceptTrip');
+    if (btnDecline && modal) {
+      btnDecline.addEventListener('click', function () {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        surgeAlert.classList.remove('hidden');
+      });
+    }
+    if (btnAccept && modal) {
+      btnAccept.addEventListener('click', function () {
+        btnAccept.textContent = 'Conectado! Rumo ao Passageiro';
+        btnAccept.classList.replace('bg-primary-container', 'bg-tertiary-container');
+        setTimeout(function() {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          surgeAlert.classList.remove('hidden');
+          btnAccept.textContent = 'Aceitar Corrida';
+          btnAccept.classList.replace('bg-tertiary-container', 'bg-primary-container');
+        }, 1200);
+      });
+    }
+
+    // Category chips toggle selection
+    const chips = document.querySelectorAll('.category-chip');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        const icon = chip.querySelector('.material-symbols-outlined');
+        if (chip.classList.contains('bg-primary-container')) {
+          chip.classList.remove('bg-primary-container', 'text-on-primary-container');
+          chip.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+          if (icon) icon.textContent = 'radio_button_unchecked';
+        } else {
+          chip.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+          chip.classList.add('bg-primary-container', 'text-on-primary-container');
+          if (icon) icon.textContent = 'check_circle';
+        }
+      });
+    });
+
+    // SOS Nexo Shield Notification Toast
+    const btnShield = document.getElementById('btnNexoShield');
+    if (btnShield) {
+      btnShield.addEventListener('click', function () {
+        alert('NEXO Shield: Monitoramento 24/7 Ativo. Sua corrida e localização estão criptografadas e protegidas.');
+      });
+    }
+  })();
+</script></main>
+<!-- BEGIN: Interactive Logic (Accept/Decline Demo Handler) -->
+<script data-purpose="ride-interactions">
+    document.addEventListener('DOMContentLoaded', () => {
+      const declineBtn = document.querySelector('[data-purpose="decline-button"]');
+      const acceptBtn = document.querySelector('[data-purpose="accept-button"]');
+      const rideCard = document.querySelector('[data-purpose="incoming-ride-card"]');
+      const toggleOnline = document.querySelector('[data-purpose="toggle-online-status"]');
+
+      // Dismiss Card on Decline
+      if (declineBtn && rideCard) {
+        declineBtn.addEventListener('click', () => {
+          rideCard.style.transform = 'translateY(120%)';
+          rideCard.style.opacity = '0';
+          setTimeout(() => {
+            rideCard.style.display = 'none';
+          }, 300);
+        });
+      }
+
+      // Feedback on Accept
+      if (acceptBtn && rideCard) {
+        acceptBtn.addEventListener('click', () => {
+          acceptBtn.innerHTML = `
+            <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            <span>Iniciando rota...</span>
+          `;
+          setTimeout(() => {
+            acceptBtn.innerHTML = '<span>Corrida Confirmada!</span>';
+            acceptBtn.classList.add('bg-emerald-600');
+          }, 800);
+        });
+      }
+
+      // Online/Offline State Toggle
+      if (toggleOnline) {
+        let isOnline = true;
+        toggleOnline.addEventListener('click', () => {
+          isOnline = !isOnline;
+          const label = toggleOnline.querySelector('span');
+          const bulb = toggleOnline.querySelector('div');
+          
+          if (!isOnline) {
+            label.textContent = 'Pausa';
+            label.className = 'text-[11px] font-bold text-gray-400 uppercase tracking-wider';
+            bulb.className = 'w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center';
+            toggleOnline.className = 'flex items-center bg-[#151026] border border-gray-600/40 rounded-full pl-2.5 pr-1 py-1 space-x-2';
+          } else {
+            label.textContent = 'Online';
+            label.className = 'text-[11px] font-bold text-emerald-400 uppercase tracking-wider';
+            bulb.className = 'w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_10px_#10B981]';
+            toggleOnline.className = 'flex items-center bg-[#151026] border border-emerald-500/40 rounded-full pl-2.5 pr-1 py-1 space-x-2 shadow-glow-cyan/20';
+          }
+        });
+      }
+    });
+  </script>
+<!-- END: Interactive Logic -->
+</body></html>

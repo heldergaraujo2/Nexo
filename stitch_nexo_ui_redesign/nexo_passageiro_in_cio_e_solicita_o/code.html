@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>NEXO - Tela Inicial do Passageiro</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nexo: {
+              bg: '#080511',
+              card: '#120d24',
+              surface: '#1b1435',
+              border: '#2a1e50',
+              purple: '#9333ea',
+              violet: '#7c3aed',
+              neon: '#a855f7',
+              accent: '#c084fc',
+              subtext: '#94a3b8'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Inter', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-sm': '0 0 10px rgba(168, 85, 247, 0.35)',
+            'glow-md': '0 0 20px rgba(168, 85, 247, 0.45)',
+            'glow-lg': '0 0 30px rgba(147, 51, 234, 0.55)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom styles for map simulation and glowing effects -->
+<style data-purpose="custom-decorations">
+    /* Custom glow and glassmorphism touches */
+    .glass-card {
+      background: rgba(18, 13, 36, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(139, 92, 246, 0.22);
+    }
+    
+    .glass-bottom-sheet {
+      background: linear-gradient(180deg, rgba(20, 14, 42, 0.96) 0%, rgba(10, 7, 22, 0.99) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    /* Map grid & roads pattern */
+    .dark-map-grid {
+      background-color: #0d0a1a;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(26, 18, 54, 0.5) 0%, #090615 100%);
+    }
+
+    /* Hide scrollbar for category selector horizontal scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-[#05030a] text-slate-100 flex items-center justify-center min-h-screen p-0 sm:p-4 select-none antialiased font-sans">
+<!-- BEGIN: MobileDeviceContainer -->
+<!-- Container calibrated for standard modern iPhone dimensions (approx 390x844pt view) -->
+<div class="relative w-full max-w-[400px] h-[875px] max-h-screen sm:max-h-[875px] bg-nexo-bg sm:rounded-[48px] overflow-hidden shadow-2xl sm:border-[5px] sm:border-[#22173d] flex flex-col justify-between">
+<!-- Top Glow Overlay -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-36 bg-purple-600/15 blur-[65px] pointer-events-none z-10"></div>
+<!-- BEGIN: UpperAppArea -->
+<!-- Contains Status bar, Profile Greeting, Header and Quick Shortcuts -->
+<div class="relative z-20 flex-shrink-0 pt-3 px-5 pb-3">
+<!-- BEGIN: iOSStatusBar -->
+<div class="flex justify-between items-center text-xs font-semibold text-slate-200 tracking-tight pt-1 pb-3" data-purpose="status-bar">
+<span>9:41</span>
+<div class="flex items-center space-x-2">
+<!-- Cellular Signal -->
+<svg class="w-4 h-3.5 fill-current" viewbox="0 0 17 12">
+<rect height="4" rx="0.5" width="3" x="0" y="8"></rect>
+<rect height="6.5" rx="0.5" width="3" x="4.5" y="5.5"></rect>
+<rect height="9" rx="0.5" width="3" x="9" y="3"></rect>
+<rect height="11.5" rx="0.5" width="3" x="13.5" y="0.5"></rect>
+</svg>
+<!-- Wi-Fi -->
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 16 12">
+<path d="M8 2.5C10.6 2.5 13 3.6 14.7 5.3L16 3.9C13.9 1.9 11.1 0.7 8 0.7C4.9 0.7 2.1 1.9 0 3.9L1.3 5.3C3 3.6 5.4 2.5 8 2.5ZM8 6.5C9.7 6.5 11.2 7.2 12.3 8.3L13.6 7C12.1 5.5 10.2 4.7 8 4.7C5.8 4.7 3.9 5.5 2.4 7L3.7 8.3C4.8 7.2 6.3 6.5 8 6.5ZM8 10.5C8.8 10.5 9.5 11.2 9.5 12C9.5 12.8 8.8 13.5 8 13.5C7.2 13.5 6.5 12.8 6.5 12C6.5 11.2 7.2 10.5 8 10.5Z"></path>
+</svg>
+<!-- Battery -->
+<div class="w-5 h-2.5 border border-slate-300 rounded-sm p-0.5 flex items-center">
+<div class="h-full bg-slate-200 rounded-[1px] w-full"></div>
+</div>
+</div>
+</div>
+<!-- END: iOSStatusBar -->
+<!-- BEGIN: HeaderNavigation -->
+<!-- Profile image, Brand title, Notification Bell -->
+<header class="flex items-center justify-between mt-1 mb-3">
+<!-- User Avatar -->
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full ring-2 ring-purple-500/50 p-0.5 bg-gradient-to-tr from-purple-600 to-indigo-500 overflow-hidden shadow-glow-sm">
+<!-- Simulated Lucas Silva Avatar using SVG -->
+<svg class="w-full h-full rounded-full bg-slate-800" viewbox="0 0 64 64">
+<circle cx="32" cy="24" fill="#d4b499" r="14"></circle>
+<path d="M18 20 C18 10, 46 10, 46 20 C46 12, 18 12, 18 20" fill="#2d1b11"></path>
+<path d="M20 22 C20 13, 44 13, 44 22 Z" fill="#3a2517"></path>
+<circle cx="28" cy="24" fill="#1e1e1e" r="2"></circle>
+<circle cx="36" cy="24" fill="#1e1e1e" r="2"></circle>
+<path d="M28 29 Q32 33 36 29" fill="none" stroke="#92400e" stroke-linecap="round" stroke-width="1.5"></path>
+<path d="M14 56 C14 42, 50 42, 50 56 Z" fill="#3b82f6"></path>
+<path d="M22 42 L32 50 L42 42" fill="#ffffff"></path>
+</svg>
+</div>
+</div>
+<!-- Nexo Logo -->
+<div class="flex items-center space-x-1.5">
+<div class="w-6 h-6 rounded-lg bg-gradient-to-tr from-violet-600 via-purple-500 to-fuchsia-400 flex items-center justify-center shadow-glow-sm">
+<span class="text-white font-black text-xs italic tracking-tighter">N</span>
+</div>
+<span class="font-extrabold text-lg tracking-widest bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">NEXO</span>
+</div>
+<!-- Notification Bell -->
+<button class="w-10 h-10 rounded-full bg-[#1b1435]/80 border border-purple-500/20 flex items-center justify-center text-slate-300 hover:text-white transition-all shadow-sm">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</header>
+<!-- END: HeaderNavigation -->
+<!-- BEGIN: GreetingSection -->
+<div class="mt-1 mb-3">
+<h1 class="text-xl font-bold tracking-tight text-white flex items-center">
+          Olá, Lucas! <span class="ml-1.5 text-lg">👋</span>
+</h1>
+<p class="text-xs font-normal text-nexo-subtext mt-0.5">Para onde vamos hoje?</p>
+</div>
+<!-- END: GreetingSection -->
+<!-- BEGIN: SearchBar -->
+<div class="relative flex items-center bg-[#181133] border border-purple-500/30 rounded-2xl p-1.5 pl-3.5 shadow-lg shadow-purple-950/20" data-purpose="search-box">
+<svg class="w-4 h-4 text-purple-400 mr-2.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="8"></circle>
+<path d="M21 21l-4.35-4.35" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<input class="bg-transparent border-none p-0 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-0 w-full font-medium" placeholder="Digite o seu destino" type="text"/>
+<button class="w-9 h-9 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white flex items-center justify-center flex-shrink-0 ml-1 shadow-glow-sm hover:brightness-110 active:scale-95 transition-all">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- END: SearchBar -->
+<!-- BEGIN: QuickDestinations -->
+<!-- 'Casa - 12 min' and 'Trabalho - 18 min' cards -->
+<div class="grid grid-cols-2 gap-2.5 mt-2.5">
+<!-- Casa Card -->
+<button class="flex items-center p-2 rounded-xl bg-[#150f2c]/90 border border-purple-500/20 hover:border-purple-500/40 transition-all text-left group">
+<div class="w-8 h-8 rounded-lg bg-purple-900/40 border border-purple-600/30 flex items-center justify-center text-purple-300 mr-2.5 group-hover:scale-105 transition-transform">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<span class="block text-xs font-semibold text-white">Casa</span>
+<span class="block text-[10px] text-nexo-subtext font-normal">12 min</span>
+</div>
+</button>
+<!-- Trabalho Card -->
+<button class="flex items-center p-2 rounded-xl bg-[#150f2c]/90 border border-purple-500/20 hover:border-purple-500/40 transition-all text-left group">
+<div class="w-8 h-8 rounded-lg bg-purple-900/40 border border-purple-600/30 flex items-center justify-center text-purple-300 mr-2.5 group-hover:scale-105 transition-transform">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v1.069m7.5 0c-1.233-.063-2.483-.095-3.75-.095s-2.517.032-3.75.095" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<span class="block text-xs font-semibold text-white">Trabalho</span>
+<span class="block text-[10px] text-nexo-subtext font-normal">18 min</span>
+</div>
+</button>
+</div>
+<!-- END: QuickDestinations -->
+</div>
+<!-- END: UpperAppArea -->
+<!-- BEGIN: DarkModeMapContainer -->
+<!-- Stylized Nocturne Cartographic Section with Route, Vehicle and Pins -->
+<main class="relative flex-1 w-full dark-map-grid overflow-hidden min-h-[220px]" data-purpose="dark-mode-map">
+<!-- SVG Vector Map Details (Streets, Arteries, Blocks, Route Line) -->
+<svg class="absolute inset-0 w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 390 320">
+<defs>
+<!-- Neon Route Gradient -->
+<lineargradient id="neonRoute" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#9333ea"></stop>
+<stop offset="50%" stop-color="#c084fc"></stop>
+<stop offset="100%" stop-color="#a855f7"></stop>
+</lineargradient>
+<!-- Glow Filter -->
+<filter height="140%" id="neonGlow" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="4"></fegaussianblur>
+<femerge>
+<femergenode in="blur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Street Network Geometry (Dark Theme) -->
+<g stroke="#1a1433" stroke-linecap="round" stroke-width="6">
+<line x1="-20" x2="410" y1="60" y2="120"></line>
+<line x1="120" x2="80" y1="-10" y2="350"></line>
+<line x1="280" x2="310" y1="-20" y2="340"></line>
+<line x1="-30" x2="420" y1="220" y2="190"></line>
+<line x1="30" x2="390" y1="280" y2="290"></line>
+</g>
+<!-- Secondary Streets -->
+<g stroke="#150f29" stroke-linecap="round" stroke-width="3">
+<line x1="0" x2="400" y1="160" y2="140"></line>
+<line x1="200" x2="180" y1="0" y2="320"></line>
+<line x1="50" x2="30" y1="0" y2="200"></line>
+<line x1="330" x2="380" y1="80" y2="300"></line>
+</g>
+<!-- The Purple Active Route Path -->
+<!-- Route Under-glow -->
+<path d="M 85 85 Q 110 145 130 140 T 215 135 L 245 75" fill="none" stroke="#7c3aed" stroke-linecap="round" stroke-opacity="0.35" stroke-width="8"></path>
+<!-- Route Core Glowing Line -->
+<path d="M 85 85 Q 110 145 130 140 T 215 135 L 245 75" fill="none" filter="url(#neonGlow)" stroke="url(#neonRoute)" stroke-linecap="round" stroke-width="4.5"></path>
+</svg>
+<!-- Pin / Marker: Chegada em (Destination) -->
+<div class="absolute top-10 right-28 flex flex-col items-center">
+<!-- Destination Tag Bubble -->
+<div class="bg-[#191136]/90 border border-purple-500/40 text-[9px] font-semibold text-purple-200 px-2.5 py-0.5 rounded-full shadow-lg flex items-center space-x-1 mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
+<span>Chegada em</span>
+</div>
+<!-- Destination Dot Target -->
+<div class="w-5 h-5 rounded-full bg-purple-600/40 border border-purple-400 flex items-center justify-center shadow-glow-md">
+<div class="w-2.5 h-2.5 rounded-full bg-white"></div>
+</div>
+</div>
+<!-- Stylized Moving Car on the Route -->
+<div class="absolute top-[90px] left-[150px] -translate-x-1/2 -translate-y-1/2 rotate-[12deg] z-10">
+<!-- Vehicle Shadow/Glow -->
+<div class="absolute inset-0 bg-purple-500/30 blur-md rounded-full"></div>
+<!-- Car Body Representation -->
+<div class="relative w-7 h-13 bg-gradient-to-b from-purple-900 via-[#1e1338] to-black rounded-lg border border-purple-400/50 p-1 flex flex-col items-center justify-between shadow-2xl" style="height: 48px; width: 26px;">
+<!-- Windshield Front -->
+<div class="w-4 h-2 bg-purple-400/30 rounded-t-sm border border-purple-300/40 mt-1.5"></div>
+<!-- Roof -->
+<div class="w-3.5 h-3 bg-purple-600/20 rounded-sm"></div>
+<!-- Windshield Rear -->
+<div class="w-4 h-1.5 bg-purple-400/20 rounded-b-sm"></div>
+<!-- Tail Lights -->
+<div class="flex justify-between w-full px-1 mb-0.5">
+<span class="w-1 h-0.5 bg-red-500 rounded-full"></span>
+<span class="w-1 h-0.5 bg-red-500 rounded-full"></span>
+</div>
+<!-- Headlights Glow (Top) -->
+<div class="absolute -top-1 flex justify-between w-full px-1">
+<span class="w-1 h-1 bg-violet-300 rounded-full blur-[1px]"></span>
+<span class="w-1 h-1 bg-violet-300 rounded-full blur-[1px]"></span>
+</div>
+</div>
+</div>
+<!-- Pin / Marker: Origem ('Você está aqui') -->
+<div class="absolute bottom-6 left-12 flex flex-col items-center">
+<!-- Tag Bubble -->
+<div class="bg-[#1b1435]/95 border border-purple-500/40 text-[10px] font-semibold text-purple-200 px-2.5 py-1 rounded-full shadow-lg flex items-center space-x-1.5 mb-1.5">
+<svg class="w-2.5 h-2.5 text-purple-400" fill="currentColor" viewbox="0 0 8 8">
+<circle cx="4" cy="4" r="3"></circle>
+</svg>
+<span>Você está aqui</span>
+</div>
+<!-- Pulsing Location Ring -->
+<div class="relative flex items-center justify-center">
+<div class="w-6 h-6 rounded-full bg-purple-600/20 animate-ping absolute"></div>
+<div class="w-4 h-4 rounded-full bg-purple-600 border-2 border-white shadow-glow-sm"></div>
+</div>
+</div>
+</main>
+<!-- END: DarkModeMapContainer -->
+<!-- BEGIN: BottomSheetAndNavigation -->
+<!-- Holds Category Selector Card and Fixed Bottom Navigation Bar -->
+<div class="relative z-30 flex-shrink-0 flex flex-col">
+<!-- BEGIN: RideCategorySelector -->
+<section class="glass-bottom-sheet rounded-t-3xl pt-3 px-4 pb-3 shadow-2xl" data-purpose="ride-category-sheet">
+<!-- Drag Handle Indicator -->
+<div class="w-10 h-1 bg-purple-300/20 rounded-full mx-auto mb-3"></div>
+<!-- Horizontal Categories Carousell -->
+<div class="flex space-x-2.5 overflow-x-auto no-scrollbar pb-1">
+<!-- Category 1: Nexo Popular (Selected) -->
+<div class="flex-1 min-w-[105px] bg-[#1a1238] border-2 border-purple-500 rounded-2xl p-2.5 flex flex-col items-center text-center relative shadow-glow-md">
+<!-- Active Selection Mini Indicator -->
+<div class="w-1.5 h-1.5 rounded-full bg-purple-400 absolute top-2 right-2"></div>
+<!-- Car Icon Illustration -->
+<div class="w-12 h-6 flex items-center justify-center mb-1">
+<svg class="w-11 h-6 text-purple-300 drop-shadow-[0_2px_4px_rgba(168,85,247,0.4)]" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H7c-.6 0-1.1.3-1.5.7L3.5 10S2 10.5 2 12v4c0 .6.4 1 1 1h2m14 0a2 2 0 100-4 2 2 0 000 4zm-14 0a2 2 0 100-4 2 2 0 000 4z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Details -->
+<span class="text-[11px] font-bold text-white leading-tight">Nexo Popular</span>
+<span class="text-[9px] text-nexo-subtext font-normal leading-tight mb-1">Mais econômico</span>
+<span class="text-xs font-bold text-white tracking-tight">R$ 12,40</span>
+<span class="text-[9px] text-purple-300 font-medium">4 min</span>
+</div>
+<!-- Category 2: Nexo Conforto -->
+<div class="flex-1 min-w-[105px] bg-[#130d29]/80 border border-purple-500/20 rounded-2xl p-2.5 flex flex-col items-center text-center hover:border-purple-500/40 transition-all">
+<!-- Car Icon Illustration -->
+<div class="w-12 h-6 flex items-center justify-center mb-1">
+<svg class="w-11 h-6 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H7c-.6 0-1.1.3-1.5.7L3.5 10S2 10.5 2 12v4c0 .6.4 1 1 1h2m14 0a2 2 0 100-4 2 2 0 000 4zm-14 0a2 2 0 100-4 2 2 0 000 4z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Details -->
+<span class="text-[11px] font-semibold text-slate-200 leading-tight">Nexo Conforto</span>
+<span class="text-[9px] text-nexo-subtext font-normal leading-tight mb-1">Mais espaço</span>
+<span class="text-xs font-bold text-slate-200 tracking-tight">R$ 16,90</span>
+<span class="text-[9px] text-slate-400 font-medium">6 min</span>
+</div>
+<!-- Category 3: Nexo Black -->
+<div class="flex-1 min-w-[105px] bg-[#130d29]/80 border border-purple-500/20 rounded-2xl p-2.5 flex flex-col items-center text-center hover:border-purple-500/40 transition-all">
+<!-- Car Icon Illustration -->
+<div class="w-12 h-6 flex items-center justify-center mb-1">
+<svg class="w-11 h-6 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H7c-.6 0-1.1.3-1.5.7L3.5 10S2 10.5 2 12v4c0 .6.4 1 1 1h2m14 0a2 2 0 100-4 2 2 0 000 4zm-14 0a2 2 0 100-4 2 2 0 000 4z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Details -->
+<span class="text-[11px] font-semibold text-slate-200 leading-tight">Nexo Black</span>
+<span class="text-[9px] text-nexo-subtext font-normal leading-tight mb-1">Mais premium</span>
+<span class="text-xs font-bold text-slate-200 tracking-tight">R$ 24,90</span>
+<span class="text-[9px] text-slate-400 font-medium">8 min</span>
+</div>
+</div>
+<!-- Primary Action CTA Button: Solicitar Corrida -->
+<button class="w-full mt-3 py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 active:scale-[0.99] text-white font-bold text-sm tracking-wide shadow-glow-md flex items-center justify-center space-x-2 transition-all">
+<span>Solicitar Corrida</span>
+</button>
+</section>
+<!-- END: RideCategorySelector -->
+<!-- BEGIN: BottomNavigation -->
+<!-- 4 tabs: Início (Active), Corridas, Carteira, Perfil -->
+<nav class="bg-[#0b0818] border-t border-purple-950/60 px-6 pt-2 pb-5 flex justify-between items-center text-center" data-purpose="bottom-navigation-bar">
+<!-- Tab 1: Início (Ativo) -->
+<button class="flex flex-col items-center group">
+<div class="text-purple-400 mb-0.5">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 20 20">
+<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+</svg>
+</div>
+<span class="text-[10px] font-semibold text-purple-400">Início</span>
+</button>
+<!-- Tab 2: Corridas -->
+<button class="flex flex-col items-center group text-slate-400 hover:text-slate-200 transition-colors">
+<div class="mb-0.5">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M8 7h8m-8 5h8m-8 5h4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-[10px] font-normal text-slate-400 group-hover:text-slate-200">Corridas</span>
+</button>
+<!-- Tab 3: Carteira -->
+<button class="flex flex-col items-center group text-slate-400 hover:text-slate-200 transition-colors">
+<div class="mb-0.5">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18-3a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6m18 0V5.25A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25V6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-[10px] font-normal text-slate-400 group-hover:text-slate-200">Carteira</span>
+</button>
+<!-- Tab 4: Perfil -->
+<button class="flex flex-col items-center group text-slate-400 hover:text-slate-200 transition-colors">
+<div class="mb-0.5">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-[10px] font-normal text-slate-400 group-hover:text-slate-200">Perfil</span>
+</button>
+</nav>
+<!-- END: BottomNavigation -->
+<!-- iOS Home Indicator Bar -->
+<div class="w-32 h-1 bg-slate-500/40 rounded-full mx-auto mb-1.5 -mt-3.5 z-40"></div>
+</div>
+<!-- END: BottomSheetAndNavigation -->
+</div>
+<!-- END: MobileDeviceContainer -->
+<!-- Interactive JavaScript for category selection toggle -->
+<script data-purpose="category-interactive-toggle">
+    document.addEventListener('DOMContentLoaded', () => {
+      const categoryCards = document.querySelectorAll('[data-purpose="ride-category-sheet"] .overflow-x-auto > div');
+
+      categoryCards.forEach((card) => {
+        card.addEventListener('click', () => {
+          // Reset all
+          categoryCards.forEach(c => {
+            c.classList.remove('border-2', 'border-purple-500', 'shadow-glow-md', 'bg-[#1a1238]');
+            c.classList.add('border', 'border-purple-500/20', 'bg-[#130d29]/80');
+            const dot = c.querySelector('.bg-purple-400.rounded-full');
+            if (dot) dot.remove();
+          });
+
+          // Set active state
+          card.classList.remove('border', 'border-purple-500/20', 'bg-[#130d29]/80');
+          card.classList.add('border-2', 'border-purple-500', 'shadow-glow-md', 'bg-[#1a1238]');
+
+          // Add dot indicator
+          const dot = document.createElement('div');
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-purple-400 absolute top-2 right-2';
+          card.appendChild(dot);
+        });
+      });
+    });
+  </script>
+</body></html>

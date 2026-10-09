@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>NEXO Motorista - Painel Operacional</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Font Setup: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            nexo: {
+              bg: '#0B0813',
+              card: '#151026',
+              cardElevated: '#1D1636',
+              violet: '#8A3FFC',
+              neonViolet: '#9E53FF',
+              accent: '#A855F7',
+              cyan: '#00F0FF',
+              emerald: '#10B981',
+              darkBorder: '#271E47',
+              lightBorder: '#3E2E6E'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-purple': '0 0 25px -4px rgba(138, 63, 252, 0.45)',
+            'glow-cyan': '0 0 20px -3px rgba(0, 240, 255, 0.4)',
+            'glow-pulse': '0 0 35px 2px rgba(168, 85, 247, 0.55)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom App Styles -->
+<style data-purpose="base-styling">
+    body {
+      background-color: #07050D;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    /* Hide scrollbars for clean mobile appearance */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style data-purpose="animations-and-effects">
+    @keyframes radarPulse {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.9;
+      }
+      50% {
+        transform: scale(1.6);
+        opacity: 0.25;
+      }
+      100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
+    .animate-radar {
+      animation: radarPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    }
+    
+    @keyframes countdownRing {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 125.6; }
+    }
+    .ring-timer {
+      stroke-dasharray: 125.6;
+      animation: countdownRing 15s linear infinite;
+    }
+
+    /* Subtle neon gradient borders */
+    .neon-border-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(29, 22, 54, 0.95), rgba(15, 11, 28, 0.98));
+      border: 1px solid rgba(138, 63, 252, 0.45);
+    }
+    
+    .neon-pulse-card {
+      border: 1.5px solid rgba(168, 85, 247, 0.8);
+      box-shadow: 0 0 25px -2px rgba(138, 63, 252, 0.5);
+    }
+  </style>
+<!-- END: Custom App Styles -->
+<meta content="mobile_tab" name="shell-type"/><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4 text-white antialiased">
+<!-- Mobile Frame Container (Contexto B: Motorista NEXO) -->
+<main class="w-full max-w-[420px] h-[915px] bg-[#0B0813] sm:rounded-[44px] overflow-hidden flex flex-col relative shadow-2xl border-0 sm:border-8 sm:border-[#1E1736]" data-purpose="driver-mobile-viewport"><div class="flex flex-col w-full relative select-none">
+<!-- Top Navigation Guidance Bar (Turn-by-turn HUD) -->
+<header class="relative z-30 px-margin pt-3 pb-2 flex flex-col space-y-2">
+<!-- Turn Instruction Tactical Card -->
+<div class="bg-surface-container-high/95 backdrop-blur-xl rounded-2xl p-3 shadow-2xl flex items-center justify-between">
+<div class="flex items-center space-x-3 min-w-0">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[30px]" style="font-variation-settings: 'FILL' 1;">turn_slight_right</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-baseline space-x-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">Em 250m</span>
+<span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider">Vire à direita</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Alameda Santos, Bela Vista</p>
+</div>
+</div>
+<!-- Quick Audio & Safety Controls -->
+<div class="flex items-center space-x-1 shrink-0 pl-2">
+<button aria-label="Instruções por áudio" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary active:scale-95 transition-transform" id="btn-audio" type="button">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</button>
+<button aria-label="Emergência e Segurança SOS" class="w-10 h-10 rounded-full bg-error-container/40 flex items-center justify-center text-error active:scale-95 transition-transform" id="btn-sos" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</button>
+</div>
+</div>
+<!-- Live Telemetry Pill Bar -->
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center space-x-1.5 bg-surface-container-lowest/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md">
+<span class="font-headline-sm text-headline-sm text-primary">38</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">km/h</span>
+</div>
+<div class="flex items-center space-x-3 bg-surface-container-lowest/80 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-tertiary text-[15px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-label-md text-label-md text-on-surface">3 min</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary text-[15px]">straighten</span>
+<span class="font-label-md text-label-md text-on-surface">1,1 km</span>
+</div>
+</div>
+<button class="bg-surface-container-lowest/80 backdrop-blur-md text-on-surface w-8 h-8 rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-md" id="btn-recenter" type="button">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+</div>
+</header>
+<!-- Interactive Tactical GPS Map Stage -->
+<section aria-label="Mapa de Navegação" class="relative w-full h-[360px] overflow-hidden -mt-24 z-10">
+<!-- Map Canvas Base with Custom Dark Styling -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-location="Avenida Paulista, 1000, Sao Paulo, SP" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBIkr-2SUlbwduXtNKczc7hFNsYppIhXQF6IOKx9cPyTT2VpskPUez5QsFOQTDJ-LPEBnRdje8JjlsyVdf4lCygof6EybvTTkfIJOYfCxiVK0tysJh_I8zWi-SZmbMDscLvkN-II8sD4Dry4KXX4RuuSb-WWNAW8bsptuRR44WaMOVhXJGURDuKlQU9EFL6EXg1jaqfDAiyW5P02hoMekpYFdtyqsSzmU_5Hu2hDean0obxtVMNW0X9Ag');">
+<!-- Dark Blue/Violet Gradient Overlays for Nocturnal Depth -->
+<div class="absolute inset-0 bg-gradient-to-b from-[#0B0813] via-transparent to-[#0B0813]/90 pointer-events-none"></div>
+<div class="absolute inset-0 bg-[#0B0813]/40 pointer-events-none"></div>
+</div>
+<!-- Dynamic Vector Route Layer (Neon Violet GPS Glow) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none" viewbox="0 0 420 380">
+<!-- Ambient Outer Glow -->
+<path d="M 90 320 C 120 280, 160 250, 195 210 C 230 170, 260 145, 305 105" opacity="0.35" stroke="#8A3FFC" stroke-linecap="round" stroke-linejoin="round" stroke-width="14"></path>
+<!-- Secondary Inner Glow -->
+<path d="M 90 320 C 120 280, 160 250, 195 210 C 230 170, 260 145, 305 105" opacity="0.75" stroke="#C084FC" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></path>
+<!-- High Intensity Route Core -->
+<path d="M 90 320 C 120 280, 160 250, 195 210 C 230 170, 260 145, 305 105" id="gps-route-line" stroke="#FAEDFF" stroke-dasharray="8 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></path>
+</svg>
+<!-- Moving Vehicle Marker (Driver Beacon) -->
+<div class="absolute left-[78px] top-[308px] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="relative flex items-center justify-center">
+<!-- Ultrasonic Pulse Ripple -->
+<span class="absolute w-12 h-12 rounded-full bg-primary-container/40 animate-ping"></span>
+<span class="absolute w-8 h-8 rounded-full bg-primary/30"></span>
+<!-- Directional Car Puck -->
+<div class="relative w-8 h-8 rounded-full bg-gradient-to-tr from-primary-container to-primary flex items-center justify-center shadow-lg shadow-primary/50 rotate-45">
+<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">navigation</span>
+</div>
+</div>
+</div>
+<!-- Destination Pickup Pin (Passenger Pickup Marker) -->
+<div class="absolute left-[305px] top-[105px] -translate-x-1/2 -translate-y-full pointer-events-none">
+<div class="flex flex-col items-center">
+<!-- Floating Passenger Badge -->
+<div class="bg-surface-container-highest/95 backdrop-blur-md px-2.5 py-1 rounded-full shadow-xl flex items-center space-x-1.5 mb-1.5 -translate-x-6">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold whitespace-nowrap">Lucas Silva • MASP</span>
+</div>
+<!-- Pickup Target Icon with Halo -->
+<div class="relative flex items-center justify-center">
+<span class="absolute w-8 h-8 rounded-full bg-tertiary/30 animate-pulse"></span>
+<div class="w-7 h-7 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shadow-lg shadow-tertiary/40">
+<span class="material-symbols-outlined text-[17px]" style="font-variation-settings: 'FILL' 1;">person_pin_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Compass Widget -->
+<div class="absolute right-4 bottom-8 flex flex-col space-y-2 z-20">
+<div class="w-9 h-9 rounded-full bg-surface-container/90 backdrop-blur-md flex items-center justify-center text-primary shadow-lg">
+<span class="material-symbols-outlined text-[19px]">explore</span>
+</div>
+</div>
+</section>
+<!-- Driver Tactical Bottom Sheet (Single-hand Ergonomic Operating Panel) -->
+<section aria-label="Painel de Coleta do Passageiro" class="relative z-20 bg-surface-container-low rounded-t-3xl shadow-2xl px-margin pt-3 pb-4 flex flex-col -mt-4">
+<!-- Tactile Sheet Grab Handle -->
+<div class="w-10 h-1 rounded-full bg-outline-variant/60 self-center mb-3"></div>
+<!-- Trip Progress Status Header -->
+<div class="flex items-center justify-between mb-3">
+<div class="inline-flex items-center space-x-2 bg-primary-container/20 px-3 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider">A caminho do passageiro</span>
+</div>
+<div class="flex items-center space-x-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">search_off</span>
+<span>Chegada às 09:44</span>
+</div>
+</div>
+<!-- Passenger Identity & Location Card -->
+<div class="bg-surface-container rounded-2xl p-3.5 mb-3 shadow-sm flex flex-col space-y-3">
+<!-- Passenger Header: Avatar, Name, Rating & Comm Actions -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="relative">
+<img class="w-13 h-13 rounded-full object-cover" data-alt="Close-up portrait of passenger Lucas Silva smiling politely wearing a casual jacket with pleasant natural lighting in a modern urban context, highly detailed and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKZivb148uXYmZCScKD1xfhQudvuPxNdiwZIxY2eIgwPmoHKjkoMz4u8IRSUdFejZW5E7T8UGN3uIP_W3v0urH-flPKWy83rjbL0eq0LvIRO-xHhoLlNt8N8CqufQ7sZvx3M83yNqV5y-CTSJmG5dA55BI1WnRCizg4ywDsc4eqQyjopl-y5HdUFdUZX0D7HmwlSK4l8EbgKh-K7-dOpaknBUVSKB0Rn9SehzOiCgSTyX9ZA3Dd8R0_Q"/>
+<span class="absolute -bottom-1 -right-1 bg-tertiary text-on-tertiary rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Lucas Silva</h2>
+<span class="bg-surface-container-highest px-1.5 py-0.5 rounded-full text-label-sm font-label-sm text-primary font-bold flex items-center space-x-0.5">
+<span class="material-symbols-outlined text-tertiary text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">42 corridas realizadas</p>
+</div>
+</div>
+<!-- Safe Driver Communication Actions -->
+<div class="flex items-center space-x-2">
+<button aria-label="Enviar mensagem rápida" class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center relative active:scale-90 transition-transform shadow-md" id="btn-passenger-chat" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-tertiary"></span>
+</button>
+<button aria-label="Ligar para o passageiro com número mascarado" class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center active:scale-90 transition-transform shadow-md" id="btn-passenger-call" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">call</span>
+</button>
+</div>
+</div>
+<!-- Precise Pickup Address Box -->
+<div class="bg-surface-container-lowest/80 rounded-xl p-3 flex items-start space-x-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container/20 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[19px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-body-md text-body-md text-on-surface font-semibold truncate">Av. Paulista, 1000 - Bela Vista</p>
+<div class="flex items-center space-x-1.5 mt-0.5">
+<span class="material-symbols-outlined text-tertiary text-[14px]">flag</span>
+<span class="font-body-sm text-body-sm text-tertiary truncate">Em frente ao vão livre do MASP</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ride Tier & Driver Guaranteed Net Earnings Banner -->
+<div class="bg-surface-container rounded-2xl p-3 mb-3.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+</div>
+<div>
+<span class="font-label-md text-label-md text-on-surface font-bold">Nexo Conforto</span>
+<div class="flex items-center space-x-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-tertiary text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>Pix Direto</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-headline-sm text-headline-sm text-tertiary font-extrabold tracking-tight">R$ 21,80</div>
+<span class="font-label-sm text-label-sm text-primary">100% seu • Taxa 0%</span>
+</div>
+</div>
+<!-- Primary Action: Arrival Confirmation Button -->
+<div class="flex flex-col space-y-2">
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary-container via-inverse-primary to-primary text-on-primary-container font-label-lg text-label-lg font-bold flex items-center justify-center space-x-2 shadow-xl shadow-primary-container/40 active:scale-[0.98] transition-all" id="btn-arrive" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">where_to_vote</span>
+<span id="btn-arrive-label">Cheguei ao Ponto de Embarque</span>
+</button>
+<!-- Safety & Secondary Navigation Actions -->
+<div class="flex items-center justify-between px-2 pt-1">
+<button class="font-label-sm text-label-sm text-error/90 hover:text-error transition-colors flex items-center space-x-1" id="btn-cancel" type="button">
+<span class="material-symbols-outlined text-[15px]">cancel</span>
+<span>Cancelar Corrida</span>
+</button>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors flex items-center space-x-1" id="btn-open-waze" type="button">
+<span class="material-symbols-outlined text-[15px]">near_me</span>
+<span>Abrir no Waze / Maps</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Interactive Modal / Floating Toast for Driver Actions -->
+<div class="hidden absolute top-16 left-1/2 -translate-x-1/2 z-50 bg-surface-container-highest/95 backdrop-blur-xl px-4 py-2.5 rounded-full shadow-2xl flex items-center space-x-2 text-on-surface" id="driver-toast">
+<span class="material-symbols-outlined text-tertiary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md" id="toast-text">Passageiro notificado da sua chegada!</span>
+</div>
+</div>
+<script>
+  (function initDriverNavigation() {
+    const arriveBtn = document.getElementById('btn-arrive');
+    const arriveLabel = document.getElementById('btn-arrive-label');
+    const toast = document.getElementById('driver-toast');
+    const toastText = document.getElementById('toast-text');
+    const audioBtn = document.getElementById('btn-audio');
+    const chatBtn = document.getElementById('btn-passenger-chat');
+    const callBtn = document.getElementById('btn-passenger-call');
+    const cancelBtn = document.getElementById('btn-cancel');
+
+    function triggerToast(message) {
+      if (!toast || !toastText) return;
+      toastText.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 2600);
+    }
+
+    if (arriveBtn && arriveLabel) {
+      let arrived = false;
+      arriveBtn.addEventListener('click', () => {
+        if (!arrived) {
+          arrived = true;
+          arriveBtn.classList.remove('from-primary-container', 'via-inverse-primary', 'to-primary');
+          arriveBtn.classList.add('bg-tertiary-container', 'text-on-tertiary-container');
+          arriveLabel.textContent = 'Aguardando Lucas embarcar...';
+          triggerToast('Passageiro avisado que você está na calçada!');
+        } else {
+          arriveLabel.textContent = 'Iniciar Corrida';
+          triggerToast('Embarque confirmado. Iniciando viagem!');
+        }
+      });
+    }
+
+    if (audioBtn) {
+      let muted = false;
+      audioBtn.addEventListener('click', () => {
+        muted = !muted;
+        const icon = audioBtn.querySelector('.material-symbols-outlined');
+        if (icon) {
+          icon.textContent = muted ? 'volume_off' : 'volume_up';
+        }
+        triggerToast(muted ? 'Instruções de voz silenciadas' : 'Voz ativada com som claro');
+      });
+    }
+
+    if (chatBtn) {
+      chatBtn.addEventListener('click', () => {
+        triggerToast('Mensagem pronta enviada: "Estou chegando em frente ao MASP"');
+      });
+    }
+
+    if (callBtn) {
+      callBtn.addEventListener('click', () => {
+        triggerToast('Conectando chamada criptografada com Lucas...');
+      });
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        triggerToast('Central NEXO: Avaliando motivo de desistência...');
+      });
+    }
+  })();
+</script></main>
+<!-- BEGIN: Interactive Logic (Accept/Decline Demo Handler) -->
+<script data-purpose="ride-interactions">
+    document.addEventListener('DOMContentLoaded', () => {
+      const declineBtn = document.querySelector('[data-purpose="decline-button"]');
+      const acceptBtn = document.querySelector('[data-purpose="accept-button"]');
+      const rideCard = document.querySelector('[data-purpose="incoming-ride-card"]');
+      const toggleOnline = document.querySelector('[data-purpose="toggle-online-status"]');
+
+      // Dismiss Card on Decline
+      if (declineBtn && rideCard) {
+        declineBtn.addEventListener('click', () => {
+          rideCard.style.transform = 'translateY(120%)';
+          rideCard.style.opacity = '0';
+          setTimeout(() => {
+            rideCard.style.display = 'none';
+          }, 300);
+        });
+      }
+
+      // Feedback on Accept
+      if (acceptBtn && rideCard) {
+        acceptBtn.addEventListener('click', () => {
+          acceptBtn.innerHTML = `
+            <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            <span>Iniciando rota...</span>
+          `;
+          setTimeout(() => {
+            acceptBtn.innerHTML = '<span>Corrida Confirmada!</span>';
+            acceptBtn.classList.add('bg-emerald-600');
+          }, 800);
+        });
+      }
+
+      // Online/Offline State Toggle
+      if (toggleOnline) {
+        let isOnline = true;
+        toggleOnline.addEventListener('click', () => {
+          isOnline = !isOnline;
+          const label = toggleOnline.querySelector('span');
+          const bulb = toggleOnline.querySelector('div');
+          
+          if (!isOnline) {
+            label.textContent = 'Pausa';
+            label.className = 'text-[11px] font-bold text-gray-400 uppercase tracking-wider';
+            bulb.className = 'w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center';
+            toggleOnline.className = 'flex items-center bg-[#151026] border border-gray-600/40 rounded-full pl-2.5 pr-1 py-1 space-x-2';
+          } else {
+            label.textContent = 'Online';
+            label.className = 'text-[11px] font-bold text-emerald-400 uppercase tracking-wider';
+            bulb.className = 'w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_10px_#10B981]';
+            toggleOnline.className = 'flex items-center bg-[#151026] border border-emerald-500/40 rounded-full pl-2.5 pr-1 py-1 space-x-2 shadow-glow-cyan/20';
+          }
+        });
+      }
+    });
+  </script>
+<!-- END: Interactive Logic -->
+</body></html>

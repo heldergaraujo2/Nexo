@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#15121d;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-tertiary-fixed": "#002116", "secondary-fixed-dim": "#ddb7ff", "on-tertiary-container": "#ceffe7", "primary-fixed": "#ebdcff", "on-background": "#e7dff0", "secondary-fixed": "#f0dbff", "on-primary-fixed": "#270058", "error-container": "#93000a", "on-tertiary-fixed-variant": "#00513b", "secondary-container": "#6f00be", "error": "#ffb4ab", "outline-variant": "#4b4455", "tertiary": "#27e0aa", "surface-container": "#211e2a", "surface-variant": "#373340", "tertiary-container": "#007f5e", "surface-container-high": "#2c2834", "on-primary-container": "#faf1ff", "surface-container-lowest": "#100c18", "on-surface": "#e7dff0", "inverse-on-surface": "#322e3b", "primary": "#d4bbff", "on-error": "#690005", "on-primary-fixed-variant": "#5d00c2", "surface-tint": "#d4bbff", "on-secondary-fixed": "#2c0051", "inverse-surface": "#e7dff0", "on-tertiary": "#003828", "primary-fixed-dim": "#d4bbff", "tertiary-fixed-dim": "#27e0aa", "on-surface-variant": "#cdc2d8", "surface-container-low": "#1d1a26", "surface": "#15121d", "tertiary-fixed": "#54fdc5", "secondary": "#ddb7ff", "on-error-container": "#ffdad6", "on-primary": "#41008b", "outline": "#968da1", "surface-container-highest": "#373340", "surface-dim": "#15121d", "background": "#15121d", "primary-container": "#8a3ffc", "surface-bright": "#3b3744", "on-secondary-container": "#d6a9ff", "on-secondary": "#490080", "inverse-primary": "#7825ea", "on-secondary-fixed-variant": "#6900b3" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "margin": "1.25rem", "space-md": "1rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-xl": "2rem", "space-lg": "1.5rem", "gutter": "1rem" }, fontFamily: { "body-lg": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"] }, fontSize: { "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "display-lg": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-variant transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><h1 class="text-headline-sm font-headline-sm text-on-surface font-semibold tracking-tight">Viagem Concluída</h1></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full pb-safe">
+<!-- Dynamic Ambient Glow Backdrop (Bounded) -->
+<div class="relative w-full overflow-hidden px-margin pt-space-lg pb-space-xl">
+<!-- Decorative Ambient Lights -->
+<div class="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-72 bg-primary-container/20 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="absolute top-40 right-4 w-40 h-40 bg-tertiary/10 rounded-full blur-[60px] pointer-events-none"></div>
+<!-- 1. Header Hero de Celebração -->
+<div class="relative flex flex-col items-center text-center">
+<!-- Animated Neon Pulse Badge -->
+<div class="relative flex items-center justify-center w-24 h-24 mb-space-md">
+<div class="absolute inset-0 rounded-full bg-primary-container/30 animate-ping opacity-60"></div>
+<div class="absolute inset-1 rounded-full bg-gradient-to-tr from-primary-container to-tertiary-fixed opacity-40 blur-md"></div>
+<div class="relative w-20 h-20 rounded-full bg-surface-container-high shadow-xl flex items-center justify-center shadow-primary-container/40">
+<div class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary-container to-secondary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[34px] leading-none" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm uppercase tracking-wider mb-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+        Destino Concluído
+      </span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface">Viagem Concluída!</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mt-1">
+        Você chegou com segurança ao seu destino final.
+      </p>
+<div class="flex items-center gap-2 mt-3 px-3 py-1 rounded-full bg-surface-container-low text-on-surface-variant text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+<span>Hoje, 14:58 • Duração total: 26 min</span>
+</div>
+</div>
+<!-- 2. Card do Motorista e Veículo com Avaliação Interativa -->
+<div class="mt-space-lg w-full rounded-lg bg-surface-container p-margin shadow-xl shadow-surface-container-lowest/50 flex flex-col gap-space-md">
+<!-- Info do Motorista -->
+<div class="flex items-center gap-space-md">
+<div class="relative flex-shrink-0">
+<img class="w-16 h-16 rounded-full object-cover shadow-md shadow-surface-container-lowest" data-alt="Close up portrait photograph of Carlos, a friendly male rideshare driver in his late 30s with warm confident smile wearing a tailored navy polo inside a premium dark interior vehicle, soft cinematic ambient violet lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU9hjRhoCCIt08j_30ITLAuKSZTK5uTK-TQqaQ9W1Z1d5cYN7u3MX2npLFuSylm1jh-fvrPNvbpVnVaVUZ6TNUB-NclsqMglIFURx7t6quexrvNwxp3Jk8VeydjWWJNGgVQFH26EbbDwZ9z2cv7zcrrUZ340WB4u86jq9co8rluIUMW6U9UuTSM1kjO-cN0gyPPxQy_QDxu_SKkz6T-1aiAWi4aMukxO_f19itvaQ2Gak6YPwOaQaN_A"/>
+<div class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-primary-container text-on-primary-container flex items-center gap-0.5 text-label-sm font-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</div>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Carlos Mendes</h3>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/40 text-secondary-fixed-dim font-label-sm text-label-sm">VIP</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">Toyota Corolla Híbrido Altis</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm tracking-wider uppercase font-semibold">BRA2E19</span>
+<span class="font-body-sm text-body-sm text-tertiary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Híbrido Ecoeficiente
+            </span>
+</div>
+</div>
+</div>
+<!-- Seção de Avaliação -->
+<div class="pt-space-sm flex flex-col items-center text-center">
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Como foi sua experiência com Carlos?</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Sua nota ajuda a manter o padrão NEXO</p>
+<!-- 5 Interactive Stars -->
+<div class="flex items-center justify-center gap-2.5 my-space-md" id="star-rating">
+<button aria-label="1 estrela" class="star-btn w-11 h-11 flex items-center justify-center text-amber-400 transition-transform active:scale-90" data-val="1" type="button">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="2 estrelas" class="star-btn w-11 h-11 flex items-center justify-center text-amber-400 transition-transform active:scale-90" data-val="2" type="button">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="3 estrelas" class="star-btn w-11 h-11 flex items-center justify-center text-amber-400 transition-transform active:scale-90" data-val="3" type="button">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="4 estrelas" class="star-btn w-11 h-11 flex items-center justify-center text-amber-400 transition-transform active:scale-90" data-val="4" type="button">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="5 estrelas" class="star-btn w-11 h-11 flex items-center justify-center text-amber-400 transition-transform active:scale-90 scale-110" data-val="5" type="button">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<!-- Tags Rápidas de Feedback -->
+<div class="w-full flex flex-wrap justify-center gap-2 mt-1">
+<button class="feedback-pill selected px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[15px]">verified</span>
+<span>Direção Suave</span>
+</button>
+<button class="feedback-pill selected px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[15px]">arrow_back_ios_new</span>
+<span>Carro Limpo & Cheiroso</span>
+</button>
+<button class="feedback-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[15px]">music_note</span>
+<span>Música Perfeita</span>
+</button>
+<button class="feedback-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[15px]">timer</span>
+<span>Parada Respeitada</span>
+</button>
+<button class="feedback-pill selected px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[15px]">alarm_on</span>
+<span>Muito Pontual</span>
+</button>
+<button class="feedback-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[15px]">forum</span>
+<span>Conversa Agradável</span>
+</button>
+</div>
+<!-- Campo de Elogio Opcional -->
+<div class="w-full mt-space-md">
+<div class="w-full rounded-lg bg-surface-container-high p-3 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">workspace_premium</span>
+<input class="w-full bg-transparent text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none" placeholder="Escreva um recado para Carlos (opcional)..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Gorjeta Opcional para o Motorista (Tip Selector) -->
+<div class="mt-space-md w-full rounded-lg bg-surface-container p-margin shadow-xl shadow-surface-container-lowest/50 flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[16px]">volunteer_activism</span>
+</div>
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Gorjeta para o Motorista</h3>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary-container/20 px-2 py-0.5 rounded-full">100% repassada</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Reconheça a atenção aos detalhes e a cordialidade com um incentivo direto.</p>
+<!-- Tip Pills Selector -->
+<div class="grid grid-cols-3 gap-2 pt-space-xs">
+<button class="tip-option py-2.5 px-2 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md font-semibold text-center transition-all" type="button">
+          Não agora
+        </button>
+<button class="tip-option py-2.5 px-2 rounded bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold text-center transition-all" type="button">
+          R$ 3,00
+        </button>
+<button class="tip-option selected py-2.5 px-2 rounded bg-primary-container text-on-primary-container font-label-md text-label-md font-bold text-center relative shadow-md shadow-primary-container/30" type="button">
+<span class="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 py-0.2 bg-tertiary text-on-tertiary-fixed font-label-sm text-[9px] rounded-full uppercase tracking-tighter">Ideal</span>
+          R$ 5,00
+        </button>
+<button class="tip-option py-2.5 px-2 rounded bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold text-center transition-all" type="button">
+          R$ 10,00
+        </button>
+<button class="tip-option col-span-2 py-2.5 px-2 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md font-semibold text-center flex items-center justify-center gap-1.5 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+<span>Outro valor</span>
+</button>
+</div>
+</div>
+<!-- 4. Recibo Oficial Consolidado e Detalhamento da Rota -->
+<div class="mt-space-md w-full rounded-lg bg-surface-container p-margin shadow-xl shadow-surface-container-lowest/50 flex flex-col gap-space-md">
+<!-- Header do Recibo -->
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">receipt_long</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Detalhamento da Rota</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">#NX-84920-SP</span>
+</div>
+<!-- Itinerário com Parada Intermediária -->
+<div class="relative pl-6 flex flex-col gap-space-md py-1">
+<!-- Connecting Journey Line -->
+<div class="absolute left-2.5 top-2.5 bottom-2.5 w-0.5 bg-gradient-to-b from-primary via-tertiary to-secondary"></div>
+<!-- Origem -->
+<div class="relative flex flex-col">
+<div class="absolute -left-6 top-1 w-3 h-3 rounded-full bg-primary ring-4 ring-surface-container"></div>
+<div class="flex items-baseline justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface">Ponto de Partida</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:32</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rua das Flores, 123 - Jardins</p>
+</div>
+<!-- Parada 1 -->
+<div class="relative flex flex-col bg-surface-container-high/60 p-2.5 rounded">
+<div class="absolute -left-6 top-4 w-3 h-3 rounded-full bg-tertiary ring-4 ring-surface-container"></div>
+<div class="flex items-baseline justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-bold text-on-surface">Parada 1</span>
+<span class="px-1.5 py-0.2 rounded bg-tertiary-container/30 text-tertiary font-label-sm text-[10px]">2 min espera</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:44</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Av. Brg. Faria Lima, 2200 - Itaim Bibi</p>
+</div>
+<!-- Destino Final -->
+<div class="relative flex flex-col">
+<div class="absolute -left-6 top-1 w-3 h-3 rounded-full bg-secondary-fixed-dim ring-4 ring-surface-container"></div>
+<div class="flex items-baseline justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface">Destino Final</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14:58</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Av. Paulista, 1000 - Bela Vista</p>
+</div>
+</div>
+<!-- Quick Metrics Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="bg-surface-container-high p-3 rounded flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Distância</p>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">7,8 km</p>
+</div>
+</div>
+<div class="bg-surface-container-high p-3 rounded flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">pace</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tempo Total</p>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">26 min</p>
+</div>
+</div>
+</div>
+<!-- Discriminação de Custos Financeiros -->
+<div class="mt-2 flex flex-col gap-2.5 pt-space-sm">
+<h4 class="font-label-md text-label-md uppercase tracking-wider text-outline">Discriminação de Custos</h4>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Tarifa Base (Nexo Conforto VIP)</span>
+<span class="text-on-surface font-medium">R$ 22,00</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Parada Intermediária (+1,2 km)</span>
+<span class="text-on-surface font-medium">R$ 4,50</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+            Tempo de espera parada (2 min)
+            <span class="material-symbols-outlined text-[14px] text-tertiary" title="Tolerância inclusa">info</span>
+</span>
+<span class="text-tertiary font-medium">R$ 0,00</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Trânsito e tempo adicional</span>
+<span class="text-on-surface font-medium">R$ 2,90</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-tertiary">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sell</span>
+            Cupom PRIMEIRANEXO (-20%)
+          </span>
+<span class="font-bold">-R$ 5,00</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm text-primary" id="receipt-tip-row">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">favorite</span>
+            Gorjeta ao Motorista
+          </span>
+<span class="font-bold" id="receipt-tip-amount">+R$ 5,00</span>
+</div>
+<!-- Linha de Total -->
+<div class="mt-space-xs p-3.5 rounded-lg bg-surface-container-high flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Total Pago</span>
+<span class="font-body-sm text-body-sm text-tertiary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+              Débito Saldo NexoPay
+            </span>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-display-lg font-black text-on-surface tracking-tight" id="final-total">R$ 29,40</span>
+</div>
+</div>
+<!-- Ação do Comprovante -->
+<button class="w-full mt-1 py-2.5 px-4 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface flex items-center justify-center gap-2 font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">receipt</span>
+<span>Baixar PDF / Enviar por E-mail</span>
+</button>
+</div>
+</div>
+<!-- 5. CTAs Ergonômicos no Rodapé -->
+<div class="mt-space-lg flex flex-col gap-space-sm w-full">
+<!-- Botão Primário Gradient Radiante -->
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary-container via-inverse-primary to-secondary text-on-primary font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary-container/30 transition-transform active:scale-[0.98]" id="submit-btn" type="button">
+<span>Enviar Avaliação e Concluir</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- Suporte e Ajuda -->
+<button class="w-full py-3 rounded-full text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-2 font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span>Problemas com esta corrida? Ajuda e Suporte</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  // Rating Star Micro-interaction
+  const starContainer = document.getElementById('star-rating');
+  if (starContainer) {
+    const starButtons = starContainer.querySelectorAll('.star-btn');
+    starButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selectedVal = parseInt(btn.getAttribute('data-val'), 10);
+        starButtons.forEach(b => {
+          const val = parseInt(b.getAttribute('data-val'), 10);
+          const icon = b.querySelector('.material-symbols-outlined');
+          if (val <= selectedVal) {
+            b.classList.remove('text-outline-variant');
+            b.classList.add('text-amber-400');
+            icon.style.fontVariationSettings = "'FILL' 1";
+          } else {
+            b.classList.remove('text-amber-400');
+            b.classList.add('text-outline-variant');
+            icon.style.fontVariationSettings = "'FILL' 0";
+          }
+        });
+      });
+    });
+  }
+
+  // Feedback Tags Toggle
+  const feedbackPills = document.querySelectorAll('.feedback-pill');
+  feedbackPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const isSelected = pill.classList.contains('selected');
+      if (isSelected) {
+        pill.classList.remove('selected', 'bg-primary-container', 'text-on-primary-container', 'shadow-sm');
+        pill.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+      } else {
+        pill.classList.add('selected', 'bg-primary-container', 'text-on-primary-container', 'shadow-sm');
+        pill.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+      }
+    });
+  });
+
+  // Tip Selector and Total Calculator
+  const tipOptions = document.querySelectorAll('.tip-option');
+  const receiptTipAmount = document.getElementById('receipt-tip-amount');
+  const receiptTipRow = document.getElementById('receipt-tip-row');
+  const finalTotal = document.getElementById('final-total');
+  const baseTripCostWithoutTip = 24.40; // 22 + 4.5 + 2.9 - 5.0
+
+  tipOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      tipOptions.forEach(o => {
+        o.classList.remove('selected', 'bg-primary-container', 'text-on-primary-container', 'shadow-md', 'shadow-primary-container/30', 'font-bold');
+        o.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+
+      opt.classList.add('selected', 'bg-primary-container', 'text-on-primary-container', 'shadow-md', 'shadow-primary-container/30', 'font-bold');
+      opt.classList.remove('bg-surface-container-high', 'text-on-surface');
+
+      const text = opt.innerText.trim();
+      let tip = 0;
+      if (text.includes('3,00')) tip = 3.00;
+      else if (text.includes('5,00')) tip = 5.00;
+      else if (text.includes('10,00')) tip = 10.00;
+
+      if (tip === 0) {
+        receiptTipRow.style.opacity = '0.35';
+        receiptTipAmount.textContent = 'R$ 0,00';
+      } else {
+        receiptTipRow.style.opacity = '1';
+        receiptTipAmount.textContent = '+R$ ' + tip.toFixed(2).replace('.', ',');
+      }
+
+      const totalCalculated = baseTripCostWithoutTip + tip;
+      finalTotal.textContent = 'R$ ' + totalCalculated.toFixed(2).replace('.', ',');
+    });
+  });
+
+  // Final Action Ripple / Click handler
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      submitBtn.innerHTML = `
+        <span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
+        <span>Concluindo...</span>
+      `;
+      submitBtn.classList.add('opacity-80', 'pointer-events-none');
+      setTimeout(() => {
+        submitBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[20px]">check_circle</span>
+          <span>Obrigado por usar NEXO!</span>
+        `;
+      }, 900);
+    });
+  }
+</script></main></body></html>

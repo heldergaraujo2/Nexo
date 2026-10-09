@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>NEXO - Aguardando o motorista</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            nexo: {
+              bg: '#090611',
+              dark: '#0F0B1E',
+              card: '#16112C',
+              surface: '#20183F',
+              accent: '#8A3FFC',
+              lilac: '#A855F7',
+              neon: '#C084FC',
+              muted: '#8E87A8'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-purple': '0 0 25px -4px rgba(168, 85, 247, 0.45)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.45)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Custom Styles for Night Map & Glow Effects -->
+<style data-purpose="custom-styling">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Neon pulsing route pin */
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7), 0 0 15px rgba(192, 132, 252, 0.9);
+      }
+      50% {
+        box-shadow: 0 0 0 12px rgba(168, 85, 247, 0), 0 0 25px rgba(192, 132, 252, 1);
+      }
+    }
+
+    .pulse-pin {
+      animation: pulseGlow 2.2s infinite ease-out;
+    }
+
+    /* Glassmorphism panel styling */
+    .nexo-glass {
+      background: linear-gradient(180deg, rgba(27, 20, 52, 0.88) 0%, rgba(15, 11, 30, 0.95) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(168, 85, 247, 0.22);
+    }
+
+    .nexo-card {
+      background: rgba(31, 23, 61, 0.72);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(168, 85, 247, 0.18);
+    }
+
+    /* Map road lines SVG glow */
+    .road-neon {
+      filter: drop-shadow(0 0 6px #A855F7);
+    }
+  </style>
+</head>
+<body class="bg-[#050409] flex justify-center items-center min-h-screen p-0 sm:p-4 text-white antialiased select-none">
+<!-- Mobile Device Screen Container -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-[#090611] rounded-[48px] overflow-hidden shadow-2xl border-[5px] border-[#20183F]/70 flex flex-col justify-between" data-purpose="mobile-viewport">
+<!-- BEGIN: Vector Night Map Graphic Background -->
+<div class="absolute inset-0 pointer-events-none z-0 overflow-hidden" data-purpose="interactive-night-map">
+<!-- Dark City Grid Canvas -->
+<svg class="w-full h-full object-cover" fill="none" viewbox="0 0 390 844" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#0C081A" height="844" width="390"></rect>
+<!-- City Urban Road Grid (Subtle dark purple lines) -->
+<g stroke="#18132D" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">
+<path d="M-20 180 L420 150"></path>
+<path d="M-20 280 L420 270" stroke="#1D1638" stroke-width="12"></path>
+<path d="M-20 440 L420 410" stroke="#1D1638" stroke-width="14"></path>
+<path d="M-10 600 L420 620" stroke-width="10"></path>
+<path d="M60 -20 L90 880" stroke="#1D1638" stroke-width="14"></path>
+<path d="M190 -20 L230 880" stroke-width="9"></path>
+<path d="M320 -20 L290 880" stroke="#1D1638" stroke-width="14"></path>
+<path d="M40 320 L280 500" stroke-width="7"></path>
+<path d="M380 200 L160 520" stroke-width="9"></path>
+</g>
+<!-- Secondary Road Markings -->
+<g stroke="#261C4A" stroke-dasharray="4 6" stroke-width="1.5">
+<path d="M-20 280 L420 270"></path>
+<path d="M60 -20 L90 880"></path>
+<path d="M320 -20 L290 880"></path>
+</g>
+<!-- Active Navigation Neon Route (From driver to passenger) -->
+<g class="road-neon">
+<!-- Outer glowing path -->
+<path d="M 264 250 L 220 310 L 244 380 L 210 440 L 250 495" stroke="#A855F7" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path>
+<!-- Inner intense bright core -->
+<path d="M 264 250 L 220 310 L 244 380 L 210 440 L 250 495" stroke="#F3E8FF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</g>
+</svg>
+<!-- Car Position Marker (On the route at x: 260, y: 245) -->
+<div class="absolute top-[236px] left-[242px] -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transform -rotate-[35deg]" data-purpose="driver-car-marker">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<div class="absolute inset-0 bg-nexo-lilac/30 rounded-full blur-md"></div>
+<!-- Vehicle SVG Top View Icon -->
+<svg class="w-8 h-12 text-white drop-shadow-xl" fill="none" viewbox="0 0 36 60">
+<rect fill="#17122E" height="52" rx="10" stroke="#A855F7" stroke-width="2" width="26" x="5" y="4"></rect>
+<path d="M9 16 C9 12 13 10 18 10 C23 10 27 12 27 16 L25 24 L11 24 Z" fill="#C084FC" fill-opacity="0.8"></path>
+<rect fill="#0C081A" height="15" rx="3" width="16" x="10" y="32"></rect>
+<circle cx="8" cy="11" fill="#E9D5FF" r="2"></circle>
+<circle cx="28" cy="11" fill="#E9D5FF" r="2"></circle>
+<circle cx="8" cy="51" fill="#EF4444" r="2"></circle>
+<circle cx="28" cy="51" fill="#EF4444" r="2"></circle>
+</svg>
+</div>
+</div>
+<!-- ETA Badge on Map Trajectory -->
+<div class="absolute top-[370px] left-[248px] -translate-x-1/2 -translate-y-1/2 z-10" data-purpose="trajectory-eta-tag">
+<div class="px-3.5 py-1.5 rounded-full bg-nexo-lilac text-white font-extrabold text-xs shadow-lg shadow-purple-900/60 flex items-center gap-1 border border-white/20">
+<i class="w-3 h-3 stroke-[2.5]" data-lucide="clock"></i>
+<span>2 min</span>
+</div>
+</div>
+<!-- Passenger Pickup Location Pin -->
+<div class="absolute top-[495px] left-[250px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center" data-purpose="pickup-point-pin">
+<div class="w-9 h-9 rounded-full bg-white text-nexo-accent flex items-center justify-center shadow-lg pulse-pin z-10">
+<div class="w-3.5 h-3.5 rounded-full bg-nexo-accent"></div>
+</div>
+<div class="mt-1 bg-black/85 backdrop-blur-md px-2.5 py-1 rounded-md border border-purple-500/30 text-[10px] font-semibold text-purple-200 tracking-wider flex items-center gap-1 shadow-md">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          Você está aqui
+        </div>
+</div>
+</div>
+<!-- END: Vector Night Map Graphic Background -->
+<!-- BEGIN: Top Navigation & Status Bar Area -->
+<header class="relative z-20 pt-3 px-5" data-purpose="app-header">
+<!-- iOS Status Bar -->
+<div class="flex justify-between items-center text-xs font-semibold tracking-wider text-slate-300 pb-2">
+<span>9:41</span>
+<div class="flex items-center space-x-1.5">
+<i class="w-3.5 h-3.5" data-lucide="signal"></i>
+<i class="w-3.5 h-3.5" data-lucide="wifi"></i>
+<i class="w-4 h-4" data-lucide="battery"></i>
+</div>
+</div>
+<!-- Sheet Minimizer Indicator & Back Header -->
+<div class="flex items-center justify-between mt-1 mb-2">
+<button aria-label="Voltar" class="w-10 h-10 rounded-full bg-nexo-dark/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white active:scale-95 transition-transform">
+<i class="w-5 h-5 stroke-[2.5]" data-lucide="chevron-left"></i>
+</button>
+<div class="w-10 h-1.5 rounded-full bg-white/20"></div>
+<button aria-label="Mais opções" class="w-10 h-10 rounded-full bg-nexo-dark/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white active:scale-95 transition-transform">
+<i class="w-5 h-5" data-lucide="more-horizontal"></i>
+</button>
+</div>
+<!-- Ride Status Header Title -->
+<div class="text-left mt-1">
+<h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+          Aguardando o motorista
+        </h1>
+<p class="text-xs text-nexo-muted font-medium mt-0.5">Seu motorista já foi avisado!</p>
+</div>
+</header>
+<!-- END: Top Navigation & Status Bar Area -->
+<!-- BEGIN: Driver Profile Floating Card -->
+<section class="relative z-20 px-4 mt-2" data-purpose="driver-info-card">
+<div class="nexo-card rounded-3xl p-4 shadow-glass border border-purple-500/20">
+<!-- Driver Profile Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3.5">
+<!-- Driver Avatar with Ring -->
+<div class="relative">
+<div class="w-14 h-14 rounded-full overflow-hidden p-0.5 bg-gradient-to-tr from-purple-500 to-indigo-400">
+<img alt="Carlos Mendes" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdcI12c5SbiIDgQBhW7pHKwtb7IaQcxYuT1w14Xpt6ZC36qZ9OoDGZ8q89m9S0u-SFNp_uUq36mjUa-Pzx9dlQSjVy4kAiH04eGY3nOBpFvvPI3irHI1qJbY7LOMeOnXH8DZ4yO3IxTh_7a0QKOW53566ufZRebbxx5cHd-y5S-Ews1TpET5oIODcsT7UPTlgoF5-KjN4gMHrF9h0Yu_F3LsUzgvsLCAsqtoswQiPGv4ctqk-fxI2Tiw"/>
+</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-nexo-dark rounded-full"></span>
+</div>
+<!-- Driver & Car Details -->
+<div>
+<div class="flex items-center gap-1.5">
+<h3 class="font-bold text-base text-white">Carlos Mendes</h3>
+<span class="flex items-center text-[11px] font-semibold text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded-md">
+                  ★ 4.9
+                </span>
+</div>
+<p class="text-xs text-nexo-muted mt-0.5 font-normal">Toyota Corolla • Preto</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded text-[11px] font-extrabold tracking-wider bg-black/60 border border-purple-500/30 text-purple-200">
+                  ABC-1234
+                </span>
+<span class="text-[11px] text-nexo-muted font-medium">528 corridas</span>
+</div>
+</div>
+</div>
+<!-- Quick Vehicle Mini Preview -->
+<div class="hidden sm:block opacity-60">
+<i class="w-7 h-7 text-nexo-lilac" data-lucide="car"></i>
+</div>
+</div>
+<!-- Quick Action Buttons (Chat, Call, Share) -->
+<div class="grid grid-cols-3 gap-3 mt-4 pt-3 border-t border-white/5">
+<!-- Chat Button -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all active:scale-95 text-center">
+<div class="w-9 h-9 rounded-full bg-nexo-surface flex items-center justify-center text-nexo-neon mb-1 shadow-sm">
+<i class="w-4 h-4" data-lucide="message-square"></i>
+</div>
+<span class="text-[11px] font-semibold text-gray-200">Chat</span>
+</button>
+<!-- Call Button -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all active:scale-95 text-center">
+<div class="w-9 h-9 rounded-full bg-nexo-surface flex items-center justify-center text-nexo-neon mb-1 shadow-sm">
+<i class="w-4 h-4" data-lucide="phone"></i>
+</div>
+<span class="text-[11px] font-semibold text-gray-200">Ligar</span>
+</button>
+<!-- Share Button -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all active:scale-95 text-center">
+<div class="w-9 h-9 rounded-full bg-nexo-surface flex items-center justify-center text-nexo-neon mb-1 shadow-sm">
+<i class="w-4 h-4" data-lucide="share-2"></i>
+</div>
+<span class="text-[11px] font-semibold text-gray-200">Compartilhar</span>
+</button>
+</div>
+</div>
+</section>
+<!-- END: Driver Profile Floating Card -->
+<!-- Spacer to keep map visible in the center -->
+<div class="flex-1 min-h-[90px]"></div>
+<!-- BEGIN: Ride Status Bottom Sheet & Actions -->
+<footer class="relative z-20 flex flex-col justify-end" data-purpose="ride-bottom-sheet">
+<div class="nexo-glass rounded-t-[36px] pt-4 px-5 pb-3 shadow-2xl border-t border-purple-500/30">
+<!-- Pull Handle Indicator -->
+<div class="w-12 h-1.5 rounded-full bg-white/20 mx-auto mb-3"></div>
+<!-- Arrival Time & Distance Metric -->
+<div class="flex items-end justify-between mb-3">
+<div>
+<p class="text-xs uppercase tracking-wider text-nexo-muted font-bold">Chegada em</p>
+<div class="flex items-baseline space-x-1.5">
+<span class="text-3xl font-extrabold tracking-tight text-white">2 min</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-base font-bold text-nexo-neon">1,2 km</span>
+<p class="text-[11px] text-nexo-muted">Distância restante</p>
+</div>
+</div>
+<!-- Visual Progress Bar -->
+<div class="w-full bg-purple-950/60 rounded-full h-2 mb-3.5 overflow-hidden p-0.5 border border-purple-500/20">
+<div class="bg-gradient-to-r from-nexo-accent via-nexo-lilac to-white h-full rounded-full w-[78%] transition-all duration-500 shadow-glow-purple"></div>
+</div>
+<!-- Pickup Address Info -->
+<div class="flex items-center space-x-3 p-2.5 rounded-2xl bg-white/[0.03] border border-white/5 mb-3">
+<div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 shrink-0">
+<i class="w-4 h-4" data-lucide="map-pin"></i>
+</div>
+<div class="flex-1 truncate">
+<p class="text-[10px] text-nexo-muted font-semibold uppercase">Ponto de Embarque</p>
+<p class="text-xs font-semibold text-white truncate">Av. Paulista, 1000 - Bela Vista</p>
+</div>
+<button class="text-purple-400 text-xs font-semibold px-2 py-1 rounded hover:bg-purple-500/10">Alterar</button>
+</div>
+<!-- Secondary Bottom Actions: Safety / SOS & Cancel -->
+<div class="flex items-center space-x-3 mb-2">
+<!-- Safety / Shield Button -->
+<button class="flex-1 py-2.5 px-3 rounded-xl bg-purple-900/30 border border-purple-500/30 text-purple-200 text-xs font-bold flex items-center justify-center space-x-1.5 active:scale-95 transition-transform">
+<i class="w-4 h-4 text-emerald-400" data-lucide="shield-check"></i>
+<span>Segurança / SOS</span>
+</button>
+<!-- Cancel Ride Button -->
+<button class="py-2.5 px-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-bold hover:bg-red-500/20 active:scale-95 transition-transform">
+            Cancelar
+          </button>
+</div>
+</div>
+<!-- BEGIN: Nexo Bottom Navigation Bar -->
+<nav class="bg-[#090611] border-t border-purple-900/20 px-6 py-2.5 flex justify-between items-center z-30" data-purpose="nexo-tab-bar">
+<!-- Tab 1: Início -->
+<a class="flex flex-col items-center text-nexo-muted hover:text-white transition-colors" href="#">
+<i class="w-5 h-5" data-lucide="home"></i>
+<span class="text-[10px] mt-1 font-medium">Início</span>
+</a>
+<!-- Tab 2: Corridas (Active Tab) -->
+<a class="flex flex-col items-center text-nexo-neon font-bold transition-colors relative" href="#">
+<i class="w-5 h-5 stroke-[2.5]" data-lucide="navigation-2"></i>
+<span class="text-[10px] mt-1">Corridas</span>
+<span class="w-1.5 h-1.5 rounded-full bg-nexo-neon mt-0.5"></span>
+</a>
+<!-- Tab 3: Carteira -->
+<a class="flex flex-col items-center text-nexo-muted hover:text-white transition-colors" href="#">
+<i class="w-5 h-5" data-lucide="wallet"></i>
+<span class="text-[10px] mt-1 font-medium">Carteira</span>
+</a>
+<!-- Tab 4: Perfil -->
+<a class="flex flex-col items-center text-nexo-muted hover:text-white transition-colors" href="#">
+<i class="w-5 h-5" data-lucide="user"></i>
+<span class="text-[10px] mt-1 font-medium">Perfil</span>
+</a>
+</nav>
+<!-- END: Nexo Bottom Navigation Bar -->
+</footer>
+<!-- END: Ride Status Bottom Sheet & Actions -->
+</div>
+<!-- Lucide Icon Initialization -->
+<script data-purpose="icon-loader">
+    lucide.createIcons();
+  </script>
+</body></html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "outline-variant": "#4b4455", "outline": "#968da1", "inverse-on-surface": "#322e3b", "secondary-container": "#6f00be", "surface-container-highest": "#373340", "background": "#15121d", "inverse-surface": "#e7dff0", "primary-fixed-dim": "#d4bbff", "on-surface-variant": "#cdc2d8", "tertiary-fixed": "#54fdc5", "surface-container-low": "#1d1a26", "surface": "#15121d", "inverse-primary": "#7825ea", "on-error": "#690005", "primary": "#d4bbff", "tertiary-fixed-dim": "#27e0aa", "surface-container-high": "#2c2834", "on-surface": "#e7dff0", "on-primary": "#41008b", "surface-dim": "#15121d", "tertiary-container": "#007f5e", "on-tertiary-container": "#ceffe7", "secondary-fixed-dim": "#ddb7ff", "secondary": "#ddb7ff", "on-background": "#e7dff0", "secondary-fixed": "#f0dbff", "on-error-container": "#ffdad6", "surface-container": "#211e2a", "primary-fixed": "#ebdcff", "tertiary": "#27e0aa", "on-tertiary-fixed-variant": "#00513b", "on-primary-container": "#faf1ff", "on-primary-fixed-variant": "#5d00c2", "surface-tint": "#d4bbff", "primary-container": "#8a3ffc", "on-tertiary-fixed": "#002116", "on-secondary-container": "#d6a9ff", "on-secondary": "#490080", "surface-variant": "#373340", "on-secondary-fixed": "#2c0051", "on-tertiary": "#003828", "error-container": "#93000a", "surface-bright": "#3b3744", "on-secondary-fixed-variant": "#6900b3", "on-primary-fixed": "#270058", "error": "#ffb4ab", "surface-container-lowest": "#100c18" }, borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" }, spacing: { "space-md": "1rem", "margin": "1.25rem", "gutter": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", "space-lg": "1.5rem", "space-sm": "0.5rem" }, fontFamily: { "label-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }], "display-lg": ["34px", { lineHeight: "42px", letterSpacing: "-0.02em", fontWeight: "800" }], "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "700" }], "headline-lg-mobile": ["24px", { lineHeight: "30px", letterSpacing: "-0.015em", fontWeight: "700" }], "body-lg": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "500" }], "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.015em", fontWeight: "600" }], "headline-lg": ["26px", { lineHeight: "34px", letterSpacing: "-0.015em", fontWeight: "700" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "400" }], "body-md": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "400" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><button aria-label="Menu Operacional" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface hover:text-primary transition-colors"><span class="material-symbols-outlined text-[24px]">menu</span></button><button aria-label="Nexo Shield Segurança" class="h-9 px-space-sm rounded-full bg-surface-container-highest/60 hover:bg-surface-container-highest flex items-center gap-space-xs transition-colors"><span class="material-symbols-outlined text-tertiary text-[18px]">shield</span><span class="font-label-sm text-label-sm text-tertiary tracking-wide uppercase">Nexo Shield</span></button></div><div class="flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-low/80"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><h1 class="font-label-md text-label-md text-on-surface tracking-tight uppercase truncate max-w-[130px]">Deslocamento Embarque</h1></div><div class="flex items-center gap-space-xs"><button aria-label="Controles de Rota" class="w-11 h-11 rounded-full flex items-center justify-center text-primary-fixed-dim hover:text-primary transition-colors"><span class="material-symbols-outlined text-[22px]">turn_right</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe bg-surface flex-1"><div class="flex flex-col w-full relative">
+<!-- Interactive Viewport Container (Map & Turn-by-Turn Telemetry) -->
+<div class="relative w-full h-[380px] overflow-hidden select-none">
+<!-- Map Background Rendering Engine Container -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center brightness-[0.78] contrast-[1.18]" data-location="Alameda Santos, 1200, Cerqueira Cesar, Sao Paulo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUJVvA8G-VOcFEtK1ABu9Pf_Hv4CoubNnmQ3C9650GjEKAoBuEBcq8-aHUQdJEPH32PHgYKMkW7ZgUvXbRxTsuzo2Z6UP6AfoeRtvsNO0sjLokJQan31Tl4XRUH8sKcCw0m4HUiE1adODSja3gEuZza39obi1B7L_bOY8CannBraFbNO2mUUGv82TAMvcVO6cPBgp9tdW8Ig2Iejbbt9ntGAkXsvedESXIxC2KwFq7Hx65IGhWcVmvNw')">
+<!-- Dark Nocturnal Scrim & Violet Atmospheric Glow Gradients -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-surface/70 mix-blend-multiply"></div>
+<div class="absolute inset-0 bg-radial from-primary/10 via-transparent to-surface/90 pointer-events-none"></div>
+</div>
+<!-- Live Neon Telemetry Map Overlay Vector -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10" fill="none" viewbox="0 0 390 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Route Gradient: Electric Violet into Bioluminescent Cyan -->
+<lineargradient gradientunits="userSpaceOnUse" id="routeTraceGrad" x1="85" x2="280" y1="290" y2="130">
+<stop offset="0%" stop-color="#8a3ffc"></stop>
+<stop offset="55%" stop-color="#d4bbff"></stop>
+<stop offset="100%" stop-color="#27e0aa"></stop>
+</lineargradient>
+<!-- Core Neon Glow Filter -->
+<filter height="140%" id="neonHaloFilter" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="5"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+<!-- Vehicle Field Radar Pulse -->
+<radialgradient cx="50%" cy="50%" id="vehiclePulse" r="50%">
+<stop offset="0%" stop-color="#8a3ffc" stop-opacity="0.45"></stop>
+<stop offset="60%" stop-color="#8a3ffc" stop-opacity="0.15"></stop>
+<stop offset="100%" stop-color="#8a3ffc" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- Glow Layer Behind Route -->
+<path d="M 86 288 C 110 250, 140 238, 172 232 L 230 220 C 255 215, 268 185, 276 138" filter="url(#neonHaloFilter)" opacity="0.4" stroke="#8a3ffc" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"></path>
+<!-- Main Glowing Vector Route Track -->
+<path d="M 86 288 C 110 250, 140 238, 172 232 L 230 220 C 255 215, 268 185, 276 138" stroke="url(#routeTraceGrad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.5"></path>
+<!-- Dashed Speed Corridor Guides -->
+<path d="M 86 288 C 110 250, 140 238, 172 232 L 230 220 C 255 215, 268 185, 276 138" opacity="0.65" stroke="#ffffff" stroke-dasharray="6 14" stroke-linecap="round" stroke-width="1.5"></path>
+<!-- Vehicle Positional Aura & Cone of Vision -->
+<circle cx="86" cy="288" fill="url(#vehiclePulse)" r="34"></circle>
+<path d="M 86 288 L 68 220 A 46 46 0 0 1 106 220 Z" fill="#d4bbff" fill-opacity="0.12"></path>
+<!-- Vehicle Node (Toyota Corolla Black Position Pin) -->
+<g transform="translate(86, 288)">
+<circle fill="#15121d" r="12" stroke="#8a3ffc" stroke-width="2.5"></circle>
+<circle fill="#27e0aa" r="5.5"></circle>
+<path d="M 0 -8 L 4 2 L -4 2 Z" fill="#ffffff"></path>
+</g>
+<!-- Passenger Destination Beacon Halo -->
+<circle class="animate-ping" cx="276" cy="138" fill="#27e0aa" fill-opacity="0.2" r="18" style="animation-duration: 2.4s;"></circle>
+<circle cx="276" cy="138" fill="#27e0aa" r="8" stroke="#15121d" stroke-width="2.5"></circle>
+</svg>
+<!-- Floating HUD Guidance: Turn-by-Turn Dynamic Navigation Card -->
+<div class="absolute top-3 inset-x-margin z-30">
+<div class="w-full bg-surface-container-high/90 backdrop-blur-xl rounded-xl p-space-sm shadow-2xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between gap-space-sm">
+<!-- Turn Glyph & Immediate Instruction -->
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-lg shadow-primary-container/30">
+<span class="material-symbols-outlined text-[28px] text-tertiary-fixed font-bold">turn_right</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate tracking-tight">Em 250m vire à direita</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Rua Pamplona</span>
+</div>
+</div>
+<!-- Sound & Navigation HUD Controls -->
+<div class="flex items-center gap-space-xs shrink-0">
+<button aria-label="Controle de Voz GPS" class="w-9 h-9 rounded-full bg-surface-container-highest/80 hover:bg-surface-bright text-on-surface-variant flex items-center justify-center transition-colors active:scale-95" id="btnVoiceToggle">
+<span class="material-symbols-outlined text-[19px]">volume_up</span>
+</button>
+<button aria-label="Visão Geral de Rota" class="w-9 h-9 rounded-full bg-surface-container-highest/80 hover:bg-surface-bright text-on-surface-variant flex items-center justify-center transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[19px]">route</span>
+</button>
+</div>
+</div>
+<!-- Secondary Maneuver Preview & Split Telemetry (ETA / Km / Clock) -->
+<div class="flex items-center justify-between pt-1 mt-0.5 border-t border-outline-variant/20">
+<div class="flex items-center gap-space-xs min-w-0 pr-space-xs">
+<span class="material-symbols-outlined text-[15px] text-outline shrink-0">straight</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Depois Alameda Santos por 900m</span>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<span class="font-headline-sm text-headline-sm text-tertiary font-bold">4 min</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-md text-label-md text-on-surface">1.2 km</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-outline">19:42</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Map Quick Action Dock (Right Side Controls) -->
+<div class="absolute right-margin bottom-4 z-20 flex flex-col gap-space-sm items-end">
+<!-- Shield Audio SOS Quick Trigger -->
+<button aria-label="Gravação Segura Nexo Shield" class="w-11 h-11 rounded-full bg-surface-container-highest/90 backdrop-blur-md text-tertiary shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[22px]">shield_with_heart</span>
+</button>
+<!-- Recenter Live Car Position -->
+<button aria-label="Recentralizar Trajeto GPS" class="w-11 h-11 rounded-full bg-surface-container-highest/90 backdrop-blur-md text-on-surface shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[22px]">my_location</span>
+</button>
+<!-- External Map Navigation Picker Pill (Waze / GMaps) -->
+<button aria-label="Abrir no Waze ou Google Maps" class="h-10 px-space-sm rounded-full bg-surface-container-highest/90 backdrop-blur-md text-primary-fixed-dim hover:text-on-surface shadow-lg flex items-center gap-space-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">near_me</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Rotas Ext.</span>
+</button>
+</div>
+<!-- Destination Pin Micro Badge (Pinned directly on Map canvas) -->
+<div class="absolute top-[102px] right-8 z-20 pointer-events-none">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-space-sm py-1 rounded-full shadow-lg flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface whitespace-nowrap">Lucas Silva • Al. Santos, 1200</span>
+</div>
+</div>
+</div>
+<!-- Bottom Interactive Operational Sheet (Deslocamento até Embarque) -->
+<div class="relative w-full bg-surface-container-low rounded-t-lg -mt-3 pt-space-xs pb-space-lg px-margin shadow-[0_-8px_32px_rgba(0,0,0,0.55)] z-40 flex flex-col gap-space-md">
+<!-- Tactile Drag Handle Pill -->
+<div class="w-full flex justify-center py-1">
+<div class="w-10 h-1.5 rounded-full bg-outline-variant/60"></div>
+</div>
+<!-- Header Status Strip: Trajectory Stage & Luxury Vehicle Tier -->
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs bg-tertiary-container/30 px-space-sm py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-tertiary-container tracking-wider uppercase font-bold">A caminho do passageiro</span>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container/35 px-space-sm py-1 rounded-full">
+<span class="material-symbols-outlined text-secondary-fixed text-[14px]">stars</span>
+<span class="font-label-sm text-label-sm text-secondary-fixed tracking-wide uppercase font-bold">Nexo Black</span>
+</div>
+</div>
+<!-- Passenger VIP Identity & Secure Communication Row -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between gap-space-sm">
+<!-- Passenger Profile Photo with Live Online Beacon -->
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-12 h-12 rounded-full overflow-hidden shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Close-up professional portrait of Lucas Silva, an elegant 32-year-old VIP passenger wearing a charcoal coat in an urban nocturnal ambiance with soft violet city reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC95fzlv4BFxqe3iUCgc6ymIgdtaALO8rLZZUl08S0u-6ofV6MpYFCraPhTpsCOvAP9NhI8uR9xpbrQz7EMwgZiik7mdDV-_SqHKNUW8ZnQjEnYAQR2X7AlJrxHKoh29vmb8w6XRxicOeOuEkg-qjIK-l16XEiaOO9nJcR927QWg8nmmZsj_ZsSqUSaaMn2PEPnYdbMvnC9opwDgTpK3qExEbnwWyv8ZmY-zCFkfYSfDdd6EIDV4O2ndw"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-tertiary border-2 border-surface"></span>
+</div>
+<!-- Name, VIP Badge & Rating Credentials -->
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Lucas Silva</span>
+<span class="bg-primary/20 text-primary-fixed-dim px-1.5 py-0.5 rounded font-label-sm text-[10px] uppercase font-extrabold tracking-widest">VIP</span>
+</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-secondary-fixed text-[15px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">4.95</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(142 viagens)</span>
+</div>
+</div>
+</div>
+<!-- Secure Masked Driver Contact Actions -->
+<div class="flex items-center gap-space-xs shrink-0">
+<button aria-label="Enviar Mensagem para Lucas" class="relative w-11 h-11 rounded-full bg-surface-container-highest text-on-surface hover:text-primary flex items-center justify-center active:scale-95 transition-all" id="btnOpenChat">
+<span class="material-symbols-outlined text-[22px]">chat</span>
+<!-- Unread Pulse Badge Indicator -->
+<span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface"></span>
+</button>
+<button aria-label="Ligar via Mascaramento Nexo Shield" class="w-11 h-11 rounded-full bg-surface-container-highest text-tertiary hover:bg-surface-bright flex items-center justify-center active:scale-95 transition-all" id="btnCallMasked">
+<span class="material-symbols-outlined text-[22px]">call</span>
+</button>
+</div>
+</div>
+<!-- Financial Transaction Guaranteed Pill -->
+<div class="flex items-center justify-between bg-surface-container-low px-space-sm py-space-xs rounded-DEFAULT">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-[17px]">verified_user</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate">PIX no App Garantido</span>
+</div>
+<div class="flex items-baseline gap-1 shrink-0">
+<span class="font-label-sm text-label-sm text-outline">Total:</span>
+<span class="font-label-lg text-label-lg text-primary font-bold">R$ 42,80</span>
+<span class="font-label-sm text-[10px] text-tertiary uppercase font-semibold">(100% seu)</span>
+</div>
+</div>
+</div>
+<!-- Boarding Pickup Point & Note from Passenger -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col gap-space-sm">
+<!-- Pickup Address Component -->
+<div class="flex items-start gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-tertiary/20 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-tertiary text-[16px]">location_on</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Local de Embarque</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Alameda Santos, 1200</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Cerqueira César, Jardins • Edifício Parque Paulista</span>
+</div>
+</div>
+<!-- Luggage / Wait Observation Note -->
+<div class="bg-surface-container-highest/60 rounded-DEFAULT p-space-sm flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px] shrink-0">luggage</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-wide">Instrução de Chegada</span>
+<p class="font-body-sm text-body-sm text-on-surface">"Aguardando na portaria principal com mala de mão executiva."</p>
+</div>
+</div>
+<!-- Drop-off Destination Preview -->
+<div class="flex items-center justify-between text-on-surface-variant text-body-sm pt-1 border-t border-outline-variant/15">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-outline text-[16px]">flag</span>
+<span class="truncate">Destino: Av. Brig. Faria Lima, 3477 (Itaim Bibi)</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline shrink-0 ml-2">18 min est.</span>
+</div>
+</div>
+<!-- Quick Driver Canned Responses -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5">
+<button class="shrink-0 bg-surface-container-highest px-space-sm py-1.5 rounded-full text-on-surface font-label-sm text-label-sm hover:bg-surface-bright active:scale-95 transition-all">
+        🚗 Já estou chegando!
+      </button>
+<button class="shrink-0 bg-surface-container-highest px-space-sm py-1.5 rounded-full text-on-surface font-label-sm text-label-sm hover:bg-surface-bright active:scale-95 transition-all">
+        🚦 Trânsito moderado
+      </button>
+<button class="shrink-0 bg-surface-container-highest px-space-sm py-1.5 rounded-full text-on-surface font-label-sm text-label-sm hover:bg-surface-bright active:scale-95 transition-all">
+        📍 Estou em frente
+      </button>
+</div>
+<!-- Primary Driver Action (Arrival Trigger CTA) -->
+<div class="w-full pt-space-xs">
+<button class="w-full h-14 bg-gradient-to-r from-primary-container via-inverse-primary to-primary-container text-on-primary-container rounded-full font-label-lg text-label-lg flex items-center justify-between px-space-md shadow-[0_4px_24px_rgba(138,63,252,0.4)] active:scale-[0.98] transition-all" id="btnArrivedPickup">
+<div class="w-10 h-10 rounded-full bg-on-primary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px] text-on-primary-container">near_me</span>
+</div>
+<span class="font-bold tracking-wide uppercase text-center flex-1">Cheguei ao Embarque</span>
+<div class="w-10 h-10 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">check</span>
+</div>
+</button>
+</div>
+<!-- Secondary Safe Controls (Cancel Trip & Real-time Route Sharing) -->
+<div class="flex items-center justify-between px-space-xs pt-1 pb-1">
+<button class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors py-1" id="btnShareRoute">
+<span class="material-symbols-outlined text-[17px]">share_location</span>
+<span class="font-label-sm text-label-sm">Compartilhar Rota</span>
+</button>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<button class="flex items-center gap-1.5 text-outline hover:text-on-surface transition-colors py-1" id="btnVehicleSpec">
+<span class="material-symbols-outlined text-[17px]">directions_car</span>
+<span class="font-label-sm text-label-sm truncate">Corolla • Preto</span>
+</button>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<button class="flex items-center gap-1 text-error/80 hover:text-error transition-colors py-1" id="btnCancelTrip">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span class="font-label-sm text-label-sm">Cancelar</span>
+</button>
+</div>
+</div>
+<!-- Interactive Arrival Confirmation Micro-Toast (Client State) -->
+<div class="fixed bottom-6 inset-x-margin z-50 transform translate-y-32 opacity-0 transition-all duration-300 pointer-events-none" id="arrivalToast">
+<div class="bg-surface-container-highest/95 backdrop-blur-xl border border-tertiary/40 rounded-xl p-space-md shadow-2xl flex items-center gap-space-sm text-on-surface">
+<div class="w-9 h-9 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-tertiary">Lucas Silva notificado!</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Aguardando passageiro no portão da Al. Santos.</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Tactical micro-interactions for the driver workflow
+  const btnArrived = document.getElementById('btnArrivedPickup');
+  const arrivalToast = document.getElementById('arrivalToast');
+  const btnVoice = document.getElementById('btnVoiceToggle');
+
+  if (btnArrived && arrivalToast) {
+    btnArrived.addEventListener('click', () => {
+      // Toggle Arrival visual state and alert passenger simulation
+      arrivalToast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+      arrivalToast.classList.add('translate-y-0', 'opacity-100');
+      
+      btnArrived.classList.remove('from-primary-container', 'via-inverse-primary');
+      btnArrived.classList.add('bg-tertiary-container');
+      btnArrived.querySelector('span.flex-1').textContent = 'AGUARDANDO EMBARQUE';
+
+      setTimeout(() => {
+        arrivalToast.classList.remove('translate-y-0', 'opacity-100');
+        arrivalToast.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+      }, 4000);
+    });
+  }
+
+  if (btnVoice) {
+    let isMuted = false;
+    btnVoice.addEventListener('click', () => {
+      isMuted = !isMuted;
+      const icon = btnVoice.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.textContent = isMuted ? 'volume_off' : 'volume_up';
+        btnVoice.classList.toggle('text-error', isMuted);
+      }
+    });
+  }
+</script></main></body></html>

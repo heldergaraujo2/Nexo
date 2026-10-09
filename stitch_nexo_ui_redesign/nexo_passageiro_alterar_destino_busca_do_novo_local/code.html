@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#2c2834", "surface-container-lowest": "#100c18", "secondary-fixed-dim": "#ddb7ff", "on-background": "#e7dff0", "tertiary-container": "#007f5e", "inverse-surface": "#e7dff0", "on-secondary-fixed-variant": "#6900b3", "tertiary": "#27e0aa", "on-secondary-fixed": "#2c0051", "on-primary": "#41008b", "on-surface": "#e7dff0", "on-primary-fixed-variant": "#5d00c2", "on-error-container": "#ffdad6", "surface-container-low": "#1d1a26", "on-primary-container": "#faf1ff", "on-secondary": "#490080", "background": "#15121d", "surface-variant": "#373340", "outline": "#968da1", "on-secondary-container": "#d6a9ff", "secondary": "#ddb7ff", "inverse-primary": "#7825ea", "error-container": "#93000a", "surface-container": "#211e2a", "secondary-container": "#6f00be", "surface-bright": "#3b3744", "surface-container-highest": "#373340", "surface-tint": "#d4bbff", "tertiary-fixed": "#54fdc5", "primary": "#d4bbff", "primary-container": "#8a3ffc", "primary-fixed": "#ebdcff", "secondary-fixed": "#f0dbff", "tertiary-fixed-dim": "#27e0aa", "primary-fixed-dim": "#d4bbff", "on-tertiary": "#003828", "surface": "#15121d", "on-surface-variant": "#cdc2d8", "outline-variant": "#4b4455", "on-error": "#690005", "inverse-on-surface": "#322e3b", "on-tertiary-fixed-variant": "#00513b", "error": "#ffb4ab", "surface-dim": "#15121d", "on-primary-fixed": "#270058", "on-tertiary-container": "#ceffe7", "on-tertiary-fixed": "#002116" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "margin": "1.25rem", "space-xl": "2rem", "gutter": "1rem", "space-md": "1rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xs": "0.25rem" }, "fontFamily": { "headline-lg-mobile": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"] }, "fontSize": { "headline-lg-mobile": ["24px", {"lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600"}], "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}], "body-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400"}], "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600"}], "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500"}], "label-lg": ["15px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}], "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}], "display-lg": ["34px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800"}], "headline-lg": ["26px", {"lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700"}] } } } }</script></head><body class="bg-surface text-on-surface font-body-md flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Fechar ou voltar" class="w-11 h-11 -ml-space-xs rounded-full flex items-center justify-center text-on-surface hover:bg-surface-variant/40 transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[24px]">close</span></button><div class="flex flex-col"><h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">Alterar Destino</h1><span class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Nexo Em Corrida</span></div></div><div class="flex items-center gap-space-sm"><div class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-tertiary-container/20 text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-sm text-label-sm font-semibold tracking-wide uppercase">Ao Vivo</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 bg-surface min-h-screen pb-safe"><div class="flex flex-col w-full pb-8">
+<!-- Driver & Current Route Live Micro-Banner -->
+<section class="px-margin pt-2 pb-4">
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-low p-4 shadow-xl">
+<!-- Glow ambience behind card -->
+<div class="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-primary-container/20 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-tertiary"></span>
+</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary font-bold">Em Deslocamento</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-highest/80 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[15px] text-primary">directions_car</span>
+<span>Toyota Corolla • BRA2E19</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Charming middle-aged Brazilian driver Carlos Mendes wearing a crisp collar shirt smiling warmly in the driver seat of a sleek clean vehicle with subtle ambient violet interior lighting reflecting softly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8_JX_imouYjzGTMta-vNqhgwiNrY0CVbvJHUcWsVXFpkT3mhoMC8W61jut6UEBoCT8YL2x5Iq69hq84mqAN83VflpfGDxhBFPWr1J8Y6Gn64fwEL3y7io2IDsBDKJKllk86f-v5xYEzZY7UbqFWRFMPrBeK5Sd-Kef9eUYAlCAHMeobvYPnPUXsMZiy1Tp5zIt-YkGYF4lGZkUPaNzcuoaOMwrbGt6DsYHWXSLMqqy14HZ-XPXGJY5A"/>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container shadow">
+<span class="material-symbols-outlined text-[12px] font-bold">star</span>
+</div>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<h2 class="font-label-lg text-label-lg text-on-surface truncate">Carlos Mendes</h2>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">4.98 ★</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+            A caminho de <span class="text-on-surface font-medium">Av. Paulista, 1000</span>
+</p>
+</div>
+</div>
+<!-- Friendly guidance message -->
+<div class="mt-3.5 pt-3 flex items-start gap-2.5 bg-surface-container/60 rounded-xl p-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">
+          Você pode alterar o destino final a qualquer momento. O valor será recalculado com base no novo trajeto e o motorista será notificado automaticamente no GPS.
+        </p>
+</div>
+</div>
+</section>
+<!-- Route Comparison & Glowing Input Box -->
+<section class="px-margin mb-4">
+<div class="relative rounded-2xl bg-surface-container-low p-4 shadow-xl">
+<!-- Route Connector Visual -->
+<div class="flex flex-col gap-3 relative">
+<!-- Step 1: Current Destination (Origin of change) -->
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-center self-stretch justify-start shrink-0 pt-1">
+<div class="w-7 h-7 rounded-full bg-surface-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+</div>
+<div class="w-0.5 flex-1 bg-surface-variant my-1"></div>
+</div>
+<div class="flex-1 min-w-0 pb-1">
+<div class="flex items-center gap-2 mb-0.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-variant/80 text-on-surface-variant font-label-sm text-label-sm font-semibold tracking-wide uppercase">
+                Destino Atual
+              </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">
+              Av. Paulista, 1000 - Bela Vista
+            </p>
+</div>
+</div>
+<!-- Step 2: New Destination Glowing Search Bar -->
+<div class="flex items-start gap-3">
+<div class="shrink-0 pt-3">
+<div class="w-7 h-7 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container shadow-[0_0_12px_rgba(138,63,252,0.65)]">
+<span class="material-symbols-outlined text-[16px] animate-pulse">add_location_alt</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="relative group">
+<!-- Active neon gradient border simulator -->
+<div class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-primary-container via-secondary to-tertiary opacity-70 blur-xs"></div>
+<div class="relative flex items-center bg-surface-container-highest rounded-2xl px-3.5 py-3 shadow-inner">
+<span class="material-symbols-outlined text-primary text-[20px] mr-2 shrink-0">search</span>
+<input aria-label="Buscar novo endereço" class="bg-transparent border-0 outline-none w-full font-label-md text-label-md text-on-surface placeholder:text-outline font-medium tracking-tight" id="destination-input" type="text" value="Shopping Eldorado - Av. Rebouças, 3970"/>
+<button aria-label="Limpar campo de busca" class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface shrink-0 ml-1 transition-colors" id="clear-search-btn" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Favorites / Frequent Destinations Carousel -->
+<section class="mb-5">
+<div class="flex items-center justify-between px-margin mb-2.5">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold uppercase tracking-wider">Favoritos &amp; Frequentes</span>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+        Opções
+      </span>
+</div>
+<div class="flex items-center gap-2.5 px-margin overflow-x-auto no-scrollbar scroll-smooth">
+<!-- Chip 1: Work -->
+<button class="favorite-chip shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low hover:bg-surface-container-high transition-all shadow-sm active:scale-95 text-left" type="button">
+<div class="w-6 h-6 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[14px]">work</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Trabalho</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Vila Olímpia • 5,2 km</span>
+</div>
+</button>
+<!-- Chip 2: Home -->
+<button class="favorite-chip shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low hover:bg-surface-container-high transition-all shadow-sm active:scale-95 text-left" type="button">
+<div class="w-6 h-6 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[14px]">home</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Casa</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Moema • 7,8 km</span>
+</div>
+</button>
+<!-- Chip 3: Mall -->
+<button class="favorite-chip shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low hover:bg-surface-container-high transition-all shadow-sm active:scale-95 text-left" type="button">
+<div class="w-6 h-6 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[14px]">shopping_bag</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">JK Iguatemi</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">4,1 km</span>
+</div>
+</button>
+<!-- Chip 4: Airport -->
+<button class="favorite-chip shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low hover:bg-surface-container-high transition-all shadow-sm active:scale-95 text-left" type="button">
+<div class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">flight_takeoff</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Congonhas</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">9,5 km</span>
+</div>
+</button>
+</div>
+</section>
+<!-- Intelligent Smart Search Results -->
+<section class="px-margin flex flex-col gap-3 mb-5">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold uppercase tracking-wider">Sugestões de Rota Otimizada</span>
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+        Em tempo real
+      </span>
+</div>
+<!-- Result Card 1 (Active Highlighted Selection) -->
+<div class="result-card cursor-pointer relative overflow-hidden rounded-2xl bg-surface-container-high p-4 shadow-[0_8px_24px_rgba(138,63,252,0.22)] transition-all" id="result-1">
+<!-- Glow Accent bar -->
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-primary via-primary-container to-secondary"></div>
+<div class="flex items-start gap-3 pl-1">
+<div class="w-10 h-10 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">storefront</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h3 class="font-label-lg text-label-lg text-on-surface truncate font-bold">Shopping Eldorado</h3>
+<span class="shrink-0 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mb-2">
+            Av. Rebouças, 3970 - Pinheiros, São Paulo - SP
+          </p>
+<div class="flex flex-wrap items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-container/25 text-primary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">alt_route</span>
+              Mais próximo da rota (+3,1 km)
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">traffic</span>
+              Tráfego Fluido • ~12 min adicionais
+            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Result Card 2 -->
+<div class="result-card cursor-pointer relative overflow-hidden rounded-2xl bg-surface-container-low p-4 hover:bg-surface-container transition-all" id="result-2">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-variant/60 flex items-center justify-center text-on-surface-variant shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">subway</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h3 class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Estação Faria Lima - Linha 4 Amarela</h3>
+<span class="font-label-sm text-label-sm text-outline font-medium">1,8 km</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mb-2">
+            Av. Brg. Faria Lima, 900 - Pinheiros
+          </p>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-medium">
+              Desvio leve (+1,8 km)
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+              ~7 min adicionais
+            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Result Card 3 -->
+<div class="result-card cursor-pointer relative overflow-hidden rounded-2xl bg-surface-container-low p-4 hover:bg-surface-container transition-all" id="result-3">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-variant/60 flex items-center justify-center text-on-surface-variant shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">park</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<h3 class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Parque Ibirapuera - Portão 3</h3>
+<span class="font-label-sm text-label-sm text-outline font-medium">5,4 km</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mb-2">
+            Av. Pedro Álvares Cabral - Moema
+          </p>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-medium">
+              +5,4 km
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+              ~18 min adicionais
+            </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Preliminary Cost & ETA Glassmorphism Preview Card -->
+<section class="px-margin mb-5">
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-low/90 backdrop-blur-md p-4 shadow-xl">
+<!-- Glow ambient light inside glass panel -->
+<div class="absolute -right-12 -bottom-12 w-36 h-36 rounded-full bg-primary-container/20 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">calculate</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">Estimativa Preliminar</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm font-semibold">
+          Tarifa Dinâmica Congelada
+        </span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- New Total Time -->
+<div class="rounded-xl bg-surface-container/70 p-3 flex flex-col justify-between">
+<div class="flex items-center gap-1.5 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary">schedule</span>
+<span class="font-label-sm text-label-sm">Tempo Total</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface leading-tight font-bold">
+              ~24 min
+            </div>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">
+              (+6 min da rota atual)
+            </span>
+</div>
+</div>
+<!-- Price Difference -->
+<div class="rounded-xl bg-surface-container/70 p-3 flex flex-col justify-between">
+<div class="flex items-center gap-1.5 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">payments</span>
+<span class="font-label-sm text-label-sm">Diferença Estimada</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-secondary font-bold leading-tight">
+              +R$ 7,80
+            </div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+              Novo total: <strong class="text-on-surface">R$ 37,20</strong>
+</span>
+</div>
+</div>
+</div>
+<!-- Live Payment Security Micro-Note -->
+<div class="mt-3 flex items-center justify-between text-on-surface-variant pt-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary text-[15px]">verified_user</span>
+<span class="font-body-sm text-body-sm">Débito automático no cartão padrão (Mastercard •••• 4082)</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-outline">lock</span>
+</div>
+</div>
+</section>
+<!-- Sticky-styled Primary Action Area -->
+<section class="px-margin flex flex-col gap-2.5">
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary-container via-primary-container to-secondary text-on-primary-container font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(138,63,252,0.45)] hover:shadow-[0_0_32px_rgba(138,63,252,0.65)] active:scale-[0.98] transition-all" id="submit-recalculate-btn" type="button">
+<span>Revisar e Calcular Novo Trajeto</span>
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 py-1 text-center">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">sync_lock</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+        Carlos será redirecionado instantaneamente sem paradas bruscas.
+      </p>
+</div>
+</section>
+<!-- Interactive JavaScript logic for input clearing and selection switching -->
+<script>
+    (function initAlterarDestinoInteraction() {
+      const searchInput = document.getElementById('destination-input');
+      const clearBtn = document.getElementById('clear-search-btn');
+      const chips = document.querySelectorAll('.favorite-chip');
+      const resultCards = document.querySelectorAll('.result-card');
+      const recalculateBtn = document.getElementById('submit-recalculate-btn');
+
+      // Clear input button handler
+      if (clearBtn && searchInput) {
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          searchInput.focus();
+        });
+      }
+
+      // Quick chips auto-fill simulation
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const title = chip.querySelector('span.font-label-md')?.textContent?.trim() || '';
+          const subtitle = chip.querySelector('span.font-label-sm')?.textContent?.trim() || '';
+          if (searchInput) {
+            searchInput.value = `${title} (${subtitle})`;
+          }
+          // Visual micro-feedback
+          chip.classList.add('bg-primary-container/40');
+          setTimeout(() => chip.classList.remove('bg-primary-container/40'), 300);
+        });
+      });
+
+      // Result card selection toggle
+      resultCards.forEach((card) => {
+        card.addEventListener('click', () => {
+          resultCards.forEach((c) => {
+            c.classList.remove('bg-surface-container-high', 'shadow-[0_8px_24px_rgba(138,63,252,0.22)]');
+            c.classList.add('bg-surface-container-low');
+            // Remove left border indicator if exists
+            const bar = c.querySelector('.bg-gradient-to-b');
+            if (bar) bar.remove();
+            // Reset checkmark icon
+            const badge = c.querySelector('.bg-primary');
+            if (badge) badge.remove();
+          });
+
+          card.classList.remove('bg-surface-container-low');
+          card.classList.add('bg-surface-container-high', 'shadow-[0_8px_24px_rgba(138,63,252,0.22)]');
+
+          const cardTitle = card.querySelector('h3')?.textContent?.trim();
+          const cardSub = card.querySelector('p')?.textContent?.trim();
+          if (searchInput && cardTitle) {
+            searchInput.value = `${cardTitle} - ${cardSub || ''}`;
+          }
+        });
+      });
+
+      // Submit visual reaction
+      if (recalculateBtn) {
+        recalculateBtn.addEventListener('click', () => {
+          recalculateBtn.innerHTML = `
+            <span class="inline-block w-4 h-4 border-2 border-on-primary-container border-t-transparent rounded-full animate-spin"></span>
+            <span>Notificando Carlos...</span>
+          `;
+          setTimeout(() => {
+            recalculateBtn.innerHTML = `
+              <span class="material-symbols-outlined text-[20px]">check_circle</span>
+              <span>Rota Atualizada com Sucesso!</span>
+            `;
+            recalculateBtn.classList.add('from-tertiary-container', 'to-tertiary', 'text-on-tertiary');
+          }, 1000);
+        });
+      }
+    })();
+  </script>
+</div></main></body></html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-error": "#690005", "on-tertiary-fixed": "#002116", "tertiary": "#27e0aa", "tertiary-container": "#007f5e", "on-tertiary": "#003828", "surface-variant": "#373340", "error": "#ffb4ab", "tertiary-fixed": "#54fdc5", "secondary-fixed-dim": "#ddb7ff", "error-container": "#93000a", "on-primary-container": "#faf1ff", "tertiary-fixed-dim": "#27e0aa", "surface": "#15121d", "on-secondary": "#490080", "outline-variant": "#4b4455", "secondary": "#ddb7ff", "on-secondary-fixed": "#2c0051", "primary-fixed": "#ebdcff", "surface-container-low": "#1d1a26", "on-background": "#e7dff0", "on-primary-fixed": "#270058", "surface-container-high": "#2c2834", "inverse-surface": "#e7dff0", "background": "#15121d", "surface-container": "#211e2a", "on-secondary-fixed-variant": "#6900b3", "on-tertiary-fixed-variant": "#00513b", "on-error-container": "#ffdad6", "surface-dim": "#15121d", "on-secondary-container": "#d6a9ff", "surface-tint": "#d4bbff", "inverse-on-surface": "#322e3b", "secondary-container": "#6f00be", "on-tertiary-container": "#ceffe7", "on-surface": "#e7dff0", "on-primary-fixed-variant": "#5d00c2", "outline": "#968da1", "surface-bright": "#3b3744", "secondary-fixed": "#f0dbff", "primary-container": "#8a3ffc", "surface-container-highest": "#373340", "surface-container-lowest": "#100c18", "on-primary": "#41008b", "primary": "#d4bbff", "on-surface-variant": "#cdc2d8", "primary-fixed-dim": "#d4bbff", "inverse-primary": "#7825ea" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "space-xl": "2rem", "space-md": "1rem", "space-xs": "0.25rem", "gutter": "1rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "margin": "1.25rem" }, fontFamily: { "display-lg": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "display-lg": ["34px", { lineHeight: "42px", letterSpacing: "-0.02em", fontWeight: "800" }], "body-lg": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "500" }], "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.015em", fontWeight: "600" }], "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "700" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "400" }], "body-md": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "400" }], "headline-lg": ["26px", { lineHeight: "34px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }], "headline-lg-mobile": ["24px", { lineHeight: "30px", letterSpacing: "-0.015em", fontWeight: "700" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_4px_24px_rgba(11,8,19,0.6)]"><div class="h-20 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><button aria-label="Voltar" class="w-11 h-11 shrink-0 flex items-center justify-center rounded-full bg-surface-container-high/60 text-on-surface hover:text-primary transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span></button><div class="flex flex-col min-w-0 truncate"><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse shrink-0"></span><span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider font-semibold truncate">NEXO SHIELD • SINISTRO #SIN-2023-8849</span></div><h1 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight truncate">Devolução Do Carro Reserva</h1></div></div><div class="shrink-0 pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-20 pb-safe bg-surface flex-1"><div class="flex flex-col w-full pb-8">
+<!-- Glowing Atmospheric Background Elements -->
+<div class="relative w-full overflow-hidden px-margin pt-space-md">
+<!-- Hero Status Confirmation Banner -->
+<div class="relative w-full rounded-DEFAULT bg-surface-container-low p-space-md shadow-xl overflow-hidden">
+<!-- Glow decoration -->
+<div class="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-tertiary/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-primary-container/20 blur-2xl pointer-events-none"></div>
+<div class="relative flex flex-col gap-space-sm z-10">
+<!-- Status Pill with Pulsing Indicator -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-tertiary-container/30 self-start">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-sm text-label-sm text-tertiary tracking-wide font-bold uppercase">
+            Devolução Concluída com Sucesso
+          </span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-extrabold tracking-tight">
+          Encerramento de Locação &amp; Extrato Final
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Veículo entregue na agência homologada. Vistoria digital aprovada sem avarias adicionais e caução liberado instantaneamente.
+        </p>
+<!-- Protocol Metas Micro-Chips -->
+<div class="flex flex-wrap items-center gap-2 pt-space-xs">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">confirmation_number</span>
+<span class="font-mono text-primary font-bold">NEXO-RSV-994821</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary">schedule</span>
+<span>17:42 BRT</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
+<span>Check-out 100% OK</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ready Next-Step Alert: Veículo Titular Liberado (High Priority Notification) -->
+<div class="mt-space-md w-full rounded-DEFAULT bg-primary-container/20 p-space-md relative overflow-hidden shadow-lg">
+<div class="absolute right-0 top-0 w-32 h-32 bg-primary-container/30 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-start gap-3 relative z-10">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-md">
+<span class="material-symbols-outlined text-[22px]">directions_car</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Veículo do Segurado Pronto</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-snug mt-0.5">
+            Seu carro titular está liberado para retirada!
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+<span class="font-semibold text-on-surface">Oficina Porto Seguro Express Itaim</span> • R. Clodomiro Amazonas, 850. Para-choque e lanterna substituídos com peças originais e garantia de 12 meses.
+          </p>
+<button class="mt-space-sm inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-bold self-start active:scale-95 transition-transform shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">key</span>
+<span>Ver Código de Liberação na Oficina</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Section 2: Veículo & Resumo da Locação -->
+<div class="mt-space-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Resumo da Locação Devolvida</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">5 diárias consumidas</span>
+</div>
+<div class="rounded-DEFAULT bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-md">
+<!-- Car Header Banner -->
+<div class="flex items-center gap-space-md">
+<div class="w-20 h-20 rounded-DEFAULT bg-surface-container-high overflow-hidden shrink-0 flex items-center justify-center relative">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern 2024 silver Toyota Yaris Sedan parked in an executive modern rental garage with dramatic violet ambient lighting, studio lighting reflection, cyber luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbQ6lX2LYWGH4MfpNHYnoM8alStxDCw2kcOAVOKb1PYugyRCycxxfexDZoip3T7wJuzP2vFGdKx1OV8U0mtuWdpd93TJpuDlLbgrzz6X3eyJxD9_sb1fALleImC6IPxNXKV8dbWrEFO243Y-ugQeusq6-RZK_ypwpeEcyBxDbFVs7L-G8hlYTCWDDb_7rtk_ndr9QhQgfavCGeo_fjmiIqgeewDKrV4sKBLgCZhy1MsqnL_0i68Styww"/>
+<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-full bg-surface-container-lowest/90 font-label-sm text-[10px] text-tertiary font-bold">LIVRE</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest font-label-sm text-label-sm text-on-surface-variant font-semibold">Grupo F</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">Sedan Automático</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-extrabold truncate mt-0.5">Toyota Yaris Sedan 2024</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container font-mono font-bold text-label-sm text-on-surface tracking-wider">RWS-4E29</span>
+<span class="text-body-sm text-on-surface-variant">• Localiza Prime Faria Lima</span>
+</div>
+</div>
+</div>
+<!-- Telemetry & Utilization Specs Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<!-- Item 1: Datas -->
+<div class="rounded-DEFAULT bg-surface-container p-space-sm flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">calendar_month</span>
+<span>Período Total</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-bold">10 Out → 15 Out</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">5 de 7 diárias do benefício</span>
+</div>
+<!-- Item 2: KM -->
+<div class="rounded-DEFAULT bg-surface-container p-space-sm flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">speed</span>
+<span>Odômetro Total</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-bold">482 km rodados</span>
+<span class="font-body-sm text-body-sm text-tertiary font-semibold">Quilometragem Livre</span>
+</div>
+<!-- Item 3: Combustível -->
+<div class="rounded-DEFAULT bg-surface-container p-space-sm flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">local_gas_station</span>
+<span>Combustível</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-tertiary font-bold">Tanque 100% (1/1)</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Igual à retirada inicial</span>
+</div>
+<!-- Item 4: Retirada / Devolução Horários -->
+<div class="rounded-DEFAULT bg-surface-container p-space-sm flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-secondary">timer</span>
+<span>Tempo de Uso</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-bold">116h 05min</span>
+<span class="font-body-sm text-body-sm text-tertiary font-semibold">Devolução Pontual</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Vistoria Digital Homologada -->
+<div class="mt-space-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Vistoria Digital Homologada</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-[10px] font-bold">100% APROVADO</span>
+</div>
+<span class="font-mono text-label-sm text-label-sm text-on-surface-variant">#LDD-9948</span>
+</div>
+<div class="rounded-DEFAULT bg-surface-container-low p-space-md shadow-md flex flex-col gap-space-md">
+<!-- Auditor Info -->
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-primary">person_check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Rodrigo M.</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Vistoriador Credenciado • Localiza Prime</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-label-sm text-label-sm font-bold">Sem Pendências</span>
+</div>
+</div>
+<!-- Checklist Grid -->
+<div class="flex flex-col gap-2.5">
+<!-- Check 1 -->
+<div class="flex items-start gap-3 p-2.5 rounded-DEFAULT bg-surface-container">
+<div class="w-5 h-5 rounded-full bg-tertiary/20 text-tertiary flex items-center justify-center mt-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">Lataria, Vidros e Pintura</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sem novas avarias, riscos ou mossas detectadas no scanner 3D.</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold shrink-0">Isento</span>
+</div>
+<!-- Check 2 -->
+<div class="flex items-start gap-3 p-2.5 rounded-DEFAULT bg-surface-container">
+<div class="w-5 h-5 rounded-full bg-tertiary/20 text-tertiary flex items-center justify-center mt-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">Interior &amp; Estofados</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Higienização e acabamentos preservados no padrão executivo.</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold shrink-0">Aprovado</span>
+</div>
+<!-- Check 3 -->
+<div class="flex items-start gap-3 p-2.5 rounded-DEFAULT bg-surface-container">
+<div class="w-5 h-5 rounded-full bg-tertiary/20 text-tertiary flex items-center justify-center mt-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">Acessórios, Chave Presencial &amp; Documentos</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Devolvidos e confirmados digitalmente no totem da recepção.</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold shrink-0">Conferido</span>
+</div>
+<!-- Check 4 -->
+<div class="flex items-start gap-3 p-2.5 rounded-DEFAULT bg-surface-container">
+<div class="w-5 h-5 rounded-full bg-tertiary/20 text-tertiary flex items-center justify-center mt-0.5 shrink-0">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">Combustível &amp; Fluidos</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tanque conferido cheio (1/1). Sem taxa de reabastecimento.</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold shrink-0">R$ 0,00</span>
+</div>
+</div>
+<!-- Visual Inspection CTA -->
+<button class="w-full py-2.5 px-3 rounded-full bg-surface-container-high text-secondary hover:text-on-surface font-label-md text-label-md font-bold flex items-center justify-center gap-2 active:scale-98 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">photo_library</span>
+<span>Visualizar Laudo Fotográfico com IA (8 Fotos 360°)</span>
+</button>
+</div>
+</div>
+<!-- Section 4: Extrato Financeiro Consolidado -->
+<div class="mt-space-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Extrato Financeiro Consolidado</span>
+<span class="px-2.5 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">shield</span>
+          Nexo Shield Cobertura
+        </span>
+</div>
+<div class="rounded-DEFAULT bg-surface-container-low p-space-md shadow-xl flex flex-col gap-space-md relative overflow-hidden">
+<!-- Ambient top sheen -->
+<div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary-container to-transparent opacity-80"></div>
+<!-- Breakdown List -->
+<div class="flex flex-col gap-3">
+<!-- Item A -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">5 Diárias Sedan Conforto</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tarifa parceiro R$ 190,00/dia</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant line-through">R$ 950,00</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">Cob. Nexo (R$ 0,00)</span>
+</div>
+</div>
+<!-- Item B -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Proteção Casco + Terceiros (RCF)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Seguro total franquia zero</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant line-through">R$ 225,00</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">Cob. Nexo (R$ 0,00)</span>
+</div>
+</div>
+<!-- Item C -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Coparticipação de Sinistro</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Isenção total Nexo Shield Premium</span>
+</div>
+<span class="font-label-md text-label-md text-tertiary font-bold">Isento (R$ 0,00)</span>
+</div>
+<!-- Item D: Higienização -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Taxa de Devolução Express</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Check-out prioritário via App</span>
+</div>
+<span class="font-label-md text-label-md text-tertiary font-bold">Cortesia VIP</span>
+</div>
+<!-- Item E: Pedágios (Charged to user) -->
+<div class="pt-2 flex items-center justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface font-bold">Tag Pedágio Sem Parar</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-[10px]">3 passagens</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Rodovia dos Imigrantes &amp; Rodoanel</span>
+</div>
+<span class="font-label-md text-label-md text-secondary font-bold">R$ 34,80</span>
+</div>
+</div>
+<!-- Caution Deposit Status Banner -->
+<div class="rounded-DEFAULT bg-surface-container p-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-tertiary/20 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">lock_open</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Caução do Cartão de Crédito</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sem retenção ou bloqueio residual</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-tertiary font-bold">Liberado (R$ 0,00)</span>
+</div>
+<!-- Total Highlights Box -->
+<div class="rounded-DEFAULT bg-surface-container-high p-space-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">Economia Nexo Shield:</span>
+<span class="font-label-md text-label-md text-tertiary font-bold">R$ -1.175,00 (100% Coberto)</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-extrabold">Total Faturado ao Usuário</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Apenas consumo pessoal de pedágios</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-display-lg text-headline-lg-mobile text-primary font-black">R$ 34,80</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Debitado da carteira</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 5: Avaliação do Serviço da Locadora (Moment of Delight) -->
+<div class="mt-space-lg flex flex-col gap-space-sm">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Como foi sua experiência com o Carro Reserva?</span>
+<div class="rounded-DEFAULT bg-surface-container-low p-space-md shadow-md flex flex-col items-center text-center gap-space-sm">
+<span class="font-body-md text-body-md text-on-surface-variant">
+          Sua avaliação ajuda a manter a nota de excelência dos parceiros credenciados Nexo Shield.
+        </span>
+<!-- Interactive 5 Stars -->
+<div class="flex items-center justify-center gap-2 my-1" id="star-rating-container">
+<button aria-label="1 estrela" class="star-btn text-tertiary hover:scale-110 active:scale-95 transition-transform" data-index="1" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="2 estrelas" class="star-btn text-tertiary hover:scale-110 active:scale-95 transition-transform" data-index="2" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="3 estrelas" class="star-btn text-tertiary hover:scale-110 active:scale-95 transition-transform" data-index="3" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="4 estrelas" class="star-btn text-tertiary hover:scale-110 active:scale-95 transition-transform" data-index="4" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<button aria-label="5 estrelas" class="star-btn text-tertiary hover:scale-110 active:scale-95 transition-transform" data-index="5" type="button">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-bold uppercase tracking-wider" id="rating-label">
+          Excelente Atendimento (5/5)
+        </span>
+<!-- Quick Tags -->
+<div class="flex flex-wrap justify-center gap-2 pt-space-xs">
+<button class="feedback-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm active:scale-95 transition-colors" type="button">
+            ✨ Atendimento Ágil
+          </button>
+<button class="feedback-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm active:scale-95 transition-colors" type="button">
+            🚗 Carro Impecável
+          </button>
+<button class="feedback-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm active:scale-95 transition-colors" type="button">
+            ⚡ Sem Burocracia
+          </button>
+</div>
+</div>
+</div>
+<!-- Section 6: Action Buttons -->
+<div class="mt-space-xl flex flex-col gap-3">
+<!-- Primary Action CTA -->
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary-container to-secondary text-on-primary font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(138,63,252,0.4)] active:scale-98 transition-transform" id="btn-download-voucher" type="button">
+<span class="material-symbols-outlined text-[22px]">download</span>
+<span>BAIXAR COMPROVANTE &amp; RECIBO (PDF)</span>
+</button>
+<!-- Secondary Ghost Action -->
+<button class="w-full h-14 rounded-full bg-surface-container-high text-on-surface font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 active:scale-98 transition-transform" onclick="history.back()" type="button">
+<span class="material-symbols-outlined text-[20px] text-tertiary">check_circle</span>
+<span>CONCLUIR PROCESSO DO SINISTRO</span>
+</button>
+<!-- Trust Footer Protocol Info -->
+<div class="flex flex-col items-center justify-center text-center gap-1 mt-space-sm pb-space-lg">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary">lock</span>
+<span>Nexo Shield Protocol • Porto Seguro Cia de Seguros</span>
+</div>
+<span class="text-body-sm text-on-surface-variant/80">
+          Homologação e encerramento registrado sob hash seguro #994821-LDD
+        </span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Interactive Star Rating
+    const starButtons = document.querySelectorAll('.star-btn');
+    const ratingLabel = document.getElementById('rating-label');
+    const labels = [
+      'Péssimo (1/5)',
+      'Regular (2/5)',
+      'Bom (3/5)',
+      'Muito Bom (4/5)',
+      'Excelente Atendimento (5/5)'
+    ];
+
+    starButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const index = parseInt(btn.getAttribute('data-index'), 10);
+        ratingLabel.textContent = labels[index - 1];
+        
+        starButtons.forEach(innerBtn => {
+          const innerIdx = parseInt(innerBtn.getAttribute('data-index'), 10);
+          const iconSpan = innerBtn.querySelector('.material-symbols-outlined');
+          if (innerIdx <= index) {
+            innerBtn.classList.remove('text-surface-variant');
+            innerBtn.classList.add('text-tertiary');
+            iconSpan.style.fontVariationSettings = "'FILL' 1";
+          } else {
+            innerBtn.classList.remove('text-tertiary');
+            innerBtn.classList.add('text-surface-variant');
+            iconSpan.style.fontVariationSettings = "'FILL' 0";
+          }
+        });
+      });
+    });
+
+    // Feedback chips toggle
+    const chips = document.querySelectorAll('.feedback-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('bg-primary-container');
+        chip.classList.toggle('text-on-primary-container');
+      });
+    });
+
+    // PDF Download Feedback
+    const downloadBtn = document.getElementById('btn-download-voucher');
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', () => {
+        const originalContent = downloadBtn.innerHTML;
+        downloadBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[22px] animate-spin">sync</span>
+          <span>GERANDO COMPROVANTE DIGITAL...</span>
+        `;
+        setTimeout(() => {
+          downloadBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[22px]">check</span>
+            <span>RECIBO SALVO NO DISPOSITIVO!</span>
+          `;
+          setTimeout(() => {
+            downloadBtn.innerHTML = originalContent;
+          }, 2400);
+        }, 1200);
+      });
+    }
+  })();
+</script></main></body></html>

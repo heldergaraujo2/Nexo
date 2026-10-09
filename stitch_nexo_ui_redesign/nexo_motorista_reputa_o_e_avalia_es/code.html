@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "inverse-surface": "#e7dff0", "primary-container": "#8a3ffc", "on-error-container": "#ffdad6", "secondary-fixed": "#f0dbff", "on-secondary-container": "#d6a9ff", "error": "#ffb4ab", "secondary": "#ddb7ff", "on-surface-variant": "#cdc2d8", "primary-fixed-dim": "#d4bbff", "on-secondary-fixed": "#2c0051", "on-primary-fixed-variant": "#5d00c2", "on-secondary-fixed-variant": "#6900b3", "surface-container-high": "#2c2834", "secondary-container": "#6f00be", "surface-dim": "#15121d", "surface-container-lowest": "#100c18", "surface-container-highest": "#373340", "on-tertiary-fixed": "#002116", "on-secondary": "#490080", "on-tertiary-fixed-variant": "#00513b", "surface-container": "#211e2a", "inverse-on-surface": "#322e3b", "on-primary-container": "#faf1ff", "on-background": "#e7dff0", "tertiary-container": "#007f5e", "on-primary-fixed": "#270058", "surface": "#15121d", "error-container": "#93000a", "background": "#15121d", "tertiary-fixed-dim": "#27e0aa", "on-error": "#690005", "surface-bright": "#3b3744", "surface-container-low": "#1d1a26", "on-tertiary": "#003828", "on-tertiary-container": "#ceffe7", "surface-tint": "#d4bbff", "on-primary": "#41008b", "outline": "#968da1", "primary-fixed": "#ebdcff", "on-surface": "#e7dff0", "inverse-primary": "#7825ea", "tertiary": "#27e0aa", "primary": "#d4bbff", "secondary-fixed-dim": "#ddb7ff", "tertiary-fixed": "#54fdc5", "surface-variant": "#373340", "outline-variant": "#4b4455" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "space-md": "1rem", "space-xs": "0.25rem", "gutter": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xl": "2rem", "margin": "1.25rem" }, fontFamily: { "label-sm": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"] }, fontSize: { "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "display-lg": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#15121d;}body{overscroll-behavior:none;font-family:'Plus Jakarta Sans',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.15)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary-container/20 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[20px]">electric_bolt</span></div><h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-bold truncate">Finanças &amp; Assinatura</h1></div><div class="flex items-center gap-space-xs"><button aria-label="Suporte e Ajuda" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">help_outline</span></button><button aria-label="Notificações" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-tertiary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-margin"><div class="flex flex-col w-full gap-space-lg">
+<!-- 1. Cabeçalho / Resumo da Reputação -->
+<section class="flex flex-col gap-space-md pt-space-xs">
+<!-- Nível & Badges -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[15px] text-tertiary" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+          Motorista Diamante
+        </span>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container-high text-tertiary font-label-sm text-label-sm font-bold">
+          Excelente
+        </span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+        Atualizado hoje
+      </span>
+</div>
+<!-- Card de Média Geral & Breakdown -->
+<div class="bg-surface-container-low rounded-lg p-space-md flex flex-col gap-space-md relative overflow-hidden shadow-md">
+<div class="absolute -right-8 -top-8 w-36 h-36 bg-primary-container/15 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+<!-- Nota em Destaque -->
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Avaliação Geral</span>
+<div class="flex items-baseline gap-space-xs mt-0.5">
+<span class="font-display-lg text-display-lg text-on-surface font-extrabold tracking-tight">4.96</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ 5.0</span>
+</div>
+<!-- Estrelas -->
+<div class="flex items-center gap-1 text-[#FBBF24] mt-1">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Métricas Rápidas -->
+<div class="flex gap-space-md bg-surface-container p-space-sm rounded-DEFAULT w-full sm:w-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Amostra</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">528 corridas</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Últimos 90 dias</span>
+</div>
+<div class="w-px bg-surface-variant"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Aceitação</span>
+<span class="font-label-lg text-label-lg text-tertiary font-bold">98%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Taxa de resposta</span>
+</div>
+</div>
+</div>
+<!-- Barra de Progresso / Breakdown de Estrelas -->
+<div class="flex flex-col gap-1.5 pt-space-xs">
+<!-- 5 Estrelas -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant w-14 flex items-center gap-0.5">
+            5 <span class="material-symbols-outlined text-[13px] text-[#FBBF24]" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-700" style="width: 92%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium w-9 text-right">92%</span>
+</div>
+<!-- 4 Estrelas -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant w-14 flex items-center gap-0.5">
+            4 <span class="material-symbols-outlined text-[13px] text-[#FBBF24]" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-fixed-dim rounded-full transition-all duration-700" style="width: 6%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium w-9 text-right">6%</span>
+</div>
+<!-- 3 Estrelas -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant w-14 flex items-center gap-0.5">
+            3 <span class="material-symbols-outlined text-[13px] text-[#FBBF24]" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-outline rounded-full transition-all duration-700" style="width: 1.5%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium w-9 text-right">1.5%</span>
+</div>
+<!-- 2 Estrelas -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant w-14 flex items-center gap-0.5">
+            2 <span class="material-symbols-outlined text-[13px] text-[#FBBF24]" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-outline rounded-full transition-all duration-700" style="width: 0.3%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium w-9 text-right">0.3%</span>
+</div>
+<!-- 1 Estrela -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant w-14 flex items-center gap-0.5">
+            1 <span class="material-symbols-outlined text-[13px] text-[#FBBF24]" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+<div class="flex-1 h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-outline rounded-full transition-all duration-700" style="width: 0.2%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium w-9 text-right">0.2%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Selos de Excelência & Elogios -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Elogios Mais Frequentes</h2>
+<span class="font-label-sm text-label-sm text-primary font-bold">1.179 total</span>
+</div>
+<!-- Carrossel / Grid de Elogios -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Item 1 -->
+<div class="bg-surface-container-low p-space-sm rounded-DEFAULT flex items-center gap-space-sm hover:bg-surface-container transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-bold truncate">Carro Limpo</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">312 vezes</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-low p-space-sm rounded-DEFAULT flex items-center gap-space-sm hover:bg-surface-container transition-colors">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-bold truncate">Direção Suave</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">285 vezes</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container-low p-space-sm rounded-DEFAULT flex items-center gap-space-sm hover:bg-surface-container transition-colors">
+<div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-bold truncate">Pontualidade</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">240 vezes</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface-container-low p-space-sm rounded-DEFAULT flex items-center gap-space-sm hover:bg-surface-container transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-bold truncate">Papo Educado</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">198 vezes</span>
+</div>
+</div>
+<!-- Item 5 (Span 2 colunas para fechar harmoniosamente) -->
+<div class="col-span-2 bg-surface-container-low p-space-sm rounded-DEFAULT flex items-center gap-space-sm hover:bg-surface-container transition-colors">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-tertiary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">music_note</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-bold truncate">Música &amp; Clima Ideais</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">145 elogios registrados</span>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px] mr-1">check_circle</span>
+</div>
+</div>
+</section>
+<!-- 3. Métricas de Conduta & Conformidade NEXO -->
+<section class="flex flex-col gap-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Conduta Operacional</h2>
+<div class="bg-surface-container-low rounded-lg p-space-md flex flex-col gap-space-md shadow-sm">
+<div class="grid grid-cols-2 gap-space-md">
+<!-- Índice Conclusão -->
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Taxa de Conclusão</span>
+<span class="font-headline-md text-headline-md text-on-surface font-extrabold">99.4%</span>
+<div class="flex items-center gap-1 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[15px]">trending_up</span>
+<span>Excelente padrão</span>
+</div>
+</div>
+<!-- Taxa Cancelamento -->
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Taxa Cancelamento</span>
+<span class="font-headline-md text-headline-md text-tertiary font-extrabold">0.6%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Meta: abaixo de 3.0%</span>
+</div>
+</div>
+<!-- Selo Shield -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded-DEFAULT">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Nexo Shield Ativo</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Conformidade e Checagem 100%</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</section>
+<!-- 4. Feed de Depoimentos Recentes -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Depoimentos Recentes</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">142 detalhados</span>
+</div>
+<!-- Filtros em Pills -->
+<div class="flex gap-space-xs overflow-x-auto pb-1 no-scrollbar">
+<button class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm whitespace-nowrap shadow-sm font-bold">
+        Todas (528)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-bright transition-colors">
+        Com Comentário (142)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-bright transition-colors">
+        5 Estrelas (486)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-bright transition-colors">
+        Elogios Recentes
+      </button>
+</div>
+<!-- Lista de Avaliações -->
+<div class="flex flex-col gap-space-sm">
+<!-- Depoimento 1: Mariana S. -->
+<article class="bg-surface-container-low rounded-lg p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover bg-surface-container-high" data-alt="Close up portrait photo of a stylish young female passenger named Mariana smiling gently with soft ambient urban illumination, professional dark modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ-MO7-0LjdVJlNZE2WtDaONExvf7xhTGus8FfO19j2muPLybH_HvCFIVLbUu28ReNU1KMVLxlXB8O9EQkN4dAL3C2-hrKrkIK_hC9lJmEOwQLCCeivk9jEO0Bx421hHAWqvy0XEHNYu00IpTNaW0NzT6BkIeXQtTNXyNmyzKOJ9u5M2pyrq14y8FbZMIiZNYOVAvevZ9a93NyB-_05LXJdb6xaAly0ERPQKEQ8kJOSdnD9qWl0YOd8A"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Mariana S.</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hoje, 09:20 • Nexo Black</span>
+</div>
+</div>
+<div class="flex items-center text-[#FBBF24]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          “Motorista extremamente educado, carro impecável e condução muito tranquila. Recomendo demais!”
+        </p>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm">
+            Carro Limpo
+          </span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
+            Direção Segura
+          </span>
+</div>
+</article>
+<!-- Depoimento 2: Lucas S. -->
+<article class="bg-surface-container-low rounded-lg p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover bg-surface-container-high" data-alt="Portrait photo of a young Brazilian male professional named Lucas with glasses and casual blazer, soft interior cab lights in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjAZIruBGACTDSsfnyXCn2IjT2dnO3bwFy8YJrUFu9iAgAW_dGgA6zMX5TMwaZzBf1VmfuvuvGE-AhawLG49WSL9pu5ECrJZXsfAA_pIPiKpTxZzK8E8lT2b3leqdPAC9QfcHABCHjLn4-hLaVdnPQT3m_UX6mPcnQvRVz11HHwJiOcn0oMb1dlYoqSrslne9J9pUDGPCaL5ZoV_CZ3Lfu-g3AGxjzAxAvPrcLPtzZd898uRHe4YoLXA"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Lucas S.</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ontem, 21:45 • Nexo Conforto</span>
+</div>
+</div>
+<div class="flex items-center text-[#FBBF24]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          “Chegou super rápido no ponto de embarque da Paulista, trajeto super fluido. Nota 10!”
+        </p>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/30 text-secondary font-label-sm text-label-sm">
+            Pontualidade
+          </span>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm">
+            Educado
+          </span>
+</div>
+</article>
+<!-- Depoimento 3: Rodrigo A. -->
+<article class="bg-surface-container-low rounded-lg p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<img class="w-10 h-10 rounded-full object-cover bg-surface-container-high" data-alt="Professional headshot of a mature businessman named Rodrigo sitting comfortably with subtle night reflections of city street lights in Sao Paulo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAJSXHuDaMl9_AQsbeugrNp_8_XiduXFkzBXQ35ugpnt56EdYbvj8ef1YNb5OMQl-g1Cmex2FCANKFZiKOUJ5dXtzM-e5OjmBxpQXE9isqZ3J25yRlZxpQXRSqGi7r91UMgHq4zVKAzzjJ3po96u383rbjhfGu0RQEdTH8NZIfplGzsz721KOC0nzIa9bcl6rYlKUXyxvCEgHcv-wLj9IaEyAKVVX47BSNhJp9DfLSPpfRKJ0qHino5Q"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Rodrigo A.</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">16 Nov • Nexo Black</span>
+</div>
+</div>
+<div class="flex items-center text-[#FBBF24]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          “Melhor corrida da semana. Ar condicionado no ponto e direção exemplar até o aeroporto.”
+        </p>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-tertiary font-label-sm text-label-sm">
+            Conforto
+          </span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
+            Seguro
+          </span>
+</div>
+</article>
+</div>
+<!-- Botão Ver Mais -->
+<button class="w-full h-12 rounded-full bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-lg text-label-lg transition-all flex items-center justify-center gap-2">
+<span>Ver todas as 528 avaliações</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</section>
+<!-- 5. Dicas de Excelência & Vantagens Nexo VIP -->
+<section class="bg-gradient-to-br from-surface-container-low via-surface-container to-primary-container/20 rounded-lg p-space-md flex flex-col gap-space-sm shadow-md">
+<div class="flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">military_tech</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-label-lg text-label-lg text-on-surface font-bold">Privilégios da Categoria Diamante</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Com sua nota média de 4.96 mantida, você desfruta de:
+        </p>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Prioridade máxima em chamadas Conforto &amp; Black</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Taxa de repasse reduzida de 0% em corridas diurnas</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Suporte prioritário 24/7 direto no WhatsApp</span>
+</div>
+</div>
+<div class="mt-space-xs p-space-sm bg-surface-container-lowest/80 rounded-DEFAULT flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Próxima renovação de ciclo: 01 de Dezembro</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">Garantido</span>
+</div>
+</section>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.35)]" data-active-classes="text-primary font-bold"><div class="h-16 px-space-sm flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="painel" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Painel</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="historico" href="#"><span class="material-symbols-outlined text-[22px]">history</span><span class="font-label-sm text-label-sm">Histórico</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="financas-assinatura" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Finanças</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="veiculo-perfil" href="#"><span class="material-symbols-outlined text-[22px]">directions_car</span><span class="font-label-sm text-label-sm">Veículo</span></a></div></nav></body></html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "inverse-surface": "#e7dff0", "primary-container": "#8a3ffc", "on-error-container": "#ffdad6", "secondary-fixed": "#f0dbff", "on-secondary-container": "#d6a9ff", "error": "#ffb4ab", "secondary": "#ddb7ff", "on-surface-variant": "#cdc2d8", "primary-fixed-dim": "#d4bbff", "on-secondary-fixed": "#2c0051", "on-primary-fixed-variant": "#5d00c2", "on-secondary-fixed-variant": "#6900b3", "surface-container-high": "#2c2834", "secondary-container": "#6f00be", "surface-dim": "#15121d", "surface-container-lowest": "#100c18", "surface-container-highest": "#373340", "on-tertiary-fixed": "#002116", "on-secondary": "#490080", "on-tertiary-fixed-variant": "#00513b", "surface-container": "#211e2a", "inverse-on-surface": "#322e3b", "on-primary-container": "#faf1ff", "on-background": "#e7dff0", "tertiary-container": "#007f5e", "on-primary-fixed": "#270058", "surface": "#15121d", "error-container": "#93000a", "background": "#15121d", "tertiary-fixed-dim": "#27e0aa", "on-error": "#690005", "surface-bright": "#3b3744", "surface-container-low": "#1d1a26", "on-tertiary": "#003828", "on-tertiary-container": "#ceffe7", "surface-tint": "#d4bbff", "on-primary": "#41008b", "outline": "#968da1", "primary-fixed": "#ebdcff", "on-surface": "#e7dff0", "inverse-primary": "#7825ea", "tertiary": "#27e0aa", "primary": "#d4bbff", "secondary-fixed-dim": "#ddb7ff", "tertiary-fixed": "#54fdc5", "surface-variant": "#373340", "outline-variant": "#4b4455" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "space-md": "1rem", "space-xs": "0.25rem", "gutter": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xl": "2rem", "margin": "1.25rem" }, fontFamily: { "label-sm": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"] }, fontSize: { "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "display-lg": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.015em", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#15121d;}body{overscroll-behavior:none;font-family:'Plus Jakarta Sans',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.15)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary-container/20 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[20px]">electric_bolt</span></div><h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-bold truncate">Finanças &amp; Assinatura</h1></div><div class="flex items-center gap-space-xs"><button aria-label="Suporte e Ajuda" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">help_outline</span></button><button aria-label="Notificações" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-tertiary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface px-margin"><div class="flex flex-col w-full gap-space-lg">
+<!-- 1. Card de Destaque - Assinatura Nexo Profissional -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-surface-container-high via-surface-container to-surface-container-low p-space-lg shadow-xl shadow-primary-container/10">
+<!-- Ambient glowing aura -->
+<div class="absolute -right-12 -top-12 w-44 h-44 rounded-full bg-primary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-12 -bottom-12 w-36 h-36 rounded-full bg-tertiary-container/15 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-md">
+<!-- Status Badge & Tier -->
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="inline-flex items-center gap-space-xs px-3 py-1 rounded-full bg-primary-container/25 text-primary text-label-sm font-label-sm shadow-[0_0_12px_rgba(138,63,252,0.35)]">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>PLANO NEXO PROFISSIONAL • ATIVO</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Renovação: 18 Nov</span>
+</div>
+<!-- Pricing & Zero Fee Value Prop -->
+<div class="flex items-baseline justify-between mt-1">
+<div>
+<span class="text-on-surface font-headline-lg-mobile text-headline-lg-mobile tracking-tight">R$ 99,90</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">/mês</span>
+</div>
+<div class="px-2.5 py-1 rounded-full bg-tertiary/15 text-tertiary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>0% COMISSÃO</span>
+</div>
+</div>
+<!-- Highlight Banner -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest/80 backdrop-blur-md flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container/30 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">savings</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-on-surface font-label-md text-label-md truncate">100% dos ganhos são seus</p>
+<p class="text-tertiary font-body-sm text-body-sm">Economia de R$ 460,62 em taxas este mês</p>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-relaxed">
+        Você faturou sem retenção percentual. Em apps legados com taxa de 25%, você perderia quase meio milhar de reais.
+      </p>
+<!-- Manage Plan Action -->
+<button class="w-full h-11 rounded-full bg-surface-container-highest hover:bg-surface-bright text-primary font-label-lg text-label-lg flex items-center justify-center gap-space-xs transition-colors shadow-sm" type="button">
+<span>Gerenciar Assinatura</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- 2. Painel de Ganhos / Saldo & Repasse -->
+<div class="flex flex-col gap-space-md">
+<!-- Period Filters -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1" role="tablist">
+<button class="px-4 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface bg-surface-container-low transition-colors whitespace-nowrap">Hoje</button>
+<button class="px-4 py-2 rounded-full font-label-md text-label-md bg-primary-container text-on-primary-container shadow-[0_0_16px_rgba(138,63,252,0.45)] whitespace-nowrap flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Esta Semana</span>
+</button>
+<button class="px-4 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface bg-surface-container-low transition-colors whitespace-nowrap">Mês</button>
+<button class="px-4 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface bg-surface-container-low transition-colors whitespace-nowrap">Geral</button>
+</div>
+<!-- Main Earnings Card -->
+<div class="rounded-xl bg-surface-container p-space-lg flex flex-col gap-space-md relative overflow-hidden shadow-lg">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md text-label-md">Total Líquido Recebido</span>
+<div class="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary/15 text-tertiary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span>+18.4% vs semana ant.</span>
+</div>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="text-primary font-body-lg text-body-lg">R$</span>
+<span class="text-on-surface font-display-lg text-display-lg tracking-tight">1.842,50</span>
+</div>
+<!-- 3 Sub-metrics Grid -->
+<div class="grid grid-cols-3 gap-space-xs pt-1">
+<div class="flex flex-col p-space-sm rounded-lg bg-surface-container-high/70 backdrop-blur-sm">
+<span class="text-on-surface-variant font-label-sm text-label-sm truncate">Corridas</span>
+<span class="text-on-surface font-headline-sm text-headline-sm mt-0.5">64</span>
+<span class="text-tertiary font-label-sm text-label-sm truncate">100% conc.</span>
+</div>
+<div class="flex flex-col p-space-sm rounded-lg bg-surface-container-high/70 backdrop-blur-sm">
+<span class="text-on-surface-variant font-label-sm text-label-sm truncate">Conectado</span>
+<span class="text-on-surface font-headline-sm text-headline-sm mt-0.5">28h 40m</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm truncate">R$ 64,20/h</span>
+</div>
+<div class="flex flex-col p-space-sm rounded-lg bg-surface-container-high/70 backdrop-blur-sm">
+<span class="text-on-surface-variant font-label-sm text-label-sm truncate">Média / Viagem</span>
+<span class="text-on-surface font-headline-sm text-headline-sm mt-0.5">R$ 28,78</span>
+<span class="text-primary font-label-sm text-label-sm truncate">+R$ 3,10</span>
+</div>
+</div>
+<!-- Pix Direct Quick Payout Action -->
+<div class="pt-space-xs flex flex-col gap-space-xs">
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary-container via-secondary-container to-primary-container text-on-primary-container font-label-lg text-label-lg flex items-center justify-center gap-space-sm shadow-[0_4px_24px_rgba(138,63,252,0.45)] hover:opacity-95 active:scale-[0.99] transition-all" type="button">
+<div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px] text-tertiary">bolt</span>
+</div>
+<span>Transferir via Pix Imediato</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm text-center">
+<span class="material-symbols-outlined text-[15px] text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Chave cadastrada: <strong class="text-on-surface font-label-sm">carlos.mendes@email.com</strong></span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Indicador Visual de Desempenho Semanal -->
+<div class="rounded-xl bg-surface-container p-space-lg flex flex-col gap-space-md shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">bar_chart</span>
+<h2 class="text-on-surface font-headline-sm text-headline-sm">Desempenho da Semana</h2>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Pico: Sábado</span>
+</div>
+<!-- Minimalist Neon Bar Chart (Mon to Sun) -->
+<div class="flex items-end justify-between h-40 pt-space-md px-space-xs gap-2">
+<!-- Seg -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-on-surface-variant font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">190</span>
+<div class="w-full max-w-[28px] bg-surface-container-highest rounded-t-full transition-all group-hover:bg-primary-container/60" style="height: 42%;"></div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Seg</span>
+</div>
+<!-- Ter -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-on-surface-variant font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">230</span>
+<div class="w-full max-w-[28px] bg-surface-container-highest rounded-t-full transition-all group-hover:bg-primary-container/60" style="height: 52%;"></div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Ter</span>
+</div>
+<!-- Quai -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-on-surface-variant font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">260</span>
+<div class="w-full max-w-[28px] bg-surface-container-highest rounded-t-full transition-all group-hover:bg-primary-container/60" style="height: 58%;"></div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Qua</span>
+</div>
+<!-- Qui -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-on-surface-variant font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">295</span>
+<div class="w-full max-w-[28px] bg-surface-container-highest rounded-t-full transition-all group-hover:bg-primary-container/60" style="height: 66%;"></div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Qui</span>
+</div>
+<!-- Sex (High) -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-primary font-label-sm text-label-sm">385</span>
+<div class="w-full max-w-[28px] bg-gradient-to-t from-secondary-container via-primary-container to-secondary rounded-t-full shadow-[0_0_14px_rgba(138,63,252,0.45)]" style="height: 86%;"></div>
+<span class="text-primary font-label-sm text-label-sm">Sex</span>
+</div>
+<!-- Sab (Peak) -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-tertiary font-label-sm text-label-sm font-bold">440</span>
+<div class="w-full max-w-[28px] bg-gradient-to-t from-primary-container to-tertiary rounded-t-full shadow-[0_0_18px_rgba(39,224,170,0.4)]" style="height: 98%;"></div>
+<span class="text-on-surface font-label-sm text-label-sm font-bold">Sáb</span>
+</div>
+<!-- Dom -->
+<div class="flex-1 flex flex-col items-center gap-space-xs h-full justify-end group">
+<span class="text-on-surface-variant font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">120</span>
+<div class="w-full max-w-[28px] bg-surface-container-highest rounded-t-full transition-all group-hover:bg-primary-container/60" style="height: 28%;"></div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Dom</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-primary-container to-tertiary"></span>
+        Dias de Alta Demanda Noturna
+      </span>
+<span class="text-primary font-label-sm text-label-sm">Média R$ 263/dia</span>
+</div>
+</div>
+<!-- 4. Meios de Recebimento do Motorista -->
+<div class="rounded-xl bg-surface-container p-space-lg flex flex-col gap-space-md shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance</span>
+<h2 class="text-on-surface font-headline-sm text-headline-sm">Meios de Recebimento</h2>
+</div>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Configurar</button>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Pix Direto -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-high/80">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary/15 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-lg text-label-lg truncate">Pix Direto Instantâneo</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">Cai na hora na sua conta bancária</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-tertiary/15 text-tertiary font-label-sm text-label-sm flex-shrink-0">Ativo</span>
+</div>
+<!-- Maquininha Própria -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-high/80">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">point_of_sale</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-lg text-label-lg truncate">Máquina de Cartão Própria</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">Débito e Crédito sem taxa de intermediação</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-secondary font-label-sm text-label-sm flex-shrink-0">Configurada</span>
+</div>
+<!-- Dinheiro -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-high/80">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-lg text-label-lg truncate">Dinheiro em Espécie</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">Recebimento físico na conclusão da viagem</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm flex-shrink-0">Habilitado</span>
+</div>
+</div>
+</div>
+<!-- 5. Histórico e Extrato de Repasses Recentes -->
+<div class="flex flex-col gap-space-md mb-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+<h2 class="text-on-surface font-headline-sm text-headline-sm">Atividades Recentes</h2>
+</div>
+<span class="text-on-surface-variant font-body-sm text-body-sm">Últimos lançamentos</span>
+</div>
+<div class="flex flex-col gap-space-xs rounded-xl bg-surface-container p-space-sm shadow-md">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-tertiary/15 text-tertiary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">directions_car</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-md text-label-md truncate">Nexo Conforto • Rua Augusta</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span>Pix Direto</span>
+<span>•</span>
+<span>Hoje, 10:18</span>
+<span>•</span>
+<span class="text-tertiary font-label-sm">Taxa R$ 0,00</span>
+</div>
+</div>
+</div>
+<span class="text-tertiary font-label-lg text-label-lg whitespace-nowrap ml-space-xs">+ R$ 21,80</span>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-tertiary/15 text-tertiary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">directions_car</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-md text-label-md truncate">Nexo Popular • Av. Paulista</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span>Pix Direto</span>
+<span>•</span>
+<span>Hoje, 09:20</span>
+<span>•</span>
+<span class="text-tertiary font-label-sm">Taxa R$ 0,00</span>
+</div>
+</div>
+</div>
+<span class="text-tertiary font-label-lg text-label-lg whitespace-nowrap ml-space-xs">+ R$ 16,90</span>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">credit_card</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-md text-label-md truncate">Nexo Black • Jardins</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span>Máquina Própria</span>
+<span>•</span>
+<span>Ontem, 21:45</span>
+<span>•</span>
+<span class="text-tertiary font-label-sm">Taxa R$ 0,00</span>
+</div>
+</div>
+</div>
+<span class="text-tertiary font-label-lg text-label-lg whitespace-nowrap ml-space-xs">+ R$ 38,50</span>
+</div>
+<!-- Item 4 (Plan Subscription) -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-secondary-container/30 text-secondary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-on-surface font-label-md text-label-md truncate">Mensalidade Nexo Profissional</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span>Cartão de Crédito</span>
+<span>•</span>
+<span>18 Out</span>
+</div>
+</div>
+</div>
+<span class="text-on-surface-variant font-label-lg text-label-lg whitespace-nowrap ml-space-xs">- R$ 99,90</span>
+</div>
+</div>
+<!-- View All Link Button -->
+<button class="w-full py-3 rounded-full bg-surface-container-high text-primary font-label-md text-label-md flex items-center justify-center gap-space-xs hover:bg-surface-bright transition-colors" type="button">
+<span>Ver extrato completo detalhado</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.35)]" data-active-classes="text-primary font-bold"><div class="h-16 px-space-sm flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="painel" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Painel</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="historico" href="#"><span class="material-symbols-outlined text-[22px]">history</span><span class="font-label-sm text-label-sm">Histórico</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="financas-assinatura" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Finanças</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-all" data-path="veiculo-perfil" href="#"><span class="material-symbols-outlined text-[22px]">directions_car</span><span class="font-label-sm text-label-sm">Veículo</span></a></div></nav></body></html>

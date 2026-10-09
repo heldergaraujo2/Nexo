@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-container": "#8a3ffc", "on-tertiary-container": "#ceffe7", "surface-container-highest": "#373340", "on-tertiary-fixed": "#002116", "surface-container": "#211e2a", "surface-tint": "#d4bbff", "surface-bright": "#3b3744", "secondary-fixed": "#f0dbff", "on-error-container": "#ffdad6", "on-secondary-container": "#d6a9ff", "on-primary-fixed": "#270058", "surface-dim": "#15121d", "surface-variant": "#373340", "on-secondary-fixed": "#2c0051", "error": "#ffb4ab", "tertiary": "#27e0aa", "on-secondary": "#490080", "error-container": "#93000a", "secondary-container": "#6f00be", "primary-fixed-dim": "#d4bbff", "outline-variant": "#4b4455", "tertiary-fixed": "#54fdc5", "secondary": "#ddb7ff", "on-tertiary-fixed-variant": "#00513b", "surface-container-high": "#2c2834", "on-primary-fixed-variant": "#5d00c2", "on-primary-container": "#faf1ff", "on-error": "#690005", "inverse-on-surface": "#322e3b", "primary": "#d4bbff", "surface": "#15121d", "on-secondary-fixed-variant": "#6900b3", "on-primary": "#41008b", "on-surface": "#e7dff0", "inverse-surface": "#e7dff0", "secondary-fixed-dim": "#ddb7ff", "surface-container-low": "#1d1a26", "on-surface-variant": "#cdc2d8", "surface-container-lowest": "#100c18", "tertiary-fixed-dim": "#27e0aa", "inverse-primary": "#7825ea", "on-tertiary": "#003828", "primary-fixed": "#ebdcff", "on-background": "#e7dff0", "tertiary-container": "#007f5e", "outline": "#968da1", "background": "#15121d" }, borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" }, spacing: { "space-xs": "0.25rem", "space-md": "1rem", "margin": "1.25rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xl": "2rem", "gutter": "1rem" }, fontFamily: { "label-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.015em", fontWeight: "600" }], "display-lg": ["34px", { lineHeight: "42px", letterSpacing: "-0.02em", fontWeight: "800" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }], "body-lg": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "500" }], "headline-lg-mobile": ["24px", { lineHeight: "30px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "700" }], "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "400" }], "body-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "400" }], "headline-lg": ["26px", { lineHeight: "34px", letterSpacing: "-0.015em", fontWeight: "700" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }] } } } }</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; min-height: 100vh; } body { overscroll-behavior-y: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:scale-95 transition-all" onclick="history.back()"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><h1 class="font-headline-sm text-headline-sm text-on-surface">Nova Corrida</h1></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="flex flex-col relative w-full flex-1 pt-16 bg-surface"><div class="flex flex-col w-full text-on-surface">
+<!-- Status Context Sub-header -->
+<div class="px-margin pt-space-xs pb-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider">Edição de Trajeto</span>
+</div>
+<div class="px-3 py-1 rounded-full bg-surface-container-high flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">route</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Até 2 paradas intermediárias</span>
+</div>
+</div>
+<div class="px-margin flex flex-col gap-space-md pb- space-xl">
+<!-- Interactive Multi-Stop Route Editor Card -->
+<div class="bg-surface-container rounded-lg p-space-md shadow-xl relative overflow-hidden">
+<!-- Glow ambient backdrop subtle -->
+<div class="absolute -top-16 -right-16 w-36 h-36 rounded-full bg-primary-container/10 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-space-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span>Itinerário Dinâmico</span>
+</h2>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-highest text-primary flex items-center gap-1 font-label-sm text-label-sm active:scale-95 transition-all" id="optimize-btn">
+<span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span>
+<span>Otimizar IA</span>
+</button>
+</div>
+<!-- Waypoint Stack -->
+<div class="relative flex flex-col gap-space-md" id="waypoints-container">
+<!-- Connecting Vertical SVG Line -->
+<div class="absolute left-[17px] top-[26px] bottom-[26px] w-[2px] pointer-events-none flex flex-col items-center">
+<div class="w-full h-full bg-gradient-to-b from-primary via-secondary to-tertiary opacity-40"></div>
+</div>
+<!-- Stop 0: Origem (Locked) -->
+<div class="relative flex items-center gap-space-sm group">
+<div class="z-10 w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 shadow-md">
+<div class="w-3.5 h-3.5 rounded-full bg-primary flex items-center justify-center shadow-[0_0_8px_rgba(212,187,255,0.8)]">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded p-space-sm min-w-0 flex items-center justify-between gap-space-sm">
+<div class="min-w-0">
+<span class="font-label-sm text-label-sm text-primary tracking-wide block uppercase">Origem</span>
+<p class="font-body-md text-body-md text-on-surface font-semibold truncate">Rua das Flores, 123</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Jardins, São Paulo - SP</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[20px] shrink-0">my_location</span>
+</div>
+</div>
+<!-- Stop 1: Parada Intermediária (Active Editing) -->
+<div class="relative flex items-center gap-space-sm group" id="stop-row-1">
+<div class="z-10 w-9 h-9 rounded-full bg-secondary-container flex items-center justify-center shrink-0 shadow-lg shadow-secondary-container/30">
+<span class="font-label-md text-label-md text-on-secondary-container font-extrabold">1</span>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded p-space-sm min-w-0 flex flex-col gap-1 shadow-inner">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-bold tracking-wide uppercase">Parada 1 • Em Edição</span>
+<div class="flex items-center gap-1">
+<button aria-label="Reordenar parada" class="w-6 h-6 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface active:scale-90">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</button>
+<button aria-label="Remover parada" class="w-6 h-6 flex items-center justify-center rounded-full text-error hover:bg-error-container/20 active:scale-90" onclick="document.getElementById('stop-row-1').classList.add('opacity-40')">
+<span class="material-symbols-outlined text-[17px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-low rounded px-2.5 py-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">search</span>
+<input class="bg-transparent border-0 outline-none text-on-surface font-body-md text-body-md w-full p-0 truncate font-medium placeholder:text-outline" type="text" value="Av. Brigadeiro Faria Lima, 2200"/>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Add Second Stop Trigger -->
+<div class="relative flex items-center gap-space-sm">
+<div class="z-10 w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-primary text-[20px]">add</span>
+</div>
+<button class="flex-1 bg-surface-container-low hover:bg-surface-container-highest rounded p-space-sm min-w-0 text-left transition-all active:scale-[0.99] flex items-center justify-between group">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-primary">+ Adicionar segunda parada</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-on-primary-container font-label-sm text-label-sm">Final</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[18px] group-hover:translate-x-0.5 transition-transform">add_circle</span>
+</button>
+</div>
+<!-- Stop Destination: Destino Final -->
+<div class="relative flex items-center gap-space-sm">
+<div class="z-10 w-9 h-9 rounded-full bg-tertiary-container flex items-center justify-center shrink-0 shadow-lg shadow-tertiary-container/30">
+<span class="material-symbols-outlined text-tertiary text-[19px]">flag</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded p-space-sm min-w-0 flex items-center justify-between gap-space-sm">
+<div class="min-w-0">
+<span class="font-label-sm text-label-sm text-tertiary font-bold tracking-wide block uppercase">Destino Final</span>
+<p class="font-body-md text-body-md text-on-surface font-semibold truncate">Av. Paulista, 1000</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Bela Vista, São Paulo - SP</p>
+</div>
+<button aria-label="Reordenar destino" class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface active:scale-95 shrink-0">
+<span class="material-symbols-outlined text-[20px]">swap_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Informational Card: Wait Time & Transparency -->
+<div class="bg-surface-container-low rounded p-space-md flex gap-space-sm items-start shadow-md">
+<div class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[18px]">timer</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface font-bold">Tempo de espera nas paradas</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 leading-relaxed">
+          Para conforto do motorista, limite a estadia a até <span class="text-tertiary font-semibold">3 minutos</span> por parada. O trajeto recalcula quilometragem e tempo em tempo real sem penalidade.
+        </p>
+</div>
+</div>
+<!-- Route Impact & Map Preview -->
+<div class="bg-surface-container rounded-lg p-space-md shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Resumo da Rota Ajustada</h3>
+<span class="px-2.5 py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+          Sem taxa extra
+        </span>
+</div>
+<!-- Route Telemetry Map Representation -->
+<div class="relative w-full h-44 rounded overflow-hidden bg-surface-container-lowest shadow-inner" data-location="Av. Brigadeiro Faria Lima, 2200, Sao Paulo, Brazil" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAZKEHaMdQ3rRmF7ErSctSH2RTDhXo9DKjTG-ichB1iQ_lgcLJqOz7UNY3oAB5MaYsZ0HjDmQy3whUTnBNTmXiBp_ltxe84ExD4har1nnCjXmtIS5CXetWNcpde3z4HH9BsymdIWO1zusL06dG-zlllWY_SFLxSBEyv_weBozFo8qBR-KPvIxW2036OdYgDFCAqBtZbI_zOpiAhvLRoL7eaRuHWl9T-rmQv7UusDBaXyETJyvvowxqmkg')">
+<!-- SVG Vector Over-glow HUD Line -->
+<div class="absolute inset-0 bg-surface-container-lowest/60 backdrop-blur-[2px] p-space-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="px-2 py-1 rounded bg-surface/85 backdrop-blur-md flex items-center gap-1 shadow-md">
+<span class="material-symbols-outlined text-primary text-[14px]">alt_route</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Desvio: +1.2 km</span>
+</div>
+<div class="w-7 h-7 rounded-full bg-surface/85 flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-tertiary text-[16px]">navigation</span>
+</div>
+</div>
+<!-- Synthetic Glowing Route Graphic Overlay -->
+<svg class="w-full h-16 drop-shadow-[0_0_12px_rgba(138,63,252,0.6)]" fill="none" viewbox="0 0 280 60">
+<path d="M 20 45 C 70 45, 90 15, 140 18 C 190 22, 220 50, 260 20" stroke="url(#routeGradient)" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+<circle cx="20" cy="45" fill="#d4bbff" r="4.5" stroke="#15121d" stroke-width="2"></circle>
+<circle cx="140" cy="18" fill="#f0dbff" r="5" stroke="#6f00be" stroke-width="2.5"></circle>
+<circle cx="260" cy="20" fill="#27e0aa" r="4.5" stroke="#15121d" stroke-width="2"></circle>
+<defs>
+<lineargradient id="routeGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#d4bbff"></stop>
+<stop offset="50%" stop-color="#8a3ffc"></stop>
+<stop offset="100%" stop-color="#27e0aa"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm bg-surface-dim/90 px-space-sm py-1 rounded">
+<span>Rua das Flores</span>
+<span class="text-secondary font-bold">Faria Lima (Parada)</span>
+<span>Av. Paulista</span>
+</div>
+</div>
+</div>
+<!-- Quick Telemetry Comparative Badges -->
+<div class="grid grid-cols-3 gap-space-xs">
+<div class="bg-surface-container-low rounded p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Distância</span>
+<span class="font-label-lg text-label-lg text-on-surface mt-0.5">7,8 km</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">+2,4 km</span>
+</div>
+<div class="bg-surface-container-low rounded p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Tempo Total</span>
+<span class="font-label-lg text-label-lg text-on-surface mt-0.5">22 min</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">+8 min</span>
+</div>
+<div class="bg-surface-container-low rounded p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Valor Estimado</span>
+<span class="font-label-lg text-label-lg text-tertiary mt-0.5 font-extrabold">R$ 29,40</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">+R$ 4,50</span>
+</div>
+</div>
+</div>
+<!-- Smart Waypoint Suggestions (1-tap shortcuts) -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-label-lg text-label-lg text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[17px] text-primary">local_convenience_store</span>
+<span>Sugestões no caminho</span>
+</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Menor desvio</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Quick Chip Item 1 -->
+<button class="w-full bg-surface-container rounded p-space-sm flex items-center justify-between text-left hover:bg-surface-container-high transition-all active:scale-[0.99] group shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[19px]">medication</span>
+</div>
+<div class="min-w-0">
+<p class="font-body-md text-body-md text-on-surface font-bold truncate">Droga Raia - R. Pamplona</p>
+<p class="font-body-sm text-body-sm text-tertiary flex items-center gap-1">
+<span>+1 min de desvio</span>
+<span>•</span>
+<span class="text-on-surface-variant">Farmácia 24h</span>
+</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] group-hover:translate-x-1 transition-transform shrink-0">add_circle_outline</span>
+</button>
+<!-- Quick Chip Item 2 -->
+<button class="w-full bg-surface-container rounded p-space-sm flex items-center justify-between text-left hover:bg-surface-container-high transition-all active:scale-[0.99] group shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-secondary-container/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[19px]">shopping_cart</span>
+</div>
+<div class="min-w-0">
+<p class="font-body-md text-body-md text-on-surface font-bold truncate">Pão de Açúcar Minuto</p>
+<p class="font-body-sm text-body-sm text-tertiary flex items-center gap-1">
+<span>+2 min de desvio</span>
+<span>•</span>
+<span class="text-on-surface-variant">Conveniência</span>
+</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] group-hover:translate-x-1 transition-transform shrink-0">add_circle_outline</span>
+</button>
+<!-- Quick Chip Item 3 -->
+<button class="w-full bg-surface-container rounded p-space-sm flex items-center justify-between text-left hover:bg-surface-container-high transition-all active:scale-[0.99] group shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-tertiary-container/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary text-[19px]">directions_subway</span>
+</div>
+<div class="min-w-0">
+<p class="font-body-md text-body-md text-on-surface font-bold truncate">Metrô Consolação (Acesso Norte)</p>
+<p class="font-body-sm text-body-sm text-tertiary flex items-center gap-1">
+<span>+0 min de desvio</span>
+<span>•</span>
+<span class="text-on-surface-variant">Embarque rápido</span>
+</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] group-hover:translate-x-1 transition-transform shrink-0">add_circle_outline</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Fixed-style Action Hub -->
+<div class="sticky bottom-0 w-full bg-surface-container-lowest/90 backdrop-blur-xl p-margin flex flex-col gap-space-sm shadow-[0_-8px_24px_rgba(0,0,0,0.4)] z-40 pb-safe">
+<!-- Primary CTA Glow Button -->
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary-container via-inverse-primary to-secondary-container text-on-primary-container font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(138,63,252,0.45)] hover:shadow-[0_0_32px_rgba(138,63,252,0.65)] active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>Confirmar Paradas (22 min • 7,8 km)</span>
+</button>
+<!-- Fallback / Cancel Action -->
+<button class="w-full py-2 text-center text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors active:scale-95" onclick="history.back()">
+      Manter trajeto direto sem paradas
+    </button>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for Optimize IA trigger
+  const optBtn = document.getElementById('optimize-btn');
+  if (optBtn) {
+    optBtn.addEventListener('click', () => {
+      optBtn.classList.add('bg-tertiary', 'text-on-tertiary');
+      optBtn.innerHTML = '<span class="material-symbols-outlined text-[15px]">done</span><span>Otimizado!</span>';
+      setTimeout(() => {
+        optBtn.classList.remove('bg-tertiary', 'text-on-tertiary');
+        optBtn.classList.add('bg-surface-container-highest', 'text-primary');
+        optBtn.innerHTML = '<span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span><span>Otimizar IA</span>';
+      }, 2000);
+    });
+  }
+</script></main></body></html>
