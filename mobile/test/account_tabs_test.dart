@@ -22,6 +22,9 @@ void main() {
       }
       return null;
     });
+    tester.view.physicalSize = const Size(1200, 2800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
     await tester.pumpWidget(MaterialApp(
       theme: nexoTheme(),
       home: PassengerShell(

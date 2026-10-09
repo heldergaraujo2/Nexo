@@ -4,6 +4,12 @@ import 'package:nexo_mobile/main.dart';
 
 import 'helpers.dart';
 
+Future<void> useTallScreen(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1200, 2800);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+}
+
 Widget driverApp(NexoApi api) => MaterialApp(
       theme: nexoTheme(),
       home: DriverShell(
@@ -35,6 +41,7 @@ void main() {
       }
       return null;
     });
+    await useTallScreen(tester);
     await tester.pumpWidget(driverApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
 
@@ -55,6 +62,7 @@ void main() {
       }
       return null;
     });
+    await useTallScreen(tester);
     await tester.pumpWidget(driverApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
 
@@ -122,6 +130,7 @@ void main() {
       }
       return null;
     });
+    await useTallScreen(tester);
     await tester.pumpWidget(driverApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
 

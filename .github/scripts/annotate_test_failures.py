@@ -22,6 +22,10 @@ def main() -> None:
         message = message.replace('%', '%%').replace('\r', '%0D').replace('\n', '%0A')
         print(f'::error title=flutter test::{message[:1800]}')
 
+    for ln in lines:
+        if 'DEBUGMSG:' in ln:
+            emit(ln[ln.index('DEBUGMSG:'):][:300])
+
     failures = []
     i = 0
     while i < len(lines):

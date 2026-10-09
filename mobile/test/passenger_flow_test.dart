@@ -4,6 +4,12 @@ import 'package:nexo_mobile/main.dart';
 
 import 'helpers.dart';
 
+Future<void> useTallScreen(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1200, 2800);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+}
+
 Widget passengerApp(NexoApi api, {Locate? locate}) => MaterialApp(
       theme: nexoTheme(),
       home: PassengerShell(
@@ -18,8 +24,10 @@ void main() {
   testWidgets('invalid destination coordinates are rejected without calling the API', (tester) async {
     final log = <RecordedCall>[];
     final client = mockClient(log, (method, path, body) => null);
+    await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    print('DEBUGMSG: t1 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '999');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
@@ -47,8 +55,10 @@ void main() {
       }
       return null;
     });
+    await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    print('DEBUGMSG: t2 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
@@ -109,8 +119,10 @@ void main() {
       }
       return null;
     });
+    await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    print('DEBUGMSG: t2 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
@@ -148,8 +160,10 @@ void main() {
       }
       return null;
     });
+    await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    print('DEBUGMSG: t2 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
