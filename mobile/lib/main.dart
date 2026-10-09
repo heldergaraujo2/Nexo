@@ -439,5 +439,5 @@ class _ErrorPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFF321D2A), borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFF653448))), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
     const Icon(Icons.error_outline_rounded, color: Color(0xFFFFA9B7)), const SizedBox(width: 10), Expanded(child: Text(message, style: const TextStyle(color: Color(0xFFFFC1CB), fontSize: 12))),
-  ]);
+  ]));
 }
