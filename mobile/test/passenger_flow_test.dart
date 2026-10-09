@@ -63,6 +63,7 @@ void main() {
     expect(body['destination'], {'latitude': -23.55052, 'longitude': -46.633308});
     expect(find.text('PROCURANDO MOTORISTA'), findsOneWidget);
     expect(find.text('R\$ 2,47'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
     await tester.pumpWidget(const SizedBox());
   });
 
@@ -116,10 +117,12 @@ void main() {
     expect(find.text('PROCURANDO MOTORISTA'), findsOneWidget);
 
     await tester.pump(const Duration(seconds: 2));
+    await tester.pump();
     expect(find.text('ACCEPTED'), findsOneWidget);
 
     rideState = 'driver_en_route';
     await tester.pump(const Duration(seconds: 2));
+    await tester.pump();
     expect(find.text('DRIVER EN ROUTE'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });
@@ -165,6 +168,7 @@ void main() {
     expect(call.method, 'POST');
     expect((call.body as Map<String, dynamic>)['reason'], 'mudei de planos');
     expect(find.text('Solicitar uma viagem'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
     await tester.pumpWidget(const SizedBox());
   });
 }

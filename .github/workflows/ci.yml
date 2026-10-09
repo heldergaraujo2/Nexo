@@ -84,8 +84,18 @@ jobs:
         working-directory: mobile
       - run: flutter analyze
         working-directory: mobile
-      - run: flutter test
+      - name: Run flutter test
         working-directory: mobile
+        run: |
+          set -o pipefail
+          flutter test 2>&1 | tee "$GITHUB_WORKSPACE/flutter-test-output.txt"
+      - name: Upload Flutter test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-test-output
+          path: flutter-test-output.txt
+          if-no-files-found: ignore
       - name: Prepare Android LAN permissions
         working-directory: mobile
         run: |
