@@ -24,7 +24,9 @@ export class RideController {
     @Headers('idempotency-key') key: string,
     @Body() dto: CreatePassengerRideDto,
   ) {
-    return this.rides.createRequest(req.user, dto, key).then((result) => result.body);
+    return this.rides
+      .createRequest(req.user, dto, key)
+      .then((result) => result.body);
   }
 
   @Get(':rideId')

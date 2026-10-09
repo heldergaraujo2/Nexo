@@ -94,7 +94,9 @@ export class MarketplaceService {
          AND p.accepting_requests=true AND r.category=ANY(p.categories) AND r.customer_id<>$1
          AND NOT EXISTS (SELECT 1 FROM services s WHERE s.request_id=r.id)
          AND NOT EXISTS (SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=r.customer_id) OR (b.blocker_id=r.customer_id AND b.blocked_id=$1))
-       ORDER BY r.created_at ASC LIMIT 50`, [user.accountId]);
+       ORDER BY r.created_at ASC LIMIT 50`,
+      [user.accountId],
+    );
     return { requests: result.rows };
   }
 
@@ -192,11 +194,22 @@ export class MarketplaceService {
           );
         }
 
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          if (dto.offerType !== 'direct_accept') throw new ConflictException('Passenger transport does not allow price negotiation');
+        if (
+          row.category === 'passenger_car' ||
+          row.category === 'passenger_motorcycle'
+        ) {
+          if (dto.offerType !== 'direct_accept')
+            throw new ConflictException(
+              'Passenger transport does not allow price negotiation',
+            );
         }
-        if ((row.category === 'delivery' || row.category === 'towing') && dto.offerType !== 'priced_offer') {
-          throw new ConflictException('Delivery and towing acceptance require a priced offer');
+        if (
+          (row.category === 'delivery' || row.category === 'towing') &&
+          dto.offerType !== 'priced_offer'
+        ) {
+          throw new ConflictException(
+            'Delivery and towing acceptance require a priced offer',
+          );
         }
         if (dto.offerType === 'priced_offer' && dto.amountCents === undefined) {
           throw new ConflictException('Priced offers require amountCents');
@@ -275,13 +288,22 @@ export class MarketplaceService {
         const row = request.rows[0];
         if (!row) throw new NotFoundException('Service request not found');
         if (!['open', 'matched'].includes(row.status)) {
-          throw new ConflictException('Request is not available for acceptance');
+          throw new ConflictException(
+            'Request is not available for acceptance',
+          );
         }
-        if (row.status === 'matched' && row.matched_provider_id !== user.accountId) {
-          throw new ForbiddenException('Request is matched to another provider');
+        if (
+          row.status === 'matched' &&
+          row.matched_provider_id !== user.accountId
+        ) {
+          throw new ForbiddenException(
+            'Request is matched to another provider',
+          );
         }
         if (row.category === 'delivery' || row.category === 'towing') {
-          throw new ConflictException('This category must be accepted through a priced offer');
+          throw new ConflictException(
+            'This category must be accepted through a priced offer',
+          );
         }
         await this.assertProviderEligible(
           client,
@@ -313,7 +335,10 @@ export class MarketplaceService {
          provider_id AS "providerId",category,status,created_at AS "createdAt"`,
           [requestId, offerId, row.customer_id, user.accountId, row.category],
         );
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
+        if (
+          row.category === 'passenger_car' ||
+          row.category === 'passenger_motorcycle'
+        ) {
           const ride = await this.rides.createRideForService(
             client,
             service.rows[0].id,
@@ -321,11 +346,18 @@ export class MarketplaceService {
             row.origin,
             row.destination,
           );
-          await client.query('UPDATE services SET price_cents=$1,currency=\'BRL\',updated_at=NOW() WHERE id=$2', [ride.fareCents, service.rows[0].id]);
+          await client.query(
+            "UPDATE services SET price_cents=$1,currency='BRL',updated_at=NOW() WHERE id=$2",
+            [ride.fareCents, service.rows[0].id],
+          );
           service.rows[0].priceCents = Number(ride.fareCents);
         }
         if (row.category === 'delivery') {
-          await this.deliveries.createForService(client, service.rows[0].id, row);
+          await this.deliveries.createForService(
+            client,
+            service.rows[0].id,
+            row,
+          );
         }
         if (row.category === 'towing') {
           await this.towing.createForService(client, service.rows[0].id, row);
@@ -409,8 +441,13 @@ export class MarketplaceService {
           row.category,
           row.customer_id,
         );
-        if (row.category === 'passenger_car' || row.category === 'passenger_motorcycle') {
-          throw new ConflictException('Passenger transport does not allow negotiated offers');
+        if (
+          row.category === 'passenger_car' ||
+          row.category === 'passenger_motorcycle'
+        ) {
+          throw new ConflictException(
+            'Passenger transport does not allow negotiated offers',
+          );
         }
         const service = await client.query(
           `INSERT INTO services
@@ -430,7 +467,11 @@ export class MarketplaceService {
           ],
         );
         if (row.category === 'delivery') {
-          await this.deliveries.createForService(client, service.rows[0].id, row);
+          await this.deliveries.createForService(
+            client,
+            service.rows[0].id,
+            row,
+          );
         }
         if (row.category === 'towing') {
           await this.towing.createForService(client, service.rows[0].id, row);
@@ -690,7 +731,9 @@ export class MarketplaceService {
           throw new ForbiddenException('Service access denied');
         }
         if (row.category === 'delivery' || row.category === 'towing') {
-          throw new ConflictException('Category execution must use its dedicated state machine');
+          throw new ConflictException(
+            'Category execution must use its dedicated state machine',
+          );
         }
 
         const transitions: Record<string, string[]> = {
@@ -825,7 +868,9 @@ export class MarketplaceService {
         [providerId],
       );
       if (!verifiedVehicle.rowCount) {
-        throw new ForbiddenException('Towing provider requires a verified vehicle');
+        throw new ForbiddenException(
+          'Towing provider requires a verified vehicle',
+        );
       }
     }
   }
