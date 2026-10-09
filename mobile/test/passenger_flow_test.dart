@@ -27,6 +27,7 @@ void main() {
     await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    // ignore: avoid_print
     print('DEBUGMSG: t1 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '999');
@@ -58,6 +59,7 @@ void main() {
     await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    // ignore: avoid_print
     print('DEBUGMSG: t2 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
@@ -122,6 +124,7 @@ void main() {
     await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    // ignore: avoid_print
     print('DEBUGMSG: t2 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
@@ -163,6 +166,7 @@ void main() {
     await useTallScreen(tester);
     await tester.pumpWidget(passengerApp(NexoApi('https://api.test/v1', client: client)));
     await tester.pumpAndSettle();
+    // ignore: avoid_print
     print('DEBUGMSG: t2 gps=${find.text('GPS LOCALIZADO').evaluate().length} locating=${find.text('LOCALIZANDO GPS').evaluate().length}');
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
