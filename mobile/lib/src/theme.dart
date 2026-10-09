@@ -76,6 +76,9 @@ String nexoMoney(dynamic cents) => cents is num
     ? 'R\$ ${(cents / 100).toStringAsFixed(2).replaceAll('.', ',')}'
     : 'A calcular';
 
+/// Formats a server distance in meters.
+String nexoMeters(dynamic value) => value is num ? value.toStringAsFixed(0) : '—';
+
 /// Human label for a ride/service state coming from the API.
 String nexoStateLabel(String? state) =>
     (state ?? '—').replaceAll('_', ' ').toUpperCase();

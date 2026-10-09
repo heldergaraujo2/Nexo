@@ -35,7 +35,7 @@ void main() {
 
     await tester.tap(find.text('Viagens'));
     await tester.pumpAndSettle();
-    expect(find.text('Histórico de atividades'), findsOneWidget);
+    expect(find.text('HISTÓRICO DE ATIVIDADES'), findsOneWidget);
     expect(find.text('Viagem de carro'), findsOneWidget);
     expect(find.text('R\$ 25,00'), findsOneWidget);
 

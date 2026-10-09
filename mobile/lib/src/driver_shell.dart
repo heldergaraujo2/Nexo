@@ -71,10 +71,12 @@ class _DriverShellState extends State<DriverShell> {
     } catch (e) {
       if (mounted) setState(() => error = e.toString());
     } finally {
-      if (mounted) setState(() {
-        connecting = false;
-        busy = false;
-      });
+      if (mounted) {
+        setState(() {
+          connecting = false;
+          busy = false;
+        });
+      }
     }
   }
 

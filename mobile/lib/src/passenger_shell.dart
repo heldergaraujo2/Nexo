@@ -64,10 +64,12 @@ class _PassengerShellState extends State<PassengerShell> {
   Future<void> locate() async {
     try {
       final loc = await (widget.locate ?? deviceLocate)();
-      if (mounted) setState(() {
-        position = loc;
-        locationError = null;
-      });
+      if (mounted) {
+        setState(() {
+          position = loc;
+          locationError = null;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() => locationError = e.toString());
     }
@@ -392,14 +394,14 @@ class _PassengerShellState extends State<PassengerShell> {
         const SizedBox(height: 12),
         if (estimate != null) ...[
           Text(
-            'Distância estimada: ${((estimate!['distanceMeters'] as num?) ?? 0).toStringAsFixed(0)} m',
+            'Distância estimada: ${nexoMeters(estimate?['distanceMeters'])} m',
             style: const TextStyle(color: AppColors.muted, fontSize: 12),
           ),
           const SizedBox(height: 4),
         ],
         if (ride != null) ...[
           Text(
-            'Distância da corrida: ${((ride!['distanceMeters'] as num?) ?? 0).toStringAsFixed(0)} m',
+            'Distância da corrida: ${nexoMeters(ride?['distanceMeters'])} m',
             style: const TextStyle(color: AppColors.muted, fontSize: 12),
           ),
           const SizedBox(height: 4),

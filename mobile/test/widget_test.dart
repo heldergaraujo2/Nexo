@@ -57,7 +57,7 @@ void main() {
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Área do passageiro'), findsOneWidget);
+    expect(find.text('ÁREA DO PASSAGEIRO'), findsOneWidget);
     expect(find.text('Olá, Ana 👋'), findsOneWidget);
     expect(log.map((c) => '${c.method} ${c.path}').toList(), containsAllInOrder([
       'POST /auth/login',
@@ -90,7 +90,7 @@ void main() {
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Central do motorista'), findsOneWidget);
+    expect(find.text('CENTRAL DO MOTORISTA'), findsOneWidget);
     expect(find.text('Olá, Bruno'), findsOneWidget);
     final put = log.firstWhere((c) => c.method == 'PUT' && c.path == '/me/marketplace');
     expect((put.body as Map<String, dynamic>)['availability'], 'available');
