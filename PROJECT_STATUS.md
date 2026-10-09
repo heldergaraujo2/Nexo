@@ -87,7 +87,7 @@ Arquivos novos em `mobile/lib/src/`: `api.dart`, `theme.dart`, `location.dart`, 
 | Histórico | `GET /me/services/history` | lista real com categoria, estado, preço, data |
 | Perfil + logout | `GET /me` | dados reais; logout volta ao login |
 
-### 2.3 Testes de widgets (novos) — escritos e entregues; execução via CI
+### 2.3 Testes de widgets (novos) — 13/13 PASS no CI (VERIFICADO, run 38000147761)
 
 `mobile/test/widget_test.dart` (5), `mobile/test/passenger_flow_test.dart` (4),
 `mobile/test/driver_flow_test.dart` (3), `mobile/test/account_tabs_test.dart` (1) + `helpers.dart`
@@ -97,11 +97,9 @@ Cobrem: validação de login sem chamada de API; rota por papel (customer→pass
 falha de API exibida; corpo da solicitação **sem offset**; validação de coordenadas; rastreamento de estados;
 cancelamento com motivo; toggle de disponibilidade; máquina de estados completa do motorista; histórico/perfil/logout.
 
-> **EXECUTADO MAS NÃO CONFIRMADO (parcial):** os testes de widgets foram escritos e passaram por
-> compilação no CI (job `windows-driver` do run 37993761173 compilou o mesmo código), mas a execução
-> de `flutter test` depende do job `mobile` do CI — ver seção 5 para o estado corrente.
-> **Não há Flutter SDK neste ambiente** (verificado: `flutter: command not found`), portanto
-> `flutter test`/`flutter analyze` **não podem ser executados localmente** — só no GitHub Actions.
+> **VERIFICADO via CI:** `flutter analyze` e `flutter test` (13/13) passaram no job `mobile`
+> (run 38000147761, PR #27). **Não há Flutter SDK neste ambiente** (`flutter: command not found`),
+> então a execução local de Flutter é impossível aqui — a evidência é o GitHub Actions.
 
 ## 3. Implementado mas não comprovado
 
@@ -130,12 +128,18 @@ cancelamento com motivo; toggle de disponibilidade; máquina de estados completa
 ### Local (VERIFICADO — saídas na seção 2.1)
 - backend: typecheck ✅, lint ✅, build ✅, format:check ✅ (após correção), vitest **37/37 ✅**.
 
-### GitHub Actions
-- PR #26, run 37982165847: backend ✅ mobile ✅ windows-driver ✅ (VERIFICADO via `gh pr checks 26`).
-- PR #27, run 37993761173 (primeira execução): windows-driver ✅; mobile ❌ (`flutter analyze`);
-  backend ❌ (`Initialize containers` — falha de infra do serviço Postgres do Actions, não de código).
-- Resultado final da PR #27: **ver checks da PR** (https://github.com/heldergaraujo2/Nexo/pull/27/checks)
-  e a seção "Atualização" no fim deste documento.
+### GitHub Actions — PR #27 (VERIFICADO)
+| Run | backend | mobile (analyze + test + APK) | windows-driver |
+|---|---|---|---|
+| 37993761173 (1º) | ❌ infra Postgres do Actions | ❌ `flutter analyze` (lints) | ✅ |
+| 37995949040 | ✅ | ❌ `flutter test` (3/13) | ✅ |
+| 37997331372 | ✅ | ❌ `flutter test` (8/13) | ✅ |
+| 38000147761 (final) | ✅ | ✅ **tudo verde** | ✅ |
+
+Execução final (run 38000147761): steps `flutter analyze` ✅, `flutter test` ✅ (13/13 widget tests),
+`flutter build apk --debug` ✅, artefatos `nexo-android-debug` e `nexo-windows-driver` publicados ✅.
+Evidência: `gh api repos/heldergaraujo2/Nexo/actions/jobs/114055976021` → todos os steps `success`.
+PR #26 (run 37982165847): backend ✅ mobile ✅ windows-driver ✅ (mantida como referência).
 
 ## 6. Matriz de rastreabilidade
 
@@ -176,6 +180,16 @@ cancelamento com motivo; toggle de disponibilidade; máquina de estados completa
 - Sem refresh token no cliente (token curto + relogin).
 - `flutter` não existe neste sandbox — toda validação Flutter depende do GitHub Actions ou do PC do usuário.
 
-## 9. Atualização (preenchida após a execução final do CI da PR #27)
+## 9. Atualização — resultado final da rodada (2026-10-09)
 
-_(será atualizado com o resultado real dos checks ao final da rodada)_
+- **CI da PR #27: VERDE nos 3 jobs** (run 38000147761) — backend, mobile (analyze+test+APK) e windows-driver.
+- **13/13 testes de widgets Flutter PASS** no CI (login/validação/rota por papel; solicitação com destino real;
+  validação de coordenadas; rastreamento; cancelamento com motivo; disponibilidade; radar; aceite; máquina de
+  estados completa; histórico/perfil/logout) + **37/37 testes backend** locais com PostgreSQL real.
+- Correções realizadas nesta rodada: lints do Flutter (chaves em if multi-linha, TextStyle const, textos de
+  eyebrow em asserts), viewport alto nos testes (widgets lazy de ListView não eram construídos no viewport
+  800×600), Prettier do backend, e instrumentação de CI (tee + artefato + anotações `::error::` para falhas de
+  teste — logs/artefatos do Actions não são baixáveis de redes restritas).
+- **Ainda depende de ação humana:** instalar o APK em Android físico, executar o pacote Windows, e rodar o
+  fluxo ponta a ponta passageiro×motorista (seção 4). Não validado em dispositivo real por este agente.
+- Estado de prontidão: **implementação pronta para validação física** — NÃO "pronto para produção".
