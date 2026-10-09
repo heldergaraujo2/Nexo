@@ -127,22 +127,27 @@ void main() {
 
     await tester.pump(const Duration(seconds: 2));
     await tester.pump();
+    await tester.ensureVisible(find.text('Aceitar chamada'));
     await tester.tap(find.text('Aceitar chamada'));
     await tester.pumpAndSettle();
     expect(find.text('ACCEPTED'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Iniciar deslocamento'));
     await tester.tap(find.text('Iniciar deslocamento'));
     await tester.pumpAndSettle();
     expect(find.text('DRIVER EN ROUTE'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Confirmar chegada'));
     await tester.tap(find.text('Confirmar chegada'));
     await tester.pumpAndSettle();
     expect(find.text('ARRIVED'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Iniciar viagem'));
     await tester.tap(find.text('Iniciar viagem'));
     await tester.pumpAndSettle();
     expect(find.text('STARTED'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Concluir viagem'));
     await tester.tap(find.text('Concluir viagem'));
     await tester.pumpAndSettle();
     expect(find.text('COMPLETED'), findsOneWidget);

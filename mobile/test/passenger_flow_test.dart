@@ -23,6 +23,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(0), '999');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
+    await tester.ensureVisible(find.text('Solicitar corrida  →'));
     await tester.tap(find.text('Solicitar corrida  →'));
     await tester.pump();
 
@@ -51,6 +52,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
+    await tester.ensureVisible(find.text('Solicitar corrida  →'));
     await tester.tap(find.text('Solicitar corrida  →'));
     await tester.pump();
 
@@ -112,6 +114,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
+    await tester.ensureVisible(find.text('Solicitar corrida  →'));
     await tester.tap(find.text('Solicitar corrida  →'));
     await tester.pump();
     expect(find.text('PROCURANDO MOTORISTA'), findsOneWidget);
@@ -150,9 +153,11 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(0), '-23.55052');
     await tester.enterText(find.byType(TextField).at(1), '-46.633308');
+    await tester.ensureVisible(find.text('Solicitar corrida  →'));
     await tester.tap(find.text('Solicitar corrida  →'));
     await tester.pump();
 
+    await tester.ensureVisible(find.text('Cancelar solicitação'));
     await tester.tap(find.text('Cancelar solicitação'));
     await tester.pumpAndSettle();
     expect(find.text('Cancelar solicitação'), findsWidgets);

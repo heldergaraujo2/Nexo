@@ -46,6 +46,7 @@ void main() {
     expect(find.text('PASSAGEIRO'), findsOneWidget);
     expect(find.text('Sair da conta'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Sair da conta'));
     await tester.tap(find.text('Sair da conta'));
     await tester.pumpAndSettle();
     expect(find.text('Acessar sua conta'), findsOneWidget);

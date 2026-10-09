@@ -22,6 +22,7 @@ void main() {
     final client = mockClient(log, (method, path, body) => null);
     await tester.pumpWidget(NexoApp(apiFactory: (url) => NexoApi(url, client: client)));
 
+    await tester.ensureVisible(find.text('Entrar na Nexo'));
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pump();
     expect(find.text('Informe um e-mail válido.'), findsOneWidget);
@@ -29,6 +30,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(1), 'ana@example.com');
     await tester.enterText(find.byType(TextField).at(2), 'curta');
+    await tester.ensureVisible(find.text('Entrar na Nexo'));
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pump();
     expect(find.text('A senha precisa ter pelo menos 8 caracteres.'), findsOneWidget);
@@ -54,6 +56,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(1), 'ana@example.com');
     await tester.enterText(find.byType(TextField).at(2), 'senha-forte-123');
+    await tester.ensureVisible(find.text('Entrar na Nexo'));
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pumpAndSettle();
 
@@ -87,6 +90,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(1), 'bruno@example.com');
     await tester.enterText(find.byType(TextField).at(2), 'senha-forte-123');
+    await tester.ensureVisible(find.text('Entrar na Nexo'));
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pumpAndSettle();
 
@@ -107,6 +111,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField).at(1), 'ana@example.com');
     await tester.enterText(find.byType(TextField).at(2), 'senha-forte-123');
+    await tester.ensureVisible(find.text('Entrar na Nexo'));
     await tester.tap(find.text('Entrar na Nexo'));
     await tester.pumpAndSettle();
 
