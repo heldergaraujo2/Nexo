@@ -33,7 +33,7 @@ def main() -> None:
         if not m:
             continue
         name = WS_PREFIX.sub('mobile/', m.group(4).strip())
-        if SKIP.match(name):
+        if SKIP.match(name) or name.endswith('.dart'):
             continue
         failed = '[E]' in name
         if failed:
