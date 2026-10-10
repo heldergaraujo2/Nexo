@@ -85,7 +85,7 @@ describe('negative checklist (Section 6)', () => {
   });
 
   it('completing a ride before it starts is rejected — 409 invalid transition', async () => {
-    const { customer, provider, serviceId } = await seedService('accepted');
+    const { provider, serviceId } = await seedService('accepted');
     const ride = await db.query(
       `INSERT INTO rides (service_id,vehicle_type,origin,destination,distance_meters,tariff_cents_per_km,fare_cents,state)
        VALUES ($1,'car',$2::jsonb,$3::jsonb,1200,200,247,'accepted') RETURNING id`,

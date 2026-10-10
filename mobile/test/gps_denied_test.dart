@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:nexo_mobile/main.dart';
 
 import 'helpers.dart';
@@ -60,7 +57,7 @@ void main() {
         profile: const {'displayName': 'Ana', 'email': 'ana@example.com'},
         apiUrl: 'https://api.test/v1',
         locate: () async =>
-            throw const NexoUserException('Permissão de localização negada. Habilite-a nas configurações do dispositivo.'),
+            throw NexoUserException('Permissão de localização negada. Habilite-a nas configurações do dispositivo.'),
       ),
     ));
     await tester.pumpAndSettle();
@@ -97,7 +94,7 @@ void main() {
         profile: const {'displayName': 'Ana', 'email': 'ana@example.com'},
         apiUrl: 'https://api.test/v1',
         locate: () async =>
-            throw const NexoUserException('Permissão de localização negada.'),
+            throw NexoUserException('Permissão de localização negada.'),
       ),
     ));
     await tester.pumpAndSettle();
