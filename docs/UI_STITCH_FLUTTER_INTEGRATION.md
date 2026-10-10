@@ -16,7 +16,7 @@ O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (comm
 
 ## Inventário das 48 telas
 
-### A. Fluxo do passageiro (18 telas)
+### A. Fluxo do passageiro (19 telas em 18 linhas)
 | # | Tela Stitch | Status | Onde / justificativa |
 |---|---|---|---|
 | 1 | `nexo_passageiro_in_cio_e_solicita_o` | **Implementada** | `mobile/lib/src/passenger_shell.dart` (homeTab) — GPS real (geolocator), categoria carro/moto, `POST /rides/requests` com Idempotency-Key. Sem mapa (ver #3). |
@@ -38,7 +38,7 @@ O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (comm
 | 17 | `nexo_passageiro_em_viagem_rumo_1_parada` | **Não implementada** | Idem #14. |
 | 18 | `nexo_passageiro_chegada_ao_shopping_eldorado` / `nexo_passageiro_desembarque_e_recibo_final_shopping_eldorado` (2 telas) | **Não implementadas** | Variantes de conclusão com POI nomeado; o fluxo real de conclusão (#9) cobre o comportamento sem inventar locais fixos. |
 
-### B. Pagamento e itens perdidos — passageiro (5 telas)
+### B. Pagamento e itens perdidos — passageiro (4 telas)
 | # | Tela Stitch | Status | Onde / justificativa |
 |---|---|---|---|
 | 19 | `nexo_passageiro_pagamento_e_cupom_de_desconto` | **Não implementada (UI)** | Backend pronto: `payment-records` (`payment.controller.ts`; testes 5/5 ✅). **Cupom de desconto não existe** no backend. |
@@ -46,42 +46,41 @@ O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (comm
 | 21 | `nexo_passageiro_confirma_o_de_recebimento_e_recibo_de_devolu_o` | **Não implementada** | Idem #20. |
 | 22 | `nexo_chat_seguro_devolu_o_de_item_esquecido` | **Não implementada** | Sem backend de chat. |
 
-| 23 | `comprovante_oficial_e_recibo_digital_da_devolu_o` | **Não implementada** | Recibo digital/comprovante oficial da devolução — protótipo do Stitch associado às telas #21/#22 (devolução de itens perdidos). Sem backend de itens perdidos nem UI de recibo; não inventado. |
 
 ### C. Fluxo do motorista (18 telas)
 | # | Tela Stitch | Status | Onde / justificativa |
 |---|---|---|---|
-| 24 | `nexo_motorista_radar_de_chamadas_e_mapa_em_tempo_real` | **Parcial** | `mobile/lib/src/driver_shell.dart` (radarTab) — `GET /me/marketplace/open-requests` real + toggle de disponibilidade real (`PUT /me/marketplace`). **Sem mapa em tempo real** (não inventado). |
-| 25 | `nexo_painel_do_motorista_e_chamadas` | **Implementada** | `driver_shell.dart` — cartões de solicitação reais (`id`, `category`) + aceite `POST /requests/:id/accept`. |
-| 26 | `nexo_motorista_chamada_recebida_com_contagem_regressiva` | **Parcial** | Cartão de chamada real. **Contagem regressiva** não implementada (backend tem `expires_at` na request — disponível para uso futuro). |
-| 27 | `nexo_motorista_navega_o_at_o_passageiro` | **Parcial** | Estado `driver_en_route` real + ação `driver-en-route`. Sem mapa/navegação GPS turn-by-turn. |
-| 28 | `nexo_motorista_rota_at_o_embarque` | **Parcial** | Idem #27 (estado `arrived`). |
-| 29 | `nexo_motorista_rota_recalculada_altera_o_de_destino` | **Não implementada (UI)** | Backend pronto: `POST /rides/:rideId/route`. UI pendente. |
-| 30 | `nexo_motorista_embarque_confirmado_e_in_cio_da_viagem` | **Implementada** | Ações `arrived→start` reais (`driver_shell.dart` activeRidePanel). |
-| 31 | `nexo_motorista_corrida_em_andamento_e_conclus_o` | **Implementada** | Ações `start→complete` reais + tarifa do servidor. |
-| 32 | `nexo_motorista_conclus_o_da_viagem_e_avalia_o` | **Parcial** | Conclusão real (`COMPLETED` + "Voltar ao radar"). Avaliação não implementada (ver #9). |
-| 33 | `nexo_motorista_hist_rico_de_corridas` | **Implementada** | `account_tabs.dart` (TripsTab) — `GET /me/services/history` real. |
-| 34 | `nexo_motorista_perfil_e_documentos` | **Parcial** | `account_tabs.dart` (ProfileTab) — `GET /me` real + logout. Documentos não implementados (backend `media` parcial). |
-| 35 | `nexo_motorista_reputa_o_e_avalia_es` | **Não implementada (UI)** | Backend pronto: `trust`/`ratings` (testes 6/6 ✅). UI pendente. |
-| 36 | `nexo_motorista_biometria_aprovada_in_cio_de_turno` | **Não implementada** | Exige biometria/dispositivo; sem backend de biometria. |
-| 37 | `nexo_motorista_selfie_e_prova_de_vida_biometria_facial` | **Não implementada** | Idem #36. |
-| 38 | `nexo_motorista_captura_guiada_por_c_mera` | **Não implementada** | Exige câmera/dispositivo. |
-| 39 | `nexo_motorista_envio_e_upload_de_documento` | **Não implementada** | Backend `media` parcial (upload); UI/dispositivo pendentes. |
-| 40 | `nexo_motorista_resumo_financeiro_e_assinatura` | **Bloqueada** | Assinaturas = fase 11 (PRs #20/#24), **fora de `main`**. |
-| 41 | `nexo_motorista_reporte_de_item_esquecido_no_ve_culo` | **Não implementada** | Sem backend de itens perdidos (apenas `security/incidents` genérico). |
+| 23 | `nexo_motorista_radar_de_chamadas_e_mapa_em_tempo_real` | **Parcial** | `mobile/lib/src/driver_shell.dart` (radarTab) — `GET /me/marketplace/open-requests` real + toggle de disponibilidade real (`PUT /me/marketplace`). **Sem mapa em tempo real** (não inventado). |
+| 24 | `nexo_painel_do_motorista_e_chamadas` | **Implementada** | `driver_shell.dart` — cartões de solicitação reais (`id`, `category`) + aceite `POST /requests/:id/accept`. |
+| 25 | `nexo_motorista_chamada_recebida_com_contagem_regressiva` | **Parcial** | Cartão de chamada real. **Contagem regressiva** não implementada (backend tem `expires_at` na request — disponível para uso futuro). |
+| 26 | `nexo_motorista_navega_o_at_o_passageiro` | **Parcial** | Estado `driver_en_route` real + ação `driver-en-route`. Sem mapa/navegação GPS turn-by-turn. |
+| 27 | `nexo_motorista_rota_at_o_embarque` | **Parcial** | Idem #26 (estado `arrived`). |
+| 28 | `nexo_motorista_rota_recalculada_altera_o_de_destino` | **Não implementada (UI)** | Backend pronto: `POST /rides/:rideId/route`. UI pendente. |
+| 29 | `nexo_motorista_embarque_confirmado_e_in_cio_da_viagem` | **Implementada** | Ações `arrived→start` reais (`driver_shell.dart` activeRidePanel). |
+| 30 | `nexo_motorista_corrida_em_andamento_e_conclus_o` | **Implementada** | Ações `start→complete` reais + tarifa do servidor. |
+| 31 | `nexo_motorista_conclus_o_da_viagem_e_avalia_o` | **Parcial** | Conclusão real (`COMPLETED` + "Voltar ao radar"). Avaliação não implementada (ver #9). |
+| 32 | `nexo_motorista_hist_rico_de_corridas` | **Implementada** | `account_tabs.dart` (TripsTab) — `GET /me/services/history` real. |
+| 33 | `nexo_motorista_perfil_e_documentos` | **Parcial** | `account_tabs.dart` (ProfileTab) — `GET /me` real + logout. Documentos não implementados (backend `media` parcial). |
+| 34 | `nexo_motorista_reputa_o_e_avalia_es` | **Não implementada (UI)** | Backend pronto: `trust`/`ratings` (testes 6/6 ✅). UI pendente. |
+| 35 | `nexo_motorista_biometria_aprovada_in_cio_de_turno` | **Não implementada** | Exige biometria/dispositivo; sem backend de biometria. |
+| 36 | `nexo_motorista_selfie_e_prova_de_vida_biometria_facial` | **Não implementada** | Idem #35. |
+| 37 | `nexo_motorista_captura_guiada_por_c_mera` | **Não implementada** | Exige câmera/dispositivo. |
+| 38 | `nexo_motorista_envio_e_upload_de_documento` | **Não implementada** | Backend `media` parcial (upload); UI/dispositivo pendentes. |
+| 39 | `nexo_motorista_resumo_financeiro_e_assinatura` | **Bloqueada** | Assinaturas = fase 11 (PRs #20/#24), **fora de `main`**. |
+| 40 | `nexo_motorista_reporte_de_item_esquecido_no_ve_culo` | **Não implementada** | Sem backend de itens perdidos (apenas `security/incidents` genérico). |
 
 ### D. Vertical de sinistro/seguros (7 telas) — fora de escopo do app de mobilidade
 | # | Tela Stitch | Status | Justificativa |
 |---|---|---|---|
-| 42 | `nexo_acompanhamento_geral_do_sinistro` | **Fora de escopo** | Vertical de seguro/sinistro; sem domínio/modelo equivalente no backend atual (o módulo `towing` é guincho genérico, não gestão de sinistro). |
-| 43 | `nexo_acompanhamento_pericial_guincho_e_carro_reserva` | **Fora de escopo** | Idem. |
-| 44 | `nexo_central_de_ajuda_sinistros_24h` | **Fora de escopo** | Idem. |
-| 45 | `nexo_devolu_o_do_carro_reserva_e_extrato_final` | **Fora de escopo** | Idem. |
-| 46 | `nexo_encerramento_oficial_e_arquivamento_do_sinistro` | **Fora de escopo** | Idem. |
-| 47 | `comprovante_oficial_e_recibo_digital_da_devolu_o` | **Fora de escopo** | Idem. |
-| 48 | `nexo_voucher_e_retirada_do_carro_reserva_qr_code_check_in` | **Fora de escopo** | Idem. |
+| 41 | `nexo_acompanhamento_geral_do_sinistro` | **Fora de escopo** | Vertical de seguro/sinistro; sem domínio/modelo equivalente no backend atual (o módulo `towing` é guincho genérico, não gestão de sinistro). |
+| 42 | `nexo_acompanhamento_pericial_guincho_e_carro_reserva` | **Fora de escopo** | Idem. |
+| 43 | `nexo_central_de_ajuda_sinistros_24h` | **Fora de escopo** | Idem. |
+| 44 | `nexo_devolu_o_do_carro_reserva_e_extrato_final` | **Fora de escopo** | Idem. |
+| 45 | `nexo_encerramento_oficial_e_arquivamento_do_sinistro` | **Fora de escopo** | Idem. |
+| 46 | `comprovante_oficial_e_recibo_digital_da_devolu_o` | **Fora de escopo** | Idem. |
+| 47 | `nexo_voucher_e_retirada_do_carro_reserva_qr_code_check_in` | **Fora de escopo** | Idem. |
 
-*(Nota: as linhas 18 e 5 cobrem 2 telas cada — total conferido: 48 telas com `code.html`.)*
+*(Nota: a linha 18 cobre 2 telas (`nexo_passageiro_chegada_ao_shopping_eldorado` + `nexo_passageiro_desembarque_e_recibo_final_shopping_eldorado`); total conferido: 19+4+18+7 = 48 telas com `code.html`.)*
 
 ## Sistema visual aplicado (VERIFICADO)
 Superfícies escuras (`#0A0912`/`#151321`/`#201C31`), violeta (`#9B72FF`/`#B59AFF`), verde operacional
