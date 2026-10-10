@@ -8,8 +8,11 @@ import {
 import { Response } from 'express';
 
 /**
- * Converts PostgreSQL "invalid input syntax" errors (SQLSTATE 22P02 — e.g. a
- * non-UUID string used as a UUID) into HTTP 400 instead of leaking a 500.
+ * Maps PostgreSQL SQLSTATE errors to clean HTTP responses and guarantees that
+ * raw driver errors (constraint violations, invalid input syntax) never leak a
+ * stack trace or database internals to the client:
+ * - 22P02 (invalid input syntax, e.g. non-UUID used as UUID) -> 400
+ * - 23505 (unique_violation) -> 409
  * Registered globally via APP_FILTER, so it applies to the real server and to
  * the integration tests alike. Param-level ParseUUIDPipe validates path params
  * up front; this filter is the backstop for every other request input.
@@ -21,8 +24,19 @@ export class PgInvalidTextRepresentationFilter implements ExceptionFilter {
     const code = (exception as { code?: string } | null | undefined)?.code;
 
     if (code === '22P02') {
-      const bad = new BadRequestLike();
-      res.status(bad.status).json(bad.body);
+      res.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Invalid identifier format in request',
+        error: 'Bad Request',
+      });
+      return;
+    }
+    if (code === '23505') {
+      res.status(HttpStatus.CONFLICT).json({
+        statusCode: HttpStatus.CONFLICT,
+        message: 'Resource already exists',
+        error: 'Conflict',
+      });
       return;
     }
     if (exception instanceof HttpException) {
@@ -35,13 +49,4 @@ export class PgInvalidTextRepresentationFilter implements ExceptionFilter {
       error: 'Internal Server Error',
     });
   }
-}
-
-class BadRequestLike {
-  readonly status = HttpStatus.BAD_REQUEST;
-  readonly body = {
-    statusCode: HttpStatus.BAD_REQUEST,
-    message: 'Invalid identifier format in request',
-    error: 'Bad Request',
-  };
 }

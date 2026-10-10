@@ -271,6 +271,37 @@ async function main() {
     `malformed ride id answered ${badRideId.status} (expected 400)`,
   );
 
+  // 13c. Missing required fields answer 400 (real server ValidationPipe path).
+  const noPwd = await call('POST', '/auth/register', {
+    body: {
+      email: `e2e-nopwd-${Date.now()}@example.test`,
+      displayName: 'Sem Senha',
+      role: 'customer',
+    },
+  });
+  check(
+    noPwd.status === 400,
+    `register without password answered ${noPwd.status} (expected 400)`,
+  );
+  const noLoginPwd = await call('POST', '/auth/login', {
+    body: { email: 'someone@example.test' },
+  });
+  check(
+    noLoginPwd.status === 400,
+    `login without password answered ${noLoginPwd.status} (expected 400)`,
+  );
+  const noScore = await call('POST', '/ratings', {
+    token: tA,
+    body: {
+      serviceId: serviceId ?? '00000000-0000-0000-0000-000000000001',
+      subjectId: '00000000-0000-0000-0000-000000000002',
+    },
+  });
+  check(
+    noScore.status === 400,
+    `ratings without score answered ${noScore.status} (expected 400)`,
+  );
+
   // Final state of the ride.
   const finalRide = await call('GET', `/rides/${rideId}`, { token: tA });
   check(

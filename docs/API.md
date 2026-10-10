@@ -10,7 +10,7 @@
 - Authorization server-side.
 - Idempotency-Key em comandos críticos.
 - IDs opacos/não sequenciais quando expostos.
-- Paginação cursor-based.
+- Limites máximos por listagem (paginação cursor-based é BACKLOG — ver seção Paginação).
 - Erros em formato consistente.
 - Nunca retornar documentos de identidade/veículo em endpoints públicos.
 - Transições de estado validadas pelo servidor.
@@ -100,7 +100,7 @@ POSTs críticos aceitam Idempotency-Key. A mesma chave com payload diferente fal
 Toda operação verifica identidade, papel/capacidade, ownership/relação, estado atual e pré-condições.
 
 ## Paginação
-Listas usam cursor, limite máximo e ordenação definida pelo servidor.
+**Estado atual (rodada 6):** listas usam limite máximo fixo e ordenação definida pelo servidor (`LIMIT 50/100/200`, sem parâmetro de página/cursor). A promessa de paginação cursor-based **não está implementada** e consta como item de backlog explícito (matriz de rastreabilidade, `PROJECT_STATUS.md`); quando implementada, esta seção será atualizada com o formato real do cursor.
 
 ## Auditoria
 Alteração de preço, aceite, cancelamento, pagamento, assinatura, verificação, moderação e segurança geram AuditEvent.

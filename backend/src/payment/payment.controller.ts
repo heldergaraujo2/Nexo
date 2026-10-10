@@ -11,6 +11,13 @@ import {
   HttpCode,
   ParseUUIDPipe,
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import {
   ConfirmPaymentDto,
@@ -21,11 +28,18 @@ import { PaymentService } from './payment.service';
 
 @UseGuards(AuthGuard)
 @Controller('payment-records')
+@ApiTags('pagamentos')
+@ApiBearerAuth()
+@ApiBadRequestResponse({ description: 'Dados inválidos' })
+@ApiUnauthorizedResponse({ description: 'Não autenticado' })
 export class PaymentController {
   constructor(
     @Inject(PaymentService) private readonly payments: PaymentService,
   ) {}
 
+  @ApiOperation({
+    summary: 'Customer: registra pagamento (1 ativo por serviço)',
+  })
   @Post('services/:serviceId')
   @HttpCode(201)
   create(
@@ -39,6 +53,7 @@ export class PaymentController {
       .then((result) => result.body);
   }
 
+  @ApiOperation({ summary: 'Lista registros de pagamento do serviço' })
   @Get('services/:serviceId')
   listForService(
     @Req() req: AuthenticatedRequest,
@@ -47,6 +62,7 @@ export class PaymentController {
     return this.payments.listForService(req.user, serviceId);
   }
 
+  @ApiOperation({ summary: 'Consulta registro de pagamento' })
   @Get(':paymentId')
   get(
     @Req() req: AuthenticatedRequest,
@@ -55,6 +71,9 @@ export class PaymentController {
     return this.payments.get(req.user, paymentId);
   }
 
+  @ApiOperation({
+    summary: 'Provider: confirma com o valor esperado (idempotente)',
+  })
   @Post(':paymentId/confirm')
   @HttpCode(200)
   confirm(
@@ -68,6 +87,7 @@ export class PaymentController {
       .then((result) => result.body);
   }
 
+  @ApiOperation({ summary: 'Abre disputa de pagamento' })
   @Post(':paymentId/dispute')
   @HttpCode(200)
   dispute(

@@ -308,6 +308,68 @@ Causa raiz (casa exatamente com o stack do CI): `theme.dart:58` define `minimumS
 
 `docs/OPERATIONS_E2E_PC_ANDROID.md` atualizado nesta rodada: roteiro estendido com as 4 features novas (perfil, pagamentos, avaliações, notificações), download literal do APK/pacote Windows pelos artefatos do CI (repo público), provisionamento de contas e roteiro E2E passageiro↔motorista.
 
+## 15. Atualização — rodada 6 (2026-10-10)
+
+### 15.1 PARTE A — lacunas da auditoria corrigidas
+
+**(1) Health check real** — `GET /health` agora executa `SELECT 1` de verdade com timeout de 2s: `200 {status:'ok', database:'up'}` quando o banco responde; `503 {status:'degraded'}` quando a conexão morre **ou** pendura, sem ecoar detalhes internos do banco. Testes reais em `backend/test/health-db.integration.spec.ts` (3/3): pool saudável → 200; **`pool.end()` (queda real de conexão) → 503**; pool pendurado (timeout) → 503 em <4s. Código: `backend/src/health/health.module.ts`.
+
+**(2) Paginação — DECISÃO: opção (a)**, corrigir `docs/API.md` para a realidade. Justificativa: paginação cursor-based muda contrato de API (formato de cursor, parâmetros, envelopes) e exige coordenação backend+testes+app num momento de estabilização para merge; prometer algo não implementado é o que a Seção 0 proíbe. `docs/API.md:13,102-103` agora declara LIMIT fixo (50/100/200) e registra cursor-based como **BACKLOG explícito** (matriz abaixo).
+
+**(3) OpenAPI/Swagger baseline** — `@nestjs/swagger@11.4.7` instalado; `@ApiTags`+`@ApiBearerAuth`+respostas de erro nos 5 controllers principais (auth/ride/marketplace/payment/trust) e `@ApiOperation` com resumo real em **47 rotas**. `main.ts` expõe **`/v1/docs`** (UI) e **`/v1/api-json`** (JSON). Verificado: `npm run build` OK, suíte completa passa, e o E2E real (`node dist/main.js`) responde (checks 13c abaixo). DTOs exaustivos com `@ApiProperty` = BACKLOG.
+
+**(4) Módulo media — RECOMENDAÇÃO: (a) fora de escopo desta fase.** Upload binário real exige storage de objetos (S3/presign), validação de arquivo (tipo/tamanho/antivírus), moderação e serving — um pacote de trabalho de dimensão própria, sem bloquear nenhum fluxo prioritário do app (o registro de metadados já cobre delivery). É **decisão de produto**, não técnica: **marcado como "aguardando confirmação do usuário"** na matriz; enquanto não houver confirmação, nada é iniciado.
+
+### 15.2 PARTE B — matriz de testes negativos (Seção 6 do comando mestre)
+
+| # | Cenário | Existe teste? | Arquivo/linha | Passou? |
+|---|---|---|---|---|
+| 1 | Senha incorreta no login | SIM (criado nesta rodada) | `backend/test/negative-checklist.integration.spec.ts` "wrong password on login answers 401" | ✅ |
+| 2 | Token expirado | SIM | `backend/test/expired-token.integration.spec.ts` (2 testes, rodada 3) | ✅ |
+| 3 | Papel errado nos 2 sentidos | SIM | `payment-rating-security` (provider→rota de customer 403 "Customer role required"; customer→rota de provider 403 "Provider role required") + `negative-checklist` (2 testes explícitos: accept como customer 403; criar corrida como provider 403) | ✅ |
+| 4 | GPS negado (client-side) | SIM (criado nesta rodada) | `mobile/test/gps_denied_test.dart` (3 testes: `deviceLocate` com canal geolocator mockado → mensagem "Permissão de localização negada"; UI do passageiro mostra `ErrorPanel` sem crash e segue funcional; solicitação sem posição pede toque no GPS sem chamar a API) | ✅ (via CI) |
+| 5 | Rede indisponível | SIM | `mobile/test/account_features_test.dart` #11 (C2, rodada 3-5) + `widget_test` "API failure is reported to the user" | ✅ |
+| 6 | Backend parado (API) | SIM (equivalente ao C2) | C2 cobre o lado cliente; no lado servidor, `health-db.integration.spec.ts` "pool closed → 503" prova que dependência morta é reportada | ✅ |
+| 7 | Corrida/serviço inexistente (UUID válido) | SIM (explícito nesta rodada) | `negative-checklist` "unknown service id … 404" + "unknown ride id … 404" (reforço do `bad-request` #5) | ✅ |
+| 8 | Solicitação duplicada (idempotência) | SIM | `marketplace.integration.spec.ts:56` (aceite idempotente) + `:261` (Idempotency-Key ausente → 409) + E2E `e2e-api-flow.mjs` (replay de request) | ✅ |
+| 9 | Dois aceites concorrentes | SIM | `marketplace.integration.spec.ts:148` "serializes concurrent provider acceptance so only one service is created" | ✅ |
+| 10 | Transição de estado inválida (complete antes de start) | SIM (explícito nesta rodada) | `negative-checklist` "completing a ride before it starts … 409 Invalid ride state transition" (reforço do `delivery.integration.spec.ts:217`) | ✅ |
+| 11 | Campos obrigatórios faltando | SIM (criado nesta rodada) | `negative-checklist` (register sem senha → 400; ratings sem score → 400) **+ E2E real** `e2e-api-flow.mjs` checks 13c (3 novos: register/login sem senha, ratings sem score → 400 no servidor buildado) | ✅ |
+| 12 | Erro de persistência (violação de constraint) | SIM (criado nesta rodada) | `negative-checklist` "duplicate account … 409 clean" + "concurrent duplicate registration never answers 500 and never leaks a stack (23505 race)" — o filtro global `pg-invalid-text.filter.ts` agora mapeia **23505→409 "Resource already exists"** (nenhum stack chega ao cliente) | ✅ |
+
+Suíte backend após as adições: **16 arquivos, 68/68** (Postgres real). E2E real: **30/30**. Infra de harness corrigida nesta rodada: o vitest usava esbuild sem `emitDecoratorMetadata` (o `ValidationPipe` não via DTOs em teste) — `vitest.config.ts` + `unplugin-swc` replicam a semântica do `tsc` real.
+
+### 15.3 PARTE C — avaliação formal de prontidão (12 critérios)
+
+| # | Critério | Status | Evidência |
+|---|---|---|---|
+| 1 | UI prioritária integrada ao Flutter real | **Cumprido** | Telas ligadas a endpoints reais (`UI_STITCH_FLUTTER_INTEGRATION.md`, linhas de navegação §12 rodada 4); CI 24/24 widget tests |
+| 2 | Navegação e controles essenciais funcionam | **Cumprido** | `account_tabs_test`/`widget_test`/`driver_flow_test`/`passenger_flow_test` no CI (24/24); entradas verificadas file:line |
+| 3 | Fluxos de negócio ligados a serviços reais | **Cumprido** | E2E real 30/30 (`node dist/main.js` + Postgres): request→accept→corrida→pagamento→avaliação |
+| 4 | Backend, banco e apps passaram pelas verificações relevantes | **Parcialmente cumprido** — backend/banco: 68/68 + 30/30 E2E ✅; apps: 27 testes Flutter via CI ✅ (24+3 novos, ver rodada 6); **dispositivo físico: não executado** (critério 8) |
+| 5 | Compilação Android e Windows passa | **Cumprido** | Jobs `mobile` (build+test) e `windows-driver` (3m29s) verdes; artefatos publicados pelo CI |
+| 6 | Testes automatizados relevantes passam | **Cumprido** | backend 68/68, E2E 30/30, Flutter 27 esperados verdes (confirmar no CI desta rodada no fechamento) |
+| 7 | Fluxo ponta a ponta passageiro↔motorista validado com evidências | **Parcialmente cumprido** — validado **ponta a ponta na API real** (E2E 30/30 com corrida completa, estados, pagamento e avaliação); **a camada visual em dispositivo físico depende de ação humana** (roteiro pronto em `OPERATIONS_E2E_PC_ANDROID.md`) |
+| 8 | Testes físicos possíveis executados, bloqueios documentados | **Não cumprido (ação humana pendente)** — nenhum dispositivo físico acessível ao agente; roteiro literal pronto e artefatos disponíveis para download; sem bloqueio técnico remanescente além da execução humana |
+| 9 | Sem falhas críticas conhecidas sem tratamento | **Cumprido** | Matriz §15.2 completa; lacunas restantes (paginação, media binário, backup) são de escopo/robustez, não falhas críticas de fluxo — e estão declaradas |
+| 10 | Documentação de instalação/execução atualizada | **Cumprido** | `OPERATIONS_E2E_PC_ANDROID.md` (rodada 5-6), `API.md` (honestidade de paginação, rodada 6), `/v1/docs` Swagger (rodada 6) |
+| 11 | Artefatos necessários disponíveis | **Cumprido** | APK `nexo-android-debug` + `nexo-windows-driver` publicados como artefatos do run verde; instruções literais de download |
+| 12 | Mudanças no fluxo correto, branch principal confirmada | **Cumprido** | Tudo em `arena/af7a1fc1-nexo` com PR #27; `git ls-remote origin main` = `869040cd…` intacta; CI exigido verde no HEAD final |
+
+### 15.4 PARTE D — recomendação sobre o PR #27
+
+**Recomendação: PR #27 está em condição técnica de merge em `main`**, com a ressalva explícita de que os critérios 7–8 na camada física/visual permanecem para validação humana pós-merge (em staging/produção), o que **não bloqueia o merge por si só**. Base factual: (a) CI 3/3 verdes no HEAD (exigido desde a rodada 5); (b) 68/68 backend + 30/30 E2E real + 27 testes Flutter; (c) superfícies sensíveis (pagamento/avaliação) com 10 testes negativos executados, sem lacunas; (d) as pendências restantes (cursor pagination, media binário, backup, DTOs Swagger completos) estão documentadas como backlog e não afetam os fluxos principais; (e) nenhum segredo real no histórico (repo público). Não há impedimento técnico conhecido de código/CI/testes.
+
+### 15.5 Backlog explícito (matriz de rastreabilidade)
+
+| Item | Tipo | Status |
+|---|---|---|
+| Paginação cursor-based (`open-requests`, `notifications`, `history`) | Contrato de API | BACKLOG (decisão (a) da rodada 6) |
+| Upload binário real (documentos/selfie/biometria) — storage, validação, moderação | Produto/escopo | **Aguardando confirmação do usuário** (recomendação: fora desta fase) |
+| Backup/recovery implementado (pg_dump/PITR + restauração testada) | Operação/risco | BACKLOG — risco registrado (§14.4) |
+| `@ApiProperty` exaustivo nos DTOs do Swagger | Documentação | BACKLOG (baseline cobre 47 rotas) |
+| Health aprofundado (fila, storage) | Operação | BACKLOG (DB já coberto) |
+
 ## 13. Bloqueio de CI por billing do GitHub (ação humana clara)
 
 **Mensagem exata (anotação dos check-runs, runs 38044802208/38044965749/38045062218):**
