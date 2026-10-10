@@ -264,6 +264,50 @@ Achado adicional (positivo): `POST …/confirm` **exige `Idempotency-Key` válid
 
 **BLOQUEIO DE BILLING — DECISÃO HUMANA PENDENTE:** ver seção 13.
 
+## 14. Atualização — rodada 5 (2026-10-10)
+
+### 14.1 Repositório público e CI desbloqueado (decisão do dono da conta)
+
+O dono tornou o repositório **público** (`{"private":false,"visibility":"public"}` via `gh api`) para contornar o bloqueio de billing do GitHub Actions (repositórios públicos não consomem minutos pagos). **CI DESBLOQUEADO — evidência:** run [`38079706085`](https://github.com/heldergaraujo2/Nexo/actions/runs/38079706085) executou os 3 jobs de verdade (`backend pass 1m0s / windows-driver pass 3m31s / mobile fail 1m2s — 22 pass, 2 fail, 24 total`). A partir desta rodada o CI é o **validador padrão** do Flutter (não se tenta mais instalar SDK local).
+
+**Risco de repositório público — varredura de segredos no histórico completo (`git log -p --all`):**
+```
+$ git log -p --all | grep -iE "(api[_-]?key|secret|password|token)[\"' ]*[:=][\"' ]*[a-zA-Z0-9]{8,}"
+   (48 ocorrências — TODAS em código: identificadores como `token: response.body.accessToken as string`,
+    `password: TextEditingController`, `password.text` — nenhuma credencial real literal)
+$ git log -p --all | grep -inE "(gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20,}|xox[baprs]-…|postgres(ql)?://[^:]+:[^@]{1,}@|-----BEGIN … PRIVATE KEY-----|sk-[A-Za-z0-9]{20,})"
+   (únicos hits: `postgresql://nexo:nexo@localhost:5432/nexo` — credencial LOCAL de dev/teste (host `localhost`)
+    e `AUTH_TOKEN_SECRET='01234567890123456789012345678901'` — segredo-dummy de teste, ambos documentados como falsos)
+$ git log --all --name-only | grep -iE '\.env|credential|\.pem|\.key|id_rsa'
+   (.env.example e backend/.env.example — apenas templates)
+```
+**Conclusão: nenhum segredo real no histórico — sem incidente de segurança.** As credenciais de `localhost` e o segredo de teste são públicos por natureza e inofensivos (não autenticam nada real).
+
+### 14.2 Tentativa de instalação local do Flutter (rodada 4) — registrada como OBSOLETA (não é mais bloqueio ativo)
+
+O histórico permanece para o caso de o repositório voltar a ser privado: clone oficial funciona, mas o bootstrap do `flutter` baixa o Dart SDK de `storage.googleapis.com` — bloqueado neste sandbox no TLS (`curl: (35) SSL_ERROR_SYSCALL`); sem SDK real em npm/PyPI. Mitigação usada na rodada 4 (parser tree-sitter-dart, 15/15 arquivos) foi superada: **`flutter analyze`/`flutter test` agora rodam de verdade no CI.**
+
+### 14.3 Correção das 2 falhas reais de layout (PRIORIDADE 1)
+
+Causa raiz (casa exatamente com o stack do CI): `theme.dart:58` define `minimumSize: const Size.fromHeight(54)` — `Size.fromHeight` ≡ `Size(double.infinity, 54)` → todo `FilledButton` exige `minWidth=∞` no `ConstrainedBox` interno. O `RenderFlex` (Row) mede filhos **não-flex** primeiro com largura **ilimitada** (fase 1) → `enforce()` mantém `minWidth=∞` → `BoxConstraints forces an infinite width` no `PhysicalShape` do `Material` do botão. Só a Row de registro de pagamento (cliente) montava `FilledButton` como filho não-flex de `Row` — daí os 2 testes exatos; todos os outros botões são filhos de `Column` (largura limitada) e passavam. **Afeta a UI real** (o mesmo widget tree roda no app), não só testes. Correção na fonte: `Expanded` (filho flex = fase 2, share limitado) + `minimumSize` finito `Size(64, 54)` (remove o `minWidth=∞` no local) + ellipsis no rótulo (telas estreitas).
+
+### 14.4 Auditoria pendente (Seção 4 do comando mestre) — resultados com citação de código
+
+| Item | Estado real | Evidência (arquivo:linha) |
+|---|---|---|
+| Paginação/filtros | **PENDÊNCIA REAL** — só `LIMIT` fixos (50/100/200), sem `page`/cursor; contraria o princípio "Paginação cursor-based" do `docs/API.md:13` | `marketplace.service.ts:97,148,804,814`; `security.service.ts:290,355` |
+| Timeouts em chamadas externas | **N/A** — o backend **não faz nenhuma chamada HTTP externa** (distância = Haversine local) | `ride/distance.adapter.ts:11-22`; grep `httpService|axios|fetch(` = 0 |
+| Logs com dados sensíveis | **OK** — nenhum `logger.*`/`console.*` em `src/` (grep = 0); só o logger padrão do Nest (startup/erros) | `grep -rn "logger\.|console\." src/` = vazio |
+| Health check | **PARCIAL** — `GET /health` existe mas **não verifica dependências** (responde `{status:'ok'}` sem tocar o banco) | `backend/src/health/health.module.ts` |
+| Backup/recovery | **NENHUM implementado — risco** — `docs/INFRASTRUCTURE.md:42` só lista como requisito ("Backups automáticos e restauração testada antes de produção"); não há cron/pg_dump/PITR no repo | `grep backup docs/` = 1 hit (requisito) |
+| Atomicidade multi-tabela | **OK** — aceite de corrida é transacional de verdade: `offers`+`services`+`rides` no mesmo `BEGIN…COMMIT` (via `withIdempotency` com `pg_advisory_xact_lock`); transições de corrida e `ride_events` idem | `marketplace.service.ts:271-345` + `915-929` (BEGIN); `ride.service.ts:149-207,225-268` |
+| Documentação de API formal | **PARCIAL** — existe `docs/API.md` (contrato de design, 142 linhas) + `UI_STITCH` (contratos por tela), mas **sem OpenAPI/Swagger** (grep `Swagger|@ApiProperty` = 0) → pendência real | `grep -rn Swagger src/` = vazio |
+| Módulo media | **PARCIAL** — só registro de metadados: `POST/GET /me/media` + `GET /profiles/:id/media` gravam/leem `object_key,mime,byte_size,sha256` no banco (`media.service.ts:10-48`). **Falta:** upload real do binário (storage/presign), servir/download, transições de `moderation_state` (coluna existe, sem código de moderação), thumbnails | `src/media/` (4 arquivos, 121 linhas no total) |
+
+### 14.5 Documentação para validação física
+
+`docs/OPERATIONS_E2E_PC_ANDROID.md` atualizado nesta rodada: roteiro estendido com as 4 features novas (perfil, pagamentos, avaliações, notificações), download literal do APK/pacote Windows pelos artefatos do CI (repo público), provisionamento de contas e roteiro E2E passageiro↔motorista.
+
 ## 13. Bloqueio de CI por billing do GitHub (ação humana clara)
 
 **Mensagem exata (anotação dos check-runs, runs 38044802208/38044965749/38045062218):**
