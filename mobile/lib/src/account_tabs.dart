@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'account_features.dart';
 import 'api.dart';
 import 'theme.dart';
 
 /// Real service history tab backed by GET /me/services/history.
 class TripsTab extends StatefulWidget {
-  const TripsTab({super.key, required this.api});
+  const TripsTab({super.key, required this.api, this.profile = const {}});
   final NexoApi api;
+  final Map<String, dynamic> profile;
 
   @override
   State<TripsTab> createState() => _TripsTabState();
@@ -71,6 +73,12 @@ class _TripsTabState extends State<TripsTab> {
           final item = row as Map<String, dynamic>;
           final status = item['status']?.toString();
           final done = status == 'completed';
+          final ownId = widget.profile['accountId']?.toString();
+          final customerId = item['customerId']?.toString();
+          final providerId = item['providerId']?.toString();
+          final isCustomer = ownId != null && ownId == customerId;
+          final isProvider = ownId != null && ownId == providerId;
+          final subjectId = isCustomer ? providerId : (isProvider ? customerId : null);
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Panel(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -88,6 +96,21 @@ class _TripsTabState extends State<TripsTab> {
                 Expanded(child: Text(nexoDateTime(item['createdAt']), style: const TextStyle(color: AppColors.muted, fontSize: 12))),
                 Text(nexoMoney(item['priceCents']), style: const TextStyle(fontWeight: FontWeight.w800)),
               ]),
+              if (done && item['id'] != null && (isCustomer || isProvider)) ...[
+                const SizedBox(height: 8),
+                ServicePaymentsPanel(
+                  api: widget.api,
+                  serviceId: item['id'].toString(),
+                  isCustomer: isCustomer,
+                  isProvider: isProvider,
+                ),
+                if (subjectId != null)
+                  RateServicePanel(
+                    api: widget.api,
+                    serviceId: item['id'].toString(),
+                    subjectId: subjectId,
+                  ),
+              ],
             ])),
           );
         }),
@@ -164,13 +187,17 @@ class ProfileTab extends StatelessWidget {
             _InfoRow(label: 'Bio', value: profile['bio'].toString()),
         ])),
         const SizedBox(height: 16),
+        ProfileEditPanel(api: api, profile: profile),
+        const SizedBox(height: 16),
+        ReputationPanel(api: api, accountId: profile['accountId']?.toString()),
+        const SizedBox(height: 16),
         Panel(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Conexão', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
           const SizedBox(height: 10),
           _InfoRow(label: 'API', value: apiUrl),
           const SizedBox(height: 8),
           const Text(
-            'Edição de perfil, documentos e preferências ainda não estão disponíveis nesta versão. O backend já expõe PUT /me/profile.',
+            'Notificações ficam na aba própria; pagamentos e avaliações ficam em cada serviço do histórico.',
             style: TextStyle(color: AppColors.muted, fontSize: 11),
           ),
         ])),

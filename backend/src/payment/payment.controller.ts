@@ -9,6 +9,7 @@ import {
   UseGuards,
   Inject,
   HttpCode,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import {
@@ -29,7 +30,7 @@ export class PaymentController {
   @HttpCode(201)
   create(
     @Req() req: AuthenticatedRequest,
-    @Param('serviceId') serviceId: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: CreatePaymentRecordDto,
   ) {
@@ -41,13 +42,16 @@ export class PaymentController {
   @Get('services/:serviceId')
   listForService(
     @Req() req: AuthenticatedRequest,
-    @Param('serviceId') serviceId: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
   ) {
     return this.payments.listForService(req.user, serviceId);
   }
 
   @Get(':paymentId')
-  get(@Req() req: AuthenticatedRequest, @Param('paymentId') paymentId: string) {
+  get(
+    @Req() req: AuthenticatedRequest,
+    @Param('paymentId', ParseUUIDPipe) paymentId: string,
+  ) {
     return this.payments.get(req.user, paymentId);
   }
 
@@ -55,7 +59,7 @@ export class PaymentController {
   @HttpCode(200)
   confirm(
     @Req() req: AuthenticatedRequest,
-    @Param('paymentId') paymentId: string,
+    @Param('paymentId', ParseUUIDPipe) paymentId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: ConfirmPaymentDto,
   ) {
@@ -68,7 +72,7 @@ export class PaymentController {
   @HttpCode(200)
   dispute(
     @Req() req: AuthenticatedRequest,
-    @Param('paymentId') paymentId: string,
+    @Param('paymentId', ParseUUIDPipe) paymentId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: DisputePaymentDto,
   ) {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'account_features.dart';
 import 'account_tabs.dart';
 import 'api.dart';
 import 'login_page.dart';
@@ -191,7 +192,7 @@ class _DriverShellState extends State<DriverShell> {
           index: tab,
           children: [
             radarTab(),
-            TripsTab(api: widget.api),
+            TripsTab(api: widget.api, profile: widget.profile),
             ProfileTab(
               api: widget.api,
               profile: widget.profile,
@@ -199,6 +200,7 @@ class _DriverShellState extends State<DriverShell> {
               roleLabel: 'MOTORISTA',
               onLogout: logout,
             ),
+            NotificationsTab(api: widget.api),
           ],
         ),
         bottomNavigationBar: NavigationBar(
@@ -209,6 +211,7 @@ class _DriverShellState extends State<DriverShell> {
             NavigationDestination(icon: Icon(Icons.radar_rounded), label: 'Chamadas'),
             NavigationDestination(icon: Icon(Icons.route_rounded), label: 'Viagens'),
             NavigationDestination(icon: Icon(Icons.account_balance_wallet_outlined), label: 'Perfil'),
+            NavigationDestination(icon: Icon(Icons.notifications_none_rounded), label: 'Notificações'),
           ],
         ),
       );

@@ -9,6 +9,7 @@ import {
   Post,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { CreateDeliveryRequestDto, DeliveryTransitionDto } from './dto';
@@ -29,14 +30,17 @@ export class DeliveryController {
     return this.deliveries.createRequest(r.user, d, key).then((x) => x.body);
   }
   @Get(':deliveryId')
-  get(@Req() r: AuthenticatedRequest, @Param('deliveryId') id: string) {
+  get(
+    @Req() r: AuthenticatedRequest,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
+  ) {
     return this.deliveries.get(r.user, id);
   }
   @HttpCode(200)
   @Post(':deliveryId/provider-en-route')
   providerEnRoute(
     @Req() r: AuthenticatedRequest,
-    @Param('deliveryId') id: string,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: DeliveryTransitionDto,
   ) {
@@ -48,7 +52,7 @@ export class DeliveryController {
   @Post(':deliveryId/at-pickup')
   atPickup(
     @Req() r: AuthenticatedRequest,
-    @Param('deliveryId') id: string,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: DeliveryTransitionDto,
   ) {
@@ -60,7 +64,7 @@ export class DeliveryController {
   @Post(':deliveryId/picked-up')
   pickedUp(
     @Req() r: AuthenticatedRequest,
-    @Param('deliveryId') id: string,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: DeliveryTransitionDto,
   ) {
@@ -72,7 +76,7 @@ export class DeliveryController {
   @Post(':deliveryId/in-transit')
   inTransit(
     @Req() r: AuthenticatedRequest,
-    @Param('deliveryId') id: string,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: DeliveryTransitionDto,
   ) {
@@ -84,7 +88,7 @@ export class DeliveryController {
   @Post(':deliveryId/delivered')
   delivered(
     @Req() r: AuthenticatedRequest,
-    @Param('deliveryId') id: string,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: DeliveryTransitionDto,
   ) {
@@ -96,7 +100,7 @@ export class DeliveryController {
   @Post(':deliveryId/cancel')
   cancel(
     @Req() r: AuthenticatedRequest,
-    @Param('deliveryId') id: string,
+    @Param('deliveryId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: DeliveryTransitionDto,
   ) {

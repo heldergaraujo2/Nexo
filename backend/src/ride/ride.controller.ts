@@ -8,6 +8,7 @@ import {
   UseGuards,
   Get,
   Inject,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { ChangeRideRouteDto, CreatePassengerRideDto } from './dto';
@@ -30,14 +31,17 @@ export class RideController {
   }
 
   @Get(':rideId')
-  get(@Req() req: AuthenticatedRequest, @Param('rideId') rideId: string) {
+  get(
+    @Req() req: AuthenticatedRequest,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
+  ) {
     return this.rides.get(req.user, rideId);
   }
 
   @Post(':rideId/driver-en-route')
   driverEnRoute(
     @Req() req: AuthenticatedRequest,
-    @Param('rideId') rideId: string,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.rides.transition(req.user, rideId, 'driver_en_route', key);
@@ -46,7 +50,7 @@ export class RideController {
   @Post(':rideId/arrived')
   arrived(
     @Req() req: AuthenticatedRequest,
-    @Param('rideId') rideId: string,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.rides.transition(req.user, rideId, 'arrived', key);
@@ -55,7 +59,7 @@ export class RideController {
   @Post(':rideId/start')
   start(
     @Req() req: AuthenticatedRequest,
-    @Param('rideId') rideId: string,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.rides.transition(req.user, rideId, 'started', key);
@@ -64,7 +68,7 @@ export class RideController {
   @Post(':rideId/complete')
   complete(
     @Req() req: AuthenticatedRequest,
-    @Param('rideId') rideId: string,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.rides.transition(req.user, rideId, 'completed', key);
@@ -73,7 +77,7 @@ export class RideController {
   @Post(':rideId/cancel')
   cancel(
     @Req() req: AuthenticatedRequest,
-    @Param('rideId') rideId: string,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
     @Headers('idempotency-key') key: string,
     @Body('reason') reason?: string,
   ) {
@@ -83,7 +87,7 @@ export class RideController {
   @Post(':rideId/route')
   changeRoute(
     @Req() req: AuthenticatedRequest,
-    @Param('rideId') rideId: string,
+    @Param('rideId', ParseUUIDPipe) rideId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: ChangeRideRouteDto,
   ) {

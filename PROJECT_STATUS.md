@@ -155,10 +155,10 @@ PR #26 (run 37982165847): backend ✅ mobile ✅ windows-driver ✅ (mantida com
 | Radar de chamadas | `driver_shell.dart` | `GET /me/marketplace/open-requests` | service_requests | `driver_flow_test.dart` | — | Implementada e testada (widget) | PR #27 | — |
 | Aceite + transições | `driver_shell.dart` | `POST /requests/:id/accept`, `POST /rides/:id/*` | services, rides | `driver_flow_test.dart` (estado completo) | corrida concorrente (backend cobre) | Implementada e testada (widget) | PR #27 | — |
 | Histórico | `account_tabs.dart` | `GET /me/services/history` | services | `account_tabs_test.dart` | paginação/scroll longo | Implementada e testada (widget) | PR #27 | — |
-| Perfil | `account_tabs.dart` | `GET /me` | profiles | `account_tabs_test.dart` | edição (`PUT /me/profile`) | Implementada (leitura) | PR #27 | edição de perfil |
-| Pagamentos/registro financeiro | — | `POST /payment-records/...` | payment_records | `payment.integration.spec.ts` (5 ✅) | UI inteira | Backend pronto; UI não implementada | vitest local | telas |
-| Avaliações/reputação | — | `trust`/`ratings` | ratings, reputation | `trust.integration.spec.ts` (6 ✅) | UI | Backend pronto; UI não implementada | vitest local | telas |
-| Notificações | — | `GET /me/notifications` | notifications | — | UI + testes | Não implementada (API pronta) | controller real | tela |
+| Perfil + edição de perfil | `account_tabs.dart` (`ProfileEditPanel`) | `GET /me`, `PUT /me/profile` | profiles | `account_tabs_test.dart`, `account_features_test.dart` (2) | — | Implementada e testada (leitura + edição real) | CI rodada 3 | — |
+| Pagamentos/registro financeiro | `account_tabs.dart` (`ServicePaymentsPanel`) | `GET/POST /payment-records/services/:id`, `POST /payment-records/:id/confirm` | payment_records | `payment.integration.spec.ts` (5 ✅), `account_features_test.dart` (3) | UI de disputa (endpoint pronto) | Implementada e testada (listar/registrar/confirmar por serviço) | CI rodada 3 | disputa/cupom |
+| Avaliações/reputação | `account_tabs.dart` (`RateServicePanel`, `ReputationPanel`) | `POST /ratings`, `GET /profiles/:id/ratings` | ratings | `trust.integration.spec.ts` (6 ✅), `account_features_test.dart` (3) | moderação/favoritos (admin) | Implementada e testada (avaliar pós-serviço + reputação no perfil) | CI rodada 3 | — |
+| Notificações | `NotificationsTab` (aba nos 2 shells) | `GET /me/notifications` | notifications | `account_features_test.dart` (3) | marcar como lida (sem endpoint) | Implementada e testada | CI rodada 3 | endpoint de leitura |
 | Entrega/carga/guincho | — | `deliveries`, `cargo`, `towing` | migrations 009–011 | integration ✅ (4+2+3) | UI | Backend pronto; UI não implementada | vitest local | telas |
 | Assinaturas | — | fase 11 (branch) | — | — | tudo | Bloqueada (branch fora de main) | PRs #20/#24 | decisão humana |
 | Sinistro (vertical Stitch) | telas Stitch | sem backend equivalente | — | — | tudo | Não implementada | inventário Stitch | definir escopo |
@@ -208,3 +208,28 @@ PR #26 (run 37982165847): backend ✅ mobile ✅ windows-driver ✅ (mantida com
 - **T8 — Atualização obrigatória do repositório:** tudo commitado nesta branch (documentos, `e2e-api-flow.mjs`, `report_test_results.py`, correção do DTO `acceptingRequests`); `git status` limpo (saída real colada no relatório); body do PR #27 atualizado via API real; push real na branch `arena/af7a1fc1-nexo`; CI acompanhado até verde (3 jobs, `gh pr checks` real colado); HEAD final com link direto; **`main` NÃO foi alterada diretamente** (confirmado por `git ls-remote origin main`). Scripts locais descartáveis **não commitados de propósito** (documentados aqui): `backend/.local-test-pg.cjs` e `backend/.local-e2e-run.cjs` (orquestradores com Postgres embutido para rodar a suíte/E2E neste sandbox sem Docker) e `backend/package-lock.json` gerado localmente.
 
 **Bug real de aplicação encontrado e corrigido nesta rodada (classificação (a)):** `MarketplaceAvailabilityDto.acceptingRequests` estava declarado **sem decorator de validação**; com `whitelist+forbidNonWhitelisted` do ValidationPipe, `PUT /me/marketplace` devolvia **400** para o payload real do app (`driver_shell.dart:59` envia o campo). Corrigido na causa raiz com `@IsBoolean()` (`backend/src/marketplace/dto.ts`). Escapou dos testes porque os specs constroem DTOs direto no serviço (sem o pipe) e o app testa contra HTTP mockado — exatamente o tipo de brecha que o E2E de API real da T4 foi desenhado para capturar.
+
+## 11. Atualização — rodada 3 (2026-10-10)
+
+**PARTE A — inconsistências da rodada 2 resolvidas (evidências brutas no relatório da rodada):**
+- A1: `git show 7d6ab9d -- mobile/test/` colado integralmente; o número real de asserts alterados é **3** (pares `Histórico de atividades`→`HISTÓRICO DE ATIVIDADES`, `Área do passageiro`→`ÁREA DO PASSAGEIRO`, `Central do motorista`→`CENTRAL DO MOTORISTA`). A discrepância do relatório anterior: os 2 pares ilustrativos colados na rodada 2 usavam strings **erradas** (da memória, não do diff) — a contagem (3) estava correta; a citação, não. Corrigido com o diff bruto.
+- A2: `expect(` por arquivo (baseline→HEAD): `widget_test` 5 (`869040c`)→18 (expandido em `265ace6`), `passenger_flow` 16→16, `driver_flow` 13→13, `account_tabs` 9→9 — **zero removidos**.
+- A3: script `verify_48_screens.py` + saída completa colados: 48/48 pastas `code.html` cobertas, numeração 1..47, zero faltantes/duplicadas.
+- A4: `npm audit` bruto: 3 vulns (2 critical `tinypool` GHSA-5gmw-xhrv-c9v3/GHSA-85c8-ppgw-ccpr + 1 moderate `@vitest/mocker` GHSA-82fw-gwwq-j7x9), todas dev-only via vitest; fix exige vitest@5 (breaking) — PR dedicado.
+- A5: diff bruto do commit `8662dcb` (linhas `+ @IsBoolean()` / `+ IsBoolean,`) colado.
+- A6: contradição resolvida na EXECUÇÃO: `gh pr view 26` mostrava OPEN — a decisão da rodada 2 só havia sido RECOMENDADA. PR #26 **fechada sem mesclar** em `2026-10-10T10:06:23Z` (`gh pr close 26`, autorização do usuário), `mergedAt: null`, conteúdo preservado em #27 via `533392e`.
+- A7: bug do 500 com UUID inválido **corrigido na causa raiz**: `ParseUUIDPipe` em todos os 64 path-params de ID (10 controllers) + filtro global `PgInvalidTextRepresentationFilter` (SQLSTATE `22P02`→400, registrado via `APP_FILTER`). Teste negativo real: `bad-request.integration.spec.ts` (6 testes: 400 para ids malformados, 404 para uuid válido inexistente, 401 para sem token) + 2 checks novos no E2E de API real (`e2e-api-flow.mjs`, 27/27 contra `node dist/main.js`).
+
+**PARTE B — telas com backend pronto implementadas (contratos reais lidos dos controllers/DTOs):**
+- **Edição de perfil** (`ProfileEditPanel` → `PUT /me/profile`): formulário com validação local (nome 2–120, bio ≤500, profissional ≤1000, foto ≤2048) na aba Perfil.
+- **Pagamentos** (`ServicePaymentsPanel` → `GET/POST /payment-records/services/:id`, `POST /payment-records/:id/confirm`): listar/registrar (cliente) e confirmar (motorista) por serviço no histórico.
+- **Avaliações** (`RateServicePanel` → `POST /ratings` nota 1–5 + comentário; `ReputationPanel` → `GET /profiles/:id/ratings` com média/total/comentários no perfil).
+- **Notificações** (`NotificationsTab` → `GET /me/notifications`): nova aba nos 2 shells.
+- 11 testes de widget novos em `mobile/test/account_features_test.dart` (feliz + erro para cada feature); matriz §6 e inventário Stitch (#9, #19, #31, #33, #34) atualizados.
+
+**PARTE C — testes negativos:**
+- C1: **token expirado** — `expired-token.integration.spec.ts`: `TokenService.sign(principal, -60)` (TTL negativo = `exp` no passado; verificação `exp <= now → 401` é a mesma do produção, TTL default 900s) → 401 `Invalid access token`; controle positivo com token fresco → 200.
+- C2: **backend indisponível** — teste de widget `account_features_test.dart` com cliente que falha a conexão (`SocketException`): painel de erro amigável "Não foi possível falar com a API…" renderizado, `takeException() == null` (sem crash).
+- C3: **CORS** — posição inalterada e confirmada após as mudanças: 0 ocorrências de `cors`/`helmet`/`enableCors` em `backend/src` (default fechado para clientes não-browser; configurar quando houver frontend web).
+
+**PARTE D — fechamento:** `git status` limpo, push real, docs atualizadas (diff colado), PR #27 atualizado, CI 3 jobs verde colado, HEAD + link, `main` intacta — tudo no relatório da rodada.

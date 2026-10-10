@@ -8,6 +8,7 @@ import {
   Put,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -58,7 +59,7 @@ export class SecurityController {
   @Put('verifications/:id')
   reviewVerification(
     @Req() r: AuthenticatedRequest,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() d: ReviewVerificationDto,
   ) {
     return this.security.reviewVerification(r.user, id, d);
@@ -74,7 +75,7 @@ export class SecurityController {
   @Put('fraud-flags/:id')
   reviewFraud(
     @Req() r: AuthenticatedRequest,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() d: ReviewFraudFlagDto,
   ) {
     return this.security.reviewFraudFlag(r.user, id, d);
@@ -90,7 +91,7 @@ export class SecurityController {
   @Put('incidents/:id')
   updateIncident(
     @Req() r: AuthenticatedRequest,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() d: UpdateIncidentDto,
   ) {
     return this.security.updateIncident(r.user, id, d);

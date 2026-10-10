@@ -27,7 +27,7 @@ O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (comm
 | 6 | `nexo_passageiro_acompanhamento_da_chegada` | **Parcial** | Estados reais `driver_en_route`/`arrived` via polling `GET /rides/:id`. Sem mapa animado/ETA. |
 | 7 | `nexo_passageiro_embarque_confirmado_e_in_cio_da_viagem` | **Implementada** | Transição `arrived→started` real exibida ao passageiro (`tripState`). |
 | 8 | `nexo_passageiro_corrida_em_andamento` | **Implementada** | Estado `started` real + tarifa/distância do servidor. |
-| 9 | `nexo_passageiro_viagem_conclu_da_recibo_e_avalia_o` | **Parcial** | Conclusão real (`completed`) + tarifa/histórico reais como recibo. **Avaliação não implementada** (backend `ratings` existe na camada trust; UI pendente). |
+| 9 | `nexo_passageiro_viagem_conclu_da_recibo_e_avalia_o` | **Implementada** | Conclusão real (`completed`) + tarifa/histórico reais como recibo. **Avaliação pós-serviço implementada** (`RateServicePanel` → `POST /ratings`, nota 1–5 + comentário) — rodada 3. |
 | 10 | `nexo_passageiro_cancelamento_de_corrida_modal_e_motivos` | **Implementada** | `passenger_shell.dart` (`askCancel`) — modal com motivo (≤500) → `POST /requests/:id/cancel` ou `POST /rides/:id/cancel`. |
 | 11 | `nexo_passageiro_cancelamento_confirmado_e_reembolso` | **Parcial** | Confirmação de cancelamento real (estado volta a idle). **Reembolso não existe** no backend — não simulado. |
 | 12 | `nexo_passageiro_confirma_o_e_rec_lculo_de_novo_destino` | **Não implementada (UI)** | Backend pronto: `POST /rides/:rideId/route` (`ride.controller.ts:84`) com `expectedRouteVersion`. UI pendente. |
@@ -41,7 +41,7 @@ O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (comm
 ### B. Pagamento e itens perdidos — passageiro (4 telas)
 | # | Tela Stitch | Status | Onde / justificativa |
 |---|---|---|---|
-| 19 | `nexo_passageiro_pagamento_e_cupom_de_desconto` | **Não implementada (UI)** | Backend pronto: `payment-records` (`payment.controller.ts`; testes 5/5 ✅). **Cupom de desconto não existe** no backend. |
+| 19 | `nexo_passageiro_pagamento_e_cupom_de_desconto` | **Parcial** | **UI de pagamento implementada** (rodada 3): `ServicePaymentsPanel` → `GET/POST /payment-records/services/:id`, `POST /payment-records/:id/confirm` (listar/registrar/confirmar). **Cupom de desconto não existe** no backend. |
 | 20 | `nexo_passageiro_item_encontrado_no_ve_culo` | **Não implementada** | Sem backend de itens perdidos. |
 | 21 | `nexo_passageiro_confirma_o_de_recebimento_e_recibo_de_devolu_o` | **Não implementada** | Idem #20. |
 | 22 | `nexo_chat_seguro_devolu_o_de_item_esquecido` | **Não implementada** | Sem backend de chat. |
@@ -58,10 +58,10 @@ O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (comm
 | 28 | `nexo_motorista_rota_recalculada_altera_o_de_destino` | **Não implementada (UI)** | Backend pronto: `POST /rides/:rideId/route`. UI pendente. |
 | 29 | `nexo_motorista_embarque_confirmado_e_in_cio_da_viagem` | **Implementada** | Ações `arrived→start` reais (`driver_shell.dart` activeRidePanel). |
 | 30 | `nexo_motorista_corrida_em_andamento_e_conclus_o` | **Implementada** | Ações `start→complete` reais + tarifa do servidor. |
-| 31 | `nexo_motorista_conclus_o_da_viagem_e_avalia_o` | **Parcial** | Conclusão real (`COMPLETED` + "Voltar ao radar"). Avaliação não implementada (ver #9). |
+| 31 | `nexo_motorista_conclus_o_da_viagem_e_avalia_o` | **Implementada** | Conclusão real (`COMPLETED` + "Voltar ao radar") + **avaliação pós-serviço** (`POST /ratings`, ver #9) — rodada 3. |
 | 32 | `nexo_motorista_hist_rico_de_corridas` | **Implementada** | `account_tabs.dart` (TripsTab) — `GET /me/services/history` real. |
-| 33 | `nexo_motorista_perfil_e_documentos` | **Parcial** | `account_tabs.dart` (ProfileTab) — `GET /me` real + logout. Documentos não implementados (backend `media` parcial). |
-| 34 | `nexo_motorista_reputa_o_e_avalia_es` | **Não implementada (UI)** | Backend pronto: `trust`/`ratings` (testes 6/6 ✅). UI pendente. |
+| 33 | `nexo_motorista_perfil_e_documentos` | **Parcial** | `account_tabs.dart` (ProfileTab) — `GET /me` real + **edição de perfil real** (`PUT /me/profile`, rodada 3) + logout. Documentos não implementados (backend `media` parcial). |
+| 34 | `nexo_motorista_reputa_o_e_avalia_es` | **Parcial** | **Reputação implementada** (rodada 3): `ReputationPanel` → `GET /profiles/:id/ratings` (média, total, comentários) no perfil. Pendente: UI de moderação/favoritos (endpoints admin prontos). |
 | 35 | `nexo_motorista_biometria_aprovada_in_cio_de_turno` | **Não implementada** | Exige biometria/dispositivo; sem backend de biometria. |
 | 36 | `nexo_motorista_selfie_e_prova_de_vida_biometria_facial` | **Não implementada** | Idem #35. |
 | 37 | `nexo_motorista_captura_guiada_por_c_mera` | **Não implementada** | Exige câmera/dispositivo. |
@@ -88,13 +88,15 @@ Superfícies escuras (`#0A0912`/`#151321`/`#201C31`), violeta (`#9B72FF`/`#B59AF
 ErrorPanel, PageColumn).
 
 ## Navegação e integrações (VERIFICADO)
-- Navegação real: `IndexedStack` + `NavigationBar` (Início/Viagens/Perfil; Chamadas/Viagens/Perfil).
+- Navegação real: `IndexedStack` + `NavigationBar` (Início/Viagens/Perfil/Notificações; Chamadas/Viagens/Perfil/Notificações).
 - Endpoints reais usados: `POST /auth/login`, `GET /me`, `POST /rides/requests`, `GET /me/services/history`,
   `GET /services/:id`, `GET /rides/:id`, `POST /requests/:id/cancel`, `POST /rides/:id/cancel`,
   `PUT /me/marketplace`, `GET /me/marketplace/open-requests`, `POST /requests/:id/accept`,
-  `POST /rides/:id/{driver-en-route,arrived,start,complete}`.
-- Testes de widget (13/13 PASS no CI): `mobile/test/widget_test.dart`, `passenger_flow_test.dart`,
-  `driver_flow_test.dart`, `account_tabs_test.dart`.
+  `POST /rides/:id/{driver-en-route,arrived,start,complete}`, `PUT /me/profile` (edição de perfil),
+  `GET/POST /payment-records/services/:id`, `POST /payment-records/:id/confirm` (pagamentos),
+  `POST /ratings`, `GET /profiles/:id/ratings` (avaliações/reputação), `GET /me/notifications` (aba Notificações).
+- Testes de widget: `mobile/test/widget_test.dart`, `passenger_flow_test.dart`, `driver_flow_test.dart`,
+  `account_tabs_test.dart`, `account_features_test.dart` (perfil/pagamentos/avaliações/notificações + API indisponível).
 - Validação física Android/Windows **não é alegada** — ver `PROJECT_STATUS.md`.
 
 ## Limitações explícitas

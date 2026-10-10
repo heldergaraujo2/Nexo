@@ -10,6 +10,7 @@ import {
   Put,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import {
@@ -56,7 +57,7 @@ export class MarketplaceController {
   @Get('requests/:requestId')
   getRequest(
     @Req() req: AuthenticatedRequest,
-    @Param('requestId') requestId: string,
+    @Param('requestId', ParseUUIDPipe) requestId: string,
   ) {
     return this.marketplace.getRequest(req.user, requestId);
   }
@@ -64,7 +65,7 @@ export class MarketplaceController {
   @Get('requests/:requestId/matches')
   matches(
     @Req() req: AuthenticatedRequest,
-    @Param('requestId') requestId: string,
+    @Param('requestId', ParseUUIDPipe) requestId: string,
   ) {
     return this.marketplace.matches(req.user, requestId);
   }
@@ -73,7 +74,7 @@ export class MarketplaceController {
   @Post('requests/:requestId/offers')
   createOffer(
     @Req() req: AuthenticatedRequest,
-    @Param('requestId') requestId: string,
+    @Param('requestId', ParseUUIDPipe) requestId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: CreateOfferDto,
   ) {
@@ -86,7 +87,7 @@ export class MarketplaceController {
   @Post('requests/:requestId/accept')
   acceptRequest(
     @Req() req: AuthenticatedRequest,
-    @Param('requestId') requestId: string,
+    @Param('requestId', ParseUUIDPipe) requestId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.marketplace
@@ -98,7 +99,7 @@ export class MarketplaceController {
   @Post('requests/:requestId/cancel')
   cancelRequest(
     @Req() req: AuthenticatedRequest,
-    @Param('requestId') requestId: string,
+    @Param('requestId', ParseUUIDPipe) requestId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: CancelDto,
   ) {
@@ -110,7 +111,7 @@ export class MarketplaceController {
   @Get('requests/:requestId/offers')
   listOffers(
     @Req() req: AuthenticatedRequest,
-    @Param('requestId') requestId: string,
+    @Param('requestId', ParseUUIDPipe) requestId: string,
   ) {
     return this.marketplace.listOffers(req.user, requestId);
   }
@@ -119,7 +120,7 @@ export class MarketplaceController {
   @Post('offers/:offerId/reject')
   rejectOffer(
     @Req() req: AuthenticatedRequest,
-    @Param('offerId') offerId: string,
+    @Param('offerId', ParseUUIDPipe) offerId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.marketplace
@@ -131,7 +132,7 @@ export class MarketplaceController {
   @Post('offers/:offerId/withdraw')
   withdrawOffer(
     @Req() req: AuthenticatedRequest,
-    @Param('offerId') offerId: string,
+    @Param('offerId', ParseUUIDPipe) offerId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.marketplace
@@ -143,7 +144,7 @@ export class MarketplaceController {
   @Post('offers/:offerId/accept')
   acceptOffer(
     @Req() req: AuthenticatedRequest,
-    @Param('offerId') offerId: string,
+    @Param('offerId', ParseUUIDPipe) offerId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.marketplace
@@ -154,7 +155,7 @@ export class MarketplaceController {
   @Get('services/:serviceId')
   getService(
     @Req() req: AuthenticatedRequest,
-    @Param('serviceId') serviceId: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
   ) {
     return this.marketplace.getService(req.user, serviceId);
   }
@@ -163,7 +164,7 @@ export class MarketplaceController {
   @Post('services/:serviceId/start')
   startService(
     @Req() req: AuthenticatedRequest,
-    @Param('serviceId') serviceId: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.marketplace
@@ -175,7 +176,7 @@ export class MarketplaceController {
   @Post('services/:serviceId/complete')
   completeService(
     @Req() req: AuthenticatedRequest,
-    @Param('serviceId') serviceId: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.marketplace
@@ -187,7 +188,7 @@ export class MarketplaceController {
   @Post('services/:serviceId/cancel')
   cancelService(
     @Req() req: AuthenticatedRequest,
-    @Param('serviceId') serviceId: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
     @Headers('idempotency-key') key: string,
     @Body() dto: CancelDto,
   ) {

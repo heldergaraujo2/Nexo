@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'account_features.dart';
 import 'account_tabs.dart';
 import 'api.dart';
 import 'location.dart';
@@ -250,7 +251,7 @@ class _PassengerShellState extends State<PassengerShell> {
           index: tab,
           children: [
             homeTab(),
-            TripsTab(api: widget.api),
+            TripsTab(api: widget.api, profile: widget.profile),
             ProfileTab(
               api: widget.api,
               profile: widget.profile,
@@ -258,6 +259,7 @@ class _PassengerShellState extends State<PassengerShell> {
               roleLabel: 'PASSAGEIRO',
               onLogout: logout,
             ),
+            NotificationsTab(api: widget.api),
           ],
         ),
         bottomNavigationBar: NavigationBar(
@@ -268,6 +270,7 @@ class _PassengerShellState extends State<PassengerShell> {
             NavigationDestination(icon: Icon(Icons.home_rounded), label: 'Início'),
             NavigationDestination(icon: Icon(Icons.receipt_long_rounded), label: 'Viagens'),
             NavigationDestination(icon: Icon(Icons.person_outline_rounded), label: 'Perfil'),
+            NavigationDestination(icon: Icon(Icons.notifications_none_rounded), label: 'Notificações'),
           ],
         ),
       );

@@ -9,6 +9,7 @@ import {
   Post,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import {
@@ -32,18 +33,24 @@ export class CargoController {
     return this.cargo.createRequest(r.user, d, key).then((x) => x.body);
   }
   @Get('requests/:requestId')
-  getRequest(@Req() r: AuthenticatedRequest, @Param('requestId') id: string) {
+  getRequest(
+    @Req() r: AuthenticatedRequest,
+    @Param('requestId', ParseUUIDPipe) id: string,
+  ) {
     return this.cargo.getRequest(r.user, id);
   }
   @Get('requests/:requestId/proposals')
-  proposals(@Req() r: AuthenticatedRequest, @Param('requestId') id: string) {
+  proposals(
+    @Req() r: AuthenticatedRequest,
+    @Param('requestId', ParseUUIDPipe) id: string,
+  ) {
     return this.cargo.proposals(r.user, id);
   }
   @HttpCode(201)
   @Post('requests/:requestId/proposals')
   createProposal(
     @Req() r: AuthenticatedRequest,
-    @Param('requestId') id: string,
+    @Param('requestId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoProposalDto,
   ) {
@@ -53,7 +60,7 @@ export class CargoController {
   @Post('proposals/:proposalId/counter')
   counter(
     @Req() r: AuthenticatedRequest,
-    @Param('proposalId') id: string,
+    @Param('proposalId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoProposalDto,
   ) {
@@ -63,20 +70,23 @@ export class CargoController {
   @Post('proposals/:proposalId/accept')
   accept(
     @Req() r: AuthenticatedRequest,
-    @Param('proposalId') id: string,
+    @Param('proposalId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
   ) {
     return this.cargo.accept(r.user, id, key).then((x) => x.body);
   }
   @Get(':cargoId')
-  get(@Req() r: AuthenticatedRequest, @Param('cargoId') id: string) {
+  get(
+    @Req() r: AuthenticatedRequest,
+    @Param('cargoId', ParseUUIDPipe) id: string,
+  ) {
     return this.cargo.get(r.user, id);
   }
   @HttpCode(200)
   @Post(':cargoId/provider-en-route')
   providerEnRoute(
     @Req() r: AuthenticatedRequest,
-    @Param('cargoId') id: string,
+    @Param('cargoId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoTransitionDto,
   ) {
@@ -88,7 +98,7 @@ export class CargoController {
   @Post(':cargoId/at-pickup')
   atPickup(
     @Req() r: AuthenticatedRequest,
-    @Param('cargoId') id: string,
+    @Param('cargoId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoTransitionDto,
   ) {
@@ -100,7 +110,7 @@ export class CargoController {
   @Post(':cargoId/picked-up')
   pickedUp(
     @Req() r: AuthenticatedRequest,
-    @Param('cargoId') id: string,
+    @Param('cargoId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoTransitionDto,
   ) {
@@ -112,7 +122,7 @@ export class CargoController {
   @Post(':cargoId/in-transit')
   inTransit(
     @Req() r: AuthenticatedRequest,
-    @Param('cargoId') id: string,
+    @Param('cargoId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoTransitionDto,
   ) {
@@ -124,7 +134,7 @@ export class CargoController {
   @Post(':cargoId/delivered')
   delivered(
     @Req() r: AuthenticatedRequest,
-    @Param('cargoId') id: string,
+    @Param('cargoId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoTransitionDto,
   ) {
@@ -136,7 +146,7 @@ export class CargoController {
   @Post(':cargoId/cancel')
   cancel(
     @Req() r: AuthenticatedRequest,
-    @Param('cargoId') id: string,
+    @Param('cargoId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: CargoTransitionDto,
   ) {

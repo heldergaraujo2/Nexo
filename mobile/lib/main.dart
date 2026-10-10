@@ -4,6 +4,7 @@ import 'src/api.dart';
 import 'src/login_page.dart';
 import 'src/theme.dart';
 
+export 'src/account_features.dart';
 export 'src/account_tabs.dart';
 export 'src/api.dart';
 export 'src/driver_shell.dart';

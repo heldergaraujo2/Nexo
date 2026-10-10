@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
+import { PgInvalidTextRepresentationFilter } from './common/pg-invalid-text.filter';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
@@ -28,6 +30,9 @@ import { TowingModule } from './towing/towing.module';
     DeliveryModule,
     CargoModule,
     TowingModule,
+  ],
+  providers: [
+    { provide: APP_FILTER, useClass: PgInvalidTextRepresentationFilter },
   ],
 })
 export class AppModule {}

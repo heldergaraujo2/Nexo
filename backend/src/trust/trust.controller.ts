@@ -9,6 +9,7 @@ import {
   Put,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -38,7 +39,7 @@ export class TrustController {
   }
 
   @Get('profiles/:accountId/ratings')
-  ratings(@Param('accountId') accountId: string) {
+  ratings(@Param('accountId', ParseUUIDPipe) accountId: string) {
     return this.trust.ratings(accountId);
   }
 
@@ -52,7 +53,7 @@ export class TrustController {
   @Delete('favorites/:accountId')
   unfavorite(
     @Req() req: AuthenticatedRequest,
-    @Param('accountId') accountId: string,
+    @Param('accountId', ParseUUIDPipe) accountId: string,
   ) {
     return this.trust.unfavorite(req.user, accountId);
   }
@@ -73,7 +74,7 @@ export class TrustController {
   @Post('safety/blocks/:accountId')
   block(
     @Req() req: AuthenticatedRequest,
-    @Param('accountId') accountId: string,
+    @Param('accountId', ParseUUIDPipe) accountId: string,
   ) {
     return this.trust.block(req.user, accountId);
   }
@@ -82,13 +83,13 @@ export class TrustController {
   @Delete('safety/blocks/:accountId')
   unblock(
     @Req() req: AuthenticatedRequest,
-    @Param('accountId') accountId: string,
+    @Param('accountId', ParseUUIDPipe) accountId: string,
   ) {
     return this.trust.unblock(req.user, accountId);
   }
 
   @Get('profiles/:accountId/verification')
-  verification(@Param('accountId') accountId: string) {
+  verification(@Param('accountId', ParseUUIDPipe) accountId: string) {
     return this.trust.publicVerification(accountId);
   }
 
@@ -97,7 +98,7 @@ export class TrustController {
   @Put('admin/ratings/:ratingId/moderation')
   moderateRating(
     @Req() req: AuthenticatedRequest,
-    @Param('ratingId') ratingId: string,
+    @Param('ratingId', ParseUUIDPipe) ratingId: string,
     @Body() dto: ModerateRatingDto,
   ) {
     return this.trust.moderationRating(req.user, ratingId, dto);
@@ -108,7 +109,7 @@ export class TrustController {
   @Put('admin/reports/:reportId')
   moderateReport(
     @Req() req: AuthenticatedRequest,
-    @Param('reportId') reportId: string,
+    @Param('reportId', ParseUUIDPipe) reportId: string,
     @Body() dto: ModerateReportDto,
   ) {
     return this.trust.moderationReport(req.user, reportId, dto);

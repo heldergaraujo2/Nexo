@@ -9,6 +9,7 @@ import {
   Post,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { CreateTowingRequestDto, TowingTransitionDto } from './dto';
@@ -29,12 +30,18 @@ export class TowingController {
   }
 
   @Get('requests/:requestId')
-  getRequest(@Req() r: AuthenticatedRequest, @Param('requestId') id: string) {
+  getRequest(
+    @Req() r: AuthenticatedRequest,
+    @Param('requestId', ParseUUIDPipe) id: string,
+  ) {
     return this.towing.getRequest(r.user, id);
   }
 
   @Get(':towingId')
-  get(@Req() r: AuthenticatedRequest, @Param('towingId') id: string) {
+  get(
+    @Req() r: AuthenticatedRequest,
+    @Param('towingId', ParseUUIDPipe) id: string,
+  ) {
     return this.towing.get(r.user, id);
   }
 
@@ -42,7 +49,7 @@ export class TowingController {
   @Post(':towingId/provider-en-route')
   providerEnRoute(
     @Req() r: AuthenticatedRequest,
-    @Param('towingId') id: string,
+    @Param('towingId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: TowingTransitionDto,
   ) {
@@ -55,7 +62,7 @@ export class TowingController {
   @Post(':towingId/arrived')
   arrived(
     @Req() r: AuthenticatedRequest,
-    @Param('towingId') id: string,
+    @Param('towingId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: TowingTransitionDto,
   ) {
@@ -68,7 +75,7 @@ export class TowingController {
   @Post(':towingId/loading')
   loading(
     @Req() r: AuthenticatedRequest,
-    @Param('towingId') id: string,
+    @Param('towingId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: TowingTransitionDto,
   ) {
@@ -81,7 +88,7 @@ export class TowingController {
   @Post(':towingId/in-tow')
   inTow(
     @Req() r: AuthenticatedRequest,
-    @Param('towingId') id: string,
+    @Param('towingId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: TowingTransitionDto,
   ) {
@@ -94,7 +101,7 @@ export class TowingController {
   @Post(':towingId/completed')
   completed(
     @Req() r: AuthenticatedRequest,
-    @Param('towingId') id: string,
+    @Param('towingId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: TowingTransitionDto,
   ) {
@@ -107,7 +114,7 @@ export class TowingController {
   @Post(':towingId/cancel')
   cancel(
     @Req() r: AuthenticatedRequest,
-    @Param('towingId') id: string,
+    @Param('towingId', ParseUUIDPipe) id: string,
     @Headers('idempotency-key') key: string,
     @Body() d: TowingTransitionDto,
   ) {
