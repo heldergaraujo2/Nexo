@@ -233,3 +233,47 @@ PR #26 (run 37982165847): backend ✅ mobile ✅ windows-driver ✅ (mantida com
 - C3: **CORS** — posição inalterada e confirmada após as mudanças: 0 ocorrências de `cors`/`helmet`/`enableCors` em `backend/src` (default fechado para clientes não-browser; configurar quando houver frontend web).
 
 **PARTE D — fechamento:** `git status` limpo, push real, docs atualizadas (diff colado), PR #27 atualizada. **CI pós-push: BLOQUEADO por billing da conta GitHub** — os runs `38044802208` e `38044965749` falharam sem iniciar nenhum step com a anotação real: "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings". Repositório **privado** (`isPrivate: true`) consome minutos pagos; nenhum job (backend/mobile/windows-driver) iniciou. **Não é falha de código** — os mesmos commits seguem versionados; verificação local da rodada: backend **45/45** (Postgres real) e E2E de API real **27/27** (`node dist/main.js`); Flutter (`analyze`/`test`) **NÃO COMPROVADO nesta rodada** — depende do CI desbloqueado (ou de Flutter SDK, indisponível neste sandbox). Ação humana necessária: regularizar 'Billing & plans' da conta (ou tornar o repo público) e re-rodar o workflow.
+
+## 12. Atualização — rodada 4 (2026-10-10)
+
+**PRIORIDADE — validação Flutter sem depender do CI (tentativa real, resultado documentado):**
+- **Tentativa oficial executada:** `git clone --depth 1 -b stable https://github.com/flutter/flutter /home/user/flutter-sdk` (sucesso — GitHub permitido) e `/home/user/flutter-sdk/bin/flutter --version` → **falha real**: `Downloading Linux x64 Dart SDK from Flutter engine deb287481e3ce9468f3434937ced4240a70539ca... curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to storage.googleapis.com:443`. O bootstrap do Flutter baixa o Dart SDK do bucket oficial `storage.googleapis.com`, **bloqueado neste sandbox no nível TLS** (o mesmo bloqueio atinge `dart-archive` e `release-assets.githubusercontent.com`/`objects.githubusercontent.com`; testados com `curl` → `curl: (35) SSL_ERROR_SYSCALL`, código HTTP `000`). Busca por SDKs alternativos em hosts permitidos: npm (`dart-sdk`, `@dart-lang/sdk`, `dartsdk`, … → 404; `dart`/`dartlang`/`dart-cli` = homônimos JS sem SDK) e PyPI (`dart`, `flutter` = pacotes sem relação). **BLOQUEADO: impossível executar `flutter analyze`/`flutter test` neste ambiente** — o CI (billing) é o único executor possível.
+- **Mitigação parcial executada (NÃO equivalente a teste):** (a) verificação de sintaxe com **parser real** tree-sitter-dart (`@ast-grep/napi` + `@ast-grep/lang-dart` via npm): `check_dart_syntax.js` parseou **15/15 arquivos .dart com 0 erros de sintaxe** (validado antes em código propositalmente quebrado → nó ERROR detectado); (b) balanceamento de `{}()[]` (strings→comentários, artefato de `//` em URLs corrigido): todos balanceados; (c) revisão manual de tipos vs DTOs reais e de tratamento de erro (todas as 7 chamadas de API em `account_features.dart` dentro de `try/catch` → `ErrorPanel`).
+
+**VERIFICAÇÃO DE ENTRADAS DE NAVEGAÇÃO (file:line reais):**
+- **Edição de perfil:** `account_tabs.dart:190` renderiza `ProfileEditPanel` dentro da aba Perfil; abertura do formulário pelo botão `Abrir`/`Fechar` (`account_features.dart:92-94`).
+- **Pagamentos:** `account_tabs.dart:101` renderiza `ServicePaymentsPanel` em cada serviço concluído do histórico; abertura pelo `TextButton.icon` "Pagamentos" (`account_features.dart:311-314`).
+- **Avaliações:** `account_tabs.dart:108` renderiza `RateServicePanel` nos serviços concluídos (condição `done && (isCustomer || isProvider)` — vale para passageiro e motorista, pois `TripsTab` é compartilhada; título "Avaliar este serviço" `account_features.dart:438`, botão "Enviar avaliação" `:460`). Reputação: `account_tabs.dart:192` renderiza `ReputationPanel` na aba Perfil.
+- **Notificações:** `passenger_shell.dart:262` + `NavigationDestination … 'Notificações'` `:273`; `driver_shell.dart:203` + `:214` — registrados no `IndexedStack` e no `NavigationBar` dos 2 shells.
+
+**AUDITORIA DE SEGURANÇA DOS NOVOS ENDPOINTS (executada — 10 testes negativos reais em `test/payment-rating-security.integration.spec.ts`, suíte backend **55/55** com Postgres real):**
+| Pergunta | Resultado real | Código (arquivo:linha) |
+|---|---|---|
+| Passageiro confirma pagamento de terceiro? | **Negado 403** `Provider role required` | `payment.service.ts:100,270-273` |
+| Provedor de fora confirma? | **Negado 403** `Payment confirmation denied` | `payment.service.ts:115-116` |
+| Cliente de fora registra pagamento? | **Negado 403** `Payment access denied` | `payment.service.ts:42-43` |
+| Provedor registra pagamento do cliente? | **Negado 403** `Customer role required` | `payment.service.ts:28,275-278` |
+| 2 pagamentos ativos no mesmo serviço? | **Negado 409** `An active payment record already exists…` | `payment.service.ts:55-61` |
+| `confirmedAmountCents` manipulado? | **Negado 409** `Confirmed amount must equal the expected service price` | `payment.service.ts:133-135` |
+| Avalia fora do par? | **Negado 403** `Rating relationship is not allowed` | `trust.service.ts:44-47` |
+| Auto-avaliação? | **Negado 403** idem | `trust.service.ts:44-47` |
+| Avalia o mesmo serviço 2×? | **Negado 409** `Rating already exists for this service` | `trust.service.ts:74-77` (23505) |
+| Avalia serviço não concluído? | **Negado 409** `Service is not eligible for rating` | `trust.service.ts:35-38` |
+
+Achado adicional (positivo): `POST …/confirm` **exige `Idempotency-Key` válido** (409 `Valid Idempotency-Key is required` sem ele) — descoberto ao isolar o teste de posse. **Nenhuma lacuna de segurança encontrada** nos 5 pontos; nada a corrigir.
+
+**BLOQUEIO DE BILLING — DECISÃO HUMANA PENDENTE:** ver seção 13.
+
+## 13. Bloqueio de CI por billing do GitHub (ação humana clara)
+
+**Mensagem exata (anotação dos check-runs, runs 38044802208/38044965749/38045062218):**
+```
+The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings
+```
+**Situação:** o repositório `heldergaraujo2/Nexo` é **privado** (`isPrivate: true`) → o GitHub Actions consome **minutos pagos**; a conta está com pagamento/limite pendente e **nenhum job inicia** (backend/mobile/windows-driver; 1–2s, 0 steps). Todo o código desta rodada está pronto e commitado.
+
+**Opções reais (escolha exclusiva do dono da conta):**
+1. **Regularizar "Billing & plans"** da conta GitHub (método de pagamento/limite de gasto) → o workflow atual roda imediatamente sem qualquer mudança no repo. Mantém o código privado.
+2. **Tornar o repositório público** → Actions passa a ser gratuito para repositórios públicos. **Implicação: todo o código-fonte do Nexo fica visível publicamente no GitHub.**
+
+Decisão que **só o dono da conta pode tomar**; o agente não altera billing nem visibilidade do repositório. Com o CI reativado, a confirmação final automatizada (flutter analyze + testes 24 + APK + Windows) acontece no próximo push ou via re-run.

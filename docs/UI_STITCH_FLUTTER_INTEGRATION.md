@@ -1,8 +1,10 @@
 # Stitch UI → Flutter integration
 
-**Status (2026-10-09, rodada 2):** integração principal concluída no branch `arena/af7a1fc1-nexo` (PR #27),
+**Status (2026-10-10, rodada 4):** integração principal concluída no branch `arena/af7a1fc1-nexo` (PR #27),
 incluindo os pontos que a PR #26 marcava como pendentes: navegação inferior real, destino real validado e
-abas de histórico/perfil. Este documento traz o inventário individual das 48 telas de referência.
+abas de histórico/perfil — mais as entregas da rodada 3 (edição de perfil, pagamentos, avaliações, notificações).
+Rodada 4: verificações de segurança dos endpoints de pagamento/avaliação executadas (10 testes negativos, 55/55 backend);
+sintaxe Dart validada com parser real (tree-sitter, 15/15 arquivos). Este documento traz o inventário individual das 48 telas de referência.
 Evidências e matriz de rastreabilidade em `PROJECT_STATUS.md`.
 
 ## Reference inventory (VERIFICADO)
