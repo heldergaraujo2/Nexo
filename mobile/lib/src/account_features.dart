@@ -367,9 +367,18 @@ class _ServicePaymentsPanelState extends State<ServicePaymentsPanel> {
               ),
             ),
             const SizedBox(width: 10),
-            FilledButton(
-              onPressed: busy ? null : register,
-              child: const Text('Registrar pagamento'),
+            // Finite minimumSize: the theme's Size.fromHeight(54) sets
+            // minWidth=∞, which is only valid when every layout pass hands out
+            // bounded width. RenderFlex lays out non-flex Row children with
+            // unbounded main-axis constraints first (phase 1); Expanded makes
+            // this a flex child (phase 2, bounded share) and the finite
+            // minimumSize neutralises the infinite min-width at the source.
+            Expanded(
+              child: FilledButton(
+                style: FilledButton.styleFrom(minimumSize: const Size(64, 54)),
+                onPressed: busy ? null : register,
+                child: const Text('Registrar pagamento', overflow: TextOverflow.ellipsis),
+              ),
             ),
           ]),
         ],
