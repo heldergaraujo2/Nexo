@@ -99,6 +99,9 @@ jobs:
       - name: Annotate Flutter test failures
         if: failure()
         run: python3 .github/scripts/annotate_test_failures.py "$GITHUB_WORKSPACE/flutter-test-output.txt"
+      - name: Report per-test results
+        if: always()
+        run: python3 .github/scripts/report_test_results.py "$GITHUB_WORKSPACE/flutter-test-output.txt"
       - name: Prepare Android LAN permissions
         working-directory: mobile
         run: |

@@ -1,48 +1,104 @@
 # Stitch UI → Flutter integration
 
-**Status (2026-10-09):** integração principal concluída no branch `arena/af7a1fc1-nexo` (PR #27), incluindo os
-pontos que esta lista marcava como pendentes na primeira versão (PR #26): navegação inferior real, destino
-real validado e abas de histórico/perfil. Ver `PROJECT_STATUS.md` para evidências e matriz de rastreabilidade.
+**Status (2026-10-09, rodada 2):** integração principal concluída no branch `arena/af7a1fc1-nexo` (PR #27),
+incluindo os pontos que a PR #26 marcava como pendentes: navegação inferior real, destino real validado e
+abas de histórico/perfil. Este documento traz o inventário individual das 48 telas de referência.
+Evidências e matriz de rastreabilidade em `PROJECT_STATUS.md`.
 
-## Reference inventory
-The Stitch archive (`stitch_nexo_ui_redesign/`) contains **48 HTML screen prototypes**, **49 PNG references** and
-the design-system guide `nexo_mobility_design_system/DESIGN.md`. The production app is Flutter, so HTML
-prototypes are visual/product references, not drop-in native screens. The original `stitch_nexo_ui_redesign.zip`
-was deleted from the repository (commit `2acb25a`); only the extracted folder remains.
+## Reference inventory (VERIFICADO)
+`stitch_nexo_ui_redesign/` contém **48 protótipos HTML** (`code.html`) + **49 PNGs** (`screen.png`) +
+`nexo_mobility_design_system/DESIGN.md` + 1 PNG avulso (`file_00000000cb54820e87e01991526b16ea.png/`, sem HTML).
+O zip original `stitch_nexo_ui_redesign.zip` foi excluído do repositório (commit `2acb25a`); só a extração permanece.
 
-## Visual system applied
-Dark surfaces (`#0A0912`/`#151321`/`#201C31`), violet accent (`#9B72FF`/`#B59AFF`), green operational state
-(`#56E3A2`), rounded panels, strong hierarchy — implemented in `mobile/lib/src/theme.dart` (BrandMark, Eyebrow,
-Panel, StatusPill, ErrorPanel, PageColumn).
+**Legenda de status:** `Implementada` = tela Flutter real ligada a endpoints reais (sem dados fictícios);
+`Parcial` = núcleo real implementado, mas elementos da referência ausentes (detalhados); `Não implementada`
+= sem tela Flutter (com o motivo); `Fora de escopo` = vertical que não pertence ao app de mobilidade atual.
 
-## Screens implemented in Flutter (with files)
-| Module | Screen | File | Real behavior |
+## Inventário das 48 telas
+
+### A. Fluxo do passageiro (18 telas)
+| # | Tela Stitch | Status | Onde / justificativa |
 |---|---|---|---|
-| Auth | Login | `mobile/lib/src/login_page.dart` | POST /auth/login + GET /me, client-side validation, role routing |
-| Passenger | Home / request | `mobile/lib/src/passenger_shell.dart` | GPS (geolocator), validated destination coordinates, car/motorcycle, POST /rides/requests |
-| Passenger | Waiting / tracking | `mobile/lib/src/passenger_shell.dart` | polling history→service→ride, server fare/distance/state |
-| Passenger | Cancel modal + reasons | `mobile/lib/src/passenger_shell.dart` | POST /requests/:id/cancel and /rides/:id/cancel with reason |
-| Passenger | History | `mobile/lib/src/account_tabs.dart` | GET /me/services/history |
-| Passenger | Profile + logout | `mobile/lib/src/account_tabs.dart` | GET /me, session end |
-| Driver | Radar / calls | `mobile/lib/src/driver_shell.dart` | availability toggle (PUT /me/marketplace), GET /me/marketplace/open-requests |
-| Driver | Incoming call / accept | `mobile/lib/src/driver_shell.dart` | POST /requests/:id/accept |
-| Driver | Ride states | `mobile/lib/src/driver_shell.dart` | driver-en-route / arrived / start / complete (+ completed/cancelled) |
-| Driver | History / profile | `mobile/lib/src/account_tabs.dart` | same real endpoints |
+| 1 | `nexo_passageiro_in_cio_e_solicita_o` | **Implementada** | `mobile/lib/src/passenger_shell.dart` (homeTab) — GPS real (geolocator), categoria carro/moto, `POST /rides/requests` com Idempotency-Key. Sem mapa (ver #3). |
+| 2 | `nexo_passageiro_sele_o_de_categorias_e_estimativas` | **Parcial** | `passenger_shell.dart` (vehicleCard) — `car`/`motorcycle` reais (contrato `CreatePassengerRideDto`). Estimativa exibida somente após a solicitação (tarifa sempre server-authoritative); não há pré-estimativa sem endereço/rota. |
+| 3 | `nexo_passageiro_defini_o_de_destino_e_rota` | **Parcial** | `passenger_shell.dart` (requestPanel) + `location.dart` (`validateCoordinate`) — destino real por latitude/longitude validada. Ausentes: busca de endereço, mapa e desenho de rota (backend aceita só coordenadas; nenhum provedor de geocoding integrado — não inventado). |
+| 4 | `nexo_passageiro_localizando_motorista_aguardando_aceite` | **Implementada** | `passenger_shell.dart` (`tripState` = `PROCURANDO MOTORISTA`) — casamento real por `requestId` via `GET /me/services/history`. |
+| 5 | `nexo_passageiro_motorista_encontrado_corrida_com_paradas` | **Parcial** | Estado "motorista encontrado" real (`serviceId` + `GET /rides/:id`). **Paradas (multi-stop) não existem** no backend — não simuladas. |
+| 6 | `nexo_passageiro_acompanhamento_da_chegada` | **Parcial** | Estados reais `driver_en_route`/`arrived` via polling `GET /rides/:id`. Sem mapa animado/ETA. |
+| 7 | `nexo_passageiro_embarque_confirmado_e_in_cio_da_viagem` | **Implementada** | Transição `arrived→started` real exibida ao passageiro (`tripState`). |
+| 8 | `nexo_passageiro_corrida_em_andamento` | **Implementada** | Estado `started` real + tarifa/distância do servidor. |
+| 9 | `nexo_passageiro_viagem_conclu_da_recibo_e_avalia_o` | **Parcial** | Conclusão real (`completed`) + tarifa/histórico reais como recibo. **Avaliação não implementada** (backend `ratings` existe na camada trust; UI pendente). |
+| 10 | `nexo_passageiro_cancelamento_de_corrida_modal_e_motivos` | **Implementada** | `passenger_shell.dart` (`askCancel`) — modal com motivo (≤500) → `POST /requests/:id/cancel` ou `POST /rides/:id/cancel`. |
+| 11 | `nexo_passageiro_cancelamento_confirmado_e_reembolso` | **Parcial** | Confirmação de cancelamento real (estado volta a idle). **Reembolso não existe** no backend — não simulado. |
+| 12 | `nexo_passageiro_confirma_o_e_rec_lculo_de_novo_destino` | **Não implementada (UI)** | Backend pronto: `POST /rides/:rideId/route` (`ride.controller.ts:84`) com `expectedRouteVersion`. UI pendente. |
+| 13 | `nexo_passageiro_alterar_destino_busca_do_novo_local` | **Não implementada (UI)** | Idem #12 (+ busca de endereço inexistente). |
+| 14 | `nexo_passageiro_adicionar_parada_no_trajeto` | **Não implementada** | Multi-stop não existe no backend. |
+| 15 | `nexo_passageiro_buscando_motorista_corrida_com_paradas` | **Não implementada** | Idem #14. |
+| 16 | `nexo_passageiro_confirma_o_de_corrida_com_paradas` | **Não implementada** | Idem #14. |
+| 17 | `nexo_passageiro_em_viagem_rumo_1_parada` | **Não implementada** | Idem #14. |
+| 18 | `nexo_passageiro_chegada_ao_shopping_eldorado` / `nexo_passageiro_desembarque_e_recibo_final_shopping_eldorado` (2 telas) | **Não implementadas** | Variantes de conclusão com POI nomeado; o fluxo real de conclusão (#9) cobre o comportamento sem inventar locais fixos. |
 
-Navigation is a real `IndexedStack` + `NavigationBar` (tabs open actual screens). All actions call the real API
-with idempotency keys; the app never fabricates rides, fares or driver states.
+### B. Pagamento e itens perdidos — passageiro (5 telas)
+| # | Tela Stitch | Status | Onde / justificativa |
+|---|---|---|---|
+| 19 | `nexo_passageiro_pagamento_e_cupom_de_desconto` | **Não implementada (UI)** | Backend pronto: `payment-records` (`payment.controller.ts`; testes 5/5 ✅). **Cupom de desconto não existe** no backend. |
+| 20 | `nexo_passageiro_item_encontrado_no_ve_culo` | **Não implementada** | Sem backend de itens perdidos. |
+| 21 | `nexo_passageiro_confirma_o_de_recebimento_e_recibo_de_devolu_o` | **Não implementada** | Idem #20. |
+| 22 | `nexo_chat_seguro_devolu_o_de_item_esquecido` | **Não implementada** | Sem backend de chat. |
 
-## Explicitly not implemented (kept honest)
-- **Address search / geocoding / map routing / fare preview before request:** the backend contract
-  (`CreatePassengerRideDto`) accepts coordinates only; the UI asks for destination latitude/longitude with
-  validation instead of inventing a destination (the old +0.01 offset is gone).
-- **Ratings, payment records, subscriptions, notifications screens, incident/insurance vertical
-  (sinistro/guincho/carro reserva), biometrics/camera/document upload:** represented in the Stitch prototypes but
-  not ported yet; several have backend modules already (see `PROJECT_STATUS.md` matrix) and await UI work.
-- **Profile editing** (PUT /me/profile) — profile tab is read-only today.
-- HTML/PNG references stay in `stitch_nexo_ui_redesign/` as design reference; they are not Flutter runtime assets.
+| 23 | `comprovante_oficial_e_recibo_digital_da_devolu_o` | **Não implementada** | Recibo digital/comprovante oficial da devolução — protótipo do Stitch associado às telas #21/#22 (devolução de itens perdidos). Sem backend de itens perdidos nem UI de recibo; não inventado. |
 
-## Validation
-- Widget tests (mocked HTTP, request-body assertions): `mobile/test/widget_test.dart`, `passenger_flow_test.dart`,
-  `driver_flow_test.dart`, `account_tabs_test.dart` — executed by the CI `mobile` job (`flutter analyze` + `flutter test`).
-- Physical Android/Windows validation is **not claimed** here — see `PROJECT_STATUS.md` §4 for the blocked list.
+### C. Fluxo do motorista (18 telas)
+| # | Tela Stitch | Status | Onde / justificativa |
+|---|---|---|---|
+| 24 | `nexo_motorista_radar_de_chamadas_e_mapa_em_tempo_real` | **Parcial** | `mobile/lib/src/driver_shell.dart` (radarTab) — `GET /me/marketplace/open-requests` real + toggle de disponibilidade real (`PUT /me/marketplace`). **Sem mapa em tempo real** (não inventado). |
+| 25 | `nexo_painel_do_motorista_e_chamadas` | **Implementada** | `driver_shell.dart` — cartões de solicitação reais (`id`, `category`) + aceite `POST /requests/:id/accept`. |
+| 26 | `nexo_motorista_chamada_recebida_com_contagem_regressiva` | **Parcial** | Cartão de chamada real. **Contagem regressiva** não implementada (backend tem `expires_at` na request — disponível para uso futuro). |
+| 27 | `nexo_motorista_navega_o_at_o_passageiro` | **Parcial** | Estado `driver_en_route` real + ação `driver-en-route`. Sem mapa/navegação GPS turn-by-turn. |
+| 28 | `nexo_motorista_rota_at_o_embarque` | **Parcial** | Idem #27 (estado `arrived`). |
+| 29 | `nexo_motorista_rota_recalculada_altera_o_de_destino` | **Não implementada (UI)** | Backend pronto: `POST /rides/:rideId/route`. UI pendente. |
+| 30 | `nexo_motorista_embarque_confirmado_e_in_cio_da_viagem` | **Implementada** | Ações `arrived→start` reais (`driver_shell.dart` activeRidePanel). |
+| 31 | `nexo_motorista_corrida_em_andamento_e_conclus_o` | **Implementada** | Ações `start→complete` reais + tarifa do servidor. |
+| 32 | `nexo_motorista_conclus_o_da_viagem_e_avalia_o` | **Parcial** | Conclusão real (`COMPLETED` + "Voltar ao radar"). Avaliação não implementada (ver #9). |
+| 33 | `nexo_motorista_hist_rico_de_corridas` | **Implementada** | `account_tabs.dart` (TripsTab) — `GET /me/services/history` real. |
+| 34 | `nexo_motorista_perfil_e_documentos` | **Parcial** | `account_tabs.dart` (ProfileTab) — `GET /me` real + logout. Documentos não implementados (backend `media` parcial). |
+| 35 | `nexo_motorista_reputa_o_e_avalia_es` | **Não implementada (UI)** | Backend pronto: `trust`/`ratings` (testes 6/6 ✅). UI pendente. |
+| 36 | `nexo_motorista_biometria_aprovada_in_cio_de_turno` | **Não implementada** | Exige biometria/dispositivo; sem backend de biometria. |
+| 37 | `nexo_motorista_selfie_e_prova_de_vida_biometria_facial` | **Não implementada** | Idem #36. |
+| 38 | `nexo_motorista_captura_guiada_por_c_mera` | **Não implementada** | Exige câmera/dispositivo. |
+| 39 | `nexo_motorista_envio_e_upload_de_documento` | **Não implementada** | Backend `media` parcial (upload); UI/dispositivo pendentes. |
+| 40 | `nexo_motorista_resumo_financeiro_e_assinatura` | **Bloqueada** | Assinaturas = fase 11 (PRs #20/#24), **fora de `main`**. |
+| 41 | `nexo_motorista_reporte_de_item_esquecido_no_ve_culo` | **Não implementada** | Sem backend de itens perdidos (apenas `security/incidents` genérico). |
+
+### D. Vertical de sinistro/seguros (7 telas) — fora de escopo do app de mobilidade
+| # | Tela Stitch | Status | Justificativa |
+|---|---|---|---|
+| 42 | `nexo_acompanhamento_geral_do_sinistro` | **Fora de escopo** | Vertical de seguro/sinistro; sem domínio/modelo equivalente no backend atual (o módulo `towing` é guincho genérico, não gestão de sinistro). |
+| 43 | `nexo_acompanhamento_pericial_guincho_e_carro_reserva` | **Fora de escopo** | Idem. |
+| 44 | `nexo_central_de_ajuda_sinistros_24h` | **Fora de escopo** | Idem. |
+| 45 | `nexo_devolu_o_do_carro_reserva_e_extrato_final` | **Fora de escopo** | Idem. |
+| 46 | `nexo_encerramento_oficial_e_arquivamento_do_sinistro` | **Fora de escopo** | Idem. |
+| 47 | `comprovante_oficial_e_recibo_digital_da_devolu_o` | **Fora de escopo** | Idem. |
+| 48 | `nexo_voucher_e_retirada_do_carro_reserva_qr_code_check_in` | **Fora de escopo** | Idem. |
+
+*(Nota: as linhas 18 e 5 cobrem 2 telas cada — total conferido: 48 telas com `code.html`.)*
+
+## Sistema visual aplicado (VERIFICADO)
+Superfícies escuras (`#0A0912`/`#151321`/`#201C31`), violeta (`#9B72FF`/`#B59AFF`), verde operacional
+(`#56E3A2`), painéis arredondados — `mobile/lib/src/theme.dart` (BrandMark, Eyebrow, Panel, StatusPill,
+ErrorPanel, PageColumn).
+
+## Navegação e integrações (VERIFICADO)
+- Navegação real: `IndexedStack` + `NavigationBar` (Início/Viagens/Perfil; Chamadas/Viagens/Perfil).
+- Endpoints reais usados: `POST /auth/login`, `GET /me`, `POST /rides/requests`, `GET /me/services/history`,
+  `GET /services/:id`, `GET /rides/:id`, `POST /requests/:id/cancel`, `POST /rides/:id/cancel`,
+  `PUT /me/marketplace`, `GET /me/marketplace/open-requests`, `POST /requests/:id/accept`,
+  `POST /rides/:id/{driver-en-route,arrived,start,complete}`.
+- Testes de widget (13/13 PASS no CI): `mobile/test/widget_test.dart`, `passenger_flow_test.dart`,
+  `driver_flow_test.dart`, `account_tabs_test.dart`.
+- Validação física Android/Windows **não é alegada** — ver `PROJECT_STATUS.md`.
+
+## Limitações explícitas
+- Sem busca de endereço/geocoding (backend aceita apenas coordenadas).
+- Sem paradas (multi-stop), mapa, ETA, avaliação, pagamento, assinatura, biometria, câmera, chat, itens perdidos.
+- Polling de 2s (sem WebSocket).
