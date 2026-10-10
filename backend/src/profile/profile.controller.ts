@@ -7,6 +7,7 @@ import {
   Put,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { ProfileService } from './profile.service';
@@ -32,7 +33,9 @@ export class ProfileController {
     return this.profiles.update(req.user, dto);
   }
 
-  @Get('profiles/:accountId') public(@Param('accountId') accountId: string) {
+  @Get('profiles/:accountId') public(
+    @Param('accountId', ParseUUIDPipe) accountId: string,
+  ) {
     return this.profiles.public(accountId);
   }
 }

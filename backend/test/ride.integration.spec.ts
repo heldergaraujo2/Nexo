@@ -16,7 +16,9 @@ const users: string[] = [];
 
 describe('passenger transport integration', () => {
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
     app = moduleRef.createNestApplication();
     app.setGlobalPrefix('v1');
     await app.init();
@@ -27,14 +29,38 @@ describe('passenger transport integration', () => {
   afterAll(async () => {
     if (db && users.length) {
       const placeholders = users.map((_, i) => '$' + (i + 1)).join(',');
-      await db.query(`DELETE FROM ride_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM ride_route_snapshots WHERE ride_id IN (SELECT r.id FROM rides r JOIN services s ON s.id=r.service_id JOIN accounts c ON c.id=s.customer_id JOIN accounts p ON p.id=s.provider_id WHERE c.email IN (${placeholders}) OR p.email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM rides WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})))`, users);
-      await db.query(`DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`, users);
-      await db.query(`DELETE FROM accounts WHERE email IN (${placeholders})`, users);
+      await db.query(
+        `DELETE FROM ride_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM ride_route_snapshots WHERE ride_id IN (SELECT r.id FROM rides r JOIN services s ON s.id=r.service_id JOIN accounts c ON c.id=s.customer_id JOIN accounts p ON p.id=s.provider_id WHERE c.email IN (${placeholders}) OR p.email IN (${placeholders}))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM rides WHERE service_id IN (SELECT id FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM audit_events WHERE actor_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM idempotency_keys WHERE account_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM services WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders})) OR provider_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM service_requests WHERE customer_id IN (SELECT id FROM accounts WHERE email IN (${placeholders}))`,
+        users,
+      );
+      await db.query(
+        `DELETE FROM accounts WHERE email IN (${placeholders})`,
+        users,
+      );
     }
     await app?.close();
   });
@@ -48,11 +74,18 @@ describe('passenger transport integration', () => {
       acceptingRequests: true,
     });
 
-    const rideRequest = await request(app, '/v1/rides/requests', 'POST', {
-      vehicleType: 'car',
-      origin: { latitude: -16.6869, longitude: -49.2648 },
-      destination: { latitude: -16.6828, longitude: -49.2534 },
-    }, customer.token, randomUUID());
+    const rideRequest = await request(
+      app,
+      '/v1/rides/requests',
+      'POST',
+      {
+        vehicleType: 'car',
+        origin: { latitude: -16.6869, longitude: -49.2648 },
+        destination: { latitude: -16.6828, longitude: -49.2534 },
+      },
+      customer.token,
+      randomUUID(),
+    );
 
     expect(rideRequest.status, JSON.stringify(rideRequest.body)).toBe(201);
     expect(rideRequest.body.category).toBe('passenger_car');
@@ -72,92 +105,221 @@ describe('passenger transport integration', () => {
     );
     expect(accepted.status, JSON.stringify(accepted.body)).toBe(201);
 
-    const rides = await db.query('SELECT id,fare_cents,vehicle_type,state FROM rides WHERE service_id=$1', [accepted.body.id]);
+    const rides = await db.query(
+      'SELECT id,fare_cents,vehicle_type,state FROM rides WHERE service_id=$1',
+      [accepted.body.id],
+    );
     expect(rides.rowCount).toBe(1);
     expect(Number(rides.rows[0].fare_cents)).toBe(rideRequest.body.fareCents);
     expect(rides.rows[0].vehicle_type).toBe('car');
     expect(rides.rows[0].state).toBe('accepted');
 
-    const ride = await request(app, `/v1/rides/${rides.rows[0].id}`, 'GET', undefined, customer.token);
+    const ride = await request(
+      app,
+      `/v1/rides/${rides.rows[0].id}`,
+      'GET',
+      undefined,
+      customer.token,
+    );
     expect(ride.status).toBe(200);
 
-    const enRoute = await request(app, `/v1/rides/${ride.body.id}/driver-en-route`, 'POST', undefined, provider.token, randomUUID());
+    const enRoute = await request(
+      app,
+      `/v1/rides/${ride.body.id}/driver-en-route`,
+      'POST',
+      undefined,
+      provider.token,
+      randomUUID(),
+    );
     expect(enRoute.body.state).toBe('driver_en_route');
-    const arrived = await request(app, `/v1/rides/${ride.body.id}/arrived`, 'POST', undefined, provider.token, randomUUID());
+    const arrived = await request(
+      app,
+      `/v1/rides/${ride.body.id}/arrived`,
+      'POST',
+      undefined,
+      provider.token,
+      randomUUID(),
+    );
     expect(arrived.body.state).toBe('arrived');
-    const started = await request(app, `/v1/rides/${ride.body.id}/start`, 'POST', undefined, provider.token, randomUUID());
+    const started = await request(
+      app,
+      `/v1/rides/${ride.body.id}/start`,
+      'POST',
+      undefined,
+      provider.token,
+      randomUUID(),
+    );
     expect(started.body.state).toBe('started');
-    const completed = await request(app, `/v1/rides/${ride.body.id}/complete`, 'POST', undefined, provider.token, randomUUID());
+    const completed = await request(
+      app,
+      `/v1/rides/${ride.body.id}/complete`,
+      'POST',
+      undefined,
+      provider.token,
+      randomUUID(),
+    );
     expect(completed.body.state).toBe('completed');
   });
-
 
   it('does not expose or allow acceptance of a request already matched to another provider', async () => {
     const customer = await register('customer');
     const first = await register('provider');
     const second = await register('provider');
-    await marketplace(first.token, { categories: ['passenger_car'], availability: 'available', acceptingRequests: true });
-    await marketplace(second.token, { categories: ['passenger_car'], availability: 'available', acceptingRequests: true });
+    await marketplace(first.token, {
+      categories: ['passenger_car'],
+      availability: 'available',
+      acceptingRequests: true,
+    });
+    await marketplace(second.token, {
+      categories: ['passenger_car'],
+      availability: 'available',
+      acceptingRequests: true,
+    });
 
-    const created = await request(app, '/v1/rides/requests', 'POST', {
-      vehicleType: 'car',
-      origin: { latitude: -16.6869, longitude: -49.2648 },
-      destination: { latitude: -16.6828, longitude: -49.2534 },
-    }, customer.token, randomUUID());
+    const created = await request(
+      app,
+      '/v1/rides/requests',
+      'POST',
+      {
+        vehicleType: 'car',
+        origin: { latitude: -16.6869, longitude: -49.2648 },
+        destination: { latitude: -16.6828, longitude: -49.2534 },
+      },
+      customer.token,
+      randomUUID(),
+    );
 
-    const accepted = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, first.token, randomUUID());
+    const accepted = await request(
+      app,
+      `/v1/requests/${created.body.requestId}/accept`,
+      'POST',
+      undefined,
+      first.token,
+      randomUUID(),
+    );
     expect(accepted.status).toBe(201);
 
-    const open = await request(app, '/v1/me/marketplace/open-requests', 'GET', undefined, second.token);
+    const open = await request(
+      app,
+      '/v1/me/marketplace/open-requests',
+      'GET',
+      undefined,
+      second.token,
+    );
     expect(open.status).toBe(200);
-    expect((open.body.requests as unknown[]).some((item) => (item as Record<string, unknown>).id === created.body.requestId)).toBe(false);
+    expect(
+      (open.body.requests as unknown[]).some(
+        (item) =>
+          (item as Record<string, unknown>).id === created.body.requestId,
+      ),
+    ).toBe(false);
 
-    const denied = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, second.token, randomUUID());
+    const denied = await request(
+      app,
+      `/v1/requests/${created.body.requestId}/accept`,
+      'POST',
+      undefined,
+      second.token,
+      randomUUID(),
+    );
     expect(denied.status).toBe(409);
   });
 
   it('recalculates price on route change and rejects stale route versions', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
-    await marketplace(provider.token, { categories: ['passenger_motorcycle'], availability: 'available', acceptingRequests: true });
-    const created = await request(app, '/v1/rides/requests', 'POST', {
-      vehicleType: 'motorcycle',
-      origin: { latitude: -16.6869, longitude: -49.2648 },
-      destination: { latitude: -16.6828, longitude: -49.2534 },
-    }, customer.token, randomUUID());
-    const accepted = await request(app, `/v1/requests/${created.body.requestId}/accept`, 'POST', undefined, provider.token, randomUUID());
-    const rideRows = await db.query('SELECT id FROM rides WHERE service_id=$1', [accepted.body.id]);
+    await marketplace(provider.token, {
+      categories: ['passenger_motorcycle'],
+      availability: 'available',
+      acceptingRequests: true,
+    });
+    const created = await request(
+      app,
+      '/v1/rides/requests',
+      'POST',
+      {
+        vehicleType: 'motorcycle',
+        origin: { latitude: -16.6869, longitude: -49.2648 },
+        destination: { latitude: -16.6828, longitude: -49.2534 },
+      },
+      customer.token,
+      randomUUID(),
+    );
+    const accepted = await request(
+      app,
+      `/v1/requests/${created.body.requestId}/accept`,
+      'POST',
+      undefined,
+      provider.token,
+      randomUUID(),
+    );
+    const rideRows = await db.query(
+      'SELECT id FROM rides WHERE service_id=$1',
+      [accepted.body.id],
+    );
     const rideId = rideRows.rows[0].id;
 
-    const changed = await request(app, `/v1/rides/${rideId}/route`, 'POST', {
-      origin: { latitude: -16.6869, longitude: -49.2648 },
-      destination: { latitude: -16.7000, longitude: -49.2800 },
-      expectedRouteVersion: 1,
-    }, provider.token, randomUUID());
+    const changed = await request(
+      app,
+      `/v1/rides/${rideId}/route`,
+      'POST',
+      {
+        origin: { latitude: -16.6869, longitude: -49.2648 },
+        destination: { latitude: -16.7, longitude: -49.28 },
+        expectedRouteVersion: 1,
+      },
+      provider.token,
+      randomUUID(),
+    );
     expect(changed.status).toBe(201);
     expect(changed.body.routeVersion).toBe(2);
 
-    const stale = await request(app, `/v1/rides/${rideId}/route`, 'POST', {
-      origin: { latitude: -16.6869, longitude: -49.2648 },
-      destination: { latitude: -16.7000, longitude: -49.2800 },
-      expectedRouteVersion: 1,
-    }, provider.token, randomUUID());
+    const stale = await request(
+      app,
+      `/v1/rides/${rideId}/route`,
+      'POST',
+      {
+        origin: { latitude: -16.6869, longitude: -49.2648 },
+        destination: { latitude: -16.7, longitude: -49.28 },
+        expectedRouteVersion: 1,
+      },
+      provider.token,
+      randomUUID(),
+    );
     expect(stale.status).toBe(409);
   });
 
   it('rejects negotiated passenger offers', async () => {
     const customer = await register('customer');
     const provider = await register('provider');
-    await marketplace(provider.token, { categories: ['passenger_car'], availability: 'available', acceptingRequests: true });
-    const created = await request(app, '/v1/rides/requests', 'POST', {
-      vehicleType: 'car',
-      origin: { latitude: -16.6869, longitude: -49.2648 },
-      destination: { latitude: -16.6828, longitude: -49.2534 },
-    }, customer.token, randomUUID());
-    const offer = await request(app, `/v1/requests/${created.body.requestId}/offers`, 'POST', {
-      offerType: 'priced_offer',
-      amountCents: 999,
-    }, provider.token, randomUUID());
+    await marketplace(provider.token, {
+      categories: ['passenger_car'],
+      availability: 'available',
+      acceptingRequests: true,
+    });
+    const created = await request(
+      app,
+      '/v1/rides/requests',
+      'POST',
+      {
+        vehicleType: 'car',
+        origin: { latitude: -16.6869, longitude: -49.2648 },
+        destination: { latitude: -16.6828, longitude: -49.2534 },
+      },
+      customer.token,
+      randomUUID(),
+    );
+    const offer = await request(
+      app,
+      `/v1/requests/${created.body.requestId}/offers`,
+      'POST',
+      {
+        offerType: 'priced_offer',
+        amountCents: 999,
+      },
+      provider.token,
+      randomUUID(),
+    );
     expect(offer.status, JSON.stringify(offer.body)).toBe(409);
   });
 });
@@ -172,7 +334,10 @@ async function register(role: 'customer' | 'provider') {
     role,
   });
   expect(response.status).toBe(201);
-  return { accountId: response.body.accountId as string, token: response.body.accessToken as string };
+  return {
+    accountId: response.body.accountId as string,
+    token: response.body.accessToken as string,
+  };
 }
 
 async function marketplace(token: string, body: unknown) {
@@ -180,9 +345,17 @@ async function marketplace(token: string, body: unknown) {
   expect(response.status).toBe(200);
 }
 
-async function request(app: INestApplication, path: string, method: string, body?: unknown, token?: string, idempotencyKey?: string) {
+async function request(
+  app: INestApplication,
+  path: string,
+  method: string,
+  body?: unknown,
+  token?: string,
+  idempotencyKey?: string,
+) {
   const address = app.getHttpServer().address();
-  if (!address || typeof address === 'string') throw new Error('Test server address unavailable');
+  if (!address || typeof address === 'string')
+    throw new Error('Test server address unavailable');
   const port = (address as AddressInfo).port;
   const response = await fetch(`http://127.0.0.1:${port}${path}`, {
     method,
@@ -193,5 +366,8 @@ async function request(app: INestApplication, path: string, method: string, body
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  return { status: response.status, body: (await response.json()) as Record<string, unknown> };
+  return {
+    status: response.status,
+    body: (await response.json()) as Record<string, unknown>,
+  };
 }

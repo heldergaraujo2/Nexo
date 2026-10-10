@@ -84,8 +84,24 @@ jobs:
         working-directory: mobile
       - run: flutter analyze
         working-directory: mobile
-      - run: flutter test
+      - name: Run flutter test
         working-directory: mobile
+        run: |
+          set -o pipefail
+          flutter test --reporter expanded 2>&1 | tee "$GITHUB_WORKSPACE/flutter-test-output.txt"
+      - name: Upload Flutter test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-test-output
+          path: flutter-test-output.txt
+          if-no-files-found: ignore
+      - name: Annotate Flutter test failures
+        if: failure()
+        run: python3 .github/scripts/annotate_test_failures.py "$GITHUB_WORKSPACE/flutter-test-output.txt"
+      - name: Report per-test results
+        if: always()
+        run: python3 .github/scripts/report_test_results.py "$GITHUB_WORKSPACE/flutter-test-output.txt"
       - name: Prepare Android LAN permissions
         working-directory: mobile
         run: |

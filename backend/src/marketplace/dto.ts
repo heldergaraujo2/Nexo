@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsIn,
   IsInt,
   IsObject,
@@ -42,6 +43,7 @@ export class MarketplaceAvailabilityDto {
   @IsIn(['offline', 'available', 'busy'])
   availability!: 'offline' | 'available' | 'busy';
 
+  @IsBoolean()
   acceptingRequests!: boolean;
 }
 

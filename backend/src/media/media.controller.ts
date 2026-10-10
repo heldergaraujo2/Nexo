@@ -7,6 +7,7 @@ import {
   Post,
   Req,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard, AuthenticatedRequest } from '../auth/auth.guard';
 import { RegisterMediaDto } from './dto';
@@ -33,7 +34,7 @@ export class MediaController {
   }
 
   @Get('profiles/:accountId/media')
-  public(@Param('accountId') accountId: string) {
+  public(@Param('accountId', ParseUUIDPipe) accountId: string) {
     return this.media.public(accountId);
   }
 }
