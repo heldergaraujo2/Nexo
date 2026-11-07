@@ -98,6 +98,43 @@ class _PassengerPageState extends State<PassengerPage> {
   String? error;
   Timer? timer;
   bool busy = false;
+  double? destinationLatitude;
+  double? destinationLongitude;
+
+  Future<void> chooseDestination() async {
+    final latitude = TextEditingController(text: destinationLatitude?.toString() ?? '');
+    final longitude = TextEditingController(text: destinationLongitude?.toString() ?? '');
+    final result = await showDialog<(double, double)>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Escolher destino'),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          const Text('Informe coordenadas reais do destino. Busca por endereço e mapa interativo ainda não estão disponíveis.'),
+          TextField(controller: latitude, keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true), decoration: const InputDecoration(labelText: 'Latitude')),
+          TextField(controller: longitude, keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true), decoration: const InputDecoration(labelText: 'Longitude')),
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Voltar')),
+          FilledButton(onPressed: () {
+            final lat = double.tryParse(latitude.text.trim().replaceAll(',', '.'));
+            final lon = double.tryParse(longitude.text.trim().replaceAll(',', '.'));
+            if (lat == null || lon == null || !lat.isFinite || !lon.isFinite || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+              ScaffoldMessenger.of(dialogContext).showSnackBar(const SnackBar(content: Text('Coordenadas inválidas. Verifique latitude e longitude.')));
+              return;
+            }
+            Navigator.pop(dialogContext, (lat, lon));
+          }, child: const Text('Confirmar')),
+        ],
+      ),
+    );
+    latitude.dispose();
+    longitude.dispose();
+    if (result != null && mounted) setState(() {
+      destinationLatitude = result.$1;
+      destinationLongitude = result.$2;
+      error = null;
+    });
+  }
 
   @override void initState() { super.initState(); locate(); }
   @override void dispose() { timer?.cancel(); super.dispose(); }
@@ -114,13 +151,17 @@ class _PassengerPageState extends State<PassengerPage> {
   }
 
   Future<void> requestRide() async {
+    if (destinationLatitude == null || destinationLongitude == null) {
+      setState(() => error = 'Escolha um destino antes de solicitar.');
+      return;
+    }
     setState(() { busy = true; error = null; });
     try {
       final p = position ?? await Geolocator.getCurrentPosition();
       await widget.api.send('POST', '/rides/requests', key: NexoApi.key(), body: {
         'vehicleType': 'car',
         'origin': {'latitude': p.latitude, 'longitude': p.longitude},
-        'destination': {'latitude': p.latitude + 0.01, 'longitude': p.longitude + 0.01},
+        'destination': {'latitude': destinationLatitude, 'longitude': destinationLongitude},
       });
       startPolling();
     } catch (e) { if (mounted) setState(() => error = e.toString()); }
@@ -155,6 +196,9 @@ class _PassengerPageState extends State<PassengerPage> {
     busy: busy,
     error: error,
     onLocate: locate,
+    onChooseDestination: chooseDestination,
+    destinationLatitude: destinationLatitude,
+    destinationLongitude: destinationLongitude,
     onRequestRide: requestRide,
   );
 }
