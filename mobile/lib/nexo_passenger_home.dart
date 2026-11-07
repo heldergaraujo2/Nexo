@@ -11,6 +11,9 @@ class NexoPassengerHome extends StatelessWidget {
     required this.busy,
     required this.onRequestRide,
     required this.onLocate,
+    required this.onChooseDestination,
+    required this.destinationLatitude,
+    required this.destinationLongitude,
     this.error,
   });
 
@@ -20,6 +23,9 @@ class NexoPassengerHome extends StatelessWidget {
   final bool busy;
   final VoidCallback onRequestRide;
   final VoidCallback onLocate;
+  final VoidCallback onChooseDestination;
+  final double? destinationLatitude;
+  final double? destinationLongitude;
   final String? error;
 
   static const _background = Color(0xFF0B1020);
@@ -81,17 +87,41 @@ class NexoPassengerHome extends StatelessWidget {
                 const SizedBox(height: 15),
                 const Divider(color: Color(0xFF303850)),
                 const SizedBox(height: 10),
-                const Row(children: [
-                  Icon(Icons.flag_outlined, color: Color(0xFFBCA0FF)),
-                  SizedBox(width: 10),
-                  Expanded(child: Text('Destino de teste operacional',
-                      style: TextStyle(color: Color(0xFFD5D6E6)))),
-                ]),
-                const SizedBox(height: 10),
-                const Text('Nesta versão, o destino é definido pelo fluxo '
-                    'de teste da API. A escolha de endereço e o mapa real '
-                    'serão integrados em uma etapa posterior.',
-                    style: TextStyle(color: Color(0xFF9BA4BF), fontSize: 12)),
+                InkWell(
+                  onTap: onChooseDestination,
+                  borderRadius: BorderRadius.circular(14),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(children: [
+                      const Icon(Icons.flag_outlined,
+                          color: Color(0xFFBCA0FF)),
+                      const SizedBox(width: 10),
+                      Expanded(child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Escolher destino',
+                              style: TextStyle(color: Colors.white,
+                                  fontWeight: FontWeight.w600)),
+                          const SizedBox(height: 4),
+                          Text(destinationLatitude == null ||
+                                  destinationLongitude == null
+                              ? 'Toque para informar as coordenadas'
+                              : '${destinationLatitude!.toStringAsFixed(5)}, '
+                                '${destinationLongitude!.toStringAsFixed(5)}',
+                              style: const TextStyle(
+                                  color: Color(0xFFB8BED3), fontSize: 12)),
+                        ],
+                      )),
+                      const Icon(Icons.chevron_right_rounded,
+                          color: Color(0xFFBCA0FF)),
+                    ]),
+                  ),
+                ),
+                const Text('Seleção por coordenadas reais. A busca por '
+                    'endereço e o mapa interativo serão adicionados '
+                    'posteriormente.',
+                    style: TextStyle(
+                        color: Color(0xFF9BA4BF), fontSize: 12)),
               ]),
             ),
             const SizedBox(height: 18),
@@ -132,7 +162,7 @@ class NexoPassengerHome extends StatelessWidget {
             )),
             if (ride != null) const SizedBox(height: 16),
             SizedBox(height: 56, child: FilledButton.icon(
-              onPressed: busy || position == null ? null : onRequestRide,
+              onPressed: busy || position == null || destinationLatitude == null || destinationLongitude == null ? null : onRequestRide,
               style: FilledButton.styleFrom(
                 backgroundColor: _violet,
                 shape: RoundedRectangleBorder(
