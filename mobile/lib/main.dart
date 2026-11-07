@@ -1,3 +1,4 @@
+import 'nexo_passenger_home.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -147,19 +148,14 @@ class _PassengerPageState extends State<PassengerPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text('Passageiro — ${widget.profile['displayName']}')),
-    body: ListView(padding: const EdgeInsets.all(20), children: [
-      Text(position == null ? 'GPS: aguardando…' : 'GPS: ${position!.latitude.toStringAsFixed(5)}, ${position!.longitude.toStringAsFixed(5)}'),
-      const SizedBox(height: 16),
-      FilledButton(onPressed: busy ? null : requestRide, child: const Text('Solicitar corrida')),
-      const SizedBox(height: 20),
-      if (ride != null) ...[
-        Text('Estado: ${ride!['state']}', style: Theme.of(context).textTheme.headlineSmall),
-        Text('Preço server-authoritative: R\$ ${((ride!['fareCents'] as num) / 100).toStringAsFixed(2)}'),
-      ] else const Text('Aguardando motorista…'),
-      if (error != null) Text(error!),
-    ]),
+  Widget build(BuildContext context) => NexoPassengerHome(
+    displayName: widget.profile['displayName']?.toString() ?? '',
+    position: position,
+    ride: ride,
+    busy: busy,
+    error: error,
+    onLocate: locate,
+    onRequestRide: requestRide,
   );
 }
 
